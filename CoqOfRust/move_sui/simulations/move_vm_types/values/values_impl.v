@@ -1,5 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.simulations.M.
+Require Import CoqOfRust.simulations.integer.
 Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
@@ -327,10 +328,10 @@ Module Impl_ValueImpl.
     where "'Container_copy_value" := (fun (self : Container.t) =>
       match self with
       | ContainerSkeleton.Vec vec =>
-        let? vec := Result.map copy_value vec in
+        let? vec := Result.List.map copy_value vec in
         Result.Ok $ ContainerSkeleton.Vec vec
       | ContainerSkeleton.Struct f =>
-        let? f := Result.map copy_value f in
+        let? f := Result.List.map copy_value f in
         Result.Ok $ ContainerSkeleton.Struct f
       | ContainerSkeleton.VecU8 v => Result.Ok $ ContainerSkeleton.VecU8 v
       | ContainerSkeleton.VecU64 v => Result.Ok $ ContainerSkeleton.VecU64 v
@@ -346,6 +347,46 @@ Module Impl_ValueImpl.
     ).
 
   Definition Container_copy_value := 'Container_copy_value.
+
+  (*
+  fn equals(&self, other: &Self) -> PartialVMResult<bool> {
+      use ValueImpl::*;
+
+      let res = match (self, other) {
+          (U8(l), U8(r)) => l == r,
+          (U16(l), U16(r)) => l == r,
+          (U32(l), U32(r)) => l == r,
+          (U64(l), U64(r)) => l == r,
+          (U128(l), U128(r)) => l == r,
+          (U256(l), U256(r)) => l == r,
+          (Bool(l), Bool(r)) => l == r,
+          (Address(l), Address(r)) => l == r,
+
+          (Container(l), Container(r)) => l.equals(r)?,
+
+          (ContainerRef(l), ContainerRef(r)) => l.equals(r)?,
+          (IndexedRef(l), IndexedRef(r)) => l.equals(r)?,
+          (Invalid, _)
+          | (U8(_), _)
+          | (U16(_), _)
+          | (U32(_), _)
+          | (U64(_), _)
+          | (U128(_), _)
+          | (U256(_), _)
+          | (Bool(_), _)
+          | (Address(_), _)
+          | (Container(_), _)
+          | (ContainerRef(_), _)
+          | (IndexedRef(_), _) => {
+              return Err(PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR)
+                  .with_message(format!("cannot compare values: {:?}, {:?}", self, other)))
+          }
+      };
+
+      Ok(res)
+  }
+  *)
+  Parameter equals : Self -> Self -> PartialVMResult.t bool.
 End Impl_ValueImpl.
 
 Module Impl_Container.
@@ -404,47 +445,47 @@ Module Value.
   Module Impl_Value.
     Definition Self := Value.t.
     Module cast.
-      Global Instance cast_u8 : VMValueCast.Trait Self Z : Set := {
+      Global Instance cast_u8 : VMValueCast.Trait Self U8.t : Set := {
         cast (self : Self) := match self with
-          | ValueImpl.U8 x => Result.Ok x
+          | ValueImpl.U8 x => Result.Ok {| U8.value := x |}
           | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
-      Global Instance cast_u16 : VMValueCast.Trait Self Z : Set := {
+      Global Instance cast_u16 : VMValueCast.Trait Self U16.t : Set := {
         cast (self : Self) := match self with
-          | ValueImpl.U16 x => Result.Ok x
+          | ValueImpl.U16 x => Result.Ok {| U16.value := x |}
           | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
-      Global Instance cast_u32 : VMValueCast.Trait Self Z : Set := {
+      Global Instance cast_u32 : VMValueCast.Trait Self U32.t : Set := {
         cast (self : Self) := match self with
-          | ValueImpl.U32 x => Result.Ok x
+          | ValueImpl.U32 x => Result.Ok {| U32.value := x |}
           | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
-      Global Instance cast_u64 : VMValueCast.Trait Self Z : Set := {
+      Global Instance cast_u64 : VMValueCast.Trait Self U64.t : Set := {
         cast (self : Self) := match self with
-          | ValueImpl.U64 x => Result.Ok x
+          | ValueImpl.U64 x => Result.Ok {| U64.value := x |}
           | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
-      Global Instance cast_u128 : VMValueCast.Trait Self Z : Set := {
+      Global Instance cast_u128 : VMValueCast.Trait Self U128.t : Set := {
         cast (self : Self) := match self with
-          | ValueImpl.U128 x => Result.Ok x
+          | ValueImpl.U128 x => Result.Ok {| U128.value := x |}
           | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
-      Global Instance cast_u256 : VMValueCast.Trait Self Z : Set := {
+      (* Global Instance cast_u256 : VMValueCast.Trait Self Z : Set := {
         cast (self : Self) := match self with
           | ValueImpl.U256 x => Result.Ok x
           | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
-      }.
+      }. *)
 
       Global Instance cast_bool : VMValueCast.Trait Self bool : Set := {
         cast (self : Self) := match self with
@@ -1339,63 +1380,63 @@ Module IntegerValue.
     | None => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
     end.
 
-  Definition shl_checked (self : IntegerValue.t) (other : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
-    match self, other with
-    | IntegerValue.U8 l, IntegerValue.U8 r =>
+  Definition shl_checked (self : IntegerValue.t) (nbits : U8.t) : PartialVMResult.t IntegerValue.t :=
+    let r : Z := nbits.(U8.value) in
+    match self with
+    | IntegerValue.U8 l =>
       if r <? 8
       then Result.Ok (IntegerValue.U8 (Z.shiftl l r))
       else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-    | IntegerValue.U16 l, IntegerValue.U16 r =>
+    | IntegerValue.U16 l =>
       if r <? 16
-      then Result.Ok (IntegerValue.U8 (Z.shiftl l r))
+      then Result.Ok (IntegerValue.U16 (Z.shiftl l r))
       else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-    | IntegerValue.U32 l, IntegerValue.U32 r =>
+    | IntegerValue.U32 l =>
       if r <? 32
-      then Result.Ok (IntegerValue.U8 (Z.shiftl l r))
+      then Result.Ok (IntegerValue.U32 (Z.shiftl l r))
       else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-    | IntegerValue.U64 l, IntegerValue.U64 r =>
+    | IntegerValue.U64 l =>
       if r <? 64
-      then Result.Ok (IntegerValue.U8 (Z.shiftl l r))
+      then Result.Ok (IntegerValue.U64 (Z.shiftl l r))
       else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-    | IntegerValue.U128 l, IntegerValue.U128 r =>
+    | IntegerValue.U128 l =>
       if r <? 128
-      then Result.Ok (IntegerValue.U8 (Z.shiftl l r))
+      then Result.Ok (IntegerValue.U128 (Z.shiftl l r))
       else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-    | IntegerValue.U256 l, IntegerValue.U256 r =>
+    | IntegerValue.U256 l =>
       if r <? 256
-      then Result.Ok (IntegerValue.U8 (Z.shiftl l r))
+      then Result.Ok (IntegerValue.U256 (Z.shiftl l r))
       else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-    | _, _ => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
     end.
 
-  Definition shr_checked (self : IntegerValue.t) (other : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
-  match self, other with
-  | IntegerValue.U8 l, IntegerValue.U8 r =>
-    if r <? 8
-    then Result.Ok (IntegerValue.U8 (Z.shiftr l r))
-    else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | IntegerValue.U16 l, IntegerValue.U16 r =>
-    if r <? 16
-    then Result.Ok (IntegerValue.U8 (Z.shiftr l r))
-    else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | IntegerValue.U32 l, IntegerValue.U32 r =>
-    if r <? 32
-    then Result.Ok (IntegerValue.U8 (Z.shiftr l r))
-    else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | IntegerValue.U64 l, IntegerValue.U64 r =>
-    if r <? 64
-    then Result.Ok (IntegerValue.U8 (Z.shiftr l r))
-    else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | IntegerValue.U128 l, IntegerValue.U128 r =>
-    if r <? 128
-    then Result.Ok (IntegerValue.U8 (Z.shiftr l r))
-    else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | IntegerValue.U256 l, IntegerValue.U256 r =>
-    if r <? 256
-    then Result.Ok (IntegerValue.U8 (Z.shiftr l r))
-    else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | _, _ => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  end.
+  Definition shr_checked (self : IntegerValue.t) (nbits : U8.t) : PartialVMResult.t IntegerValue.t :=
+    let r : Z := nbits.(U8.value) in
+    match self with
+    | IntegerValue.U8 l =>
+      if r <? 8
+      then Result.Ok (IntegerValue.U8 (Z.shiftr l r))
+      else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+    | IntegerValue.U16 l =>
+      if r <? 16
+      then Result.Ok (IntegerValue.U16 (Z.shiftr l r))
+      else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+    | IntegerValue.U32 l =>
+      if r <? 32
+      then Result.Ok (IntegerValue.U32 (Z.shiftr l r))
+      else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+    | IntegerValue.U64 l =>
+      if r <? 64
+      then Result.Ok (IntegerValue.U64 (Z.shiftr l r))
+      else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+    | IntegerValue.U128 l =>
+      if r <? 128
+      then Result.Ok (IntegerValue.U128 (Z.shiftr l r))
+      else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+    | IntegerValue.U256 l =>
+      if r <? 256
+      then Result.Ok (IntegerValue.U256 (Z.shiftr l r))
+      else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+    end.
 
   Definition lt (self : IntegerValue.t) (other : IntegerValue.t) : PartialVMResult.t bool :=
   match self, other with
@@ -1531,6 +1572,29 @@ Definition cast_u256 (self : IntegerValue.t) : PartialVMResult.t Z :=
   | IntegerValue.U256 l => Result.Ok l
   end.
 
+  (*
+  pub fn into_value(self) -> Value {
+      use IntegerValue::*;
+
+      match self {
+          U8(x) => Value::u8(x),
+          U16(x) => Value::u16(x),
+          U32(x) => Value::u32(x),
+          U64(x) => Value::u64(x),
+          U128(x) => Value::u128(x),
+          U256(x) => Value::u256(x),
+      }
+  }
+  *)
+  Definition into_value (self : IntegerValue.t) : Value.t :=
+    match self with
+    | IntegerValue.U8 x => ValueImpl.U8 x
+    | IntegerValue.U16 x => ValueImpl.U16 x
+    | IntegerValue.U32 x => ValueImpl.U32 x
+    | IntegerValue.U64 x => ValueImpl.U64 x
+    | IntegerValue.U128 x => ValueImpl.U128 x
+    | IntegerValue.U256 x => ValueImpl.U256 x
+    end.
 End IntegerValue.
 (*
 impl IntegerValue {
@@ -1821,19 +1885,6 @@ impl IntegerValue {
                 return Err(PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR).with_message(msg));
             }
         })
-    }
-
-    pub fn into_value(self) -> Value {
-        use IntegerValue::*;
-
-        match self {
-            U8(x) => Value::u8(x),
-            U16(x) => Value::u16(x),
-            U32(x) => Value::u32(x),
-            U64(x) => Value::u64(x),
-            U128(x) => Value::u128(x),
-            U256(x) => Value::u256(x),
-        }
     }
 }
 

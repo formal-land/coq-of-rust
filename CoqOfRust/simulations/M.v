@@ -22,8 +22,15 @@ Module Result.
       t A Error :=
     List.fold_left (fun acc x => bind acc (fun acc => f acc x)) l (return_ init).
 
-  Definition map {A B Error : Set} (f : A -> t B Error) (l : list A) : t (list B) Error :=
-    fold_left [] l (fun acc x => bind (f x) (fun y => return_ (y :: acc))).
+  Module List.
+    Definition map {A B Error : Set} (f : A -> t B Error) :=
+      fix fixpoint (l : list A) : t (list B) Error :=
+        match l with
+        | [] => return_ []
+        | x :: l =>
+          bind (f x) (fun y => bind (fixpoint l) (fun ys => return_ (y :: ys)))
+        end.
+  End List.
 End Result.
 
 Module ResultNotations.
@@ -252,10 +259,14 @@ Module StatePanicResult.
       (value : t State Error A)
       (f : A -> t State Error B) :
       t State Error B :=
-    letS! value := value in
-    match value with
-    | Result.Ok value => f value
-    | Result.Err error => returnS! (Result.Err error)
+    fun (state : State) =>
+    match value state with
+    | Panic.Panic error => panic! error
+    | Panic.Value (value, state) =>
+      match value with
+      | Result.Ok value => f value state
+      | Result.Err error => Panic.Value (Result.Err error, state)
+      end
     end.
 
   (** The order of parameters is the same as in the source `for` loops. *)
@@ -267,8 +278,11 @@ Module StatePanicResult.
     List.fold_left (fun acc x => bind acc (fun acc => f acc x)) l (return_ init).
 
   Definition lift_from_panic {State Error A : Set} (value : M! A) : t State Error A :=
-    letS! value := return!toS! value in
-    returnS! (return? value).
+    fun (state : State) =>
+      match value with
+      | Panic.Panic error => panic! error
+      | Panic.Value value => return! (Result.Ok value, state)
+      end.
 End StatePanicResult.
 
 Module StatePanicResultNotations.

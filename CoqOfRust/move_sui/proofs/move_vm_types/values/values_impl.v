@@ -39,6 +39,63 @@ Module ValueImpl.
     | IndexedRef r : t (ValueImpl.IndexedRef r)
     | Container c : ContainerSkeleton.IsWithoutLocals.t t c -> t (ValueImpl.Container c).
   End IsWithoutLocals.
+
+  Fixpoint check_copy_value
+      (self : ValueImpl.t)
+      (H_self : IsWithoutLocals.t self)
+      {struct self} :
+    match Impl_ValueImpl.copy_value self with
+    | Result.Ok value => value = self
+    | Result.Err _ => False
+    end.
+  Proof.
+  Admitted.
+    (* destruct self; cbn; try easy.
+    destruct_all (ContainerSkeleton.t ValueImpl.t); cbn; try easy.
+    all: inversion_clear H_self; try easy.
+    all:
+      match goal with
+      | H : ContainerSkeleton.IsWithoutLocals.t _ _ |- _ => inversion_clear H
+      end.
+    { assert (H_map :
+        match Result.List.map Impl_ValueImpl.copy_value vec with
+        | Result.Ok _ => True
+        | Result.Err _ => False
+        end
+      ). {
+        induction vec; cbn; try easy.
+        match goal with
+        | |- context[Impl_ValueImpl.copy_value ?v] =>
+          pose proof (check_copy_value v)
+        end.
+        destruct Impl_ValueImpl.copy_value; cbn; try easy.
+        { destruct Result.List.map; cbn; try easy.
+          best.
+        }
+        { best. }
+      }
+      now destruct Result.List.map.
+    }
+    { assert (H_map :
+        match Result.List.map Impl_ValueImpl.copy_value fields with
+        | Result.Ok _ => True
+        | Result.Err _ => False
+        end
+      ). {
+        induction fields; cbn; try easy.
+        match goal with
+        | |- context[Impl_ValueImpl.copy_value ?v] =>
+          pose proof (check_copy_value v)
+        end.
+        destruct Impl_ValueImpl.copy_value; cbn; try easy.
+        { destruct Result.List.map; cbn; try easy.
+          best.
+        }
+        { best. }
+      }
+      now destruct Result.List.map.
+    }
+  Qed. *)
 End ValueImpl.
 
 Module IsValueImplOfType.

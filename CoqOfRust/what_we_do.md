@@ -529,3 +529,149 @@ End ValueImpl.
 ```
 
 which type-checks. We will now show that it implies that the function `copy_value` succeeds. We state this lemma where this function is defined, namely in:
+
+move_sui/proofs/move_vm_types/values/values_impl.v
+
+```
+Fixpoint check_copy_value (self : ValueImpl.t)
+    (H_self : IsWithoutLocals.t self) :
+  match Impl_ValueImpl.copy_value self with
+  | Result.Ok _ => True
+  | Result.Err _ => False
+  end.
+```
+
+We do a fixpoint to follow the definition of the function. Then we reason by cases:
+
+```
+destruct self; cbn; try easy.
+```
+
+One case is left for the Container case:
+
+```
+match
+  (let? copy_value
+   := match t with
+      | ContainerSkeleton.Locals _ =>
+          Result.Err (PartialVMError.new StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR)
+      | ContainerSkeleton.Vec vec =>
+          let? vec0 := Result.map Impl_ValueImpl.copy_value vec in Result.Ok (ContainerSkeleton.Vec vec0)
+      | ContainerSkeleton.Struct f =>
+          let? f0 := Result.map Impl_ValueImpl.copy_value f in Result.Ok (ContainerSkeleton.Struct f0)
+      | ContainerSkeleton.VecU8 v => Result.Ok (ContainerSkeleton.VecU8 v)
+      | ContainerSkeleton.VecU64 v => Result.Ok (ContainerSkeleton.VecU64 v)
+      | ContainerSkeleton.VecU128 v => Result.Ok (ContainerSkeleton.VecU128 v)
+      | ContainerSkeleton.VecBool v => Result.Ok (ContainerSkeleton.VecBool v)
+      | ContainerSkeleton.VecAddress v => Result.Ok (ContainerSkeleton.VecAddress v)
+      | ContainerSkeleton.VecU16 v => Result.Ok (ContainerSkeleton.VecU16 v)
+      | ContainerSkeleton.VecU32 v => Result.Ok (ContainerSkeleton.VecU32 v)
+      | ContainerSkeleton.VecU256 v => Result.Ok (ContainerSkeleton.VecU256 v)
+      end in Result.Ok (ValueImpl.Container copy_value))
+with
+| Result.Ok _ => True
+| Result.Err _ => False
+end
+```
+
+We do a destruct also with the `step` tactic to automatically find the next value that we match on:
+
+```
+step; cbn; try easy.
+```
+
+We have a `False` case corresponding to the locals. We need to use our hypothesis H_self that says we cannot have locals. It is:
+
+H_self: IsWithoutLocals.t (ValueImpl.Container (ContainerSkeleton.Locals locals))
+
+Because it is an inductive applied to a constructor, we can use the `inversion` tactic to get the contradiction:
+
+```
+inversion H_self; subst; try easy.
+```
+
+A better version:
+
+```
+{ now inversion_clear H_self. }
+```
+
+Next we have two similar goals:
+
+```
+match
+  (let? copy_value
+   := (let? vec0 := Result.map Impl_ValueImpl.copy_value vec in Result.Ok (ContainerSkeleton.Vec vec0))
+   in Result.Ok (ValueImpl.Container copy_value))
+with
+| Result.Ok _ => True
+| Result.Err _ => False
+end
+```
+
+The function Result.map should actually be named Result.List.map to be more explicit: this is the mapping function in the Result monad. We do the renaming!
+
+Now we need to somehow link the effect of this Result.List.map with the List.Forall of the predicate. We will do that by induction, locally, in the current lemma.
+
+We also need to use the:
+
+H_self: IsWithoutLocals.t (ValueImpl.Container (ContainerSkeleton.Vec vec))
+
+hypothesis. As we need it in all the sub goals, we can do the inversion on all cases with:
+
+all: inversion_clear H_self; try easy.
+
+We have:
+
+H: ContainerSkeleton.IsWithoutLocals.t IsWithoutLocals.t
+      (ContainerSkeleton.Vec vec)
+
+in the hypothesis with a generated name. We can do an inversion on it without using the hypothesis name, by:
+
+all:
+  match goal with
+  | H : ContainerSkeleton.IsWithoutLocals.t _ _ |- _ => inversion_clear H
+  end.
+
+We will focus on the first sub-goal. Both are very similar. We can actually assert that:
+
+assert (
+  forall vec,
+  List.Forall IsWithoutLocals.t vec ->
+  match Result.List.map Impl_ValueImpl.copy_value vec with
+  | Result.Ok _ => True
+  | Result.Err _ => False
+  end
+).
+
+We do it at the beginning of the proof to avoid name collisions. We start with:
+
+induction vec; cbn; intros.
+admit.
+
+We admit the first case as it is generally easy. For the second case best does not work. We have in the goal:
+
+match
+  List.fold_left
+    (fun (acc : Result.t (list Impl_ValueImpl.Self) errors.PartialVMError.t) (x : Impl_ValueImpl.Self) =>
+     let? acc0 := acc in let? y := Impl_ValueImpl.copy_value x in return? (y :: acc0)) vec
+    (let? y := Impl_ValueImpl.copy_value a in return? [y])
+with
+| Result.Ok _ => True
+| Result.Err _ => False
+end
+
+We see a List.fold_left instead of a Result.List.map. This makes it harder to use the induction hypothesis. We rewrite our Result.List.map function to use itself instead:
+
+Fixpoint map {A B Error : Set} (f : A -> t B Error) (l : list A) : t (list B) Error :=
+  match l with
+  | [] => return_ []
+  | x :: l =>
+    bind (f x) (fun y => bind (map f l) (fun ys => return_ (y :: ys)))
+  end.
+
+Now back to the proof:
+
+```
+inversion H; subst; try easy.
+```

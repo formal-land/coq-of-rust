@@ -27,3 +27,9 @@ clean: clean-coq
 	$(MAKE) clean-util # done separately to enforce order
 
 distclean: clean
+
+watch:
+	while true; do \
+		inotifywait -e modify $(VFILES) Makefile; \
+		make -k -j3; \
+	done
