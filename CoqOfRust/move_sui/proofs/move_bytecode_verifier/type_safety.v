@@ -118,6 +118,11 @@ Ltac guard_instruction expected_instruction :=
   | _ : _ = expected_instruction |- _ => idtac
   end.
 
+Ltac try_rewrite :=
+  repeat match goal with
+  | H : _ = _ |- _ => rewrite H in *; clear H
+  end.
+
 Ltac destruct_post H :=
   match type of H with
   | ?H1 /\ ?H2 =>
@@ -139,15 +144,15 @@ Ltac destruct_post H :=
 Ltac destruct_abstract_pop :=
   unfold_state_monad;
   match goal with
-  | H_stack : _ |- context[AbstractStack.pop ?stack] =>
+  | H_stack_ty : _ |- context[AbstractStack.pop ?stack_ty] =>
     let H_check_pop := fresh "H_check_pop" in
-    pose proof (AbstractStack.check_pop stack H_stack) as H_check_pop;
-    destruct (AbstractStack.pop stack) as [[[?operand_ty |] ?stack_ty] |];
-      cbn; [|exact I | exact I];
+    pose proof (AbstractStack.check_pop stack_ty H_stack_ty) as H_check_pop;
+    destruct (AbstractStack.pop stack_ty) as [[[?operand_ty |] ?stack_ty] |];
+      cbn; try easy;
     destruct_post H_check_pop
   end;
-  match goal with
-  | H_of_type : _ |- _ =>
+  try match goal with
+  | H_of_type : List.Forall2 IsValueImplOfType.t  _ _ |- _ =>
     destruct_post (IsStackValueOfType.pop _ _ _ H_of_type);
     clear H_of_type
   end.
@@ -202,20 +207,30 @@ Ltac destruct_initial_if :=
   );
   cbn; trivial.
 
+Module InstructionNotFinal.
+  Definition t (instruction : Bytecode.t) : Prop :=
+    match instruction with
+    | Bytecode.Ret
+    | Bytecode.Call _
+    | Bytecode.CallGeneric _ => False
+    | _ => True
+    end.
+End InstructionNotFinal.
+
 Lemma progress
     (ty_args : list _Type.t) (function : loader.Function.t) (resolver : loader.Resolver.t)
     (instruction : Bytecode.t)
     (pc : Z) (locals : Locals.t) (interpreter : Interpreter.t)
     (type_safety_checker : TypeSafetyChecker.t)
     (H_instruction : Bytecode.Valid.t instruction)
+    (H_locals : List.Forall ValueImpl.IsWithoutLocals.t locals)
     (H_type_safety_checker : TypeSafetyChecker.Valid.t type_safety_checker)
     (H_of_type : IsInterpreterContextOfType.t locals interpreter type_safety_checker)
     (H_resolver :
       resolver.(loader.Resolver.binary).(loader.BinaryType.compiled) =
       type_safety_checker.(TypeSafetyChecker.module)
     )
-    (* This lemma is not true for [Bytecode.Ret] *)
-    (H_not_Ret : instruction <> Bytecode.Ret) :
+    (H_instruction_not_final : InstructionNotFinal.t instruction) :
   let state := {|
     State.pc := pc;
     State.locals := locals;
@@ -233,16 +248,11 @@ Lemma progress
       State.interpreter := interpreter';
     |} := state' in
     IsInterpreterContextOfType.t locals' interpreter' type_safety_checker'
-  (* If the type-checker succeeds, then the interpreter cannot return an error *)
+  (* If the type-checker succeeds, then the interpreter cannot return a panic *)
   | Panic.Value (Result.Ok _, _), Panic.Panic _ => False
-  | Panic.Value (Result.Ok _, _), Panic.Value (Result.Err error, _) =>
-    let '{| PartialVMError.major_status := major_status |} := error in
-    match major_status with
-    | StatusCode.EXECUTION_STACK_OVERFLOW
-    | StatusCode.ARITHMETIC_ERROR => True
-    | _ => False
-    end
-  | Panic.Panic _, _ | Panic.Value (Result.Err _, _), _ => True
+  | Panic.Value (Result.Ok _, _), Panic.Value (Result.Err _, _)
+  | Panic.Value (Result.Err _, _), _
+  | Panic.Panic _, _ => True
   end.
 Proof.
   Opaque AbstractStack.flatten.
@@ -258,7 +268,7 @@ Proof.
     repeat (step; cbn; try easy).
   }
   { guard_instruction Bytecode.Ret.
-    congruence.
+    easy.
   }
   { guard_instruction (Bytecode.BrTrue z).
     destruct_abstract_pop.
@@ -410,35 +420,139 @@ Proof.
     destruct_abstract_push.
     unfold Impl_Locals.copy_loc.
     unfold Panic.List.nth in *.
-    destruct H_locals_typing as [? ? H_locals].
+    destruct H_locals_typing as [? ? H_locals_typing].
     destruct locals_ty as [? ? [locals_ty]]; cbn in *.
-    pose proof List.Forall2_nth_error _ locals locals_ty (Z.to_nat z) H_locals as H_nth_error.
+    pose proof List.Forall2_nth_error _ locals locals_ty (Z.to_nat z) H_locals_typing
+      as H_nth_error.
     unfold Value.t in H_nth_error.
+    match goal with
+    | |- context[List.nth_error ?l ?n] =>
+      pose proof (H_local := List.Forall_nth_error ValueImpl.IsWithoutLocals.t l n H_locals)
+    end.
     destruct (List.nth_error locals) as [local|] eqn:H_nth_error_eq; cbn.
     { match goal with
       | |- context[if ?is_local_expr then _ else _] =>
         set (is_local := is_local_expr)
       end.
-      destruct is_local eqn:H_is_invalid_eq; cbn.
-      { destruct local eqn:H_local_eq; try easy.
-        now destruct List.nth_error in H_nth_error.
+      destruct is_local eqn:H_is_invalid_eq; cbn; try easy.
+      pose proof (H_copy_value := ValueImpl.check_copy_value local H_local).
+      destruct Impl_ValueImpl.copy_value; cbn; try easy.
+      step; cbn; try easy.
+      constructor; cbn.
+      { hauto l: on. }
+      { try_rewrite.
+        constructor; [|easy].
+        destruct (List.nth_error locals_ty); try easy.
+        congruence.
       }
-      { admit. }
     }
     { now destruct (List.nth_error locals_ty). }
   }
   { guard_instruction (Bytecode.MoveLoc z).
+    unfold_state_monad.
     unfold TypeSafetyChecker.Impl_TypeSafetyChecker.local_at; cbn.
-    admit.
+    match goal with
+    | |- context[Impl_Locals.local_at ?locals_ty ?index] =>
+      let H_eq := fresh "H_eq" in
+      pose proof (IsLocalsOfType.local_at_eq
+        locals
+        locals_ty
+        index.(file_format_index.LocalIndex.a0)
+        H_locals_typing
+      ) as H_eq;
+      cbn in H_eq;
+      rewrite H_eq by assumption;
+      clear H_eq
+    end.
+    step; cbn; try easy.
+    destruct_abstract_push.
+    unfold Panic.List.nth in *.
+    destruct H_locals_typing as [? ? H_locals_typing].
+    destruct locals_ty as [? ? [locals_ty]]; cbn in *.
+    pose proof List.Forall2_nth_error _ locals locals_ty (Z.to_nat z) H_locals_typing
+      as H_nth_error.
+    assert (check_move_loc :
+      forall locals idx violation_check,
+      match Impl_Locals.move_loc idx violation_check locals with
+      | Panic.Value (value, locals') =>
+        locals' = locals /\
+        match value with
+        | Result.Ok value => Some value = List.nth_error locals (Z.to_nat idx)
+        | Result.Err _ => True
+        end
+      | Panic.Panic _ => False
+      end
+    ) by admit.
+    match goal with
+    | |- context[Impl_Locals.move_loc ?idx ?violation_check ?locals] =>
+      pose proof (H_move_loc := check_move_loc locals idx violation_check);
+      clear check_move_loc
+    end.
+    destruct Impl_Locals.move_loc as [[value locals']|]; cbn; [|easy].
+    destruct value as [value|]; cbn; try easy.
+    step; cbn; try easy.
+    destruct_post H_move_loc.
+    constructor; cbn; try easy.
+    try_rewrite.
+    constructor; try easy.
+    hauto q: on.
   }
   { guard_instruction (Bytecode.StLoc z).
-    admit.
+    destruct_abstract_pop; try now step.
+    unfold TypeSafetyChecker.Impl_TypeSafetyChecker.local_at; cbn.
+    match goal with
+    | |- context[Impl_Locals.local_at ?locals_ty ?index] =>
+      let H_eq := fresh "H_eq" in
+      pose proof (IsLocalsOfType.local_at_eq
+        locals
+        locals_ty
+        index.(file_format_index.LocalIndex.a0)
+        H_locals_typing
+      ) as H_eq;
+      cbn in H_eq;
+      rewrite H_eq by assumption;
+      clear H_eq
+    end.
+    unfold Panic.List.nth in *.
+    destruct H_locals_typing as [? ? H_locals_typing].
+    destruct locals_ty as [? ? [locals_ty]]; cbn in *.
+    pose proof List.Forall2_nth_error _ locals locals_ty (Z.to_nat z) H_locals_typing
+      as H_nth_error.
+    assert (check_move_store :
+      forall locals locals_ty idx value violation_check,
+      match List.nth_error locals_ty (Z.to_nat idx) with
+      | Some ty =>
+        match Impl_Locals.store_loc idx value violation_check locals with
+        | Panic.Value (Result.Ok _, locals') =>
+          IsValueImplOfType.t value ty ->
+          List.Forall2 IsValueImplOfType.t locals locals_ty ->
+          List.Forall2 IsValueImplOfType.t locals' locals_ty
+        | Panic.Value (Result.Err _, _) => True
+        | Panic.Panic _ => False
+        end
+      | None => True
+      end
+    ) by admit.
+    match goal with
+    | |- context[Impl_Locals.store_loc ?idx ?value ?violation_check ?locals] =>
+      pose proof (H_store_loc := check_move_store locals locals_ty idx value violation_check);
+      clear check_move_store
+    end.
+    destruct (List.nth_error locals_ty); cbn; try easy.
+    destruct_initial_if.
+    destruct Impl_Locals.store_loc; cbn; try easy.
+    repeat (step; cbn; try easy).
+    match goal with
+    | H_Eq : _, H : SignatureToken.t_beq ?x ?y = true |- _ =>
+      assert (x = y) by now apply H_Eq
+    end.
+    sauto lq: on.
   }
   { guard_instruction (Bytecode.Call t).
-    admit.
+    easy.
   }
   { guard_instruction (Bytecode.CallGeneric t).
-    admit.
+    easy.
   }
   { guard_instruction (Bytecode.Pack t).
     admit.
@@ -619,10 +733,24 @@ Proof.
     constructor; cbn; sauto lq: on.
   }
   { guard_instruction Bytecode.Eq.
-    admit.
+    destruct_abstract_pop.
+    destruct_abstract_pop.
+    do 2 (step; cbn; try easy).
+    destruct_initial_if.
+    destruct_abstract_push.
+    repeat (step; cbn; try easy).
+    constructor; cbn; try easy.
+    sauto lq: on.
   }
   { guard_instruction Bytecode.Neq.
-    admit.
+    destruct_abstract_pop.
+    destruct_abstract_pop.
+    do 2 (step; cbn; try easy).
+    destruct_initial_if.
+    destruct_abstract_push.
+    repeat (step; cbn; try easy).
+    constructor; cbn; try easy.
+    sauto lq: on.
   }
   { guard_instruction Bytecode.Lt.
     destruct_abstract_pop.
@@ -665,7 +793,9 @@ Proof.
       sauto lq: on.
   }
   { guard_instruction Bytecode.Abort.
-    admit.
+    destruct_abstract_pop.
+    destruct_initial_if.
+    step; cbn; try easy.
   }
   { guard_instruction Bytecode.Nop.
     now constructor; cbn.
@@ -689,10 +819,26 @@ Proof.
     admit.
   }
   { guard_instruction Bytecode.Shl.
-    admit.
+    destruct_abstract_pop.
+    destruct_abstract_pop.
+    destruct_initial_if.
+    destruct_abstract_push.
+    step; cbn; try easy.
+    destruct IntegerValue.to_value_impl; cbn; (try easy);
+      repeat (step; cbn; try easy);
+      constructor; cbn; try easy;
+      sauto lq: on.
   }
   { guard_instruction Bytecode.Shr.
-    admit.
+    destruct_abstract_pop.
+    destruct_abstract_pop.
+    destruct_initial_if.
+    destruct_abstract_push.
+    step; cbn; try easy.
+    destruct IntegerValue.to_value_impl; cbn; (try easy);
+      repeat (step; cbn; try easy);
+      constructor; cbn; try easy;
+      sauto lq: on.
   }
   { guard_instruction (Bytecode.VecPack t z).
     admit.

@@ -1,5 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.simulations.M.
+Require Import CoqOfRust.simulations.integer.
 Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
@@ -1123,7 +1124,16 @@ Definition execute_instruction
   }
   *)
   | Bytecode.Shl =>
-    execute_instruction_TODO
+   letS!? rhs := liftS! State.Lens.interpreter (
+      liftS! Interpreter.Lens.operand_stack $ Stack.Impl_Stack.pop_as U8.t) in
+    letS!? lhs := liftS! State.Lens.interpreter (
+      liftS! Interpreter.Lens.operand_stack $ Stack.Impl_Stack.pop_as IntegerValue.t) in
+    letS!? result := returnS! $ IntegerValue.shl_checked lhs rhs in
+    letS!? _ := liftS! State.Lens.interpreter (
+      liftS! Interpreter.Lens.operand_stack $
+        Stack.Impl_Stack.push (IntegerValue.into_value result)
+    ) in
+    returnS! $ Result.Ok InstrRet.Ok
   (*
   Bytecode::Shr => {
       gas_meter.charge_simple_instr(S::Shr)?;
@@ -1135,7 +1145,16 @@ Definition execute_instruction
   }
   *)
   | Bytecode.Shr =>
-    execute_instruction_TODO
+    letS!? rhs := liftS! State.Lens.interpreter (
+      liftS! Interpreter.Lens.operand_stack $ Stack.Impl_Stack.pop_as U8.t) in
+    letS!? lhs := liftS! State.Lens.interpreter (
+      liftS! Interpreter.Lens.operand_stack $ Stack.Impl_Stack.pop_as IntegerValue.t) in
+    letS!? result := returnS! $ IntegerValue.shr_checked lhs rhs in
+    letS!? _ := liftS! State.Lens.interpreter (
+      liftS! Interpreter.Lens.operand_stack $
+        Stack.Impl_Stack.push (IntegerValue.into_value result)
+    ) in
+    returnS! $ Result.Ok InstrRet.Ok
   (*
   Bytecode::Or => {
       gas_meter.charge_simple_instr(S::Or)?;
@@ -1205,7 +1224,10 @@ Definition execute_instruction
       return Err(error);
   } *)
   | Bytecode.Abort =>
-    execute_instruction_TODO
+    letS!? error_code := liftS! State.Lens.interpreter (
+      liftS! Interpreter.Lens.operand_stack $ Stack.Impl_Stack.pop_as U64.t) in
+    let error := PartialVMError.new StatusCode.ABORTED in
+    returnS! $ Result.Err error
   (* Bytecode::Eq => {
       let lhs = interpreter.operand_stack.pop()?;
       let rhs = interpreter.operand_stack.pop()?;
@@ -1214,7 +1236,18 @@ Definition execute_instruction
           .operand_stack
           .push(Value::bool(lhs.equals(&rhs)?))?;
   } *)
-  | Bytecode.Eq => execute_instruction_TODO
+  | Bytecode.Eq =>
+    letS!? rhs := liftS! State.Lens.interpreter (
+      liftS! Interpreter.Lens.operand_stack $ Stack.Impl_Stack.pop) in
+    letS!? lhs := liftS! State.Lens.interpreter (
+      liftS! Interpreter.Lens.operand_stack $ Stack.Impl_Stack.pop) in
+    letS!? are_equal :=
+      returnS! $ Impl_ValueImpl.equals lhs rhs in
+    doS!? liftS! State.Lens.interpreter (
+      liftS! Interpreter.Lens.operand_stack $ Stack.Impl_Stack.push $
+        ValueImpl.Bool are_equal
+    ) in
+    returnS! $ Result.Ok InstrRet.Ok
   (* Bytecode::Neq => {
       let lhs = interpreter.operand_stack.pop()?;
       let rhs = interpreter.operand_stack.pop()?;
@@ -1223,7 +1256,31 @@ Definition execute_instruction
           .operand_stack
           .push(Value::bool(!lhs.equals(&rhs)?))?;
   } *)
-  | Bytecode.Neq => execute_instruction_TODO
+  (* Bytecode::Neq => {
+      let lhs = interpreter.operand_stack.pop()?;
+      let rhs = interpreter.operand_stack.pop()?;
+      gas_meter.charge_neq(&lhs, &rhs)?;
+      interpreter
+          .operand_stack
+          .push(Value::bool(!lhs.equals(&rhs)?))?;
+  } *)
+  | Bytecode.Neq =>
+    letS!? rhs := liftS! State.Lens.interpreter (
+      liftS! Interpreter.Lens.operand_stack $ Stack.Impl_Stack.pop) in
+    letS!? lhs := liftS! State.Lens.interpreter (
+      liftS! Interpreter.Lens.operand_stack $ Stack.Impl_Stack.pop) in
+    letS!? are_equal :=
+      returnS! $ Impl_ValueImpl.equals lhs rhs in
+    doS!? liftS! State.Lens.interpreter (
+      liftS! Interpreter.Lens.operand_stack $ Stack.Impl_Stack.push $
+        ValueImpl.Bool (negb are_equal)
+    ) in
+    returnS! $ Result.Ok InstrRet.Ok
+  (* Bytecode::GetTxnGasUnitPrice => {
+      gas_meter.charge_simple_instr(S::GetTxnGasUnitPrice)?;
+      let gas_unit_price = interpreter.get_txn_gas_unit_price()?;
+      interpreter.operand_stack.push(Value::u64(gas_unit_price))?;
+  } *)
   (* Bytecode::MutBorrowGlobalDeprecated(_)
   | Bytecode::ImmBorrowGlobalDeprecated(_)
   | Bytecode::MutBorrowGlobalGenericDeprecated(_)

@@ -143,8 +143,8 @@ Module Bytecode.
       | Bytecode.LdTrue => True
       | Bytecode.LdFalse => True
       | Bytecode.CopyLoc z => Integer.Valid.t IntegerKind.U8 z
-      | Bytecode.MoveLoc _ => True
-      | Bytecode.StLoc _ => True
+      | Bytecode.MoveLoc z => Integer.Valid.t IntegerKind.U8 z
+      | Bytecode.StLoc z => Integer.Valid.t IntegerKind.U8 z
       | Bytecode.Call _ => True
       | Bytecode.CallGeneric _ => True
       | Bytecode.Pack _ => True
