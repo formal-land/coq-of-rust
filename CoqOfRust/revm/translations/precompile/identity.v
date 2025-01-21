@@ -13,13 +13,9 @@ Module identity.
                 M.get_function (| "revm_precompile::u64_to_address", [] |),
                 [ Value.Integer IntegerKind.U64 4 ]
               |);
-              Value.StructTuple
-                "revm_primitives::precompile::Precompile::Standard"
-                [
-                  (* ReifyFnPointer *)
-                  M.pointer_coercion
-                    (M.get_function (| "revm_precompile::identity::identity_run", [] |))
-                ]
+              (* ReifyFnPointer *)
+              M.pointer_coercion
+                (M.get_function (| "revm_precompile::identity::identity_run", [] |))
             ]
         |))).
   
@@ -33,9 +29,9 @@ Module identity.
   pub fn identity_run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
       let gas_used = calc_linear_cost_u32(input.len(), IDENTITY_BASE, IDENTITY_PER_WORD);
       if gas_used > gas_limit {
-          return Err(Error::OutOfGas);
+          return Err(PrecompileError::OutOfGas.into());
       }
-      Ok((gas_used, input.clone()))
+      Ok(PrecompileOutput::new(gas_used, input.clone()))
   }
   *)
   Definition identity_run (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -94,9 +90,20 @@ Module identity.
                                 Value.StructTuple
                                   "core::result::Result::Err"
                                   [
-                                    Value.StructTuple
-                                      "revm_primitives::precompile::PrecompileError::OutOfGas"
-                                      []
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::convert::Into",
+                                        Ty.path "revm_precompile::interface::PrecompileError",
+                                        [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+                                        "into",
+                                        []
+                                      |),
+                                      [
+                                        Value.StructTuple
+                                          "revm_precompile::interface::PrecompileError::OutOfGas"
+                                          []
+                                      ]
+                                    |)
                                   ]
                               |)
                             |)
@@ -109,7 +116,12 @@ Module identity.
                 Value.StructTuple
                   "core::result::Result::Ok"
                   [
-                    Value.Tuple
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "revm_precompile::interface::PrecompileOutput",
+                        "new",
+                        []
+                      |),
                       [
                         M.read (| gas_used |);
                         M.call_closure (|
@@ -123,6 +135,7 @@ Module identity.
                           [ M.read (| input |) ]
                         |)
                       ]
+                    |)
                   ]
               |)
             |)))

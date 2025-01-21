@@ -13,13 +13,9 @@ Module secp256k1.
                 M.get_function (| "revm_precompile::u64_to_address", [] |),
                 [ Value.Integer IntegerKind.U64 1 ]
               |);
-              Value.StructTuple
-                "revm_primitives::precompile::Precompile::Standard"
-                [
-                  (* ReifyFnPointer *)
-                  M.pointer_coercion
-                    (M.get_function (| "revm_precompile::secp256k1::ec_recover_run", [] |))
-                ]
+              (* ReifyFnPointer *)
+              M.pointer_coercion
+                (M.get_function (| "revm_precompile::secp256k1::ec_recover_run", [] |))
             ]
         |))).
   
@@ -29,9 +25,8 @@ Module secp256k1.
             let recid = RecoveryId::from_i32(recid as i32).expect("recovery ID is valid");
             let sig = RecoverableSignature::from_compact(sig.as_slice(), recid)?;
     
-            let secp = Secp256k1::new();
             let msg = Message::from_digest(msg.0);
-            let public = secp.recover_ecdsa(&msg, &sig)?;
+            let public = SECP256K1.recover_ecdsa(&msg, &sig)?;
     
             let mut hash = keccak256(&public.serialize_uncompressed()[1..]);
             hash[..12].fill(0);
@@ -176,20 +171,6 @@ Module secp256k1.
                       ]
                     |)
                   |) in
-                let~ secp :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "secp256k1::Secp256k1")
-                          []
-                          [ Ty.path "secp256k1::context::alloc_only::All" ],
-                        "new",
-                        []
-                      |),
-                      []
-                    |)
-                  |) in
                 let~ msg :=
                   M.alloc (|
                     M.call_closure (|
@@ -234,7 +215,26 @@ Module secp256k1.
                                 "recover_ecdsa",
                                 []
                               |),
-                              [ secp; msg; sig ]
+                              [
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.path "secp256k1::context::global::GlobalContext",
+                                    [],
+                                    "deref",
+                                    []
+                                  |),
+                                  [
+                                    M.read (|
+                                      M.read (|
+                                        M.get_constant (| "secp256k1::context::global::SECP256K1" |)
+                                      |)
+                                    |)
+                                  ]
+                                |);
+                                msg;
+                                sig
+                              ]
                             |)
                           ]
                         |)
@@ -392,14 +392,14 @@ Module secp256k1.
       const ECRECOVER_BASE: u64 = 3_000;
   
       if ECRECOVER_BASE > gas_limit {
-          return Err(Error::OutOfGas);
+          return Err(PrecompileError::OutOfGas.into());
       }
   
       let input = right_pad::<128>(input);
   
       // `v` must be a 32-byte big-endian integer equal to 27 or 28.
       if !(input[32..63].iter().all(|&b| b == 0) && matches!(input[63], 27 | 28)) {
-          return Ok((ECRECOVER_BASE, Bytes::new()));
+          return Ok(PrecompileOutput::new(ECRECOVER_BASE, Bytes::new()));
       }
   
       let msg = <&B256>::try_from(&input[0..32]).unwrap();
@@ -409,7 +409,7 @@ Module secp256k1.
       let out = secp256k1::ecrecover(sig, recid, msg)
           .map(|o| o.to_vec().into())
           .unwrap_or_default();
-      Ok((ECRECOVER_BASE, out))
+      Ok(PrecompileOutput::new(ECRECOVER_BASE, out))
   }
   *)
   Definition ec_recover_run (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -448,9 +448,20 @@ Module secp256k1.
                                 Value.StructTuple
                                   "core::result::Result::Err"
                                   [
-                                    Value.StructTuple
-                                      "revm_primitives::precompile::PrecompileError::OutOfGas"
-                                      []
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::convert::Into",
+                                        Ty.path "revm_precompile::interface::PrecompileError",
+                                        [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+                                        "into",
+                                        []
+                                      |),
+                                      [
+                                        Value.StructTuple
+                                          "revm_precompile::interface::PrecompileError::OutOfGas"
+                                          []
+                                      ]
+                                    |)
                                   ]
                               |)
                             |)
@@ -667,7 +678,12 @@ Module secp256k1.
                                 Value.StructTuple
                                   "core::result::Result::Ok"
                                   [
-                                    Value.Tuple
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "revm_precompile::interface::PrecompileOutput",
+                                        "new",
+                                        []
+                                      |),
                                       [
                                         M.read (|
                                           M.get_constant (|
@@ -683,6 +699,7 @@ Module secp256k1.
                                           []
                                         |)
                                       ]
+                                    |)
                                   ]
                               |)
                             |)
@@ -1008,7 +1025,12 @@ Module secp256k1.
                 Value.StructTuple
                   "core::result::Result::Ok"
                   [
-                    Value.Tuple
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "revm_precompile::interface::PrecompileOutput",
+                        "new",
+                        []
+                      |),
                       [
                         M.read (|
                           M.get_constant (|
@@ -1017,6 +1039,7 @@ Module secp256k1.
                         |);
                         M.read (| out |)
                       ]
+                    |)
                   ]
               |)
             |)))

@@ -2,360 +2,363 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module evm.
-  Definition value_CALL_STACK_LIMIT : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
-  
   (* StructRecord
     {
       name := "Evm";
       const_params := [];
-      ty_params := [ "EXT"; "DB" ];
+      ty_params := [ "ERROR"; "CTX"; "HANDLER" ];
       fields :=
         [
-          ("context", Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ]);
-          ("handler",
-            Ty.apply
-              (Ty.path "revm::handler::Handler")
-              []
-              [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ])
+          ("context", CTX);
+          ("handler", HANDLER);
+          ("_error", Ty.apply (Ty.path "core::marker::PhantomData") [] [ Ty.function [] ERROR ])
         ];
     } *)
   
-  Module Impl_core_fmt_Debug_where_core_fmt_Debug_EXT_where_revm_primitives_db_Database_DB_where_core_fmt_Debug_DB_where_core_fmt_Debug_associated_type_for_revm_evm_Evm_EXT_DB.
-    Definition Self (EXT DB : Ty.t) : Ty.t := Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ].
+  Module Impl_revm_evm_Evm_ERROR_CTX_HANDLER.
+    Definition Self (ERROR CTX HANDLER : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "revm::evm::Evm") [] [ ERROR; CTX; HANDLER ].
     
     (*
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            f.debug_struct("Evm")
-                .field("evm context", &self.context.evm)
-                .finish_non_exhaustive()
+        pub fn new(context: CTX, handler: HANDLER) -> Self {
+            Self {
+                context,
+                handler,
+                _error: core::marker::PhantomData,
+            }
         }
     *)
-    Definition fmt (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self; f ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.path "core::fmt::builders::DebugStruct",
-              "finish_non_exhaustive",
-              []
-            |),
-            [
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.path "core::fmt::builders::DebugStruct",
-                  "field",
-                  []
-                |),
-                [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "core::fmt::Formatter",
-                        "debug_struct",
-                        []
-                      |),
-                      [ M.read (| f |); M.read (| Value.String "Evm" |) ]
-                    |)
-                  |);
-                  M.read (| Value.String "evm context" |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::evm::Evm",
-                      "context"
-                    |),
-                    "revm::context::Context",
-                    "evm"
-                  |)
-                ]
-              |)
-            ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom Implements :
-      forall (EXT DB : Ty.t),
-      M.IsTraitInstance
-        "core::fmt::Debug"
-        (Self EXT DB)
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("fmt", InstanceField.Method (fmt EXT DB)) ].
-  End Impl_core_fmt_Debug_where_core_fmt_Debug_EXT_where_revm_primitives_db_Database_DB_where_core_fmt_Debug_DB_where_core_fmt_Debug_associated_type_for_revm_evm_Evm_EXT_DB.
-  
-  Module Impl_revm_evm_Evm_EXT_DB.
-    Definition Self (EXT DB : Ty.t) : Ty.t := Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ].
-    
-    (*
-        pub fn transact_commit(&mut self) -> Result<ExecutionResult, EVMError<DB::Error>> {
-            let ResultAndState { result, state } = self.transact()?;
-            self.context.evm.db.commit(state);
-            Ok(result)
-        }
-    *)
-    Definition transact_commit
-        (EXT DB : Ty.t)
+    Definition new
+        (ERROR CTX HANDLER : Ty.t)
         (ε : list Value.t)
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.catch_return (|
-            ltac:(M.monadic
-              (M.read (|
-                M.match_operator (|
-                  M.match_operator (|
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::try_trait::Try",
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.path "revm_primitives::result::ResultAndState";
-                              Ty.apply
-                                (Ty.path "revm_primitives::result::EVMError")
-                                []
-                                [ Ty.associated ]
-                            ],
-                          [],
-                          "branch",
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
-                              "transact",
-                              []
-                            |),
-                            [ M.read (| self |) ]
-                          |)
-                        ]
-                      |)
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::ops::control_flow::ControlFlow::Break",
-                              0
-                            |) in
-                          let residual := M.copy (| γ0_0 |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::try_trait::FromResidual",
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.path "revm_primitives::result::ExecutionResult";
-                                          Ty.apply
-                                            (Ty.path "revm_primitives::result::EVMError")
-                                            []
-                                            [ Ty.associated ]
-                                        ],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.path "core::convert::Infallible";
-                                            Ty.apply
-                                              (Ty.path "revm_primitives::result::EVMError")
-                                              []
-                                              [ Ty.associated ]
-                                          ]
-                                      ],
-                                      "from_residual",
-                                      []
-                                    |),
-                                    [ M.read (| residual |) ]
-                                  |)
-                                |)
-                              |)
-                            |)
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::ops::control_flow::ControlFlow::Continue",
-                              0
-                            |) in
-                          let val := M.copy (| γ0_0 |) in
-                          val))
-                    ]
-                  |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ0_0 :=
-                          M.SubPointer.get_struct_record_field (|
-                            γ,
-                            "revm_primitives::result::ResultAndState",
-                            "result"
-                          |) in
-                        let γ0_1 :=
-                          M.SubPointer.get_struct_record_field (|
-                            γ,
-                            "revm_primitives::result::ResultAndState",
-                            "state"
-                          |) in
-                        let result := M.copy (| γ0_0 |) in
-                        let state := M.copy (| γ0_1 |) in
-                        let~ _ :=
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "revm_primitives::db::DatabaseCommit",
-                                DB,
-                                [],
-                                "commit",
-                                []
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::deref::DerefMut",
-                                      Ty.apply
-                                        (Ty.path "revm::context::evm_context::EvmContext")
-                                        []
-                                        [ DB ],
-                                      [],
-                                      "deref_mut",
-                                      []
-                                    |),
-                                    [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "revm::evm::Evm",
-                                          "context"
-                                        |),
-                                        "revm::context::Context",
-                                        "evm"
-                                      |)
-                                    ]
-                                  |),
-                                  "revm::context::inner_evm_context::InnerEvmContext",
-                                  "db"
-                                |);
-                                M.read (| state |)
-                              ]
-                            |)
-                          |) in
-                        M.alloc (|
-                          Value.StructTuple "core::result::Result::Ok" [ M.read (| result |) ]
-                        |)))
-                  ]
-                |)
-              |)))
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_transact_commit :
-      forall (EXT DB : Ty.t),
-      M.IsAssociatedFunction (Self EXT DB) "transact_commit" (transact_commit EXT DB).
-    (*
-        pub fn new(
-            mut context: Context<EXT, DB>,
-            handler: Handler<'a, Self, EXT, DB>,
-        ) -> Evm<'a, EXT, DB> {
-            context.evm.journaled_state.set_spec_id(handler.cfg.spec_id);
-            Evm { context, handler }
-        }
-    *)
-    Definition new (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self EXT DB in
+      let Self : Ty.t := Self ERROR CTX HANDLER in
       match ε, τ, α with
       | [], [], [ context; handler ] =>
         ltac:(M.monadic
           (let context := M.alloc (| context |) in
           let handler := M.alloc (| handler |) in
+          Value.StructRecord
+            "revm::evm::Evm"
+            [
+              ("context", M.read (| context |));
+              ("handler", M.read (| handler |));
+              ("_error", Value.StructTuple "core::marker::PhantomData" [])
+            ]))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_new :
+      forall (ERROR CTX HANDLER : Ty.t),
+      M.IsAssociatedFunction (Self ERROR CTX HANDLER) "new" (new ERROR CTX HANDLER).
+  End Impl_revm_evm_Evm_ERROR_CTX_HANDLER.
+  
+  Module Impl_revm_exec_EvmCommit_where_revm_context_interface_transaction_TransactionSetter_CTX_where_revm_context_interface_block_BlockSetter_CTX_where_revm_context_interface_journaled_state_JournalGetter_CTX_where_revm_context_interface_cfg_CfgGetter_CTX_where_revm_database_interface_DatabaseGetter_CTX_where_revm_context_interface_errors_ErrorGetter_CTX_where_revm_context_interface_journaled_state_JournalGetter_CTX_where_revm_context_interface_host_Host_CTX_where_core_convert_From_ERROR_revm_context_interface_result_InvalidTransaction_where_core_convert_From_ERROR_revm_context_interface_result_InvalidHeader_where_core_convert_From_ERROR_associated_type_where_core_convert_From_ERROR_revm_precompile_interface_PrecompileErrors_where_revm_handler_interface_validation_ValidationHandler_VAL_where_revm_handler_interface_pre_execution_PreExecutionHandler_PREEXEC_where_revm_handler_interface_execution_ExecutionHandler_EXEC_where_revm_handler_interface_post_execution_PostExecutionHandler_POSTEXEC_where_revm_context_interface_result_HaltReasonTrait_HALT_for_revm_evm_Evm_ERROR_CTX_revm_handler_EthHandler_CTX_ERROR_VAL_PREEXEC_EXEC_POSTEXEC.
+    Definition Self (ERROR CTX VAL PREEXEC EXEC POSTEXEC HALT : Ty.t) : Ty.t :=
+      Ty.apply
+        (Ty.path "revm::evm::Evm")
+        []
+        [
+          ERROR;
+          CTX;
+          Ty.apply
+            (Ty.path "revm_handler::EthHandler")
+            []
+            [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ]
+        ].
+    
+    (*     type CommitOutput = Result<ExecutionResult<HALT>, ERROR>; *)
+    Definition _CommitOutput (ERROR CTX VAL PREEXEC EXEC POSTEXEC HALT : Ty.t) : Ty.t :=
+      Ty.apply
+        (Ty.path "core::result::Result")
+        []
+        [ Ty.apply (Ty.path "revm_context_interface::result::ExecutionResult") [] [ HALT ]; ERROR ].
+    
+    (*
+        fn exec_commit(&mut self) -> Self::CommitOutput {
+            let res = self.transact();
+            res.map(|r| {
+                self.context.db().commit(r.state);
+                r.result
+            })
+        }
+    *)
+    Definition exec_commit
+        (ERROR CTX VAL PREEXEC EXEC POSTEXEC HALT : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self ERROR CTX VAL PREEXEC EXEC POSTEXEC HALT in
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ :=
+            let~ res :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.path "revm::journaled_state::JournaledState",
-                    "set_spec_id",
+                    Ty.apply
+                      (Ty.path "revm::evm::Evm")
+                      []
+                      [
+                        ERROR;
+                        CTX;
+                        Ty.apply
+                          (Ty.path "revm_handler::EthHandler")
+                          []
+                          [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ]
+                      ],
+                    "transact",
                     []
                   |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
-                          [],
-                          "deref_mut",
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            context,
-                            "revm::context::Context",
-                            "evm"
-                          |)
-                        ]
-                      |),
-                      "revm::context::inner_evm_context::InnerEvmContext",
-                      "journaled_state"
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.SubPointer.get_struct_record_field (|
-                          handler,
-                          "revm::handler::Handler",
-                          "cfg"
-                        |),
-                        "revm_primitives::env::handler_cfg::HandlerCfg",
-                        "spec_id"
-                      |)
-                    |)
-                  ]
+                  [ M.read (| self |) ]
                 |)
               |) in
             M.alloc (|
-              Value.StructRecord
-                "revm::evm::Evm"
-                [ ("context", M.read (| context |)); ("handler", M.read (| handler |)) ]
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "revm_context_interface::result::ResultAndState")
+                        []
+                        [ HALT ];
+                      ERROR
+                    ],
+                  "map",
+                  [
+                    Ty.apply
+                      (Ty.path "revm_context_interface::result::ExecutionResult")
+                      []
+                      [ HALT ];
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "revm_context_interface::result::ResultAndState")
+                              []
+                              [ HALT ]
+                          ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "revm_context_interface::result::ExecutionResult")
+                        []
+                        [ HALT ])
+                  ]
+                |),
+                [
+                  M.read (| res |);
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let r := M.copy (| γ |) in
+                                    M.read (|
+                                      let~ _ :=
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "revm_database_interface::DatabaseCommit",
+                                              Ty.associated,
+                                              [],
+                                              "commit",
+                                              []
+                                            |),
+                                            [
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "revm_database_interface::DatabaseGetter",
+                                                  CTX,
+                                                  [],
+                                                  "db",
+                                                  []
+                                                |),
+                                                [
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "revm::evm::Evm",
+                                                    "context"
+                                                  |)
+                                                ]
+                                              |);
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  r,
+                                                  "revm_context_interface::result::ResultAndState",
+                                                  "state"
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        |) in
+                                      M.SubPointer.get_struct_record_field (|
+                                        r,
+                                        "revm_context_interface::result::ResultAndState",
+                                        "result"
+                                      |)
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end))
+                ]
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new :
-      forall (EXT DB : Ty.t),
-      M.IsAssociatedFunction (Self EXT DB) "new" (new EXT DB).
+    Axiom Implements :
+      forall (ERROR CTX VAL PREEXEC EXEC POSTEXEC HALT : Ty.t),
+      M.IsTraitInstance
+        "revm::exec::EvmCommit"
+        (Self ERROR CTX VAL PREEXEC EXEC POSTEXEC HALT)
+        (* Trait polymorphic types *) []
+        (* Instance *)
+        [
+          ("CommitOutput",
+            InstanceField.Ty (_CommitOutput ERROR CTX VAL PREEXEC EXEC POSTEXEC HALT));
+          ("exec_commit",
+            InstanceField.Method (exec_commit ERROR CTX VAL PREEXEC EXEC POSTEXEC HALT))
+        ].
+  End Impl_revm_exec_EvmCommit_where_revm_context_interface_transaction_TransactionSetter_CTX_where_revm_context_interface_block_BlockSetter_CTX_where_revm_context_interface_journaled_state_JournalGetter_CTX_where_revm_context_interface_cfg_CfgGetter_CTX_where_revm_database_interface_DatabaseGetter_CTX_where_revm_context_interface_errors_ErrorGetter_CTX_where_revm_context_interface_journaled_state_JournalGetter_CTX_where_revm_context_interface_host_Host_CTX_where_core_convert_From_ERROR_revm_context_interface_result_InvalidTransaction_where_core_convert_From_ERROR_revm_context_interface_result_InvalidHeader_where_core_convert_From_ERROR_associated_type_where_core_convert_From_ERROR_revm_precompile_interface_PrecompileErrors_where_revm_handler_interface_validation_ValidationHandler_VAL_where_revm_handler_interface_pre_execution_PreExecutionHandler_PREEXEC_where_revm_handler_interface_execution_ExecutionHandler_EXEC_where_revm_handler_interface_post_execution_PostExecutionHandler_POSTEXEC_where_revm_context_interface_result_HaltReasonTrait_HALT_for_revm_evm_Evm_ERROR_CTX_revm_handler_EthHandler_CTX_ERROR_VAL_PREEXEC_EXEC_POSTEXEC.
+  
+  Module Impl_revm_exec_EvmExec_where_revm_context_interface_transaction_TransactionSetter_CTX_where_revm_context_interface_block_BlockSetter_CTX_where_revm_context_interface_journaled_state_JournalGetter_CTX_where_revm_context_interface_cfg_CfgGetter_CTX_where_revm_database_interface_DatabaseGetter_CTX_where_revm_context_interface_errors_ErrorGetter_CTX_where_revm_context_interface_journaled_state_JournalGetter_CTX_where_revm_context_interface_host_Host_CTX_where_core_convert_From_ERROR_revm_context_interface_result_InvalidTransaction_where_core_convert_From_ERROR_revm_context_interface_result_InvalidHeader_where_core_convert_From_ERROR_associated_type_where_core_convert_From_ERROR_revm_precompile_interface_PrecompileErrors_where_revm_handler_interface_validation_ValidationHandler_VAL_where_revm_handler_interface_pre_execution_PreExecutionHandler_PREEXEC_where_revm_handler_interface_execution_ExecutionHandler_EXEC_where_revm_handler_interface_post_execution_PostExecutionHandler_POSTEXEC_for_revm_evm_Evm_ERROR_CTX_revm_handler_EthHandler_CTX_ERROR_VAL_PREEXEC_EXEC_POSTEXEC.
+    Definition Self (ERROR CTX VAL PREEXEC EXEC POSTEXEC : Ty.t) : Ty.t :=
+      Ty.apply
+        (Ty.path "revm::evm::Evm")
+        []
+        [
+          ERROR;
+          CTX;
+          Ty.apply
+            (Ty.path "revm_handler::EthHandler")
+            []
+            [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ]
+        ].
+    
+    (*     type Transaction = <CTX as TransactionGetter>::Transaction; *)
+    Definition _Transaction (ERROR CTX VAL PREEXEC EXEC POSTEXEC : Ty.t) : Ty.t := Ty.associated.
+    
+    (*     type Block = <CTX as BlockGetter>::Block; *)
+    Definition _Block (ERROR CTX VAL PREEXEC EXEC POSTEXEC : Ty.t) : Ty.t := Ty.associated.
+    
+    (*     type Output = Result<<POSTEXEC as PostExecutionHandler>::Output, ERROR>; *)
+    Definition _Output (ERROR CTX VAL PREEXEC EXEC POSTEXEC : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; ERROR ].
     
     (*
-        pub fn modify(self) -> EvmBuilder<'a, HandlerStage, EXT, DB> {
-            EvmBuilder::new(self)
+        fn set_block(&mut self, block: Self::Block) {
+            self.context.set_block(block);
         }
     *)
-    Definition modify (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self EXT DB in
+    Definition set_block
+        (ERROR CTX VAL PREEXEC EXEC POSTEXEC : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self ERROR CTX VAL PREEXEC EXEC POSTEXEC in
+      match ε, τ, α with
+      | [], [], [ self; block ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let block := M.alloc (| block |) in
+          M.read (|
+            let~ _ :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "revm_context_interface::block::BlockSetter",
+                    CTX,
+                    [],
+                    "set_block",
+                    []
+                  |),
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "revm::evm::Evm",
+                      "context"
+                    |);
+                    M.read (| block |)
+                  ]
+                |)
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    (*
+        fn set_tx(&mut self, tx: Self::Transaction) {
+            self.context.set_tx(tx);
+        }
+    *)
+    Definition set_tx
+        (ERROR CTX VAL PREEXEC EXEC POSTEXEC : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self ERROR CTX VAL PREEXEC EXEC POSTEXEC in
+      match ε, τ, α with
+      | [], [], [ self; tx ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let tx := M.alloc (| tx |) in
+          M.read (|
+            let~ _ :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "revm_context_interface::transaction::TransactionSetter",
+                    CTX,
+                    [],
+                    "set_tx",
+                    []
+                  |),
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "revm::evm::Evm",
+                      "context"
+                    |);
+                    M.read (| tx |)
+                  ]
+                |)
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    (*
+        fn exec(&mut self) -> Self::Output {
+            self.transact()
+        }
+    *)
+    Definition exec
+        (ERROR CTX VAL PREEXEC EXEC POSTEXEC : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self ERROR CTX VAL PREEXEC EXEC POSTEXEC in
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
@@ -363,10 +366,17 @@ Module evm.
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
-                (Ty.path "revm::builder::EvmBuilder")
+                (Ty.path "revm::evm::Evm")
                 []
-                [ Ty.path "revm::builder::HandlerStage"; EXT; DB ],
-              "new",
+                [
+                  ERROR;
+                  CTX;
+                  Ty.apply
+                    (Ty.path "revm_handler::EthHandler")
+                    []
+                    [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ]
+                ],
+              "transact",
               []
             |),
             [ M.read (| self |) ]
@@ -374,56 +384,277 @@ Module evm.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_modify :
-      forall (EXT DB : Ty.t),
-      M.IsAssociatedFunction (Self EXT DB) "modify" (modify EXT DB).
-    (*
-        pub fn spec_id(&self) -> SpecId {
-            self.handler.cfg.spec_id
-        }
-    *)
-    Definition spec_id (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (|
-              M.SubPointer.get_struct_record_field (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm::evm::Evm",
-                  "handler"
-                |),
-                "revm::handler::Handler",
-                "cfg"
-              |),
-              "revm_primitives::env::handler_cfg::HandlerCfg",
-              "spec_id"
-            |)
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
+    Axiom Implements :
+      forall (ERROR CTX VAL PREEXEC EXEC POSTEXEC : Ty.t),
+      M.IsTraitInstance
+        "revm::exec::EvmExec"
+        (Self ERROR CTX VAL PREEXEC EXEC POSTEXEC)
+        (* Trait polymorphic types *) []
+        (* Instance *)
+        [
+          ("Transaction", InstanceField.Ty (_Transaction ERROR CTX VAL PREEXEC EXEC POSTEXEC));
+          ("Block", InstanceField.Ty (_Block ERROR CTX VAL PREEXEC EXEC POSTEXEC));
+          ("Output", InstanceField.Ty (_Output ERROR CTX VAL PREEXEC EXEC POSTEXEC));
+          ("set_block", InstanceField.Method (set_block ERROR CTX VAL PREEXEC EXEC POSTEXEC));
+          ("set_tx", InstanceField.Method (set_tx ERROR CTX VAL PREEXEC EXEC POSTEXEC));
+          ("exec", InstanceField.Method (exec ERROR CTX VAL PREEXEC EXEC POSTEXEC))
+        ].
+  End Impl_revm_exec_EvmExec_where_revm_context_interface_transaction_TransactionSetter_CTX_where_revm_context_interface_block_BlockSetter_CTX_where_revm_context_interface_journaled_state_JournalGetter_CTX_where_revm_context_interface_cfg_CfgGetter_CTX_where_revm_database_interface_DatabaseGetter_CTX_where_revm_context_interface_errors_ErrorGetter_CTX_where_revm_context_interface_journaled_state_JournalGetter_CTX_where_revm_context_interface_host_Host_CTX_where_core_convert_From_ERROR_revm_context_interface_result_InvalidTransaction_where_core_convert_From_ERROR_revm_context_interface_result_InvalidHeader_where_core_convert_From_ERROR_associated_type_where_core_convert_From_ERROR_revm_precompile_interface_PrecompileErrors_where_revm_handler_interface_validation_ValidationHandler_VAL_where_revm_handler_interface_pre_execution_PreExecutionHandler_PREEXEC_where_revm_handler_interface_execution_ExecutionHandler_EXEC_where_revm_handler_interface_post_execution_PostExecutionHandler_POSTEXEC_for_revm_evm_Evm_ERROR_CTX_revm_handler_EthHandler_CTX_ERROR_VAL_PREEXEC_EXEC_POSTEXEC.
+  
+  Axiom Error :
+    forall (DB : Ty.t),
+    (Ty.apply (Ty.path "revm::evm::Error") [] [ DB ]) =
+      (Ty.apply
+        (Ty.path "revm_context_interface::result::EVMError")
+        []
+        [ Ty.associated; Ty.path "revm_context_interface::result::InvalidTransaction" ]).
+  
+  Axiom EthContext :
+    forall (DB BLOCK TX CFG JOURNAL : Ty.t),
+    (Ty.apply (Ty.path "revm::evm::EthContext") [] [ DB; BLOCK; TX; CFG; JOURNAL ]) =
+      (Ty.apply
+        (Ty.path "revm_context::context::Context")
+        []
+        [ BLOCK; TX; CFG; DB; JOURNAL; Ty.tuple [] ]).
+  
+  Axiom MainEvm :
+    forall (DB BLOCK TX CFG : Ty.t),
+    (Ty.apply (Ty.path "revm::evm::MainEvm") [] [ DB; BLOCK; TX; CFG ]) =
+      (Ty.apply
+        (Ty.path "revm::evm::Evm")
+        []
+        [
+          Ty.apply
+            (Ty.path "revm_context_interface::result::EVMError")
+            []
+            [ Ty.associated; Ty.path "revm_context_interface::result::InvalidTransaction" ];
+          Ty.apply
+            (Ty.path "revm_context::context::Context")
+            []
+            [
+              BLOCK;
+              TX;
+              CFG;
+              DB;
+              Ty.apply (Ty.path "revm_context::journaled_state::JournaledState") [] [ DB ];
+              Ty.tuple []
+            ];
+          Ty.apply
+            (Ty.path "revm_handler::EthHandler")
+            []
+            [
+              Ty.apply
+                (Ty.path "revm_context::context::Context")
+                []
+                [
+                  BLOCK;
+                  TX;
+                  CFG;
+                  DB;
+                  Ty.apply (Ty.path "revm_context::journaled_state::JournaledState") [] [ DB ];
+                  Ty.tuple []
+                ];
+              Ty.apply
+                (Ty.path "revm_context_interface::result::EVMError")
+                []
+                [ Ty.associated; Ty.path "revm_context_interface::result::InvalidTransaction" ];
+              Ty.apply
+                (Ty.path "revm_handler::validation::EthValidation")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context::context::Context")
+                    []
+                    [
+                      BLOCK;
+                      TX;
+                      CFG;
+                      DB;
+                      Ty.apply (Ty.path "revm_context::journaled_state::JournaledState") [] [ DB ];
+                      Ty.tuple []
+                    ];
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::EVMError")
+                    []
+                    [ Ty.associated; Ty.path "revm_context_interface::result::InvalidTransaction" ]
+                ];
+              Ty.apply
+                (Ty.path "revm_handler::pre_execution::EthPreExecution")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context::context::Context")
+                    []
+                    [
+                      BLOCK;
+                      TX;
+                      CFG;
+                      DB;
+                      Ty.apply (Ty.path "revm_context::journaled_state::JournaledState") [] [ DB ];
+                      Ty.tuple []
+                    ];
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::EVMError")
+                    []
+                    [ Ty.associated; Ty.path "revm_context_interface::result::InvalidTransaction" ]
+                ];
+              Ty.apply
+                (Ty.path "revm_handler::execution::EthExecution")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context::context::Context")
+                    []
+                    [
+                      BLOCK;
+                      TX;
+                      CFG;
+                      DB;
+                      Ty.apply (Ty.path "revm_context::journaled_state::JournaledState") [] [ DB ];
+                      Ty.tuple []
+                    ];
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::EVMError")
+                    []
+                    [ Ty.associated; Ty.path "revm_context_interface::result::InvalidTransaction" ];
+                  Ty.apply
+                    (Ty.path "revm_handler::frame::EthFrame")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "revm_context::context::Context")
+                        []
+                        [
+                          BLOCK;
+                          TX;
+                          CFG;
+                          DB;
+                          Ty.apply
+                            (Ty.path "revm_context::journaled_state::JournaledState")
+                            []
+                            [ DB ];
+                          Ty.tuple []
+                        ];
+                      Ty.apply
+                        (Ty.path "revm_context_interface::result::EVMError")
+                        []
+                        [
+                          Ty.associated;
+                          Ty.path "revm_context_interface::result::InvalidTransaction"
+                        ];
+                      Ty.apply
+                        (Ty.path "revm_interpreter::interpreter::EthInterpreter")
+                        []
+                        [
+                          Ty.tuple [];
+                          Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory"
+                        ];
+                      Ty.apply
+                        (Ty.path "revm_handler::precompile_provider::EthPrecompileProvider")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "revm_context::context::Context")
+                            []
+                            [
+                              BLOCK;
+                              TX;
+                              CFG;
+                              DB;
+                              Ty.apply
+                                (Ty.path "revm_context::journaled_state::JournaledState")
+                                []
+                                [ DB ];
+                              Ty.tuple []
+                            ];
+                          Ty.apply
+                            (Ty.path "revm_context_interface::result::EVMError")
+                            []
+                            [
+                              Ty.associated;
+                              Ty.path "revm_context_interface::result::InvalidTransaction"
+                            ]
+                        ];
+                      Ty.apply
+                        (Ty.path "revm_interpreter::interpreter::EthInstructionProvider")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "revm_interpreter::interpreter::EthInterpreter")
+                            []
+                            [
+                              Ty.tuple [];
+                              Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory"
+                            ];
+                          Ty.apply
+                            (Ty.path "revm_context::context::Context")
+                            []
+                            [
+                              BLOCK;
+                              TX;
+                              CFG;
+                              DB;
+                              Ty.apply
+                                (Ty.path "revm_context::journaled_state::JournaledState")
+                                []
+                                [ DB ];
+                              Ty.tuple []
+                            ]
+                        ]
+                    ]
+                ];
+              Ty.apply
+                (Ty.path "revm_handler::post_execution::EthPostExecution")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context::context::Context")
+                    []
+                    [
+                      BLOCK;
+                      TX;
+                      CFG;
+                      DB;
+                      Ty.apply (Ty.path "revm_context::journaled_state::JournaledState") [] [ DB ];
+                      Ty.tuple []
+                    ];
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::EVMError")
+                    []
+                    [ Ty.associated; Ty.path "revm_context_interface::result::InvalidTransaction" ];
+                  Ty.path "revm_context_interface::result::HaltReason"
+                ]
+            ]
+        ]).
+  
+  Module Impl_revm_evm_Evm_ERROR_CTX_revm_handler_EthHandler_CTX_ERROR_VAL_PREEXEC_EXEC_POSTEXEC.
+    Definition Self (ERROR CTX VAL PREEXEC EXEC POSTEXEC : Ty.t) : Ty.t :=
+      Ty.apply
+        (Ty.path "revm::evm::Evm")
+        []
+        [
+          ERROR;
+          CTX;
+          Ty.apply
+            (Ty.path "revm_handler::EthHandler")
+            []
+            [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ]
+        ].
     
-    Axiom AssociatedFunction_spec_id :
-      forall (EXT DB : Ty.t),
-      M.IsAssociatedFunction (Self EXT DB) "spec_id" (spec_id EXT DB).
-    
     (*
-        pub fn preverify_transaction(&mut self) -> Result<(), EVMError<DB::Error>> {
+        pub fn preverify_transaction(&mut self) -> Result<(), ERROR> {
             let output = self.preverify_transaction_inner().map(|_| ());
             self.clear();
             output
         }
     *)
     Definition preverify_transaction
-        (EXT DB : Ty.t)
+        (ERROR CTX VAL PREEXEC EXEC POSTEXEC : Ty.t)
         (ε : list Value.t)
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
-      let Self : Ty.t := Self EXT DB in
+      let Self : Ty.t := Self ERROR CTX VAL PREEXEC EXEC POSTEXEC in
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
@@ -433,20 +664,24 @@ Module evm.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [
-                        Ty.path "u64";
-                        Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ]
-                      ],
+                    Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; ERROR ],
                     "map",
                     [ Ty.tuple []; Ty.function [ Ty.tuple [ Ty.path "u64" ] ] (Ty.tuple []) ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
+                        Ty.apply
+                          (Ty.path "revm::evm::Evm")
+                          []
+                          [
+                            ERROR;
+                            CTX;
+                            Ty.apply
+                              (Ty.path "revm_handler::EthHandler")
+                              []
+                              [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ]
+                          ],
                         "preverify_transaction_inner",
                         []
                       |),
@@ -471,7 +706,17 @@ Module evm.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
+                    Ty.apply
+                      (Ty.path "revm::evm::Evm")
+                      []
+                      [
+                        ERROR;
+                        CTX;
+                        Ty.apply
+                          (Ty.path "revm_handler::EthHandler")
+                          []
+                          [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ]
+                      ],
                     "clear",
                     []
                   |),
@@ -484,16 +729,24 @@ Module evm.
       end.
     
     Axiom AssociatedFunction_preverify_transaction :
-      forall (EXT DB : Ty.t),
-      M.IsAssociatedFunction (Self EXT DB) "preverify_transaction" (preverify_transaction EXT DB).
+      forall (ERROR CTX VAL PREEXEC EXEC POSTEXEC : Ty.t),
+      M.IsAssociatedFunction
+        (Self ERROR CTX VAL PREEXEC EXEC POSTEXEC)
+        "preverify_transaction"
+        (preverify_transaction ERROR CTX VAL PREEXEC EXEC POSTEXEC).
     
     (*
         fn clear(&mut self) {
             self.handler.post_execution().clear(&mut self.context);
         }
     *)
-    Definition clear (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self EXT DB in
+    Definition clear
+        (ERROR CTX VAL PREEXEC EXEC POSTEXEC : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self ERROR CTX VAL PREEXEC EXEC POSTEXEC in
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
@@ -502,21 +755,22 @@ Module evm.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "revm::handler::handle_types::post_execution::PostExecutionHandler")
-                      []
-                      [ EXT; DB ],
+                  M.get_trait_method (|
+                    "revm_handler_interface::post_execution::PostExecutionHandler",
+                    POSTEXEC,
+                    [],
                     "clear",
                     []
                   |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (|
+                      M.get_trait_method (|
+                        "revm_handler_interface::handler::Handler",
                         Ty.apply
-                          (Ty.path "revm::handler::Handler")
+                          (Ty.path "revm_handler::EthHandler")
                           []
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
+                          [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
+                        [],
                         "post_execution",
                         []
                       |),
@@ -542,18 +796,22 @@ Module evm.
       end.
     
     Axiom AssociatedFunction_clear :
-      forall (EXT DB : Ty.t),
-      M.IsAssociatedFunction (Self EXT DB) "clear" (clear EXT DB).
+      forall (ERROR CTX VAL PREEXEC EXEC POSTEXEC : Ty.t),
+      M.IsAssociatedFunction
+        (Self ERROR CTX VAL PREEXEC EXEC POSTEXEC)
+        "clear"
+        (clear ERROR CTX VAL PREEXEC EXEC POSTEXEC).
     
     (*
-        pub fn transact_preverified(&mut self) -> EVMResult<DB::Error> {
+        pub fn transact_preverified(
+            &mut self,
+        ) -> Result<<POSTEXEC as PostExecutionHandler>::Output, ERROR> {
             let initial_gas_spend = self
                 .handler
                 .validation()
-                .initial_tx_gas(&self.context.evm.env)
-                .map_err(|e| {
+                .validate_initial_tx_gas(&self.context)
+                .inspect_err(|_| {
                     self.clear();
-                    e
                 })?;
             let output = self.transact_preverified_inner(initial_gas_spend);
             let output = self.handler.post_execution().end(&mut self.context, output);
@@ -562,12 +820,12 @@ Module evm.
         }
     *)
     Definition transact_preverified
-        (EXT DB : Ty.t)
+        (ERROR CTX VAL PREEXEC EXEC POSTEXEC : Ty.t)
         (ε : list Value.t)
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
-      let Self : Ty.t := Self EXT DB in
+      let Self : Ty.t := Self ERROR CTX VAL PREEXEC EXEC POSTEXEC in
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
@@ -582,16 +840,7 @@ Module evm.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.path "u64";
-                                Ty.apply
-                                  (Ty.path "revm_primitives::result::EVMError")
-                                  []
-                                  [ Ty.associated ]
-                              ],
+                            Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; ERROR ],
                             [],
                             "branch",
                             []
@@ -602,57 +851,32 @@ Module evm.
                                 Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
-                                  [
-                                    Ty.path "u64";
-                                    Ty.apply
-                                      (Ty.path "revm_primitives::result::EVMError")
-                                      []
-                                      [ Ty.associated ]
-                                  ],
-                                "map_err",
+                                  [ Ty.path "u64"; ERROR ],
+                                "inspect_err",
                                 [
-                                  Ty.apply
-                                    (Ty.path "revm_primitives::result::EVMError")
-                                    []
-                                    [ Ty.associated ];
                                   Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "revm_primitives::result::EVMError")
-                                            []
-                                            [ Ty.associated ]
-                                        ]
-                                    ]
-                                    (Ty.apply
-                                      (Ty.path "revm_primitives::result::EVMError")
-                                      []
-                                      [ Ty.associated ])
+                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ ERROR ] ] ]
+                                    (Ty.tuple [])
                                 ]
                               |),
                               [
                                 M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path
-                                        "revm::handler::handle_types::validation::ValidationHandler")
-                                      []
-                                      [ EXT; DB ],
-                                    "initial_tx_gas",
+                                  M.get_trait_method (|
+                                    "revm_handler_interface::validation::ValidationHandler",
+                                    VAL,
+                                    [],
+                                    "validate_initial_tx_gas",
                                     []
                                   |),
                                   [
                                     M.call_closure (|
-                                      M.get_associated_function (|
+                                      M.get_trait_method (|
+                                        "revm_handler_interface::handler::Handler",
                                         Ty.apply
-                                          (Ty.path "revm::handler::Handler")
+                                          (Ty.path "revm_handler::EthHandler")
                                           []
-                                          [
-                                            Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ];
-                                            EXT;
-                                            DB
-                                          ],
+                                          [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
+                                        [],
                                         "validation",
                                         []
                                       |),
@@ -664,34 +888,10 @@ Module evm.
                                         |)
                                       ]
                                     |);
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::deref::Deref",
-                                            Ty.apply
-                                              (Ty.path "revm::context::evm_context::EvmContext")
-                                              []
-                                              [ DB ],
-                                            [],
-                                            "deref",
-                                            []
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "revm::evm::Evm",
-                                                "context"
-                                              |),
-                                              "revm::context::Context",
-                                              "evm"
-                                            |)
-                                          ]
-                                        |),
-                                        "revm::context::inner_evm_context::InnerEvmContext",
-                                        "env"
-                                      |)
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "revm::evm::Evm",
+                                      "context"
                                     |)
                                   ]
                                 |);
@@ -706,8 +906,7 @@ Module evm.
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (let e := M.copy (| γ |) in
-                                                  M.read (|
+                                                  (M.read (|
                                                     let~ _ :=
                                                       M.alloc (|
                                                         M.call_closure (|
@@ -715,14 +914,29 @@ Module evm.
                                                             Ty.apply
                                                               (Ty.path "revm::evm::Evm")
                                                               []
-                                                              [ EXT; DB ],
+                                                              [
+                                                                ERROR;
+                                                                CTX;
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "revm_handler::EthHandler")
+                                                                  []
+                                                                  [
+                                                                    CTX;
+                                                                    ERROR;
+                                                                    VAL;
+                                                                    PREEXEC;
+                                                                    EXEC;
+                                                                    POSTEXEC
+                                                                  ]
+                                                              ],
                                                             "clear",
                                                             []
                                                           |),
                                                           [ M.read (| self |) ]
                                                         |)
                                                       |) in
-                                                    e
+                                                    M.alloc (| Value.Tuple [] |)
                                                   |)))
                                             ]
                                           |)))
@@ -753,24 +967,12 @@ Module evm.
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
-                                          [
-                                            Ty.path "revm_primitives::result::ResultAndState";
-                                            Ty.apply
-                                              (Ty.path "revm_primitives::result::EVMError")
-                                              []
-                                              [ Ty.associated ]
-                                          ],
+                                          [ Ty.associated; ERROR ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
                                             []
-                                            [
-                                              Ty.path "core::convert::Infallible";
-                                              Ty.apply
-                                                (Ty.path "revm_primitives::result::EVMError")
-                                                []
-                                                [ Ty.associated ]
-                                            ]
+                                            [ Ty.path "core::convert::Infallible"; ERROR ]
                                         ],
                                         "from_residual",
                                         []
@@ -798,7 +1000,17 @@ Module evm.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
+                        Ty.apply
+                          (Ty.path "revm::evm::Evm")
+                          []
+                          [
+                            ERROR;
+                            CTX;
+                            Ty.apply
+                              (Ty.path "revm_handler::EthHandler")
+                              []
+                              [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ]
+                          ],
                         "transact_preverified_inner",
                         []
                       |),
@@ -808,22 +1020,22 @@ Module evm.
                 let~ output :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path
-                            "revm::handler::handle_types::post_execution::PostExecutionHandler")
-                          []
-                          [ EXT; DB ],
+                      M.get_trait_method (|
+                        "revm_handler_interface::post_execution::PostExecutionHandler",
+                        POSTEXEC,
+                        [],
                         "end",
                         []
                       |),
                       [
                         M.call_closure (|
-                          M.get_associated_function (|
+                          M.get_trait_method (|
+                            "revm_handler_interface::handler::Handler",
                             Ty.apply
-                              (Ty.path "revm::handler::Handler")
+                              (Ty.path "revm_handler::EthHandler")
                               []
-                              [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
+                              [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
+                            [],
                             "post_execution",
                             []
                           |),
@@ -848,7 +1060,17 @@ Module evm.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
+                        Ty.apply
+                          (Ty.path "revm::evm::Evm")
+                          []
+                          [
+                            ERROR;
+                            CTX;
+                            Ty.apply
+                              (Ty.path "revm_handler::EthHandler")
+                              []
+                              [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ]
+                          ],
                         "clear",
                         []
                       |),
@@ -862,29 +1084,32 @@ Module evm.
       end.
     
     Axiom AssociatedFunction_transact_preverified :
-      forall (EXT DB : Ty.t),
-      M.IsAssociatedFunction (Self EXT DB) "transact_preverified" (transact_preverified EXT DB).
+      forall (ERROR CTX VAL PREEXEC EXEC POSTEXEC : Ty.t),
+      M.IsAssociatedFunction
+        (Self ERROR CTX VAL PREEXEC EXEC POSTEXEC)
+        "transact_preverified"
+        (transact_preverified ERROR CTX VAL PREEXEC EXEC POSTEXEC).
     
     (*
-        fn preverify_transaction_inner(&mut self) -> Result<u64, EVMError<DB::Error>> {
-            self.handler.validation().env(&self.context.evm.env)?;
+        fn preverify_transaction_inner(&mut self) -> Result<u64, ERROR> {
+            self.handler.validation().validate_env(&self.context)?;
             let initial_gas_spend = self
                 .handler
                 .validation()
-                .initial_tx_gas(&self.context.evm.env)?;
+                .validate_initial_tx_gas(&self.context)?;
             self.handler
                 .validation()
-                .tx_against_state(&mut self.context)?;
+                .validate_tx_against_state(&mut self.context)?;
             Ok(initial_gas_spend)
         }
     *)
     Definition preverify_transaction_inner
-        (EXT DB : Ty.t)
+        (ERROR CTX VAL PREEXEC EXEC POSTEXEC : Ty.t)
         (ε : list Value.t)
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
-      let Self : Ty.t := Self EXT DB in
+      let Self : Ty.t := Self ERROR CTX VAL PREEXEC EXEC POSTEXEC in
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
@@ -898,327 +1123,29 @@ Module evm.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.tuple [];
-                              Ty.apply
-                                (Ty.path "revm_primitives::result::EVMError")
-                                []
-                                [ Ty.associated ]
-                            ],
+                          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
                           [],
                           "branch",
                           []
                         |),
                         [
                           M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path
-                                  "revm::handler::handle_types::validation::ValidationHandler")
-                                []
-                                [ EXT; DB ],
-                              "env",
+                            M.get_trait_method (|
+                              "revm_handler_interface::validation::ValidationHandler",
+                              VAL,
+                              [],
+                              "validate_env",
                               []
                             |),
                             [
                               M.call_closure (|
-                                M.get_associated_function (|
+                                M.get_trait_method (|
+                                  "revm_handler_interface::handler::Handler",
                                   Ty.apply
-                                    (Ty.path "revm::handler::Handler")
+                                    (Ty.path "revm_handler::EthHandler")
                                     []
-                                    [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
-                                  "validation",
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "revm::evm::Evm",
-                                    "handler"
-                                  |)
-                                ]
-                              |);
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::deref::Deref",
-                                      Ty.apply
-                                        (Ty.path "revm::context::evm_context::EvmContext")
-                                        []
-                                        [ DB ],
-                                      [],
-                                      "deref",
-                                      []
-                                    |),
-                                    [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "revm::evm::Evm",
-                                          "context"
-                                        |),
-                                        "revm::context::Context",
-                                        "evm"
-                                      |)
-                                    ]
-                                  |),
-                                  "revm::context::inner_evm_context::InnerEvmContext",
-                                  "env"
-                                |)
-                              |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::ops::control_flow::ControlFlow::Break",
-                              0
-                            |) in
-                          let residual := M.copy (| γ0_0 |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::try_trait::FromResidual",
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.path "u64";
-                                          Ty.apply
-                                            (Ty.path "revm_primitives::result::EVMError")
-                                            []
-                                            [ Ty.associated ]
-                                        ],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.path "core::convert::Infallible";
-                                            Ty.apply
-                                              (Ty.path "revm_primitives::result::EVMError")
-                                              []
-                                              [ Ty.associated ]
-                                          ]
-                                      ],
-                                      "from_residual",
-                                      []
-                                    |),
-                                    [ M.read (| residual |) ]
-                                  |)
-                                |)
-                              |)
-                            |)
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::ops::control_flow::ControlFlow::Continue",
-                              0
-                            |) in
-                          let val := M.copy (| γ0_0 |) in
-                          val))
-                    ]
-                  |) in
-                let~ initial_gas_spend :=
-                  M.copy (|
-                    M.match_operator (|
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::try_trait::Try",
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.path "u64";
-                                Ty.apply
-                                  (Ty.path "revm_primitives::result::EVMError")
-                                  []
-                                  [ Ty.associated ]
-                              ],
-                            [],
-                            "branch",
-                            []
-                          |),
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path
-                                    "revm::handler::handle_types::validation::ValidationHandler")
-                                  []
-                                  [ EXT; DB ],
-                                "initial_tx_gas",
-                                []
-                              |),
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "revm::handler::Handler")
-                                      []
-                                      [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB
-                                      ],
-                                    "validation",
-                                    []
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "revm::evm::Evm",
-                                      "handler"
-                                    |)
-                                  ]
-                                |);
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::deref::Deref",
-                                        Ty.apply
-                                          (Ty.path "revm::context::evm_context::EvmContext")
-                                          []
-                                          [ DB ],
-                                        [],
-                                        "deref",
-                                        []
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "revm::evm::Evm",
-                                            "context"
-                                          |),
-                                          "revm::context::Context",
-                                          "evm"
-                                        |)
-                                      ]
-                                    |),
-                                    "revm::context::inner_evm_context::InnerEvmContext",
-                                    "env"
-                                  |)
-                                |)
-                              ]
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::ops::control_flow::ControlFlow::Break",
-                                0
-                              |) in
-                            let residual := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::try_trait::FromResidual",
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.path "u64";
-                                            Ty.apply
-                                              (Ty.path "revm_primitives::result::EVMError")
-                                              []
-                                              [ Ty.associated ]
-                                          ],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.path "core::convert::Infallible";
-                                              Ty.apply
-                                                (Ty.path "revm_primitives::result::EVMError")
-                                                []
-                                                [ Ty.associated ]
-                                            ]
-                                        ],
-                                        "from_residual",
-                                        []
-                                      |),
-                                      [ M.read (| residual |) ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::ops::control_flow::ControlFlow::Continue",
-                                0
-                              |) in
-                            let val := M.copy (| γ0_0 |) in
-                            val))
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.match_operator (|
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::try_trait::Try",
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.tuple [];
-                              Ty.apply
-                                (Ty.path "revm_primitives::result::EVMError")
-                                []
-                                [ Ty.associated ]
-                            ],
-                          [],
-                          "branch",
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path
-                                  "revm::handler::handle_types::validation::ValidationHandler")
-                                []
-                                [ EXT; DB ],
-                              "tx_against_state",
-                              []
-                            |),
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "revm::handler::Handler")
-                                    []
-                                    [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
+                                    [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
+                                  [],
                                   "validation",
                                   []
                                 |),
@@ -1260,24 +1187,210 @@ Module evm.
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
-                                        [
-                                          Ty.path "u64";
-                                          Ty.apply
-                                            (Ty.path "revm_primitives::result::EVMError")
-                                            []
-                                            [ Ty.associated ]
-                                        ],
+                                        [ Ty.path "u64"; ERROR ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
-                                          [
-                                            Ty.path "core::convert::Infallible";
-                                            Ty.apply
-                                              (Ty.path "revm_primitives::result::EVMError")
-                                              []
-                                              [ Ty.associated ]
-                                          ]
+                                          [ Ty.path "core::convert::Infallible"; ERROR ]
+                                      ],
+                                      "from_residual",
+                                      []
+                                    |),
+                                    [ M.read (| residual |) ]
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "core::ops::control_flow::ControlFlow::Continue",
+                              0
+                            |) in
+                          let val := M.copy (| γ0_0 |) in
+                          val))
+                    ]
+                  |) in
+                let~ initial_gas_spend :=
+                  M.copy (|
+                    M.match_operator (|
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::try_trait::Try",
+                            Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; ERROR ],
+                            [],
+                            "branch",
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "revm_handler_interface::validation::ValidationHandler",
+                                VAL,
+                                [],
+                                "validate_initial_tx_gas",
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "revm_handler_interface::handler::Handler",
+                                    Ty.apply
+                                      (Ty.path "revm_handler::EthHandler")
+                                      []
+                                      [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
+                                    [],
+                                    "validation",
+                                    []
+                                  |),
+                                  [
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "revm::evm::Evm",
+                                      "handler"
+                                    |)
+                                  ]
+                                |);
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "revm::evm::Evm",
+                                  "context"
+                                |)
+                              ]
+                            |)
+                          ]
+                        |)
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::ops::control_flow::ControlFlow::Break",
+                                0
+                              |) in
+                            let residual := M.copy (| γ0_0 |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  M.return_ (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::try_trait::FromResidual",
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.path "u64"; ERROR ],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.path "core::convert::Infallible"; ERROR ]
+                                        ],
+                                        "from_residual",
+                                        []
+                                      |),
+                                      [ M.read (| residual |) ]
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::ops::control_flow::ControlFlow::Continue",
+                                0
+                              |) in
+                            let val := M.copy (| γ0_0 |) in
+                            val))
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.match_operator (|
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::try_trait::Try",
+                          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
+                          [],
+                          "branch",
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "revm_handler_interface::validation::ValidationHandler",
+                              VAL,
+                              [],
+                              "validate_tx_against_state",
+                              []
+                            |),
+                            [
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "revm_handler_interface::handler::Handler",
+                                  Ty.apply
+                                    (Ty.path "revm_handler::EthHandler")
+                                    []
+                                    [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
+                                  [],
+                                  "validation",
+                                  []
+                                |),
+                                [
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "revm::evm::Evm",
+                                    "handler"
+                                  |)
+                                ]
+                              |);
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "revm::evm::Evm",
+                                "context"
+                              |)
+                            ]
+                          |)
+                        ]
+                      |)
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "core::ops::control_flow::ControlFlow::Break",
+                              0
+                            |) in
+                          let residual := M.copy (| γ0_0 |) in
+                          M.alloc (|
+                            M.never_to_any (|
+                              M.read (|
+                                M.return_ (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::try_trait::FromResidual",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "u64"; ERROR ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.path "core::convert::Infallible"; ERROR ]
                                       ],
                                       "from_residual",
                                       []
@@ -1309,17 +1422,16 @@ Module evm.
       end.
     
     Axiom AssociatedFunction_preverify_transaction_inner :
-      forall (EXT DB : Ty.t),
+      forall (ERROR CTX VAL PREEXEC EXEC POSTEXEC : Ty.t),
       M.IsAssociatedFunction
-        (Self EXT DB)
+        (Self ERROR CTX VAL PREEXEC EXEC POSTEXEC)
         "preverify_transaction_inner"
-        (preverify_transaction_inner EXT DB).
+        (preverify_transaction_inner ERROR CTX VAL PREEXEC EXEC POSTEXEC).
     
     (*
-        pub fn transact(&mut self) -> EVMResult<DB::Error> {
-            let initial_gas_spend = self.preverify_transaction_inner().map_err(|e| {
+        pub fn transact(&mut self) -> Result<<POSTEXEC as PostExecutionHandler>::Output, ERROR> {
+            let initial_gas_spend = self.preverify_transaction_inner().inspect_err(|_| {
                 self.clear();
-                e
             })?;
     
             let output = self.transact_preverified_inner(initial_gas_spend);
@@ -1328,8 +1440,13 @@ Module evm.
             output
         }
     *)
-    Definition transact (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self EXT DB in
+    Definition transact
+        (ERROR CTX VAL PREEXEC EXEC POSTEXEC : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self ERROR CTX VAL PREEXEC EXEC POSTEXEC in
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
@@ -1344,16 +1461,7 @@ Module evm.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.path "u64";
-                                Ty.apply
-                                  (Ty.path "revm_primitives::result::EVMError")
-                                  []
-                                  [ Ty.associated ]
-                              ],
+                            Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; ERROR ],
                             [],
                             "branch",
                             []
@@ -1364,39 +1472,28 @@ Module evm.
                                 Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
-                                  [
-                                    Ty.path "u64";
-                                    Ty.apply
-                                      (Ty.path "revm_primitives::result::EVMError")
-                                      []
-                                      [ Ty.associated ]
-                                  ],
-                                "map_err",
+                                  [ Ty.path "u64"; ERROR ],
+                                "inspect_err",
                                 [
-                                  Ty.apply
-                                    (Ty.path "revm_primitives::result::EVMError")
-                                    []
-                                    [ Ty.associated ];
                                   Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "revm_primitives::result::EVMError")
-                                            []
-                                            [ Ty.associated ]
-                                        ]
-                                    ]
-                                    (Ty.apply
-                                      (Ty.path "revm_primitives::result::EVMError")
-                                      []
-                                      [ Ty.associated ])
+                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ ERROR ] ] ]
+                                    (Ty.tuple [])
                                 ]
                               |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
+                                    Ty.apply
+                                      (Ty.path "revm::evm::Evm")
+                                      []
+                                      [
+                                        ERROR;
+                                        CTX;
+                                        Ty.apply
+                                          (Ty.path "revm_handler::EthHandler")
+                                          []
+                                          [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ]
+                                      ],
                                     "preverify_transaction_inner",
                                     []
                                   |),
@@ -1413,8 +1510,7 @@ Module evm.
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (let e := M.copy (| γ |) in
-                                                  M.read (|
+                                                  (M.read (|
                                                     let~ _ :=
                                                       M.alloc (|
                                                         M.call_closure (|
@@ -1422,14 +1518,29 @@ Module evm.
                                                             Ty.apply
                                                               (Ty.path "revm::evm::Evm")
                                                               []
-                                                              [ EXT; DB ],
+                                                              [
+                                                                ERROR;
+                                                                CTX;
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "revm_handler::EthHandler")
+                                                                  []
+                                                                  [
+                                                                    CTX;
+                                                                    ERROR;
+                                                                    VAL;
+                                                                    PREEXEC;
+                                                                    EXEC;
+                                                                    POSTEXEC
+                                                                  ]
+                                                              ],
                                                             "clear",
                                                             []
                                                           |),
                                                           [ M.read (| self |) ]
                                                         |)
                                                       |) in
-                                                    e
+                                                    M.alloc (| Value.Tuple [] |)
                                                   |)))
                                             ]
                                           |)))
@@ -1460,24 +1571,12 @@ Module evm.
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
-                                          [
-                                            Ty.path "revm_primitives::result::ResultAndState";
-                                            Ty.apply
-                                              (Ty.path "revm_primitives::result::EVMError")
-                                              []
-                                              [ Ty.associated ]
-                                          ],
+                                          [ Ty.associated; ERROR ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
                                             []
-                                            [
-                                              Ty.path "core::convert::Infallible";
-                                              Ty.apply
-                                                (Ty.path "revm_primitives::result::EVMError")
-                                                []
-                                                [ Ty.associated ]
-                                            ]
+                                            [ Ty.path "core::convert::Infallible"; ERROR ]
                                         ],
                                         "from_residual",
                                         []
@@ -1505,7 +1604,17 @@ Module evm.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
+                        Ty.apply
+                          (Ty.path "revm::evm::Evm")
+                          []
+                          [
+                            ERROR;
+                            CTX;
+                            Ty.apply
+                              (Ty.path "revm_handler::EthHandler")
+                              []
+                              [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ]
+                          ],
                         "transact_preverified_inner",
                         []
                       |),
@@ -1515,22 +1624,22 @@ Module evm.
                 let~ output :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path
-                            "revm::handler::handle_types::post_execution::PostExecutionHandler")
-                          []
-                          [ EXT; DB ],
+                      M.get_trait_method (|
+                        "revm_handler_interface::post_execution::PostExecutionHandler",
+                        POSTEXEC,
+                        [],
                         "end",
                         []
                       |),
                       [
                         M.call_closure (|
-                          M.get_associated_function (|
+                          M.get_trait_method (|
+                            "revm_handler_interface::handler::Handler",
                             Ty.apply
-                              (Ty.path "revm::handler::Handler")
+                              (Ty.path "revm_handler::EthHandler")
                               []
-                              [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
+                              [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
+                            [],
                             "post_execution",
                             []
                           |),
@@ -1555,7 +1664,17 @@ Module evm.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
+                        Ty.apply
+                          (Ty.path "revm::evm::Evm")
+                          []
+                          [
+                            ERROR;
+                            CTX;
+                            Ty.apply
+                              (Ty.path "revm_handler::EthHandler")
+                              []
+                              [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ]
+                          ],
                         "clear",
                         []
                       |),
@@ -1569,2629 +1688,63 @@ Module evm.
       end.
     
     Axiom AssociatedFunction_transact :
-      forall (EXT DB : Ty.t),
-      M.IsAssociatedFunction (Self EXT DB) "transact" (transact EXT DB).
-    
-    (*
-        pub fn handler_cfg(&self) -> &HandlerCfg {
-            &self.handler.cfg
-        }
-    *)
-    Definition handler_cfg
-        (EXT DB : Ty.t)
-        (ε : list Value.t)
-        (τ : list Ty.t)
-        (α : list Value.t)
-        : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "revm::evm::Evm",
-              "handler"
-            |),
-            "revm::handler::Handler",
-            "cfg"
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_handler_cfg :
-      forall (EXT DB : Ty.t),
-      M.IsAssociatedFunction (Self EXT DB) "handler_cfg" (handler_cfg EXT DB).
-    
-    (*
-        pub fn cfg(&self) -> &CfgEnv {
-            &self.env().cfg
-        }
-    *)
-    Definition cfg (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.call_closure (|
-              M.get_trait_method (|
-                "revm_interpreter::host::Host",
-                Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
-                [],
-                "env",
-                []
-              |),
-              [ M.read (| self |) ]
-            |),
-            "revm_primitives::env::Env",
-            "cfg"
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_cfg :
-      forall (EXT DB : Ty.t),
-      M.IsAssociatedFunction (Self EXT DB) "cfg" (cfg EXT DB).
-    
-    (*
-        pub fn cfg_mut(&mut self) -> &mut CfgEnv {
-            &mut self.context.evm.env.cfg
-        }
-    *)
-    Definition cfg_mut (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (|
-              M.SubPointer.get_struct_record_field (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::deref::DerefMut",
-                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
-                    [],
-                    "deref_mut",
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm::evm::Evm",
-                        "context"
-                      |),
-                      "revm::context::Context",
-                      "evm"
-                    |)
-                  ]
-                |),
-                "revm::context::inner_evm_context::InnerEvmContext",
-                "env"
-              |)
-            |),
-            "revm_primitives::env::Env",
-            "cfg"
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_cfg_mut :
-      forall (EXT DB : Ty.t),
-      M.IsAssociatedFunction (Self EXT DB) "cfg_mut" (cfg_mut EXT DB).
-    
-    (*
-        pub fn tx(&self) -> &TxEnv {
-            &self.context.evm.env.tx
-        }
-    *)
-    Definition tx (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (|
-              M.SubPointer.get_struct_record_field (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
-                    [],
-                    "deref",
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm::evm::Evm",
-                        "context"
-                      |),
-                      "revm::context::Context",
-                      "evm"
-                    |)
-                  ]
-                |),
-                "revm::context::inner_evm_context::InnerEvmContext",
-                "env"
-              |)
-            |),
-            "revm_primitives::env::Env",
-            "tx"
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_tx :
-      forall (EXT DB : Ty.t),
-      M.IsAssociatedFunction (Self EXT DB) "tx" (tx EXT DB).
-    
-    (*
-        pub fn tx_mut(&mut self) -> &mut TxEnv {
-            &mut self.context.evm.env.tx
-        }
-    *)
-    Definition tx_mut (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (|
-              M.SubPointer.get_struct_record_field (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::deref::DerefMut",
-                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
-                    [],
-                    "deref_mut",
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm::evm::Evm",
-                        "context"
-                      |),
-                      "revm::context::Context",
-                      "evm"
-                    |)
-                  ]
-                |),
-                "revm::context::inner_evm_context::InnerEvmContext",
-                "env"
-              |)
-            |),
-            "revm_primitives::env::Env",
-            "tx"
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_tx_mut :
-      forall (EXT DB : Ty.t),
-      M.IsAssociatedFunction (Self EXT DB) "tx_mut" (tx_mut EXT DB).
-    
-    (*
-        pub fn db(&self) -> &DB {
-            &self.context.evm.db
-        }
-    *)
-    Definition db (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.call_closure (|
-              M.get_trait_method (|
-                "core::ops::deref::Deref",
-                Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
-                [],
-                "deref",
-                []
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm::evm::Evm",
-                    "context"
-                  |),
-                  "revm::context::Context",
-                  "evm"
-                |)
-              ]
-            |),
-            "revm::context::inner_evm_context::InnerEvmContext",
-            "db"
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_db :
-      forall (EXT DB : Ty.t),
-      M.IsAssociatedFunction (Self EXT DB) "db" (db EXT DB).
-    
-    (*
-        pub fn db_mut(&mut self) -> &mut DB {
-            &mut self.context.evm.db
-        }
-    *)
-    Definition db_mut (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.call_closure (|
-              M.get_trait_method (|
-                "core::ops::deref::DerefMut",
-                Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
-                [],
-                "deref_mut",
-                []
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm::evm::Evm",
-                    "context"
-                  |),
-                  "revm::context::Context",
-                  "evm"
-                |)
-              ]
-            |),
-            "revm::context::inner_evm_context::InnerEvmContext",
-            "db"
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_db_mut :
-      forall (EXT DB : Ty.t),
-      M.IsAssociatedFunction (Self EXT DB) "db_mut" (db_mut EXT DB).
-    
-    (*
-        pub fn block(&self) -> &BlockEnv {
-            &self.context.evm.env.block
-        }
-    *)
-    Definition block (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (|
-              M.SubPointer.get_struct_record_field (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
-                    [],
-                    "deref",
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm::evm::Evm",
-                        "context"
-                      |),
-                      "revm::context::Context",
-                      "evm"
-                    |)
-                  ]
-                |),
-                "revm::context::inner_evm_context::InnerEvmContext",
-                "env"
-              |)
-            |),
-            "revm_primitives::env::Env",
-            "block"
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_block :
-      forall (EXT DB : Ty.t),
-      M.IsAssociatedFunction (Self EXT DB) "block" (block EXT DB).
-    
-    (*
-        pub fn block_mut(&mut self) -> &mut BlockEnv {
-            &mut self.context.evm.env.block
-        }
-    *)
-    Definition block_mut
-        (EXT DB : Ty.t)
-        (ε : list Value.t)
-        (τ : list Ty.t)
-        (α : list Value.t)
-        : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.SubPointer.get_struct_record_field (|
-            M.read (|
-              M.SubPointer.get_struct_record_field (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::deref::DerefMut",
-                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
-                    [],
-                    "deref_mut",
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm::evm::Evm",
-                        "context"
-                      |),
-                      "revm::context::Context",
-                      "evm"
-                    |)
-                  ]
-                |),
-                "revm::context::inner_evm_context::InnerEvmContext",
-                "env"
-              |)
-            |),
-            "revm_primitives::env::Env",
-            "block"
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_block_mut :
-      forall (EXT DB : Ty.t),
-      M.IsAssociatedFunction (Self EXT DB) "block_mut" (block_mut EXT DB).
-    
-    (*
-        pub fn modify_spec_id(&mut self, spec_id: SpecId) {
-            self.handler.modify_spec_id(spec_id);
-        }
-    *)
-    Definition modify_spec_id
-        (EXT DB : Ty.t)
-        (ε : list Value.t)
-        (τ : list Ty.t)
-        (α : list Value.t)
-        : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self; spec_id ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let spec_id := M.alloc (| spec_id |) in
-          M.read (|
-            let~ _ :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "revm::handler::Handler")
-                      []
-                      [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
-                    "modify_spec_id",
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::evm::Evm",
-                      "handler"
-                    |);
-                    M.read (| spec_id |)
-                  ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |)
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_modify_spec_id :
-      forall (EXT DB : Ty.t),
-      M.IsAssociatedFunction (Self EXT DB) "modify_spec_id" (modify_spec_id EXT DB).
-    
-    (*
-        pub fn into_context(self) -> Context<EXT, DB> {
-            self.context
-        }
-    *)
-    Definition into_context
-        (EXT DB : Ty.t)
-        (ε : list Value.t)
-        (τ : list Ty.t)
-        (α : list Value.t)
-        : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (| self, "revm::evm::Evm", "context" |)
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_into_context :
-      forall (EXT DB : Ty.t),
-      M.IsAssociatedFunction (Self EXT DB) "into_context" (into_context EXT DB).
-    
-    (*
-        pub fn into_db_and_env_with_handler_cfg(self) -> (DB, EnvWithHandlerCfg) {
-            (
-                self.context.evm.inner.db,
-                EnvWithHandlerCfg {
-                    env: self.context.evm.inner.env,
-                    handler_cfg: self.handler.cfg,
-                },
-            )
-        }
-    *)
-    Definition into_db_and_env_with_handler_cfg
-        (EXT DB : Ty.t)
-        (ε : list Value.t)
-        (τ : list Ty.t)
-        (α : list Value.t)
-        : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.Tuple
-            [
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.SubPointer.get_struct_record_field (| self, "revm::evm::Evm", "context" |),
-                      "revm::context::Context",
-                      "evm"
-                    |),
-                    "revm::context::evm_context::EvmContext",
-                    "inner"
-                  |),
-                  "revm::context::inner_evm_context::InnerEvmContext",
-                  "db"
-                |)
-              |);
-              Value.StructRecord
-                "revm_primitives::env::handler_cfg::EnvWithHandlerCfg"
-                [
-                  ("env",
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.SubPointer.get_struct_record_field (|
-                              self,
-                              "revm::evm::Evm",
-                              "context"
-                            |),
-                            "revm::context::Context",
-                            "evm"
-                          |),
-                          "revm::context::evm_context::EvmContext",
-                          "inner"
-                        |),
-                        "revm::context::inner_evm_context::InnerEvmContext",
-                        "env"
-                      |)
-                    |));
-                  ("handler_cfg",
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "revm::evm::Evm",
-                          "handler"
-                        |),
-                        "revm::handler::Handler",
-                        "cfg"
-                      |)
-                    |))
-                ]
-            ]))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_into_db_and_env_with_handler_cfg :
-      forall (EXT DB : Ty.t),
+      forall (ERROR CTX VAL PREEXEC EXEC POSTEXEC : Ty.t),
       M.IsAssociatedFunction
-        (Self EXT DB)
-        "into_db_and_env_with_handler_cfg"
-        (into_db_and_env_with_handler_cfg EXT DB).
+        (Self ERROR CTX VAL PREEXEC EXEC POSTEXEC)
+        "transact"
+        (transact ERROR CTX VAL PREEXEC EXEC POSTEXEC).
     
     (*
-        pub fn into_context_with_handler_cfg(self) -> ContextWithHandlerCfg<EXT, DB> {
-            ContextWithHandlerCfg::new(self.context, self.handler.cfg)
-        }
-    *)
-    Definition into_context_with_handler_cfg
-        (EXT DB : Ty.t)
-        (ε : list Value.t)
-        (τ : list Ty.t)
-        (α : list Value.t)
-        : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply (Ty.path "revm::context::ContextWithHandlerCfg") [] [ EXT; DB ],
-              "new",
-              []
-            |),
-            [
-              M.read (|
-                M.SubPointer.get_struct_record_field (| self, "revm::evm::Evm", "context" |)
-              |);
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.SubPointer.get_struct_record_field (| self, "revm::evm::Evm", "handler" |),
-                  "revm::handler::Handler",
-                  "cfg"
-                |)
-              |)
-            ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_into_context_with_handler_cfg :
-      forall (EXT DB : Ty.t),
-      M.IsAssociatedFunction
-        (Self EXT DB)
-        "into_context_with_handler_cfg"
-        (into_context_with_handler_cfg EXT DB).
-    
-    (*
-        pub fn start_the_loop(
+        fn transact_preverified_inner(
             &mut self,
-            first_frame: Frame,
-        ) -> Result<FrameResult, EVMError<DB::Error>> {
-            // take instruction table
-            let table = self
-                .handler
-                .take_instruction_table()
-                .expect("Instruction table should be present");
-    
-            // run main loop
-            let frame_result = match &table {
-                InstructionTables::Plain(table) => self.run_the_loop(table, first_frame),
-                InstructionTables::Boxed(table) => self.run_the_loop(table, first_frame),
-            };
-    
-            // return back instruction table
-            self.handler.set_instruction_table(table);
-    
-            frame_result
-        }
-    *)
-    Definition start_the_loop
-        (EXT DB : Ty.t)
-        (ε : list Value.t)
-        (τ : list Ty.t)
-        (α : list Value.t)
-        : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self; first_frame ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let first_frame := M.alloc (| first_frame |) in
-          M.read (|
-            let~ table :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "revm_interpreter::opcode::InstructionTables")
-                          []
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ] ]
-                      ],
-                    "expect",
-                    []
-                  |),
-                  [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "revm::handler::Handler")
-                          []
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
-                        "take_instruction_table",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm::evm::Evm",
-                          "handler"
-                        |)
-                      ]
-                    |);
-                    M.read (| Value.String "Instruction table should be present" |)
-                  ]
-                |)
-              |) in
-            let~ frame_result :=
-              M.copy (|
-                M.match_operator (|
-                  M.alloc (| table |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let γ1_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "revm_interpreter::opcode::InstructionTables::Plain",
-                            0
-                          |) in
-                        let table := M.alloc (| γ1_0 |) in
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
-                              "run_the_loop",
-                              [
-                                Ty.function
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.path "revm_interpreter::interpreter::Interpreter" ];
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ] ]
-                                  ]
-                                  (Ty.tuple [])
-                              ]
-                            |),
-                            [ M.read (| self |); M.read (| table |); M.read (| first_frame |) ]
-                          |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let γ1_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "revm_interpreter::opcode::InstructionTables::Boxed",
-                            0
-                          |) in
-                        let table := M.alloc (| γ1_0 |) in
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
-                              "run_the_loop",
-                              [
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  []
-                                  [
-                                    Ty.dyn
-                                      [
-                                        ("existential predicate with variables", []);
-                                        ("existential predicate with variables", [])
-                                      ];
-                                    Ty.path "alloc::alloc::Global"
-                                  ]
-                              ]
-                            |),
-                            [ M.read (| self |); M.read (| table |); M.read (| first_frame |) ]
-                          |)
-                        |)))
-                  ]
-                |)
-              |) in
-            let~ _ :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "revm::handler::Handler")
-                      []
-                      [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
-                    "set_instruction_table",
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::evm::Evm",
-                      "handler"
-                    |);
-                    M.read (| table |)
-                  ]
-                |)
-              |) in
-            frame_result
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_start_the_loop :
-      forall (EXT DB : Ty.t),
-      M.IsAssociatedFunction (Self EXT DB) "start_the_loop" (start_the_loop EXT DB).
-    
-    (*
-        pub fn run_the_loop<FN>(
-            &mut self,
-            instruction_table: &[FN; 256],
-            first_frame: Frame,
-        ) -> Result<FrameResult, EVMError<DB::Error>>
-        where
-            FN: Fn(&mut Interpreter, &mut Self),
-        {
-            let mut call_stack: Vec<Frame> = Vec::with_capacity(1025);
-            call_stack.push(first_frame);
-    
-            #[cfg(feature = "memory_limit")]
-            let mut shared_memory =
-                SharedMemory::new_with_memory_limit(self.context.evm.env.cfg.memory_limit);
-            #[cfg(not(feature = "memory_limit"))]
-            let mut shared_memory = SharedMemory::new();
-    
-            shared_memory.new_context();
-    
-            // peek last stack frame.
-            let mut stack_frame = call_stack.last_mut().unwrap();
-    
-            loop {
-                // run interpreter
-                let interpreter = &mut stack_frame.frame_data_mut().interpreter;
-                let next_action = interpreter.run(shared_memory, instruction_table, self);
-    
-                // take error and break the loop if there is any.
-                // This error is set From Interpreter when it's interacting with Host.
-                self.context.evm.take_error()?;
-                // take shared memory back.
-                shared_memory = interpreter.take_memory();
-    
-                let exec = &mut self.handler.execution;
-                let frame_or_result = match next_action {
-                    InterpreterAction::Call { inputs } => exec.call(&mut self.context, inputs)?,
-                    InterpreterAction::Create { inputs } => exec.create(&mut self.context, inputs)?,
-                    InterpreterAction::EOFCreate { inputs } => {
-                        exec.eofcreate(&mut self.context, inputs)?
-                    }
-                    InterpreterAction::Return { result } => {
-                        // free memory context.
-                        shared_memory.free_context();
-    
-                        // pop last frame from the stack and consume it to create FrameResult.
-                        let returned_frame = call_stack
-                            .pop()
-                            .expect("We just returned from Interpreter frame");
-    
-                        let ctx = &mut self.context;
-                        FrameOrResult::Result(match returned_frame {
-                            Frame::Call(frame) => {
-                                // return_call
-                                FrameResult::Call(exec.call_return(ctx, frame, result)?)
-                            }
-                            Frame::Create(frame) => {
-                                // return_create
-                                FrameResult::Create(exec.create_return(ctx, frame, result)?)
-                            }
-                            Frame::EOFCreate(frame) => {
-                                // return_eofcreate
-                                FrameResult::EOFCreate(exec.eofcreate_return(ctx, frame, result)?)
-                            }
-                        })
-                    }
-                    InterpreterAction::None => unreachable!("InterpreterAction::None is not expected"),
-                };
-    
-                // handle result
-                match frame_or_result {
-                    FrameOrResult::Frame(frame) => {
-                        shared_memory.new_context();
-                        call_stack.push(frame);
-                        stack_frame = call_stack.last_mut().unwrap();
-                    }
-                    FrameOrResult::Result(result) => {
-                        let Some(top_frame) = call_stack.last_mut() else {
-                            // Break the look if there are no more frames.
-                            return Ok(result);
-                        };
-                        stack_frame = top_frame;
-                        let ctx = &mut self.context;
-                        // Insert result to the top frame.
-                        match result {
-                            FrameResult::Call(outcome) => {
-                                // return_call
-                                exec.insert_call_outcome(ctx, stack_frame, &mut shared_memory, outcome)?
-                            }
-                            FrameResult::Create(outcome) => {
-                                // return_create
-                                exec.insert_create_outcome(ctx, stack_frame, outcome)?
-                            }
-                            FrameResult::EOFCreate(outcome) => {
-                                // return_eofcreate
-                                exec.insert_eofcreate_outcome(ctx, stack_frame, outcome)?
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    *)
-    Definition run_the_loop
-        (EXT DB : Ty.t)
-        (ε : list Value.t)
-        (τ : list Ty.t)
-        (α : list Value.t)
-        : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [ FN ], [ self; instruction_table; first_frame ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let instruction_table := M.alloc (| instruction_table |) in
-          let first_frame := M.alloc (| first_frame |) in
-          M.catch_return (|
-            ltac:(M.monadic
-              (M.read (|
-                let~ call_stack :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
-                          [ Ty.path "revm::frame::Frame"; Ty.path "alloc::alloc::Global" ],
-                        "with_capacity",
-                        []
-                      |),
-                      [ Value.Integer IntegerKind.Usize 1025 ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
-                          [ Ty.path "revm::frame::Frame"; Ty.path "alloc::alloc::Global" ],
-                        "push",
-                        []
-                      |),
-                      [ call_stack; M.read (| first_frame |) ]
-                    |)
-                  |) in
-                let~ shared_memory :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                        "new",
-                        []
-                      |),
-                      []
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                        "new_context",
-                        []
-                      |),
-                      [ shared_memory ]
-                    |)
-                  |) in
-                let~ stack_frame :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.apply (Ty.path "&mut") [] [ Ty.path "revm::frame::Frame" ] ],
-                        "unwrap",
-                        []
-                      |),
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [] [ Ty.path "revm::frame::Frame" ],
-                            "last_mut",
-                            []
-                          |),
-                          [
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::deref::DerefMut",
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
-                                  [ Ty.path "revm::frame::Frame"; Ty.path "alloc::alloc::Global" ],
-                                [],
-                                "deref_mut",
-                                []
-                              |),
-                              [ call_stack ]
-                            |)
-                          ]
-                        |)
-                      ]
-                    |)
-                  |) in
-                M.alloc (|
-                  M.never_to_any (|
-                    M.read (|
-                      M.loop (|
-                        ltac:(M.monadic
-                          (let~ interpreter :=
-                            M.alloc (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "revm::frame::Frame",
-                                    "frame_data_mut",
-                                    []
-                                  |),
-                                  [ M.read (| stack_frame |) ]
-                                |),
-                                "revm::frame::FrameData",
-                                "interpreter"
-                              |)
-                            |) in
-                          let~ next_action :=
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "revm_interpreter::interpreter::Interpreter",
-                                  "run",
-                                  [ FN; Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ] ]
-                                |),
-                                [
-                                  M.read (| interpreter |);
-                                  M.read (| shared_memory |);
-                                  M.read (| instruction_table |);
-                                  M.read (| self |)
-                                ]
-                              |)
-                            |) in
-                          let~ _ :=
-                            M.match_operator (|
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::try_trait::Try",
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.tuple [];
-                                        Ty.apply
-                                          (Ty.path "revm_primitives::result::EVMError")
-                                          []
-                                          [ Ty.associated ]
-                                      ],
-                                    [],
-                                    "branch",
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path
-                                            "revm::context::inner_evm_context::InnerEvmContext")
-                                          []
-                                          [ DB ],
-                                        "take_error",
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::deref::DerefMut",
-                                            Ty.apply
-                                              (Ty.path "revm::context::evm_context::EvmContext")
-                                              []
-                                              [ DB ],
-                                            [],
-                                            "deref_mut",
-                                            []
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "revm::evm::Evm",
-                                                "context"
-                                              |),
-                                              "revm::context::Context",
-                                              "evm"
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                    |)
-                                  ]
-                                |)
-                              |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::ops::control_flow::ControlFlow::Break",
-                                        0
-                                      |) in
-                                    let residual := M.copy (| γ0_0 |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.read (|
-                                          M.return_ (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::try_trait::FromResidual",
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.path "revm::frame::FrameResult";
-                                                    Ty.apply
-                                                      (Ty.path "revm_primitives::result::EVMError")
-                                                      []
-                                                      [ Ty.associated ]
-                                                  ],
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "core::convert::Infallible";
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "revm_primitives::result::EVMError")
-                                                        []
-                                                        [ Ty.associated ]
-                                                    ]
-                                                ],
-                                                "from_residual",
-                                                []
-                                              |),
-                                              [ M.read (| residual |) ]
-                                            |)
-                                          |)
-                                        |)
-                                      |)
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::ops::control_flow::ControlFlow::Continue",
-                                        0
-                                      |) in
-                                    let val := M.copy (| γ0_0 |) in
-                                    val))
-                              ]
-                            |) in
-                          let~ _ :=
-                            M.write (|
-                              shared_memory,
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "revm_interpreter::interpreter::Interpreter",
-                                  "take_memory",
-                                  []
-                                |),
-                                [ M.read (| interpreter |) ]
-                              |)
-                            |) in
-                          let~ exec :=
-                            M.alloc (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "revm::evm::Evm",
-                                  "handler"
-                                |),
-                                "revm::handler::Handler",
-                                "execution"
-                              |)
-                            |) in
-                          let~ frame_or_result :=
-                            M.copy (|
-                              M.match_operator (|
-                                next_action,
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_record_field (|
-                                          γ,
-                                          "revm_interpreter::interpreter_action::InterpreterAction::Call",
-                                          "inputs"
-                                        |) in
-                                      let inputs := M.copy (| γ0_0 |) in
-                                      M.match_operator (|
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::Try",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path "revm::frame::FrameOrResult";
-                                                  Ty.apply
-                                                    (Ty.path "revm_primitives::result::EVMError")
-                                                    []
-                                                    [ Ty.associated ]
-                                                ],
-                                              [],
-                                              "branch",
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "revm::handler::handle_types::execution::ExecutionHandler")
-                                                    []
-                                                    [ EXT; DB ],
-                                                  "call",
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (| exec |);
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "revm::evm::Evm",
-                                                    "context"
-                                                  |);
-                                                  M.read (| inputs |)
-                                                ]
-                                              |)
-                                            ]
-                                          |)
-                                        |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Break",
-                                                  0
-                                                |) in
-                                              let residual := M.copy (| γ0_0 |) in
-                                              M.alloc (|
-                                                M.never_to_any (|
-                                                  M.read (|
-                                                    M.return_ (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::FromResidual",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.path "revm::frame::FrameResult";
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "revm_primitives::result::EVMError")
-                                                                []
-                                                                [ Ty.associated ]
-                                                            ],
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.path "core::convert::Infallible";
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "revm_primitives::result::EVMError")
-                                                                  []
-                                                                  [ Ty.associated ]
-                                                              ]
-                                                          ],
-                                                          "from_residual",
-                                                          []
-                                                        |),
-                                                        [ M.read (| residual |) ]
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |)
-                                              |)));
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Continue",
-                                                  0
-                                                |) in
-                                              let val := M.copy (| γ0_0 |) in
-                                              val))
-                                        ]
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_record_field (|
-                                          γ,
-                                          "revm_interpreter::interpreter_action::InterpreterAction::Create",
-                                          "inputs"
-                                        |) in
-                                      let inputs := M.copy (| γ0_0 |) in
-                                      M.match_operator (|
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::Try",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path "revm::frame::FrameOrResult";
-                                                  Ty.apply
-                                                    (Ty.path "revm_primitives::result::EVMError")
-                                                    []
-                                                    [ Ty.associated ]
-                                                ],
-                                              [],
-                                              "branch",
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "revm::handler::handle_types::execution::ExecutionHandler")
-                                                    []
-                                                    [ EXT; DB ],
-                                                  "create",
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (| exec |);
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "revm::evm::Evm",
-                                                    "context"
-                                                  |);
-                                                  M.read (| inputs |)
-                                                ]
-                                              |)
-                                            ]
-                                          |)
-                                        |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Break",
-                                                  0
-                                                |) in
-                                              let residual := M.copy (| γ0_0 |) in
-                                              M.alloc (|
-                                                M.never_to_any (|
-                                                  M.read (|
-                                                    M.return_ (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::FromResidual",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.path "revm::frame::FrameResult";
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "revm_primitives::result::EVMError")
-                                                                []
-                                                                [ Ty.associated ]
-                                                            ],
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.path "core::convert::Infallible";
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "revm_primitives::result::EVMError")
-                                                                  []
-                                                                  [ Ty.associated ]
-                                                              ]
-                                                          ],
-                                                          "from_residual",
-                                                          []
-                                                        |),
-                                                        [ M.read (| residual |) ]
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |)
-                                              |)));
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Continue",
-                                                  0
-                                                |) in
-                                              let val := M.copy (| γ0_0 |) in
-                                              val))
-                                        ]
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_record_field (|
-                                          γ,
-                                          "revm_interpreter::interpreter_action::InterpreterAction::EOFCreate",
-                                          "inputs"
-                                        |) in
-                                      let inputs := M.copy (| γ0_0 |) in
-                                      M.match_operator (|
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::Try",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path "revm::frame::FrameOrResult";
-                                                  Ty.apply
-                                                    (Ty.path "revm_primitives::result::EVMError")
-                                                    []
-                                                    [ Ty.associated ]
-                                                ],
-                                              [],
-                                              "branch",
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "revm::handler::handle_types::execution::ExecutionHandler")
-                                                    []
-                                                    [ EXT; DB ],
-                                                  "eofcreate",
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (| exec |);
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "revm::evm::Evm",
-                                                    "context"
-                                                  |);
-                                                  M.read (| inputs |)
-                                                ]
-                                              |)
-                                            ]
-                                          |)
-                                        |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Break",
-                                                  0
-                                                |) in
-                                              let residual := M.copy (| γ0_0 |) in
-                                              M.alloc (|
-                                                M.never_to_any (|
-                                                  M.read (|
-                                                    M.return_ (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::FromResidual",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.path "revm::frame::FrameResult";
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "revm_primitives::result::EVMError")
-                                                                []
-                                                                [ Ty.associated ]
-                                                            ],
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.path "core::convert::Infallible";
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "revm_primitives::result::EVMError")
-                                                                  []
-                                                                  [ Ty.associated ]
-                                                              ]
-                                                          ],
-                                                          "from_residual",
-                                                          []
-                                                        |),
-                                                        [ M.read (| residual |) ]
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |)
-                                              |)));
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Continue",
-                                                  0
-                                                |) in
-                                              let val := M.copy (| γ0_0 |) in
-                                              val))
-                                        ]
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_record_field (|
-                                          γ,
-                                          "revm_interpreter::interpreter_action::InterpreterAction::Return",
-                                          "result"
-                                        |) in
-                                      let result := M.copy (| γ0_0 |) in
-                                      let~ _ :=
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path
-                                                "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                                              "free_context",
-                                              []
-                                            |),
-                                            [ shared_memory ]
-                                          |)
-                                        |) in
-                                      let~ returned_frame :=
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "core::option::Option")
-                                                []
-                                                [ Ty.path "revm::frame::Frame" ],
-                                              "expect",
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path "alloc::vec::Vec")
-                                                    []
-                                                    [
-                                                      Ty.path "revm::frame::Frame";
-                                                      Ty.path "alloc::alloc::Global"
-                                                    ],
-                                                  "pop",
-                                                  []
-                                                |),
-                                                [ call_stack ]
-                                              |);
-                                              M.read (|
-                                                Value.String
-                                                  "We just returned from Interpreter frame"
-                                              |)
-                                            ]
-                                          |)
-                                        |) in
-                                      let~ ctx :=
-                                        M.alloc (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "revm::evm::Evm",
-                                            "context"
-                                          |)
-                                        |) in
-                                      M.alloc (|
-                                        Value.StructTuple
-                                          "revm::frame::FrameOrResult::Result"
-                                          [
-                                            M.read (|
-                                              M.match_operator (|
-                                                returned_frame,
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ0_0 :=
-                                                        M.SubPointer.get_struct_tuple_field (|
-                                                          γ,
-                                                          "revm::frame::Frame::Call",
-                                                          0
-                                                        |) in
-                                                      let frame := M.copy (| γ0_0 |) in
-                                                      M.alloc (|
-                                                        Value.StructTuple
-                                                          "revm::frame::FrameResult::Call"
-                                                          [
-                                                            M.read (|
-                                                              M.match_operator (|
-                                                                M.alloc (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::try_trait::Try",
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::result::Result")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "revm_interpreter::interpreter_action::call_outcome::CallOutcome";
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "revm_primitives::result::EVMError")
-                                                                            []
-                                                                            [ Ty.associated ]
-                                                                        ],
-                                                                      [],
-                                                                      "branch",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "revm::handler::handle_types::execution::ExecutionHandler")
-                                                                            []
-                                                                            [ EXT; DB ],
-                                                                          "call_return",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.read (| exec |);
-                                                                          M.read (| ctx |);
-                                                                          M.read (| frame |);
-                                                                          M.read (| result |)
-                                                                        ]
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                |),
-                                                                [
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      (let γ0_0 :=
-                                                                        M.SubPointer.get_struct_tuple_field (|
-                                                                          γ,
-                                                                          "core::ops::control_flow::ControlFlow::Break",
-                                                                          0
-                                                                        |) in
-                                                                      let residual :=
-                                                                        M.copy (| γ0_0 |) in
-                                                                      M.alloc (|
-                                                                        M.never_to_any (|
-                                                                          M.read (|
-                                                                            M.return_ (|
-                                                                              M.call_closure (|
-                                                                                M.get_trait_method (|
-                                                                                  "core::ops::try_trait::FromResidual",
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "core::result::Result")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "revm::frame::FrameResult";
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "revm_primitives::result::EVMError")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.associated
-                                                                                        ]
-                                                                                    ],
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "core::result::Result")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "core::convert::Infallible";
-                                                                                        Ty.apply
-                                                                                          (Ty.path
-                                                                                            "revm_primitives::result::EVMError")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.associated
-                                                                                          ]
-                                                                                      ]
-                                                                                  ],
-                                                                                  "from_residual",
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.read (|
-                                                                                    residual
-                                                                                  |)
-                                                                                ]
-                                                                              |)
-                                                                            |)
-                                                                          |)
-                                                                        |)
-                                                                      |)));
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      (let γ0_0 :=
-                                                                        M.SubPointer.get_struct_tuple_field (|
-                                                                          γ,
-                                                                          "core::ops::control_flow::ControlFlow::Continue",
-                                                                          0
-                                                                        |) in
-                                                                      let val :=
-                                                                        M.copy (| γ0_0 |) in
-                                                                      val))
-                                                                ]
-                                                              |)
-                                                            |)
-                                                          ]
-                                                      |)));
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ0_0 :=
-                                                        M.SubPointer.get_struct_tuple_field (|
-                                                          γ,
-                                                          "revm::frame::Frame::Create",
-                                                          0
-                                                        |) in
-                                                      let frame := M.copy (| γ0_0 |) in
-                                                      M.alloc (|
-                                                        Value.StructTuple
-                                                          "revm::frame::FrameResult::Create"
-                                                          [
-                                                            M.read (|
-                                                              M.match_operator (|
-                                                                M.alloc (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::try_trait::Try",
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::result::Result")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "revm_interpreter::interpreter_action::create_outcome::CreateOutcome";
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "revm_primitives::result::EVMError")
-                                                                            []
-                                                                            [ Ty.associated ]
-                                                                        ],
-                                                                      [],
-                                                                      "branch",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "revm::handler::handle_types::execution::ExecutionHandler")
-                                                                            []
-                                                                            [ EXT; DB ],
-                                                                          "create_return",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.read (| exec |);
-                                                                          M.read (| ctx |);
-                                                                          M.read (| frame |);
-                                                                          M.read (| result |)
-                                                                        ]
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                |),
-                                                                [
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      (let γ0_0 :=
-                                                                        M.SubPointer.get_struct_tuple_field (|
-                                                                          γ,
-                                                                          "core::ops::control_flow::ControlFlow::Break",
-                                                                          0
-                                                                        |) in
-                                                                      let residual :=
-                                                                        M.copy (| γ0_0 |) in
-                                                                      M.alloc (|
-                                                                        M.never_to_any (|
-                                                                          M.read (|
-                                                                            M.return_ (|
-                                                                              M.call_closure (|
-                                                                                M.get_trait_method (|
-                                                                                  "core::ops::try_trait::FromResidual",
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "core::result::Result")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "revm::frame::FrameResult";
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "revm_primitives::result::EVMError")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.associated
-                                                                                        ]
-                                                                                    ],
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "core::result::Result")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "core::convert::Infallible";
-                                                                                        Ty.apply
-                                                                                          (Ty.path
-                                                                                            "revm_primitives::result::EVMError")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.associated
-                                                                                          ]
-                                                                                      ]
-                                                                                  ],
-                                                                                  "from_residual",
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.read (|
-                                                                                    residual
-                                                                                  |)
-                                                                                ]
-                                                                              |)
-                                                                            |)
-                                                                          |)
-                                                                        |)
-                                                                      |)));
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      (let γ0_0 :=
-                                                                        M.SubPointer.get_struct_tuple_field (|
-                                                                          γ,
-                                                                          "core::ops::control_flow::ControlFlow::Continue",
-                                                                          0
-                                                                        |) in
-                                                                      let val :=
-                                                                        M.copy (| γ0_0 |) in
-                                                                      val))
-                                                                ]
-                                                              |)
-                                                            |)
-                                                          ]
-                                                      |)));
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ0_0 :=
-                                                        M.SubPointer.get_struct_tuple_field (|
-                                                          γ,
-                                                          "revm::frame::Frame::EOFCreate",
-                                                          0
-                                                        |) in
-                                                      let frame := M.copy (| γ0_0 |) in
-                                                      M.alloc (|
-                                                        Value.StructTuple
-                                                          "revm::frame::FrameResult::EOFCreate"
-                                                          [
-                                                            M.read (|
-                                                              M.match_operator (|
-                                                                M.alloc (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::try_trait::Try",
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::result::Result")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "revm_interpreter::interpreter_action::eof_create_outcome::EOFCreateOutcome";
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "revm_primitives::result::EVMError")
-                                                                            []
-                                                                            [ Ty.associated ]
-                                                                        ],
-                                                                      [],
-                                                                      "branch",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "revm::handler::handle_types::execution::ExecutionHandler")
-                                                                            []
-                                                                            [ EXT; DB ],
-                                                                          "eofcreate_return",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.read (| exec |);
-                                                                          M.read (| ctx |);
-                                                                          M.read (| frame |);
-                                                                          M.read (| result |)
-                                                                        ]
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                |),
-                                                                [
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      (let γ0_0 :=
-                                                                        M.SubPointer.get_struct_tuple_field (|
-                                                                          γ,
-                                                                          "core::ops::control_flow::ControlFlow::Break",
-                                                                          0
-                                                                        |) in
-                                                                      let residual :=
-                                                                        M.copy (| γ0_0 |) in
-                                                                      M.alloc (|
-                                                                        M.never_to_any (|
-                                                                          M.read (|
-                                                                            M.return_ (|
-                                                                              M.call_closure (|
-                                                                                M.get_trait_method (|
-                                                                                  "core::ops::try_trait::FromResidual",
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "core::result::Result")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "revm::frame::FrameResult";
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "revm_primitives::result::EVMError")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.associated
-                                                                                        ]
-                                                                                    ],
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "core::result::Result")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "core::convert::Infallible";
-                                                                                        Ty.apply
-                                                                                          (Ty.path
-                                                                                            "revm_primitives::result::EVMError")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.associated
-                                                                                          ]
-                                                                                      ]
-                                                                                  ],
-                                                                                  "from_residual",
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.read (|
-                                                                                    residual
-                                                                                  |)
-                                                                                ]
-                                                                              |)
-                                                                            |)
-                                                                          |)
-                                                                        |)
-                                                                      |)));
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      (let γ0_0 :=
-                                                                        M.SubPointer.get_struct_tuple_field (|
-                                                                          γ,
-                                                                          "core::ops::control_flow::ControlFlow::Continue",
-                                                                          0
-                                                                        |) in
-                                                                      let val :=
-                                                                        M.copy (| γ0_0 |) in
-                                                                      val))
-                                                                ]
-                                                              |)
-                                                            |)
-                                                          ]
-                                                      |)))
-                                                ]
-                                              |)
-                                            |)
-                                          ]
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let _ :=
-                                        M.is_struct_tuple (|
-                                          γ,
-                                          "revm_interpreter::interpreter_action::InterpreterAction::None"
-                                        |) in
-                                      M.alloc (|
-                                        M.never_to_any (|
-                                          M.call_closure (|
-                                            M.get_function (| "core::panicking::panic_fmt", [] |),
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::Arguments",
-                                                  "new_v1",
-                                                  []
-                                                |),
-                                                [
-                                                  M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (|
-                                                          Value.String
-                                                            "internal error: entered unreachable code: InterpreterAction::None is not expected"
-                                                        |)
-                                                      ]
-                                                  |);
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::rt::Argument",
-                                                        "none",
-                                                        []
-                                                      |),
-                                                      []
-                                                    |)
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
-                                          |)
-                                        |)
-                                      |)))
-                                ]
-                              |)
-                            |) in
-                          M.match_operator (|
-                            frame_or_result,
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "revm::frame::FrameOrResult::Frame",
-                                      0
-                                    |) in
-                                  let frame := M.copy (| γ0_0 |) in
-                                  let~ _ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path
-                                            "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                                          "new_context",
-                                          []
-                                        |),
-                                        [ shared_memory ]
-                                      |)
-                                    |) in
-                                  let~ _ :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "alloc::vec::Vec")
-                                            []
-                                            [
-                                              Ty.path "revm::frame::Frame";
-                                              Ty.path "alloc::alloc::Global"
-                                            ],
-                                          "push",
-                                          []
-                                        |),
-                                        [ call_stack; M.read (| frame |) ]
-                                      |)
-                                    |) in
-                                  let~ _ :=
-                                    M.write (|
-                                      stack_frame,
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&mut")
-                                                []
-                                                [ Ty.path "revm::frame::Frame" ]
-                                            ],
-                                          "unwrap",
-                                          []
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "slice")
-                                                []
-                                                [ Ty.path "revm::frame::Frame" ],
-                                              "last_mut",
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::ops::deref::DerefMut",
-                                                  Ty.apply
-                                                    (Ty.path "alloc::vec::Vec")
-                                                    []
-                                                    [
-                                                      Ty.path "revm::frame::Frame";
-                                                      Ty.path "alloc::alloc::Global"
-                                                    ],
-                                                  [],
-                                                  "deref_mut",
-                                                  []
-                                                |),
-                                                [ call_stack ]
-                                              |)
-                                            ]
-                                          |)
-                                        ]
-                                      |)
-                                    |) in
-                                  M.alloc (| Value.Tuple [] |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "revm::frame::FrameOrResult::Result",
-                                      0
-                                    |) in
-                                  let result := M.copy (| γ0_0 |) in
-                                  M.match_operator (|
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "slice")
-                                            []
-                                            [ Ty.path "revm::frame::Frame" ],
-                                          "last_mut",
-                                          []
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::DerefMut",
-                                              Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
-                                                []
-                                                [
-                                                  Ty.path "revm::frame::Frame";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ],
-                                              [],
-                                              "deref_mut",
-                                              []
-                                            |),
-                                            [ call_stack ]
-                                          |)
-                                        ]
-                                      |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::option::Option::Some",
-                                              0
-                                            |) in
-                                          let top_frame := M.copy (| γ0_0 |) in
-                                          let~ _ :=
-                                            M.write (| stack_frame, M.read (| top_frame |) |) in
-                                          let~ ctx :=
-                                            M.alloc (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "revm::evm::Evm",
-                                                "context"
-                                              |)
-                                            |) in
-                                          M.match_operator (|
-                                            result,
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ0_0 :=
-                                                    M.SubPointer.get_struct_tuple_field (|
-                                                      γ,
-                                                      "revm::frame::FrameResult::Call",
-                                                      0
-                                                    |) in
-                                                  let outcome := M.copy (| γ0_0 |) in
-                                                  M.match_operator (|
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::Try",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.tuple [];
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "revm_primitives::result::EVMError")
-                                                                []
-                                                                [ Ty.associated ]
-                                                            ],
-                                                          [],
-                                                          "branch",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "revm::handler::handle_types::execution::ExecutionHandler")
-                                                                []
-                                                                [ EXT; DB ],
-                                                              "insert_call_outcome",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (| exec |);
-                                                              M.read (| ctx |);
-                                                              M.read (| stack_frame |);
-                                                              shared_memory;
-                                                              M.read (| outcome |)
-                                                            ]
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Break",
-                                                              0
-                                                            |) in
-                                                          let residual := M.copy (| γ0_0 |) in
-                                                          M.alloc (|
-                                                            M.never_to_any (|
-                                                              M.read (|
-                                                                M.return_ (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::try_trait::FromResidual",
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::result::Result")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "revm::frame::FrameResult";
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "revm_primitives::result::EVMError")
-                                                                            []
-                                                                            [ Ty.associated ]
-                                                                        ],
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::result::Result")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "core::convert::Infallible";
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "revm_primitives::result::EVMError")
-                                                                              []
-                                                                              [ Ty.associated ]
-                                                                          ]
-                                                                      ],
-                                                                      "from_residual",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| residual |) ]
-                                                                  |)
-                                                                |)
-                                                              |)
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Continue",
-                                                              0
-                                                            |) in
-                                                          let val := M.copy (| γ0_0 |) in
-                                                          val))
-                                                    ]
-                                                  |)));
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ0_0 :=
-                                                    M.SubPointer.get_struct_tuple_field (|
-                                                      γ,
-                                                      "revm::frame::FrameResult::Create",
-                                                      0
-                                                    |) in
-                                                  let outcome := M.copy (| γ0_0 |) in
-                                                  M.match_operator (|
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::Try",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.tuple [];
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "revm_primitives::result::EVMError")
-                                                                []
-                                                                [ Ty.associated ]
-                                                            ],
-                                                          [],
-                                                          "branch",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "revm::handler::handle_types::execution::ExecutionHandler")
-                                                                []
-                                                                [ EXT; DB ],
-                                                              "insert_create_outcome",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (| exec |);
-                                                              M.read (| ctx |);
-                                                              M.read (| stack_frame |);
-                                                              M.read (| outcome |)
-                                                            ]
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Break",
-                                                              0
-                                                            |) in
-                                                          let residual := M.copy (| γ0_0 |) in
-                                                          M.alloc (|
-                                                            M.never_to_any (|
-                                                              M.read (|
-                                                                M.return_ (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::try_trait::FromResidual",
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::result::Result")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "revm::frame::FrameResult";
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "revm_primitives::result::EVMError")
-                                                                            []
-                                                                            [ Ty.associated ]
-                                                                        ],
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::result::Result")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "core::convert::Infallible";
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "revm_primitives::result::EVMError")
-                                                                              []
-                                                                              [ Ty.associated ]
-                                                                          ]
-                                                                      ],
-                                                                      "from_residual",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| residual |) ]
-                                                                  |)
-                                                                |)
-                                                              |)
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Continue",
-                                                              0
-                                                            |) in
-                                                          let val := M.copy (| γ0_0 |) in
-                                                          val))
-                                                    ]
-                                                  |)));
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ0_0 :=
-                                                    M.SubPointer.get_struct_tuple_field (|
-                                                      γ,
-                                                      "revm::frame::FrameResult::EOFCreate",
-                                                      0
-                                                    |) in
-                                                  let outcome := M.copy (| γ0_0 |) in
-                                                  M.match_operator (|
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::Try",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.tuple [];
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "revm_primitives::result::EVMError")
-                                                                []
-                                                                [ Ty.associated ]
-                                                            ],
-                                                          [],
-                                                          "branch",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "revm::handler::handle_types::execution::ExecutionHandler")
-                                                                []
-                                                                [ EXT; DB ],
-                                                              "insert_eofcreate_outcome",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (| exec |);
-                                                              M.read (| ctx |);
-                                                              M.read (| stack_frame |);
-                                                              M.read (| outcome |)
-                                                            ]
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Break",
-                                                              0
-                                                            |) in
-                                                          let residual := M.copy (| γ0_0 |) in
-                                                          M.alloc (|
-                                                            M.never_to_any (|
-                                                              M.read (|
-                                                                M.return_ (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::try_trait::FromResidual",
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::result::Result")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "revm::frame::FrameResult";
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "revm_primitives::result::EVMError")
-                                                                            []
-                                                                            [ Ty.associated ]
-                                                                        ],
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::result::Result")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "core::convert::Infallible";
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "revm_primitives::result::EVMError")
-                                                                              []
-                                                                              [ Ty.associated ]
-                                                                          ]
-                                                                      ],
-                                                                      "from_residual",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| residual |) ]
-                                                                  |)
-                                                                |)
-                                                              |)
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Continue",
-                                                              0
-                                                            |) in
-                                                          let val := M.copy (| γ0_0 |) in
-                                                          val))
-                                                    ]
-                                                  |)))
-                                            ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)))
-                      |)
-                    |)
-                  |)
-                |)
-              |)))
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_run_the_loop :
-      forall (EXT DB : Ty.t),
-      M.IsAssociatedFunction (Self EXT DB) "run_the_loop" (run_the_loop EXT DB).
-    
-    (*
-        fn transact_preverified_inner(&mut self, initial_gas_spend: u64) -> EVMResult<DB::Error> {
-            let ctx = &mut self.context;
+            initial_gas_spend: u64,
+        ) -> Result<<POSTEXEC as PostExecutionHandler>::Output, ERROR> {
+            let context = &mut self.context;
             let pre_exec = self.handler.pre_execution();
     
-            // load access list and beneficiary if needed.
-            pre_exec.load_accounts(ctx)?;
+            // Load access list and beneficiary if needed.
+            pre_exec.load_accounts(context)?;
     
-            // load precompiles
-            let precompiles = pre_exec.load_precompiles();
-            ctx.evm.set_precompiles(precompiles);
+            // Deduce caller balance with its limit.
+            pre_exec.deduct_caller(context)?;
     
-            // deduce caller balance with its limit.
-            pre_exec.deduct_caller(ctx)?;
+            let gas_limit = context.tx().common_fields().gas_limit() - initial_gas_spend;
     
-            let gas_limit = ctx.evm.env.tx.gas_limit - initial_gas_spend;
+            // Apply EIP-7702 auth list.
+            let eip7702_gas_refund = pre_exec.apply_eip7702_auth_list(context)? as i64;
     
+            // Start execution
+    
+            //let instructions = self.handler.take_instruction_table();
             let exec = self.handler.execution();
-            // call inner handling of call/create
-            let first_frame_or_result = match ctx.evm.env.tx.transact_to {
-                TransactTo::Call(_) => exec.call(
-                    ctx,
-                    CallInputs::new_boxed(&ctx.evm.env.tx, gas_limit).unwrap(),
-                )?,
-                TransactTo::Create => exec.create(
-                    ctx,
-                    CreateInputs::new_boxed(&ctx.evm.env.tx, gas_limit).unwrap(),
-                )?,
+    
+            // Create first frame action
+            let first_frame = exec.init_first_frame(context, gas_limit)?;
+            let frame_result = match first_frame {
+                FrameOrResultGen::Frame(frame) => exec.run(context, frame)?,
+                FrameOrResultGen::Result(result) => result,
             };
     
-            // Starts the main running loop.
-            let mut result = match first_frame_or_result {
-                FrameOrResult::Frame(first_frame) => self.start_the_loop(first_frame)?,
-                FrameOrResult::Result(result) => result,
-            };
-    
-            let ctx = &mut self.context;
-    
-            // handle output of call/create calls.
-            self.handler
-                .execution()
-                .last_frame_return(ctx, &mut result)?;
+            let mut exec_result = exec.last_frame_result(context, frame_result)?;
     
             let post_exec = self.handler.post_execution();
+            // Calculate final refund and add EIP-7702 refund to gas.
+            post_exec.refund(context, &mut exec_result, eip7702_gas_refund);
             // Reimburse the caller
-            post_exec.reimburse_caller(ctx, result.gas())?;
+            post_exec.reimburse_caller(context, &mut exec_result)?;
             // Reward beneficiary
-            post_exec.reward_beneficiary(ctx, result.gas())?;
+            post_exec.reward_beneficiary(context, &mut exec_result)?;
             // Returns output of transaction.
-            post_exec.output(ctx, result)
+            post_exec.output(context, exec_result)
         }
     *)
     Definition transact_preverified_inner
-        (EXT DB : Ty.t)
+        (ERROR CTX VAL PREEXEC EXEC POSTEXEC : Ty.t)
         (ε : list Value.t)
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
-      let Self : Ty.t := Self EXT DB in
+      let Self : Ty.t := Self ERROR CTX VAL PREEXEC EXEC POSTEXEC in
       match ε, τ, α with
       | [], [], [ self; initial_gas_spend ] =>
         ltac:(M.monadic
@@ -4200,7 +1753,7 @@ Module evm.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ ctx :=
+                let~ context :=
                   M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -4211,11 +1764,13 @@ Module evm.
                 let~ pre_exec :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (|
+                      M.get_trait_method (|
+                        "revm_handler_interface::handler::Handler",
                         Ty.apply
-                          (Ty.path "revm::handler::Handler")
+                          (Ty.path "revm_handler::EthHandler")
                           []
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
+                          [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
+                        [],
                         "pre_execution",
                         []
                       |),
@@ -4234,32 +1789,21 @@ Module evm.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.tuple [];
-                              Ty.apply
-                                (Ty.path "revm_primitives::result::EVMError")
-                                []
-                                [ Ty.associated ]
-                            ],
+                          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
                           [],
                           "branch",
                           []
                         |),
                         [
                           M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path
-                                  "revm::handler::handle_types::pre_execution::PreExecutionHandler")
-                                []
-                                [ EXT; DB ],
+                            M.get_trait_method (|
+                              "revm_handler_interface::pre_execution::PreExecutionHandler",
+                              PREEXEC,
+                              [],
                               "load_accounts",
                               []
                             |),
-                            [ M.read (| pre_exec |); M.read (| ctx |) ]
+                            [ M.read (| pre_exec |); M.read (| context |) ]
                           |)
                         ]
                       |)
@@ -4284,24 +1828,12 @@ Module evm.
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
-                                        [
-                                          Ty.path "revm_primitives::result::ResultAndState";
-                                          Ty.apply
-                                            (Ty.path "revm_primitives::result::EVMError")
-                                            []
-                                            [ Ty.associated ]
-                                        ],
+                                        [ Ty.associated; ERROR ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
-                                          [
-                                            Ty.path "core::convert::Infallible";
-                                            Ty.apply
-                                              (Ty.path "revm_primitives::result::EVMError")
-                                              []
-                                              [ Ty.associated ]
-                                          ]
+                                          [ Ty.path "core::convert::Infallible"; ERROR ]
                                       ],
                                       "from_residual",
                                       []
@@ -4324,71 +1856,27 @@ Module evm.
                           val))
                     ]
                   |) in
-                let~ precompiles :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path
-                            "revm::handler::handle_types::pre_execution::PreExecutionHandler")
-                          []
-                          [ EXT; DB ],
-                        "load_precompiles",
-                        []
-                      |),
-                      [ M.read (| pre_exec |) ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
-                        "set_precompiles",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| ctx |),
-                          "revm::context::Context",
-                          "evm"
-                        |);
-                        M.read (| precompiles |)
-                      ]
-                    |)
-                  |) in
                 let~ _ :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.tuple [];
-                              Ty.apply
-                                (Ty.path "revm_primitives::result::EVMError")
-                                []
-                                [ Ty.associated ]
-                            ],
+                          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
                           [],
                           "branch",
                           []
                         |),
                         [
                           M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path
-                                  "revm::handler::handle_types::pre_execution::PreExecutionHandler")
-                                []
-                                [ EXT; DB ],
+                            M.get_trait_method (|
+                              "revm_handler_interface::pre_execution::PreExecutionHandler",
+                              PREEXEC,
+                              [],
                               "deduct_caller",
                               []
                             |),
-                            [ M.read (| pre_exec |); M.read (| ctx |) ]
+                            [ M.read (| pre_exec |); M.read (| context |) ]
                           |)
                         ]
                       |)
@@ -4413,24 +1901,12 @@ Module evm.
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
-                                        [
-                                          Ty.path "revm_primitives::result::ResultAndState";
-                                          Ty.apply
-                                            (Ty.path "revm_primitives::result::EVMError")
-                                            []
-                                            [ Ty.associated ]
-                                        ],
+                                        [ Ty.associated; ERROR ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
-                                          [
-                                            Ty.path "core::convert::Infallible";
-                                            Ty.apply
-                                              (Ty.path "revm_primitives::result::EVMError")
-                                              []
-                                              [ Ty.associated ]
-                                          ]
+                                          [ Ty.path "core::convert::Infallible"; ERROR ]
                                       ],
                                       "from_residual",
                                       []
@@ -4456,52 +1932,136 @@ Module evm.
                 let~ gas_limit :=
                   M.alloc (|
                     BinOp.Wrap.sub (|
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::deref::Deref",
-                                    Ty.apply
-                                      (Ty.path "revm::context::evm_context::EvmContext")
-                                      []
-                                      [ DB ],
-                                    [],
-                                    "deref",
-                                    []
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| ctx |),
-                                      "revm::context::Context",
-                                      "evm"
-                                    |)
-                                  ]
-                                |),
-                                "revm::context::inner_evm_context::InnerEvmContext",
-                                "env"
-                              |)
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "revm_context_interface::transaction::common::CommonTxFields",
+                          Ty.dyn
+                            [
+                              ("revm_context_interface::transaction::common::CommonTxFields::Trait",
+                                [])
+                            ],
+                          [],
+                          "gas_limit",
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "revm_context_interface::transaction::Transaction",
+                              Ty.associated,
+                              [],
+                              "common_fields",
+                              []
                             |),
-                            "revm_primitives::env::Env",
-                            "tx"
-                          |),
-                          "revm_primitives::env::TxEnv",
-                          "gas_limit"
-                        |)
+                            [
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "revm_context_interface::transaction::TransactionGetter",
+                                  Ty.apply (Ty.path "&mut") [] [ CTX ],
+                                  [],
+                                  "tx",
+                                  []
+                                |),
+                                [ context ]
+                              |)
+                            ]
+                          |)
+                        ]
                       |),
                       M.read (| initial_gas_spend |)
                     |)
                   |) in
+                let~ eip7702_gas_refund :=
+                  M.alloc (|
+                    M.rust_cast
+                      (M.read (|
+                        M.match_operator (|
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::try_trait::Try",
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "u64"; ERROR ],
+                                [],
+                                "branch",
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "revm_handler_interface::pre_execution::PreExecutionHandler",
+                                    PREEXEC,
+                                    [],
+                                    "apply_eip7702_auth_list",
+                                    []
+                                  |),
+                                  [ M.read (| pre_exec |); M.read (| context |) ]
+                                |)
+                              ]
+                            |)
+                          |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::ops::control_flow::ControlFlow::Break",
+                                    0
+                                  |) in
+                                let residual := M.copy (| γ0_0 |) in
+                                M.alloc (|
+                                  M.never_to_any (|
+                                    M.read (|
+                                      M.return_ (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::try_trait::FromResidual",
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.associated; ERROR ],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [ Ty.path "core::convert::Infallible"; ERROR ]
+                                            ],
+                                            "from_residual",
+                                            []
+                                          |),
+                                          [ M.read (| residual |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::ops::control_flow::ControlFlow::Continue",
+                                    0
+                                  |) in
+                                let val := M.copy (| γ0_0 |) in
+                                val))
+                          ]
+                        |)
+                      |))
+                  |) in
                 let~ exec :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (|
+                      M.get_trait_method (|
+                        "revm_handler_interface::handler::Handler",
                         Ty.apply
-                          (Ty.path "revm::handler::Handler")
+                          (Ty.path "revm_handler::EthHandler")
                           []
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
+                          [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
+                        [],
                         "execution",
                         []
                       |),
@@ -4514,41 +2074,41 @@ Module evm.
                       ]
                     |)
                   |) in
-                let~ first_frame_or_result :=
+                let~ first_frame :=
                   M.copy (|
                     M.match_operator (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.apply
-                                    (Ty.path "revm::context::evm_context::EvmContext")
-                                    []
-                                    [ DB ],
-                                  [],
-                                  "deref",
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::try_trait::Try",
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "revm_handler_interface::util::FrameOrResultGen")
                                   []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| ctx |),
-                                    "revm::context::Context",
-                                    "evm"
-                                  |)
-                                ]
-                              |),
-                              "revm::context::inner_evm_context::InnerEvmContext",
-                              "env"
-                            |)
+                                  [ Ty.associated; Ty.path "revm_handler::frame_data::FrameResult"
+                                  ];
+                                ERROR
+                              ],
+                            [],
+                            "branch",
+                            []
                           |),
-                          "revm_primitives::env::Env",
-                          "tx"
-                        |),
-                        "revm_primitives::env::TxEnv",
-                        "transact_to"
+                          [
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "revm_handler_interface::execution::ExecutionHandler",
+                                EXEC,
+                                [],
+                                "init_first_frame",
+                                []
+                              |),
+                              [ M.read (| exec |); M.read (| context |); M.read (| gas_limit |) ]
+                            |)
+                          ]
+                        |)
                       |),
                       [
                         fun γ =>
@@ -4556,357 +2116,63 @@ Module evm.
                             (let γ0_0 :=
                               M.SubPointer.get_struct_tuple_field (|
                                 γ,
-                                "revm_primitives::env::TransactTo::Call",
+                                "core::ops::control_flow::ControlFlow::Break",
                                 0
                               |) in
-                            M.match_operator (|
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::try_trait::Try",
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "revm::frame::FrameOrResult";
-                                        Ty.apply
-                                          (Ty.path "revm_primitives::result::EVMError")
-                                          []
-                                          [ Ty.associated ]
-                                      ],
-                                    [],
-                                    "branch",
-                                    []
-                                  |),
-                                  [
+                            let residual := M.copy (| γ0_0 |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  M.return_ (|
                                     M.call_closure (|
-                                      M.get_associated_function (|
+                                      M.get_trait_method (|
+                                        "core::ops::try_trait::FromResidual",
                                         Ty.apply
-                                          (Ty.path
-                                            "revm::handler::handle_types::execution::ExecutionHandler")
+                                          (Ty.path "core::result::Result")
                                           []
-                                          [ EXT; DB ],
-                                        "call",
+                                          [ Ty.associated; ERROR ],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.path "core::convert::Infallible"; ERROR ]
+                                        ],
+                                        "from_residual",
                                         []
                                       |),
-                                      [
-                                        M.read (| exec |);
-                                        M.read (| ctx |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::boxed::Box")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ]
-                                              ],
-                                            "unwrap",
-                                            []
-                                          |),
-                                          [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                                                "new_boxed",
-                                                []
-                                              |),
-                                              [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::deref::Deref",
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "revm::context::evm_context::EvmContext")
-                                                            []
-                                                            [ DB ],
-                                                          [],
-                                                          "deref",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| ctx |),
-                                                            "revm::context::Context",
-                                                            "evm"
-                                                          |)
-                                                        ]
-                                                      |),
-                                                      "revm::context::inner_evm_context::InnerEvmContext",
-                                                      "env"
-                                                    |)
-                                                  |),
-                                                  "revm_primitives::env::Env",
-                                                  "tx"
-                                                |);
-                                                M.read (| gas_limit |)
-                                              ]
-                                            |)
-                                          ]
-                                        |)
-                                      ]
+                                      [ M.read (| residual |) ]
                                     |)
-                                  ]
+                                  |)
                                 |)
-                              |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::ops::control_flow::ControlFlow::Break",
-                                        0
-                                      |) in
-                                    let residual := M.copy (| γ0_0 |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.read (|
-                                          M.return_ (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::try_trait::FromResidual",
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "revm_primitives::result::ResultAndState";
-                                                    Ty.apply
-                                                      (Ty.path "revm_primitives::result::EVMError")
-                                                      []
-                                                      [ Ty.associated ]
-                                                  ],
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "core::convert::Infallible";
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "revm_primitives::result::EVMError")
-                                                        []
-                                                        [ Ty.associated ]
-                                                    ]
-                                                ],
-                                                "from_residual",
-                                                []
-                                              |),
-                                              [ M.read (| residual |) ]
-                                            |)
-                                          |)
-                                        |)
-                                      |)
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::ops::control_flow::ControlFlow::Continue",
-                                        0
-                                      |) in
-                                    let val := M.copy (| γ0_0 |) in
-                                    val))
-                              ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let _ :=
-                              M.is_struct_tuple (|
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
-                                "revm_primitives::env::TransactTo::Create"
+                                "core::ops::control_flow::ControlFlow::Continue",
+                                0
                               |) in
-                            M.match_operator (|
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::try_trait::Try",
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "revm::frame::FrameOrResult";
-                                        Ty.apply
-                                          (Ty.path "revm_primitives::result::EVMError")
-                                          []
-                                          [ Ty.associated ]
-                                      ],
-                                    [],
-                                    "branch",
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path
-                                            "revm::handler::handle_types::execution::ExecutionHandler")
-                                          []
-                                          [ EXT; DB ],
-                                        "create",
-                                        []
-                                      |),
-                                      [
-                                        M.read (| exec |);
-                                        M.read (| ctx |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::boxed::Box")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ]
-                                              ],
-                                            "unwrap",
-                                            []
-                                          |),
-                                          [
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                                                "new_boxed",
-                                                []
-                                              |),
-                                              [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::deref::Deref",
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "revm::context::evm_context::EvmContext")
-                                                            []
-                                                            [ DB ],
-                                                          [],
-                                                          "deref",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| ctx |),
-                                                            "revm::context::Context",
-                                                            "evm"
-                                                          |)
-                                                        ]
-                                                      |),
-                                                      "revm::context::inner_evm_context::InnerEvmContext",
-                                                      "env"
-                                                    |)
-                                                  |),
-                                                  "revm_primitives::env::Env",
-                                                  "tx"
-                                                |);
-                                                M.read (| gas_limit |)
-                                              ]
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                    |)
-                                  ]
-                                |)
-                              |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::ops::control_flow::ControlFlow::Break",
-                                        0
-                                      |) in
-                                    let residual := M.copy (| γ0_0 |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.read (|
-                                          M.return_ (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::try_trait::FromResidual",
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "revm_primitives::result::ResultAndState";
-                                                    Ty.apply
-                                                      (Ty.path "revm_primitives::result::EVMError")
-                                                      []
-                                                      [ Ty.associated ]
-                                                  ],
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "core::convert::Infallible";
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "revm_primitives::result::EVMError")
-                                                        []
-                                                        [ Ty.associated ]
-                                                    ]
-                                                ],
-                                                "from_residual",
-                                                []
-                                              |),
-                                              [ M.read (| residual |) ]
-                                            |)
-                                          |)
-                                        |)
-                                      |)
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::ops::control_flow::ControlFlow::Continue",
-                                        0
-                                      |) in
-                                    let val := M.copy (| γ0_0 |) in
-                                    val))
-                              ]
-                            |)))
+                            let val := M.copy (| γ0_0 |) in
+                            val))
                       ]
                     |)
                   |) in
-                let~ result :=
+                let~ frame_result :=
                   M.copy (|
                     M.match_operator (|
-                      first_frame_or_result,
+                      first_frame,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
                               M.SubPointer.get_struct_tuple_field (|
                                 γ,
-                                "revm::frame::FrameOrResult::Frame",
+                                "revm_handler_interface::util::FrameOrResultGen::Frame",
                                 0
                               |) in
-                            let first_frame := M.copy (| γ0_0 |) in
+                            let frame := M.copy (| γ0_0 |) in
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
@@ -4915,25 +2181,22 @@ Module evm.
                                     Ty.apply
                                       (Ty.path "core::result::Result")
                                       []
-                                      [
-                                        Ty.path "revm::frame::FrameResult";
-                                        Ty.apply
-                                          (Ty.path "revm_primitives::result::EVMError")
-                                          []
-                                          [ Ty.associated ]
-                                      ],
+                                      [ Ty.path "revm_handler::frame_data::FrameResult"; ERROR ],
                                     [],
                                     "branch",
                                     []
                                   |),
                                   [
                                     M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
-                                        "start_the_loop",
+                                      M.get_trait_method (|
+                                        "revm_handler_interface::execution::ExecutionHandler",
+                                        EXEC,
+                                        [],
+                                        "run",
                                         []
                                       |),
-                                      [ M.read (| self |); M.read (| first_frame |) ]
+                                      [ M.read (| exec |); M.read (| context |); M.read (| frame |)
+                                      ]
                                     |)
                                   ]
                                 |)
@@ -4958,26 +2221,12 @@ Module evm.
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
-                                                  [
-                                                    Ty.path
-                                                      "revm_primitives::result::ResultAndState";
-                                                    Ty.apply
-                                                      (Ty.path "revm_primitives::result::EVMError")
-                                                      []
-                                                      [ Ty.associated ]
-                                                  ],
+                                                  [ Ty.associated; ERROR ],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
                                                     []
-                                                    [
-                                                      Ty.path "core::convert::Infallible";
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "revm_primitives::result::EVMError")
-                                                        []
-                                                        [ Ty.associated ]
-                                                    ]
+                                                    [ Ty.path "core::convert::Infallible"; ERROR ]
                                                 ],
                                                 "from_residual",
                                                 []
@@ -5005,7 +2254,7 @@ Module evm.
                             (let γ0_0 :=
                               M.SubPointer.get_struct_tuple_field (|
                                 γ,
-                                "revm::frame::FrameOrResult::Result",
+                                "revm_handler_interface::util::FrameOrResultGen::Result",
                                 0
                               |) in
                             let result := M.copy (| γ0_0 |) in
@@ -5013,137 +2262,94 @@ Module evm.
                       ]
                     |)
                   |) in
-                let~ ctx :=
-                  M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::evm::Evm",
-                      "context"
-                    |)
-                  |) in
-                let~ _ :=
-                  M.match_operator (|
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::try_trait::Try",
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.tuple [];
-                              Ty.apply
-                                (Ty.path "revm_primitives::result::EVMError")
-                                []
-                                [ Ty.associated ]
-                            ],
-                          [],
-                          "branch",
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "revm::handler::handle_types::execution::ExecutionHandler")
-                                []
-                                [ EXT; DB ],
-                              "last_frame_return",
+                let~ exec_result :=
+                  M.copy (|
+                    M.match_operator (|
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::try_trait::Try",
+                            Ty.apply
+                              (Ty.path "core::result::Result")
                               []
-                            |),
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "revm::handler::Handler")
-                                    []
-                                    [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
-                                  "execution",
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "revm::evm::Evm",
-                                    "handler"
-                                  |)
-                                ]
-                              |);
-                              M.read (| ctx |);
-                              result
-                            ]
-                          |)
-                        ]
-                      |)
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::ops::control_flow::ControlFlow::Break",
-                              0
-                            |) in
-                          let residual := M.copy (| γ0_0 |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::try_trait::FromResidual",
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.path "revm_primitives::result::ResultAndState";
-                                          Ty.apply
-                                            (Ty.path "revm_primitives::result::EVMError")
-                                            []
-                                            [ Ty.associated ]
-                                        ],
-                                      [
+                              [ Ty.path "revm_handler::frame_data::FrameResult"; ERROR ],
+                            [],
+                            "branch",
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "revm_handler_interface::execution::ExecutionHandler",
+                                EXEC,
+                                [],
+                                "last_frame_result",
+                                []
+                              |),
+                              [ M.read (| exec |); M.read (| context |); M.read (| frame_result |) ]
+                            |)
+                          ]
+                        |)
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::ops::control_flow::ControlFlow::Break",
+                                0
+                              |) in
+                            let residual := M.copy (| γ0_0 |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  M.return_ (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
-                                          [
-                                            Ty.path "core::convert::Infallible";
-                                            Ty.apply
-                                              (Ty.path "revm_primitives::result::EVMError")
-                                              []
-                                              [ Ty.associated ]
-                                          ]
-                                      ],
-                                      "from_residual",
-                                      []
-                                    |),
-                                    [ M.read (| residual |) ]
+                                          [ Ty.associated; ERROR ],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.path "core::convert::Infallible"; ERROR ]
+                                        ],
+                                        "from_residual",
+                                        []
+                                      |),
+                                      [ M.read (| residual |) ]
+                                    |)
                                   |)
                                 |)
                               |)
-                            |)
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::ops::control_flow::ControlFlow::Continue",
-                              0
-                            |) in
-                          let val := M.copy (| γ0_0 |) in
-                          val))
-                    ]
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::ops::control_flow::ControlFlow::Continue",
+                                0
+                              |) in
+                            let val := M.copy (| γ0_0 |) in
+                            val))
+                      ]
+                    |)
                   |) in
                 let~ post_exec :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (|
+                      M.get_trait_method (|
+                        "revm_handler_interface::handler::Handler",
                         Ty.apply
-                          (Ty.path "revm::handler::Handler")
+                          (Ty.path "revm_handler::EthHandler")
                           []
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
+                          [ CTX; ERROR; VAL; PREEXEC; EXEC; POSTEXEC ],
+                        [],
                         "post_execution",
                         []
                       |),
@@ -5157,48 +2363,44 @@ Module evm.
                     |)
                   |) in
                 let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "revm_handler_interface::post_execution::PostExecutionHandler",
+                        POSTEXEC,
+                        [],
+                        "refund",
+                        []
+                      |),
+                      [
+                        M.read (| post_exec |);
+                        M.read (| context |);
+                        exec_result;
+                        M.read (| eip7702_gas_refund |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.tuple [];
-                              Ty.apply
-                                (Ty.path "revm_primitives::result::EVMError")
-                                []
-                                [ Ty.associated ]
-                            ],
+                          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
                           [],
                           "branch",
                           []
                         |),
                         [
                           M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path
-                                  "revm::handler::handle_types::post_execution::PostExecutionHandler")
-                                []
-                                [ EXT; DB ],
+                            M.get_trait_method (|
+                              "revm_handler_interface::post_execution::PostExecutionHandler",
+                              POSTEXEC,
+                              [],
                               "reimburse_caller",
                               []
                             |),
-                            [
-                              M.read (| post_exec |);
-                              M.read (| ctx |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "revm::frame::FrameResult",
-                                  "gas",
-                                  []
-                                |),
-                                [ result ]
-                              |)
-                            ]
+                            [ M.read (| post_exec |); M.read (| context |); exec_result ]
                           |)
                         ]
                       |)
@@ -5223,24 +2425,12 @@ Module evm.
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
-                                        [
-                                          Ty.path "revm_primitives::result::ResultAndState";
-                                          Ty.apply
-                                            (Ty.path "revm_primitives::result::EVMError")
-                                            []
-                                            [ Ty.associated ]
-                                        ],
+                                        [ Ty.associated; ERROR ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
-                                          [
-                                            Ty.path "core::convert::Infallible";
-                                            Ty.apply
-                                              (Ty.path "revm_primitives::result::EVMError")
-                                              []
-                                              [ Ty.associated ]
-                                          ]
+                                          [ Ty.path "core::convert::Infallible"; ERROR ]
                                       ],
                                       "from_residual",
                                       []
@@ -5269,43 +2459,21 @@ Module evm.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.tuple [];
-                              Ty.apply
-                                (Ty.path "revm_primitives::result::EVMError")
-                                []
-                                [ Ty.associated ]
-                            ],
+                          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
                           [],
                           "branch",
                           []
                         |),
                         [
                           M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path
-                                  "revm::handler::handle_types::post_execution::PostExecutionHandler")
-                                []
-                                [ EXT; DB ],
+                            M.get_trait_method (|
+                              "revm_handler_interface::post_execution::PostExecutionHandler",
+                              POSTEXEC,
+                              [],
                               "reward_beneficiary",
                               []
                             |),
-                            [
-                              M.read (| post_exec |);
-                              M.read (| ctx |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "revm::frame::FrameResult",
-                                  "gas",
-                                  []
-                                |),
-                                [ result ]
-                              |)
-                            ]
+                            [ M.read (| post_exec |); M.read (| context |); exec_result ]
                           |)
                         ]
                       |)
@@ -5330,24 +2498,12 @@ Module evm.
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
-                                        [
-                                          Ty.path "revm_primitives::result::ResultAndState";
-                                          Ty.apply
-                                            (Ty.path "revm_primitives::result::EVMError")
-                                            []
-                                            [ Ty.associated ]
-                                        ],
+                                        [ Ty.associated; ERROR ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
-                                          [
-                                            Ty.path "core::convert::Infallible";
-                                            Ty.apply
-                                              (Ty.path "revm_primitives::result::EVMError")
-                                              []
-                                              [ Ty.associated ]
-                                          ]
+                                          [ Ty.path "core::convert::Infallible"; ERROR ]
                                       ],
                                       "from_residual",
                                       []
@@ -5372,16 +2528,14 @@ Module evm.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path
-                          "revm::handler::handle_types::post_execution::PostExecutionHandler")
-                        []
-                        [ EXT; DB ],
+                    M.get_trait_method (|
+                      "revm_handler_interface::post_execution::PostExecutionHandler",
+                      POSTEXEC,
+                      [],
                       "output",
                       []
                     |),
-                    [ M.read (| post_exec |); M.read (| ctx |); M.read (| result |) ]
+                    [ M.read (| post_exec |); M.read (| context |); M.read (| exec_result |) ]
                   |)
                 |)
               |)))
@@ -5390,1560 +2544,10 @@ Module evm.
       end.
     
     Axiom AssociatedFunction_transact_preverified_inner :
-      forall (EXT DB : Ty.t),
+      forall (ERROR CTX VAL PREEXEC EXEC POSTEXEC : Ty.t),
       M.IsAssociatedFunction
-        (Self EXT DB)
+        (Self ERROR CTX VAL PREEXEC EXEC POSTEXEC)
         "transact_preverified_inner"
-        (transact_preverified_inner EXT DB).
-  End Impl_revm_evm_Evm_EXT_DB.
-  
-  Module Impl_revm_evm_Evm_Tuple__revm_db_emptydb_EmptyDBTyped_core_convert_Infallible.
-    Definition Self : Ty.t :=
-      Ty.apply
-        (Ty.path "revm::evm::Evm")
-        []
-        [
-          Ty.tuple [];
-          Ty.apply
-            (Ty.path "revm::db::emptydb::EmptyDBTyped")
-            []
-            [ Ty.path "core::convert::Infallible" ]
-        ].
-    
-    (*
-        pub fn builder() -> EvmBuilder<'a, SetGenericStage, (), EmptyDB> {
-            EvmBuilder::default()
-        }
-    *)
-    Definition builder (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [] =>
-        ltac:(M.monadic
-          (M.call_closure (|
-            M.get_trait_method (|
-              "core::default::Default",
-              Ty.apply
-                (Ty.path "revm::builder::EvmBuilder")
-                []
-                [
-                  Ty.path "revm::builder::SetGenericStage";
-                  Ty.tuple [];
-                  Ty.apply
-                    (Ty.path "revm::db::emptydb::EmptyDBTyped")
-                    []
-                    [ Ty.path "core::convert::Infallible" ]
-                ],
-              [],
-              "default",
-              []
-            |),
-            []
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_builder : M.IsAssociatedFunction Self "builder" builder.
-  End Impl_revm_evm_Evm_Tuple__revm_db_emptydb_EmptyDBTyped_core_convert_Infallible.
-  
-  
-  
-  Module Impl_revm_interpreter_host_Host_where_revm_primitives_db_Database_DB_for_revm_evm_Evm_EXT_DB.
-    Definition Self (EXT DB : Ty.t) : Ty.t := Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ].
-    
-    (*
-        fn env(&self) -> &Env {
-            &self.context.evm.env
-        }
-    *)
-    Definition env (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (|
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
-                  [],
-                  "deref",
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::evm::Evm",
-                      "context"
-                    |),
-                    "revm::context::Context",
-                    "evm"
-                  |)
-                ]
-              |),
-              "revm::context::inner_evm_context::InnerEvmContext",
-              "env"
-            |)
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    (*
-        fn env_mut(&mut self) -> &mut Env {
-            &mut self.context.evm.env
-        }
-    *)
-    Definition env_mut (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (|
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::DerefMut",
-                  Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
-                  [],
-                  "deref_mut",
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::evm::Evm",
-                      "context"
-                    |),
-                    "revm::context::Context",
-                    "evm"
-                  |)
-                ]
-              |),
-              "revm::context::inner_evm_context::InnerEvmContext",
-              "env"
-            |)
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    (*
-        fn block_hash(&mut self, number: U256) -> Option<B256> {
-            self.context
-                .evm
-                .block_hash(number)
-                .map_err(|e| self.context.evm.error = Err(e))
-                .ok()
-        }
-    *)
-    Definition block_hash
-        (EXT DB : Ty.t)
-        (ε : list Value.t)
-        (τ : list Ty.t)
-        (α : list Value.t)
-        : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self; number ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let number := M.alloc (| number |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply
-                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                    [ Value.Integer IntegerKind.Usize 32 ]
-                    [];
-                  Ty.tuple []
-                ],
-              "ok",
-              []
-            |),
-            [
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                        [ Value.Integer IntegerKind.Usize 32 ]
-                        [];
-                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ]
-                    ],
-                  "map_err",
-                  [
-                    Ty.tuple [];
-                    Ty.function
-                      [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "revm_primitives::result::EVMError")
-                              []
-                              [ Ty.associated ]
-                          ]
-                      ]
-                      (Ty.tuple [])
-                  ]
-                |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
-                        []
-                        [ DB ],
-                      "block_hash",
-                      []
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
-                          [],
-                          "deref_mut",
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm::evm::Evm",
-                              "context"
-                            |),
-                            "revm::context::Context",
-                            "evm"
-                          |)
-                        ]
-                      |);
-                      M.read (| number |)
-                    ]
-                  |);
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let e := M.copy (| γ |) in
-                                    M.read (|
-                                      M.write (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::DerefMut",
-                                              Ty.apply
-                                                (Ty.path "revm::context::evm_context::EvmContext")
-                                                []
-                                                [ DB ],
-                                              [],
-                                              "deref_mut",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "revm::evm::Evm",
-                                                  "context"
-                                                |),
-                                                "revm::context::Context",
-                                                "evm"
-                                              |)
-                                            ]
-                                          |),
-                                          "revm::context::inner_evm_context::InnerEvmContext",
-                                          "error"
-                                        |),
-                                        Value.StructTuple
-                                          "core::result::Result::Err"
-                                          [ M.read (| e |) ]
-                                      |)
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
-                ]
-              |)
-            ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    (*
-        fn load_account(&mut self, address: Address) -> Option<LoadAccountResult> {
-            self.context
-                .evm
-                .load_account_exist(address)
-                .map_err(|e| self.context.evm.error = Err(e))
-                .ok()
-        }
-    *)
-    Definition load_account
-        (EXT DB : Ty.t)
-        (ε : list Value.t)
-        (τ : list Ty.t)
-        (α : list Value.t)
-        : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self; address ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let address := M.alloc (| address |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.path "revm_interpreter::host::LoadAccountResult"; Ty.tuple [] ],
-              "ok",
-              []
-            |),
-            [
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.path "revm_interpreter::host::LoadAccountResult";
-                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ]
-                    ],
-                  "map_err",
-                  [
-                    Ty.tuple [];
-                    Ty.function
-                      [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "revm_primitives::result::EVMError")
-                              []
-                              [ Ty.associated ]
-                          ]
-                      ]
-                      (Ty.tuple [])
-                  ]
-                |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
-                        []
-                        [ DB ],
-                      "load_account_exist",
-                      []
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
-                          [],
-                          "deref_mut",
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm::evm::Evm",
-                              "context"
-                            |),
-                            "revm::context::Context",
-                            "evm"
-                          |)
-                        ]
-                      |);
-                      M.read (| address |)
-                    ]
-                  |);
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let e := M.copy (| γ |) in
-                                    M.read (|
-                                      M.write (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::DerefMut",
-                                              Ty.apply
-                                                (Ty.path "revm::context::evm_context::EvmContext")
-                                                []
-                                                [ DB ],
-                                              [],
-                                              "deref_mut",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "revm::evm::Evm",
-                                                  "context"
-                                                |),
-                                                "revm::context::Context",
-                                                "evm"
-                                              |)
-                                            ]
-                                          |),
-                                          "revm::context::inner_evm_context::InnerEvmContext",
-                                          "error"
-                                        |),
-                                        Value.StructTuple
-                                          "core::result::Result::Err"
-                                          [ M.read (| e |) ]
-                                      |)
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
-                ]
-              |)
-            ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    (*
-        fn balance(&mut self, address: Address) -> Option<(U256, bool)> {
-            self.context
-                .evm
-                .balance(address)
-                .map_err(|e| self.context.evm.error = Err(e))
-                .ok()
-        }
-    *)
-    Definition balance (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self; address ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let address := M.alloc (| address |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.tuple
-                    [
-                      Ty.apply
-                        (Ty.path "ruint::Uint")
-                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                        [];
-                      Ty.path "bool"
-                    ];
-                  Ty.tuple []
-                ],
-              "ok",
-              []
-            |),
-            [
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "ruint::Uint")
-                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
-                            ]
-                            [];
-                          Ty.path "bool"
-                        ];
-                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ]
-                    ],
-                  "map_err",
-                  [
-                    Ty.tuple [];
-                    Ty.function
-                      [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "revm_primitives::result::EVMError")
-                              []
-                              [ Ty.associated ]
-                          ]
-                      ]
-                      (Ty.tuple [])
-                  ]
-                |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
-                        []
-                        [ DB ],
-                      "balance",
-                      []
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
-                          [],
-                          "deref_mut",
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm::evm::Evm",
-                              "context"
-                            |),
-                            "revm::context::Context",
-                            "evm"
-                          |)
-                        ]
-                      |);
-                      M.read (| address |)
-                    ]
-                  |);
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let e := M.copy (| γ |) in
-                                    M.read (|
-                                      M.write (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::DerefMut",
-                                              Ty.apply
-                                                (Ty.path "revm::context::evm_context::EvmContext")
-                                                []
-                                                [ DB ],
-                                              [],
-                                              "deref_mut",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "revm::evm::Evm",
-                                                  "context"
-                                                |),
-                                                "revm::context::Context",
-                                                "evm"
-                                              |)
-                                            ]
-                                          |),
-                                          "revm::context::inner_evm_context::InnerEvmContext",
-                                          "error"
-                                        |),
-                                        Value.StructTuple
-                                          "core::result::Result::Err"
-                                          [ M.read (| e |) ]
-                                      |)
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
-                ]
-              |)
-            ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    (*
-        fn code(&mut self, address: Address) -> Option<(Bytecode, bool)> {
-            self.context
-                .evm
-                .code(address)
-                .map_err(|e| self.context.evm.error = Err(e))
-                .ok()
-        }
-    *)
-    Definition code (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self; address ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let address := M.alloc (| address |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.tuple [ Ty.path "revm_primitives::bytecode::Bytecode"; Ty.path "bool" ];
-                  Ty.tuple []
-                ],
-              "ok",
-              []
-            |),
-            [
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.tuple [ Ty.path "revm_primitives::bytecode::Bytecode"; Ty.path "bool" ];
-                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ]
-                    ],
-                  "map_err",
-                  [
-                    Ty.tuple [];
-                    Ty.function
-                      [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "revm_primitives::result::EVMError")
-                              []
-                              [ Ty.associated ]
-                          ]
-                      ]
-                      (Ty.tuple [])
-                  ]
-                |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
-                        []
-                        [ DB ],
-                      "code",
-                      []
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
-                          [],
-                          "deref_mut",
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm::evm::Evm",
-                              "context"
-                            |),
-                            "revm::context::Context",
-                            "evm"
-                          |)
-                        ]
-                      |);
-                      M.read (| address |)
-                    ]
-                  |);
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let e := M.copy (| γ |) in
-                                    M.read (|
-                                      M.write (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::DerefMut",
-                                              Ty.apply
-                                                (Ty.path "revm::context::evm_context::EvmContext")
-                                                []
-                                                [ DB ],
-                                              [],
-                                              "deref_mut",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "revm::evm::Evm",
-                                                  "context"
-                                                |),
-                                                "revm::context::Context",
-                                                "evm"
-                                              |)
-                                            ]
-                                          |),
-                                          "revm::context::inner_evm_context::InnerEvmContext",
-                                          "error"
-                                        |),
-                                        Value.StructTuple
-                                          "core::result::Result::Err"
-                                          [ M.read (| e |) ]
-                                      |)
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
-                ]
-              |)
-            ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    (*
-        fn code_hash(&mut self, address: Address) -> Option<(B256, bool)> {
-            self.context
-                .evm
-                .code_hash(address)
-                .map_err(|e| self.context.evm.error = Err(e))
-                .ok()
-        }
-    *)
-    Definition code_hash
-        (EXT DB : Ty.t)
-        (ε : list Value.t)
-        (τ : list Ty.t)
-        (α : list Value.t)
-        : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self; address ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let address := M.alloc (| address |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.tuple
-                    [
-                      Ty.apply
-                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                        [ Value.Integer IntegerKind.Usize 32 ]
-                        [];
-                      Ty.path "bool"
-                    ];
-                  Ty.tuple []
-                ],
-              "ok",
-              []
-            |),
-            [
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer IntegerKind.Usize 32 ]
-                            [];
-                          Ty.path "bool"
-                        ];
-                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ]
-                    ],
-                  "map_err",
-                  [
-                    Ty.tuple [];
-                    Ty.function
-                      [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "revm_primitives::result::EVMError")
-                              []
-                              [ Ty.associated ]
-                          ]
-                      ]
-                      (Ty.tuple [])
-                  ]
-                |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
-                        []
-                        [ DB ],
-                      "code_hash",
-                      []
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
-                          [],
-                          "deref_mut",
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm::evm::Evm",
-                              "context"
-                            |),
-                            "revm::context::Context",
-                            "evm"
-                          |)
-                        ]
-                      |);
-                      M.read (| address |)
-                    ]
-                  |);
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let e := M.copy (| γ |) in
-                                    M.read (|
-                                      M.write (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::DerefMut",
-                                              Ty.apply
-                                                (Ty.path "revm::context::evm_context::EvmContext")
-                                                []
-                                                [ DB ],
-                                              [],
-                                              "deref_mut",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "revm::evm::Evm",
-                                                  "context"
-                                                |),
-                                                "revm::context::Context",
-                                                "evm"
-                                              |)
-                                            ]
-                                          |),
-                                          "revm::context::inner_evm_context::InnerEvmContext",
-                                          "error"
-                                        |),
-                                        Value.StructTuple
-                                          "core::result::Result::Err"
-                                          [ M.read (| e |) ]
-                                      |)
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
-                ]
-              |)
-            ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    (*
-        fn sload(&mut self, address: Address, index: U256) -> Option<(U256, bool)> {
-            self.context
-                .evm
-                .sload(address, index)
-                .map_err(|e| self.context.evm.error = Err(e))
-                .ok()
-        }
-    *)
-    Definition sload (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self; address; index ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let address := M.alloc (| address |) in
-          let index := M.alloc (| index |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.tuple
-                    [
-                      Ty.apply
-                        (Ty.path "ruint::Uint")
-                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                        [];
-                      Ty.path "bool"
-                    ];
-                  Ty.tuple []
-                ],
-              "ok",
-              []
-            |),
-            [
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "ruint::Uint")
-                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
-                            ]
-                            [];
-                          Ty.path "bool"
-                        ];
-                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ]
-                    ],
-                  "map_err",
-                  [
-                    Ty.tuple [];
-                    Ty.function
-                      [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "revm_primitives::result::EVMError")
-                              []
-                              [ Ty.associated ]
-                          ]
-                      ]
-                      (Ty.tuple [])
-                  ]
-                |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
-                        []
-                        [ DB ],
-                      "sload",
-                      []
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
-                          [],
-                          "deref_mut",
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm::evm::Evm",
-                              "context"
-                            |),
-                            "revm::context::Context",
-                            "evm"
-                          |)
-                        ]
-                      |);
-                      M.read (| address |);
-                      M.read (| index |)
-                    ]
-                  |);
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let e := M.copy (| γ |) in
-                                    M.read (|
-                                      M.write (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::DerefMut",
-                                              Ty.apply
-                                                (Ty.path "revm::context::evm_context::EvmContext")
-                                                []
-                                                [ DB ],
-                                              [],
-                                              "deref_mut",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "revm::evm::Evm",
-                                                  "context"
-                                                |),
-                                                "revm::context::Context",
-                                                "evm"
-                                              |)
-                                            ]
-                                          |),
-                                          "revm::context::inner_evm_context::InnerEvmContext",
-                                          "error"
-                                        |),
-                                        Value.StructTuple
-                                          "core::result::Result::Err"
-                                          [ M.read (| e |) ]
-                                      |)
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
-                ]
-              |)
-            ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    (*
-        fn sstore(&mut self, address: Address, index: U256, value: U256) -> Option<SStoreResult> {
-            self.context
-                .evm
-                .sstore(address, index, value)
-                .map_err(|e| self.context.evm.error = Err(e))
-                .ok()
-        }
-    *)
-    Definition sstore (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self; address; index; value ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let address := M.alloc (| address |) in
-          let index := M.alloc (| index |) in
-          let value := M.alloc (| value |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.path "revm_interpreter::host::SStoreResult"; Ty.tuple [] ],
-              "ok",
-              []
-            |),
-            [
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.path "revm_interpreter::host::SStoreResult";
-                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ]
-                    ],
-                  "map_err",
-                  [
-                    Ty.tuple [];
-                    Ty.function
-                      [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "revm_primitives::result::EVMError")
-                              []
-                              [ Ty.associated ]
-                          ]
-                      ]
-                      (Ty.tuple [])
-                  ]
-                |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
-                        []
-                        [ DB ],
-                      "sstore",
-                      []
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
-                          [],
-                          "deref_mut",
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm::evm::Evm",
-                              "context"
-                            |),
-                            "revm::context::Context",
-                            "evm"
-                          |)
-                        ]
-                      |);
-                      M.read (| address |);
-                      M.read (| index |);
-                      M.read (| value |)
-                    ]
-                  |);
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let e := M.copy (| γ |) in
-                                    M.read (|
-                                      M.write (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::DerefMut",
-                                              Ty.apply
-                                                (Ty.path "revm::context::evm_context::EvmContext")
-                                                []
-                                                [ DB ],
-                                              [],
-                                              "deref_mut",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "revm::evm::Evm",
-                                                  "context"
-                                                |),
-                                                "revm::context::Context",
-                                                "evm"
-                                              |)
-                                            ]
-                                          |),
-                                          "revm::context::inner_evm_context::InnerEvmContext",
-                                          "error"
-                                        |),
-                                        Value.StructTuple
-                                          "core::result::Result::Err"
-                                          [ M.read (| e |) ]
-                                      |)
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
-                ]
-              |)
-            ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    (*
-        fn tload(&mut self, address: Address, index: U256) -> U256 {
-            self.context.evm.tload(address, index)
-        }
-    *)
-    Definition tload (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self; address; index ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let address := M.alloc (| address |) in
-          let index := M.alloc (| index |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [] [ DB ],
-              "tload",
-              []
-            |),
-            [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::DerefMut",
-                  Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
-                  [],
-                  "deref_mut",
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::evm::Evm",
-                      "context"
-                    |),
-                    "revm::context::Context",
-                    "evm"
-                  |)
-                ]
-              |);
-              M.read (| address |);
-              M.read (| index |)
-            ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    (*
-        fn tstore(&mut self, address: Address, index: U256, value: U256) {
-            self.context.evm.tstore(address, index, value)
-        }
-    *)
-    Definition tstore (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self; address; index; value ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let address := M.alloc (| address |) in
-          let index := M.alloc (| index |) in
-          let value := M.alloc (| value |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [] [ DB ],
-              "tstore",
-              []
-            |),
-            [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::DerefMut",
-                  Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
-                  [],
-                  "deref_mut",
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::evm::Evm",
-                      "context"
-                    |),
-                    "revm::context::Context",
-                    "evm"
-                  |)
-                ]
-              |);
-              M.read (| address |);
-              M.read (| index |);
-              M.read (| value |)
-            ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    (*
-        fn log(&mut self, log: Log) {
-            self.context.evm.journaled_state.log(log);
-        }
-    *)
-    Definition log (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self; log ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let log := M.alloc (| log |) in
-          M.read (|
-            let~ _ :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "revm::journaled_state::JournaledState",
-                    "log",
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
-                          [],
-                          "deref_mut",
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm::evm::Evm",
-                              "context"
-                            |),
-                            "revm::context::Context",
-                            "evm"
-                          |)
-                        ]
-                      |),
-                      "revm::context::inner_evm_context::InnerEvmContext",
-                      "journaled_state"
-                    |);
-                    M.read (| log |)
-                  ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |)
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    (*
-        fn selfdestruct(&mut self, address: Address, target: Address) -> Option<SelfDestructResult> {
-            self.context
-                .evm
-                .inner
-                .journaled_state
-                .selfdestruct(address, target, &mut self.context.evm.inner.db)
-                .map_err(|e| self.context.evm.error = Err(e))
-                .ok()
-        }
-    *)
-    Definition selfdestruct
-        (EXT DB : Ty.t)
-        (ε : list Value.t)
-        (τ : list Ty.t)
-        (α : list Value.t)
-        : M :=
-      let Self : Ty.t := Self EXT DB in
-      match ε, τ, α with
-      | [], [], [ self; address; target ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let address := M.alloc (| address |) in
-          let target := M.alloc (| target |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.path "revm_interpreter::host::SelfDestructResult"; Ty.tuple [] ],
-              "ok",
-              []
-            |),
-            [
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.path "revm_interpreter::host::SelfDestructResult";
-                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ]
-                    ],
-                  "map_err",
-                  [
-                    Ty.tuple [];
-                    Ty.function
-                      [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "revm_primitives::result::EVMError")
-                              []
-                              [ Ty.associated ]
-                          ]
-                      ]
-                      (Ty.tuple [])
-                  ]
-                |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "revm::journaled_state::JournaledState",
-                      "selfdestruct",
-                      [ DB ]
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm::evm::Evm",
-                              "context"
-                            |),
-                            "revm::context::Context",
-                            "evm"
-                          |),
-                          "revm::context::evm_context::EvmContext",
-                          "inner"
-                        |),
-                        "revm::context::inner_evm_context::InnerEvmContext",
-                        "journaled_state"
-                      |);
-                      M.read (| address |);
-                      M.read (| target |);
-                      M.SubPointer.get_struct_record_field (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm::evm::Evm",
-                              "context"
-                            |),
-                            "revm::context::Context",
-                            "evm"
-                          |),
-                          "revm::context::evm_context::EvmContext",
-                          "inner"
-                        |),
-                        "revm::context::inner_evm_context::InnerEvmContext",
-                        "db"
-                      |)
-                    ]
-                  |);
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let e := M.copy (| γ |) in
-                                    M.read (|
-                                      M.write (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::deref::DerefMut",
-                                              Ty.apply
-                                                (Ty.path "revm::context::evm_context::EvmContext")
-                                                []
-                                                [ DB ],
-                                              [],
-                                              "deref_mut",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "revm::evm::Evm",
-                                                  "context"
-                                                |),
-                                                "revm::context::Context",
-                                                "evm"
-                                              |)
-                                            ]
-                                          |),
-                                          "revm::context::inner_evm_context::InnerEvmContext",
-                                          "error"
-                                        |),
-                                        Value.StructTuple
-                                          "core::result::Result::Err"
-                                          [ M.read (| e |) ]
-                                      |)
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
-                ]
-              |)
-            ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom Implements :
-      forall (EXT DB : Ty.t),
-      M.IsTraitInstance
-        "revm_interpreter::host::Host"
-        (Self EXT DB)
-        (* Trait polymorphic types *) []
-        (* Instance *)
-        [
-          ("env", InstanceField.Method (env EXT DB));
-          ("env_mut", InstanceField.Method (env_mut EXT DB));
-          ("block_hash", InstanceField.Method (block_hash EXT DB));
-          ("load_account", InstanceField.Method (load_account EXT DB));
-          ("balance", InstanceField.Method (balance EXT DB));
-          ("code", InstanceField.Method (code EXT DB));
-          ("code_hash", InstanceField.Method (code_hash EXT DB));
-          ("sload", InstanceField.Method (sload EXT DB));
-          ("sstore", InstanceField.Method (sstore EXT DB));
-          ("tload", InstanceField.Method (tload EXT DB));
-          ("tstore", InstanceField.Method (tstore EXT DB));
-          ("log", InstanceField.Method (log EXT DB));
-          ("selfdestruct", InstanceField.Method (selfdestruct EXT DB))
-        ].
-  End Impl_revm_interpreter_host_Host_where_revm_primitives_db_Database_DB_for_revm_evm_Evm_EXT_DB.
+        (transact_preverified_inner ERROR CTX VAL PREEXEC EXEC POSTEXEC).
+  End Impl_revm_evm_Evm_ERROR_CTX_revm_handler_EthHandler_CTX_ERROR_VAL_PREEXEC_EXEC_POSTEXEC.
 End evm.

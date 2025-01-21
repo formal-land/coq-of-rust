@@ -50,6 +50,21 @@ Module instruction_result.
           discriminant := None;
         };
         {
+          name := "CreateInitCodeStartingEF00";
+          item := StructTuple [];
+          discriminant := None;
+        };
+        {
+          name := "InvalidEOFInitCode";
+          item := StructTuple [];
+          discriminant := None;
+        };
+        {
+          name := "InvalidExtDelegateCallTarget";
+          item := StructTuple [];
+          discriminant := None;
+        };
+        {
           name := "CallOrCreate";
           item := StructTuple [];
           discriminant := Some 32;
@@ -76,6 +91,11 @@ Module instruction_result.
         };
         {
           name := "InvalidOperandOOG";
+          item := StructTuple [];
+          discriminant := None;
+        };
+        {
+          name := "ReentrancySentryOOG";
           item := StructTuple [];
           discriminant := None;
         };
@@ -175,7 +195,22 @@ Module instruction_result.
           discriminant := None;
         };
         {
-          name := "EOFFunctionStackOverflow";
+          name := "SubRoutineStackOverflow";
+          item := StructTuple [];
+          discriminant := None;
+        };
+        {
+          name := "EofAuxDataOverflow";
+          item := StructTuple [];
+          discriminant := None;
+        };
+        {
+          name := "EofAuxDataTooSmall";
+          item := StructTuple [];
+          discriminant := None;
+        };
+        {
+          name := "InvalidEXTCALLTarget";
           item := StructTuple [];
           discriminant := None;
         }
@@ -311,6 +346,33 @@ Module instruction_result.
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
+                            "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeStartingEF00"
+                          |) in
+                        M.alloc (| M.read (| Value.String "CreateInitCodeStartingEF00" |) |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::InvalidEOFInitCode"
+                          |) in
+                        M.alloc (| M.read (| Value.String "InvalidEOFInitCode" |) |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::InvalidExtDelegateCallTarget"
+                          |) in
+                        M.alloc (| M.read (| Value.String "InvalidExtDelegateCallTarget" |) |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
                             "revm_interpreter::instruction_result::InstructionResult::CallOrCreate"
                           |) in
                         M.alloc (| M.read (| Value.String "CallOrCreate" |) |)));
@@ -359,6 +421,15 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
                           |) in
                         M.alloc (| M.read (| Value.String "InvalidOperandOOG" |) |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::ReentrancySentryOOG"
+                          |) in
+                        M.alloc (| M.read (| Value.String "ReentrancySentryOOG" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -536,9 +607,36 @@ Module instruction_result.
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
-                            "revm_interpreter::instruction_result::InstructionResult::EOFFunctionStackOverflow"
+                            "revm_interpreter::instruction_result::InstructionResult::SubRoutineStackOverflow"
                           |) in
-                        M.alloc (| M.read (| Value.String "EOFFunctionStackOverflow" |) |)))
+                        M.alloc (| M.read (| Value.String "SubRoutineStackOverflow" |) |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::EofAuxDataOverflow"
+                          |) in
+                        M.alloc (| M.read (| Value.String "EofAuxDataOverflow" |) |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::EofAuxDataTooSmall"
+                          |) in
+                        M.alloc (| M.read (| Value.String "EofAuxDataTooSmall" |) |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::InvalidEXTCALLTarget"
+                          |) in
+                        M.alloc (| M.read (| Value.String "InvalidEXTCALLTarget" |) |)))
                   ]
                 |)
               |)
@@ -697,388 +795,33 @@ Module instruction_result.
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_interpreter_instruction_result_InstructionResult.
   
-  Module Impl_core_convert_From_revm_primitives_result_SuccessReason_for_revm_interpreter_instruction_result_InstructionResult.
+  Module Impl_core_convert_From_revm_context_interface_journaled_state_TransferError_for_revm_interpreter_instruction_result_InstructionResult.
     Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::InstructionResult".
     
     (*
-        fn from(value: SuccessReason) -> Self {
-            match value {
-                SuccessReason::Return => InstructionResult::Return,
-                SuccessReason::Stop => InstructionResult::Stop,
-                SuccessReason::SelfDestruct => InstructionResult::SelfDestruct,
+        fn from(e: TransferError) -> Self {
+            match e {
+                TransferError::OutOfFunds => InstructionResult::OutOfFunds,
+                TransferError::OverflowPayment => InstructionResult::OverflowPayment,
+                TransferError::CreateCollision => InstructionResult::CreateCollision,
             }
         }
     *)
     Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [ value ] =>
+      | [], [], [ e ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let e := M.alloc (| e |) in
           M.read (|
             M.match_operator (|
-              value,
+              e,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_struct_tuple (| γ, "revm_primitives::result::SuccessReason::Return" |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "revm_interpreter::instruction_result::InstructionResult::Return"
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (| γ, "revm_primitives::result::SuccessReason::Stop" |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "revm_interpreter::instruction_result::InstructionResult::Stop"
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
                       M.is_struct_tuple (|
                         γ,
-                        "revm_primitives::result::SuccessReason::SelfDestruct"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "revm_interpreter::instruction_result::InstructionResult::SelfDestruct"
-                        []
-                    |)))
-              ]
-            |)
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::convert::From"
-        Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "revm_primitives::result::SuccessReason" ]
-        (* Instance *) [ ("from", InstanceField.Method from) ].
-  End Impl_core_convert_From_revm_primitives_result_SuccessReason_for_revm_interpreter_instruction_result_InstructionResult.
-  
-  Module Impl_core_convert_From_revm_primitives_result_HaltReason_for_revm_interpreter_instruction_result_InstructionResult.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::InstructionResult".
-    
-    (*
-        fn from(value: HaltReason) -> Self {
-            match value {
-                HaltReason::OutOfGas(error) => match error {
-                    OutOfGasError::Basic => Self::OutOfGas,
-                    OutOfGasError::InvalidOperand => Self::InvalidOperandOOG,
-                    OutOfGasError::Memory => Self::MemoryOOG,
-                    OutOfGasError::MemoryLimit => Self::MemoryLimitOOG,
-                    OutOfGasError::Precompile => Self::PrecompileOOG,
-                },
-                HaltReason::OpcodeNotFound => Self::OpcodeNotFound,
-                HaltReason::InvalidFEOpcode => Self::InvalidFEOpcode,
-                HaltReason::InvalidJump => Self::InvalidJump,
-                HaltReason::NotActivated => Self::NotActivated,
-                HaltReason::StackOverflow => Self::StackOverflow,
-                HaltReason::StackUnderflow => Self::StackUnderflow,
-                HaltReason::OutOfOffset => Self::OutOfOffset,
-                HaltReason::CreateCollision => Self::CreateCollision,
-                HaltReason::PrecompileError => Self::PrecompileError,
-                HaltReason::NonceOverflow => Self::NonceOverflow,
-                HaltReason::CreateContractSizeLimit => Self::CreateContractSizeLimit,
-                HaltReason::CreateContractStartingWithEF => Self::CreateContractStartingWithEF,
-                HaltReason::CreateInitCodeSizeLimit => Self::CreateInitCodeSizeLimit,
-                HaltReason::OverflowPayment => Self::OverflowPayment,
-                HaltReason::StateChangeDuringStaticCall => Self::StateChangeDuringStaticCall,
-                HaltReason::CallNotAllowedInsideStatic => Self::CallNotAllowedInsideStatic,
-                HaltReason::OutOfFunds => Self::OutOfFunds,
-                HaltReason::CallTooDeep => Self::CallTooDeep,
-                #[cfg(feature = "optimism")]
-                HaltReason::FailedDeposit => Self::FatalExternalError,
-            }
-        }
-    *)
-    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ value ] =>
-        ltac:(M.monadic
-          (let value := M.alloc (| value |) in
-          M.read (|
-            M.match_operator (|
-              value,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_primitives::result::HaltReason::OutOfGas",
-                        0
-                      |) in
-                    let error := M.copy (| γ0_0 |) in
-                    M.match_operator (|
-                      error,
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let _ :=
-                              M.is_struct_tuple (|
-                                γ,
-                                "revm_primitives::result::OutOfGasError::Basic"
-                              |) in
-                            M.alloc (|
-                              Value.StructTuple
-                                "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
-                                []
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let _ :=
-                              M.is_struct_tuple (|
-                                γ,
-                                "revm_primitives::result::OutOfGasError::InvalidOperand"
-                              |) in
-                            M.alloc (|
-                              Value.StructTuple
-                                "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
-                                []
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let _ :=
-                              M.is_struct_tuple (|
-                                γ,
-                                "revm_primitives::result::OutOfGasError::Memory"
-                              |) in
-                            M.alloc (|
-                              Value.StructTuple
-                                "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
-                                []
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let _ :=
-                              M.is_struct_tuple (|
-                                γ,
-                                "revm_primitives::result::OutOfGasError::MemoryLimit"
-                              |) in
-                            M.alloc (|
-                              Value.StructTuple
-                                "revm_interpreter::instruction_result::InstructionResult::MemoryLimitOOG"
-                                []
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let _ :=
-                              M.is_struct_tuple (|
-                                γ,
-                                "revm_primitives::result::OutOfGasError::Precompile"
-                              |) in
-                            M.alloc (|
-                              Value.StructTuple
-                                "revm_interpreter::instruction_result::InstructionResult::PrecompileOOG"
-                                []
-                            |)))
-                      ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_primitives::result::HaltReason::OpcodeNotFound"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "revm_interpreter::instruction_result::InstructionResult::OpcodeNotFound"
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_primitives::result::HaltReason::InvalidFEOpcode"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "revm_interpreter::instruction_result::InstructionResult::InvalidFEOpcode"
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_primitives::result::HaltReason::InvalidJump"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "revm_interpreter::instruction_result::InstructionResult::InvalidJump"
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_primitives::result::HaltReason::NotActivated"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "revm_interpreter::instruction_result::InstructionResult::NotActivated"
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_primitives::result::HaltReason::StackOverflow"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_primitives::result::HaltReason::StackUnderflow"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_primitives::result::HaltReason::OutOfOffset"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "revm_interpreter::instruction_result::InstructionResult::OutOfOffset"
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_primitives::result::HaltReason::CreateCollision"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "revm_interpreter::instruction_result::InstructionResult::CreateCollision"
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_primitives::result::HaltReason::PrecompileError"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "revm_interpreter::instruction_result::InstructionResult::PrecompileError"
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_primitives::result::HaltReason::NonceOverflow"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "revm_interpreter::instruction_result::InstructionResult::NonceOverflow"
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_primitives::result::HaltReason::CreateContractSizeLimit"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "revm_interpreter::instruction_result::InstructionResult::CreateContractSizeLimit"
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_primitives::result::HaltReason::CreateContractStartingWithEF"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "revm_interpreter::instruction_result::InstructionResult::CreateContractStartingWithEF"
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_primitives::result::HaltReason::CreateInitCodeSizeLimit"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeSizeLimit"
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_primitives::result::HaltReason::OverflowPayment"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "revm_interpreter::instruction_result::InstructionResult::OverflowPayment"
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_primitives::result::HaltReason::StateChangeDuringStaticCall"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "revm_interpreter::instruction_result::InstructionResult::StateChangeDuringStaticCall"
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_primitives::result::HaltReason::CallNotAllowedInsideStatic"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "revm_interpreter::instruction_result::InstructionResult::CallNotAllowedInsideStatic"
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_primitives::result::HaltReason::OutOfFunds"
+                        "revm_context_interface::journaled_state::TransferError::OutOfFunds"
                       |) in
                     M.alloc (|
                       Value.StructTuple
@@ -1090,11 +833,23 @@ Module instruction_result.
                     (let _ :=
                       M.is_struct_tuple (|
                         γ,
-                        "revm_primitives::result::HaltReason::CallTooDeep"
+                        "revm_context_interface::journaled_state::TransferError::OverflowPayment"
                       |) in
                     M.alloc (|
                       Value.StructTuple
-                        "revm_interpreter::instruction_result::InstructionResult::CallTooDeep"
+                        "revm_interpreter::instruction_result::InstructionResult::OverflowPayment"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::journaled_state::TransferError::CreateCollision"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::CreateCollision"
                         []
                     |)))
               ]
@@ -1107,13 +862,13 @@ Module instruction_result.
       M.IsTraitInstance
         "core::convert::From"
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "revm_primitives::result::HaltReason" ]
+        (* Trait polymorphic types *)
+        [ (* T *) Ty.path "revm_context_interface::journaled_state::TransferError" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
-  End Impl_core_convert_From_revm_primitives_result_HaltReason_for_revm_interpreter_instruction_result_InstructionResult.
+  End Impl_core_convert_From_revm_context_interface_journaled_state_TransferError_for_revm_interpreter_instruction_result_InstructionResult.
   
   Module Impl_revm_interpreter_instruction_result_InstructionResult.
     Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::InstructionResult".
-    
     (*
         pub const fn is_ok(self) -> bool {
             matches!(self, crate::return_ok!())
@@ -1192,6 +947,191 @@ Module instruction_result.
     Axiom AssociatedFunction_is_ok : M.IsAssociatedFunction Self "is_ok" is_ok.
     
     (*
+        pub const fn is_ok_or_revert(self) -> bool {
+            matches!(self, crate::return_ok!() | crate::return_revert!())
+        }
+    *)
+    Definition is_ok_or_revert (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.read (|
+            M.match_operator (|
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.find_or_pattern (|
+                      γ,
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.find_or_pattern (|
+                              γ,
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let _ :=
+                                      M.is_struct_tuple (|
+                                        γ,
+                                        "revm_interpreter::instruction_result::InstructionResult::Continue"
+                                      |) in
+                                    Value.Tuple []));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let _ :=
+                                      M.is_struct_tuple (|
+                                        γ,
+                                        "revm_interpreter::instruction_result::InstructionResult::Stop"
+                                      |) in
+                                    Value.Tuple []));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let _ :=
+                                      M.is_struct_tuple (|
+                                        γ,
+                                        "revm_interpreter::instruction_result::InstructionResult::Return"
+                                      |) in
+                                    Value.Tuple []));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let _ :=
+                                      M.is_struct_tuple (|
+                                        γ,
+                                        "revm_interpreter::instruction_result::InstructionResult::SelfDestruct"
+                                      |) in
+                                    Value.Tuple []));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let _ :=
+                                      M.is_struct_tuple (|
+                                        γ,
+                                        "revm_interpreter::instruction_result::InstructionResult::ReturnContract"
+                                      |) in
+                                    Value.Tuple []))
+                              ],
+                              M.closure
+                                (fun γ =>
+                                  ltac:(M.monadic
+                                    match γ with
+                                    | [] => ltac:(M.monadic (Value.Tuple []))
+                                    | _ => M.impossible "wrong number of arguments"
+                                    end))
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.find_or_pattern (|
+                              γ,
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let _ :=
+                                      M.is_struct_tuple (|
+                                        γ,
+                                        "revm_interpreter::instruction_result::InstructionResult::Revert"
+                                      |) in
+                                    Value.Tuple []));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let _ :=
+                                      M.is_struct_tuple (|
+                                        γ,
+                                        "revm_interpreter::instruction_result::InstructionResult::CallTooDeep"
+                                      |) in
+                                    Value.Tuple []));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let _ :=
+                                      M.is_struct_tuple (|
+                                        γ,
+                                        "revm_interpreter::instruction_result::InstructionResult::OutOfFunds"
+                                      |) in
+                                    Value.Tuple []));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let _ :=
+                                      M.is_struct_tuple (|
+                                        γ,
+                                        "revm_interpreter::instruction_result::InstructionResult::InvalidEOFInitCode"
+                                      |) in
+                                    Value.Tuple []));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let _ :=
+                                      M.is_struct_tuple (|
+                                        γ,
+                                        "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeStartingEF00"
+                                      |) in
+                                    Value.Tuple []));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let _ :=
+                                      M.is_struct_tuple (|
+                                        γ,
+                                        "revm_interpreter::instruction_result::InstructionResult::InvalidExtDelegateCallTarget"
+                                      |) in
+                                    Value.Tuple []))
+                              ],
+                              M.closure
+                                (fun γ =>
+                                  ltac:(M.monadic
+                                    match γ with
+                                    | [] => ltac:(M.monadic (Value.Tuple []))
+                                    | _ => M.impossible "wrong number of arguments"
+                                    end))
+                            |)))
+                      ],
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_is_ok_or_revert :
+      M.IsAssociatedFunction Self "is_ok_or_revert" is_ok_or_revert.
+    
+    (*
+        pub const fn is_continue(self) -> bool {
+            matches!(self, InstructionResult::Continue)
+        }
+    *)
+    Definition is_continue (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.read (|
+            M.match_operator (|
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::Continue"
+                      |) in
+                    M.alloc (| Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_is_continue : M.IsAssociatedFunction Self "is_continue" is_continue.
+    
+    (*
         pub const fn is_revert(self) -> bool {
             matches!(self, crate::return_revert!())
         }
@@ -1232,6 +1172,30 @@ Module instruction_result.
                               M.is_struct_tuple (|
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::OutOfFunds"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::InvalidEOFInitCode"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeStartingEF00"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::InvalidExtDelegateCallTarget"
                               |) in
                             Value.Tuple []))
                       ],
@@ -1309,6 +1273,14 @@ Module instruction_result.
                               M.is_struct_tuple (|
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::ReentrancySentryOOG"
                               |) in
                             Value.Tuple []));
                         fun γ =>
@@ -1468,7 +1440,31 @@ Module instruction_result.
                             (let _ :=
                               M.is_struct_tuple (|
                                 γ,
-                                "revm_interpreter::instruction_result::InstructionResult::EOFFunctionStackOverflow"
+                                "revm_interpreter::instruction_result::InstructionResult::SubRoutineStackOverflow"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::EofAuxDataTooSmall"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::EofAuxDataOverflow"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::InvalidEXTCALLTarget"
                               |) in
                             Value.Tuple []))
                       ],
@@ -1490,33 +1486,512 @@ Module instruction_result.
     Axiom AssociatedFunction_is_error : M.IsAssociatedFunction Self "is_error" is_error.
   End Impl_revm_interpreter_instruction_result_InstructionResult.
   
+  Module Impl_core_convert_From_revm_context_interface_result_SuccessReason_for_revm_interpreter_instruction_result_InstructionResult.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::InstructionResult".
+    
+    (*
+        fn from(value: SuccessReason) -> Self {
+            match value {
+                SuccessReason::Return => InstructionResult::Return,
+                SuccessReason::Stop => InstructionResult::Stop,
+                SuccessReason::SelfDestruct => InstructionResult::SelfDestruct,
+                SuccessReason::EofReturnContract => InstructionResult::ReturnContract,
+            }
+        }
+    *)
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ value ] =>
+        ltac:(M.monadic
+          (let value := M.alloc (| value |) in
+          M.read (|
+            M.match_operator (|
+              value,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::SuccessReason::Return"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::Return"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::SuccessReason::Stop"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::Stop"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::SuccessReason::SelfDestruct"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::SelfDestruct"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::SuccessReason::EofReturnContract"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::ReturnContract"
+                        []
+                    |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::convert::From"
+        Self
+        (* Trait polymorphic types *)
+        [ (* T *) Ty.path "revm_context_interface::result::SuccessReason" ]
+        (* Instance *) [ ("from", InstanceField.Method from) ].
+  End Impl_core_convert_From_revm_context_interface_result_SuccessReason_for_revm_interpreter_instruction_result_InstructionResult.
+  
+  Module Impl_core_convert_From_revm_context_interface_result_HaltReason_for_revm_interpreter_instruction_result_InstructionResult.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::InstructionResult".
+    
+    (*
+        fn from(value: HaltReason) -> Self {
+            match value {
+                HaltReason::OutOfGas(error) => match error {
+                    OutOfGasError::Basic => Self::OutOfGas,
+                    OutOfGasError::InvalidOperand => Self::InvalidOperandOOG,
+                    OutOfGasError::Memory => Self::MemoryOOG,
+                    OutOfGasError::MemoryLimit => Self::MemoryLimitOOG,
+                    OutOfGasError::Precompile => Self::PrecompileOOG,
+                    OutOfGasError::ReentrancySentry => Self::ReentrancySentryOOG,
+                },
+                HaltReason::OpcodeNotFound => Self::OpcodeNotFound,
+                HaltReason::InvalidFEOpcode => Self::InvalidFEOpcode,
+                HaltReason::InvalidJump => Self::InvalidJump,
+                HaltReason::NotActivated => Self::NotActivated,
+                HaltReason::StackOverflow => Self::StackOverflow,
+                HaltReason::StackUnderflow => Self::StackUnderflow,
+                HaltReason::OutOfOffset => Self::OutOfOffset,
+                HaltReason::CreateCollision => Self::CreateCollision,
+                HaltReason::PrecompileError => Self::PrecompileError,
+                HaltReason::NonceOverflow => Self::NonceOverflow,
+                HaltReason::CreateContractSizeLimit => Self::CreateContractSizeLimit,
+                HaltReason::CreateContractStartingWithEF => Self::CreateContractStartingWithEF,
+                HaltReason::CreateInitCodeSizeLimit => Self::CreateInitCodeSizeLimit,
+                HaltReason::OverflowPayment => Self::OverflowPayment,
+                HaltReason::StateChangeDuringStaticCall => Self::StateChangeDuringStaticCall,
+                HaltReason::CallNotAllowedInsideStatic => Self::CallNotAllowedInsideStatic,
+                HaltReason::OutOfFunds => Self::OutOfFunds,
+                HaltReason::CallTooDeep => Self::CallTooDeep,
+                HaltReason::EofAuxDataOverflow => Self::EofAuxDataOverflow,
+                HaltReason::EofAuxDataTooSmall => Self::EofAuxDataTooSmall,
+                HaltReason::SubRoutineStackOverflow => Self::SubRoutineStackOverflow,
+                HaltReason::InvalidEXTCALLTarget => Self::InvalidEXTCALLTarget,
+            }
+        }
+    *)
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ value ] =>
+        ltac:(M.monadic
+          (let value := M.alloc (| value |) in
+          M.read (|
+            M.match_operator (|
+              value,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::OutOfGas",
+                        0
+                      |) in
+                    let error := M.copy (| γ0_0 |) in
+                    M.match_operator (|
+                      error,
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_context_interface::result::OutOfGasError::Basic"
+                              |) in
+                            M.alloc (|
+                              Value.StructTuple
+                                "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                []
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_context_interface::result::OutOfGasError::InvalidOperand"
+                              |) in
+                            M.alloc (|
+                              Value.StructTuple
+                                "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
+                                []
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_context_interface::result::OutOfGasError::Memory"
+                              |) in
+                            M.alloc (|
+                              Value.StructTuple
+                                "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
+                                []
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_context_interface::result::OutOfGasError::MemoryLimit"
+                              |) in
+                            M.alloc (|
+                              Value.StructTuple
+                                "revm_interpreter::instruction_result::InstructionResult::MemoryLimitOOG"
+                                []
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_context_interface::result::OutOfGasError::Precompile"
+                              |) in
+                            M.alloc (|
+                              Value.StructTuple
+                                "revm_interpreter::instruction_result::InstructionResult::PrecompileOOG"
+                                []
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_context_interface::result::OutOfGasError::ReentrancySentry"
+                              |) in
+                            M.alloc (|
+                              Value.StructTuple
+                                "revm_interpreter::instruction_result::InstructionResult::ReentrancySentryOOG"
+                                []
+                            |)))
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::OpcodeNotFound"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::OpcodeNotFound"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::InvalidFEOpcode"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::InvalidFEOpcode"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::InvalidJump"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::InvalidJump"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::NotActivated"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::NotActivated"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::StackOverflow"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::StackUnderflow"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::OutOfOffset"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::OutOfOffset"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::CreateCollision"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::CreateCollision"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::PrecompileError"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::PrecompileError"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::NonceOverflow"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::NonceOverflow"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::CreateContractSizeLimit"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::CreateContractSizeLimit"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::CreateContractStartingWithEF"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::CreateContractStartingWithEF"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::CreateInitCodeSizeLimit"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeSizeLimit"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::OverflowPayment"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::OverflowPayment"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::StateChangeDuringStaticCall"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::StateChangeDuringStaticCall"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::CallNotAllowedInsideStatic"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::CallNotAllowedInsideStatic"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::OutOfFunds"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::OutOfFunds"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::CallTooDeep"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::CallTooDeep"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::EofAuxDataOverflow"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::EofAuxDataOverflow"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::EofAuxDataTooSmall"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::EofAuxDataTooSmall"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::SubRoutineStackOverflow"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::SubRoutineStackOverflow"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::HaltReason::InvalidEXTCALLTarget"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::InvalidEXTCALLTarget"
+                        []
+                    |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::convert::From"
+        Self
+        (* Trait polymorphic types *)
+        [ (* T *) Ty.path "revm_context_interface::result::HaltReason" ]
+        (* Instance *) [ ("from", InstanceField.Method from) ].
+  End Impl_core_convert_From_revm_context_interface_result_HaltReason_for_revm_interpreter_instruction_result_InstructionResult.
+  
+  
   (*
-  Enum SuccessOrHalt
+  Enum InternalResult
   {
     const_params := [];
     ty_params := [];
     variants :=
       [
-        {
-          name := "Success";
-          item := StructTuple [ Ty.path "revm_primitives::result::SuccessReason" ];
-          discriminant := None;
-        };
-        {
-          name := "Revert";
-          item := StructTuple [];
-          discriminant := None;
-        };
-        {
-          name := "Halt";
-          item := StructTuple [ Ty.path "revm_primitives::result::HaltReason" ];
-          discriminant := None;
-        };
-        {
-          name := "FatalExternalError";
-          item := StructTuple [];
-          discriminant := None;
-        };
         {
           name := "InternalContinue";
           item := StructTuple [];
@@ -1526,16 +2001,438 @@ Module instruction_result.
           name := "InternalCallOrCreate";
           item := StructTuple [];
           discriminant := None;
+        };
+        {
+          name := "CreateInitCodeStartingEF00";
+          item := StructTuple [];
+          discriminant := None;
+        };
+        {
+          name := "InvalidExtDelegateCallTarget";
+          item := StructTuple [];
+          discriminant := None;
         }
       ];
   }
   *)
   
-  Module Impl_core_fmt_Debug_for_revm_interpreter_instruction_result_SuccessOrHalt.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::SuccessOrHalt".
+  Module Impl_core_fmt_Debug_for_revm_interpreter_instruction_result_InternalResult.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::InternalResult".
     
     (* Debug *)
     Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let f := M.alloc (| f |) in
+          M.call_closure (|
+            M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+            [
+              M.read (| f |);
+              M.read (|
+                M.match_operator (|
+                  self,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InternalResult::InternalContinue"
+                          |) in
+                        M.alloc (| M.read (| Value.String "InternalContinue" |) |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InternalResult::InternalCallOrCreate"
+                          |) in
+                        M.alloc (| M.read (| Value.String "InternalCallOrCreate" |) |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InternalResult::CreateInitCodeStartingEF00"
+                          |) in
+                        M.alloc (| M.read (| Value.String "CreateInitCodeStartingEF00" |) |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InternalResult::InvalidExtDelegateCallTarget"
+                          |) in
+                        M.alloc (| M.read (| Value.String "InvalidExtDelegateCallTarget" |) |)))
+                  ]
+                |)
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::fmt::Debug"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+  End Impl_core_fmt_Debug_for_revm_interpreter_instruction_result_InternalResult.
+  
+  Module Impl_core_marker_Copy_for_revm_interpreter_instruction_result_InternalResult.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::InternalResult".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::Copy"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_Copy_for_revm_interpreter_instruction_result_InternalResult.
+  
+  Module Impl_core_clone_Clone_for_revm_interpreter_instruction_result_InternalResult.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::InternalResult".
+    
+    (* Clone *)
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.read (| M.read (| self |) |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::clone::Clone"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("clone", InstanceField.Method clone) ].
+  End Impl_core_clone_Clone_for_revm_interpreter_instruction_result_InternalResult.
+  
+  Module Impl_core_marker_StructuralPartialEq_for_revm_interpreter_instruction_result_InternalResult.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::InternalResult".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::StructuralPartialEq"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_instruction_result_InternalResult.
+  
+  Module Impl_core_cmp_PartialEq_for_revm_interpreter_instruction_result_InternalResult.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::InternalResult".
+    
+    (* PartialEq *)
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let other := M.alloc (| other |) in
+          M.read (|
+            let~ __self_discr :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [ Ty.path "revm_interpreter::instruction_result::InternalResult" ]
+                  |),
+                  [ M.read (| self |) ]
+                |)
+              |) in
+            let~ __arg1_discr :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [ Ty.path "revm_interpreter::instruction_result::InternalResult" ]
+                  |),
+                  [ M.read (| other |) ]
+                |)
+              |) in
+            M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::cmp::PartialEq"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("eq", InstanceField.Method eq) ].
+  End Impl_core_cmp_PartialEq_for_revm_interpreter_instruction_result_InternalResult.
+  
+  Module Impl_core_cmp_Eq_for_revm_interpreter_instruction_result_InternalResult.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::InternalResult".
+    
+    (* Eq *)
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          Value.Tuple []))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::cmp::Eq"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *)
+        [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
+  End Impl_core_cmp_Eq_for_revm_interpreter_instruction_result_InternalResult.
+  
+  Module Impl_core_hash_Hash_for_revm_interpreter_instruction_result_InternalResult.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::InternalResult".
+    
+    (* Hash *)
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let state := M.alloc (| state |) in
+          M.read (|
+            let~ __self_discr :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [ Ty.path "revm_interpreter::instruction_result::InternalResult" ]
+                  |),
+                  [ M.read (| self |) ]
+                |)
+              |) in
+            M.alloc (|
+              M.call_closure (|
+                M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
+                [ __self_discr; M.read (| state |) ]
+              |)
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::hash::Hash"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("hash", InstanceField.Method hash) ].
+  End Impl_core_hash_Hash_for_revm_interpreter_instruction_result_InternalResult.
+  
+  (*
+  Enum SuccessOrHalt
+  {
+    const_params := [];
+    ty_params := [ "HaltReasonT" ];
+    variants :=
+      [
+        {
+          name := "Success";
+          item := StructTuple [ Ty.path "revm_context_interface::result::SuccessReason" ];
+          discriminant := None;
+        };
+        {
+          name := "Revert";
+          item := StructTuple [];
+          discriminant := None;
+        };
+        {
+          name := "Halt";
+          item := StructTuple [ HaltReasonT ];
+          discriminant := None;
+        };
+        {
+          name := "FatalExternalError";
+          item := StructTuple [];
+          discriminant := None;
+        };
+        {
+          name := "Internal";
+          item := StructTuple [ Ty.path "revm_interpreter::instruction_result::InternalResult" ];
+          discriminant := None;
+        }
+      ];
+  }
+  *)
+  
+  Module Impl_core_marker_Copy_where_core_marker_Copy_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
+    Definition Self (HaltReasonT : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt") [] [ HaltReasonT ].
+    
+    Axiom Implements :
+      forall (HaltReasonT : Ty.t),
+      M.IsTraitInstance
+        "core::marker::Copy"
+        (Self HaltReasonT)
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_Copy_where_core_marker_Copy_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
+  
+  Module Impl_core_clone_Clone_where_core_clone_Clone_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
+    Definition Self (HaltReasonT : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt") [] [ HaltReasonT ].
+    
+    (* Clone *)
+    Definition clone
+        (HaltReasonT : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self HaltReasonT in
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.read (|
+            M.match_operator (|
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Success",
+                        0
+                      |) in
+                    let __self_0 := M.alloc (| γ1_0 |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Success"
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              Ty.path "revm_context_interface::result::SuccessReason",
+                              [],
+                              "clone",
+                              []
+                            |),
+                            [ M.read (| __self_0 |) ]
+                          |)
+                        ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Revert"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Revert"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Halt",
+                        0
+                      |) in
+                    let __self_0 := M.alloc (| γ1_0 |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              HaltReasonT,
+                              [],
+                              "clone",
+                              []
+                            |),
+                            [ M.read (| __self_0 |) ]
+                          |)
+                        ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::SuccessOrHalt::FatalExternalError"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::SuccessOrHalt::FatalExternalError"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Internal",
+                        0
+                      |) in
+                    let __self_0 := M.alloc (| γ1_0 |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Internal"
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              Ty.path "revm_interpreter::instruction_result::InternalResult",
+                              [],
+                              "clone",
+                              []
+                            |),
+                            [ M.read (| __self_0 |) ]
+                          |)
+                        ]
+                    |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      forall (HaltReasonT : Ty.t),
+      M.IsTraitInstance
+        "core::clone::Clone"
+        (Self HaltReasonT)
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("clone", InstanceField.Method (clone HaltReasonT)) ].
+  End Impl_core_clone_Clone_where_core_clone_Clone_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
+  
+  Module Impl_core_fmt_Debug_where_core_fmt_Debug_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
+    Definition Self (HaltReasonT : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt") [] [ HaltReasonT ].
+    
+    (* Debug *)
+    Definition fmt (HaltReasonT : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self HaltReasonT in
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
@@ -1624,37 +2521,21 @@ Module instruction_result.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
-                        "revm_interpreter::instruction_result::SuccessOrHalt::InternalContinue"
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Internal",
+                        0
                       |) in
+                    let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
-                          "write_str",
+                          "debug_tuple_field1_finish",
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "InternalContinue" |) ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_interpreter::instruction_result::SuccessOrHalt::InternalCallOrCreate"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          []
-                        |),
-                        [ M.read (| f |); M.read (| Value.String "InternalCallOrCreate" |) ]
+                        [ M.read (| f |); M.read (| Value.String "Internal" |); __self_0 ]
                       |)
                     |)))
               ]
@@ -1664,73 +2545,34 @@ Module instruction_result.
       end.
     
     Axiom Implements :
+      forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (Self HaltReasonT)
         (* Trait polymorphic types *) []
-        (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-  End Impl_core_fmt_Debug_for_revm_interpreter_instruction_result_SuccessOrHalt.
+        (* Instance *) [ ("fmt", InstanceField.Method (fmt HaltReasonT)) ].
+  End Impl_core_fmt_Debug_where_core_fmt_Debug_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
   
-  Module Impl_core_marker_Copy_for_revm_interpreter_instruction_result_SuccessOrHalt.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::SuccessOrHalt".
+  Module Impl_core_marker_StructuralPartialEq_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
+    Definition Self (HaltReasonT : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt") [] [ HaltReasonT ].
     
     Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::Copy"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_Copy_for_revm_interpreter_instruction_result_SuccessOrHalt.
-  
-  Module Impl_core_clone_Clone_for_revm_interpreter_instruction_result_SuccessOrHalt.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::SuccessOrHalt".
-    
-    (* Clone *)
-    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.match_operator (|
-              Value.DeclaredButUndefined,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.match_operator (|
-                      Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
-                    |)))
-              ]
-            |)
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::clone::Clone"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("clone", InstanceField.Method clone) ].
-  End Impl_core_clone_Clone_for_revm_interpreter_instruction_result_SuccessOrHalt.
-  
-  Module Impl_core_marker_StructuralPartialEq_for_revm_interpreter_instruction_result_SuccessOrHalt.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::SuccessOrHalt".
-    
-    Axiom Implements :
+      forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (Self HaltReasonT)
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_instruction_result_SuccessOrHalt.
+  End Impl_core_marker_StructuralPartialEq_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
   
-  Module Impl_core_cmp_PartialEq_for_revm_interpreter_instruction_result_SuccessOrHalt.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::SuccessOrHalt".
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
+    Definition Self (HaltReasonT : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt") [] [ HaltReasonT ].
     
     (* PartialEq *)
-    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (HaltReasonT : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self HaltReasonT in
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
@@ -1742,7 +2584,12 @@ Module instruction_result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
-                    [ Ty.path "revm_interpreter::instruction_result::SuccessOrHalt" ]
+                    [
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ]
+                    ]
                   |),
                   [ M.read (| self |) ]
                 |)
@@ -1752,7 +2599,12 @@ Module instruction_result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
-                    [ Ty.path "revm_interpreter::instruction_result::SuccessOrHalt" ]
+                    [
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ]
+                    ]
                   |),
                   [ M.read (| other |) ]
                 |)
@@ -1792,12 +2644,12 @@ Module instruction_result.
                                   Ty.apply
                                     (Ty.path "&")
                                     []
-                                    [ Ty.path "revm_primitives::result::SuccessReason" ],
+                                    [ Ty.path "revm_context_interface::result::SuccessReason" ],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
                                       []
-                                      [ Ty.path "revm_primitives::result::SuccessReason" ]
+                                      [ Ty.path "revm_context_interface::result::SuccessReason" ]
                                   ],
                                   "eq",
                                   []
@@ -1829,15 +2681,51 @@ Module instruction_result.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ HaltReasonT ],
+                                  [ Ty.apply (Ty.path "&") [] [ HaltReasonT ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_0,
+                                "revm_interpreter::instruction_result::SuccessOrHalt::Internal",
+                                0
+                              |) in
+                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_1,
+                                "revm_interpreter::instruction_result::SuccessOrHalt::Internal",
+                                0
+                              |) in
+                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
                                   Ty.apply
                                     (Ty.path "&")
                                     []
-                                    [ Ty.path "revm_primitives::result::HaltReason" ],
+                                    [ Ty.path "revm_interpreter::instruction_result::InternalResult"
+                                    ],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
                                       []
-                                      [ Ty.path "revm_primitives::result::HaltReason" ]
+                                      [
+                                        Ty.path
+                                          "revm_interpreter::instruction_result::InternalResult"
+                                      ]
                                   ],
                                   "eq",
                                   []
@@ -1856,22 +2744,26 @@ Module instruction_result.
       end.
     
     Axiom Implements :
+      forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (Self HaltReasonT)
         (* Trait polymorphic types *) []
-        (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_interpreter_instruction_result_SuccessOrHalt.
+        (* Instance *) [ ("eq", InstanceField.Method (eq HaltReasonT)) ].
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
   
-  Module Impl_core_cmp_Eq_for_revm_interpreter_instruction_result_SuccessOrHalt.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::SuccessOrHalt".
+  Module Impl_core_cmp_Eq_where_core_cmp_Eq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
+    Definition Self (HaltReasonT : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt") [] [ HaltReasonT ].
     
     (* Eq *)
     Definition assert_receiver_is_total_eq
+        (HaltReasonT : Ty.t)
         (ε : list Value.t)
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
+      let Self : Ty.t := Self HaltReasonT in
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
@@ -1884,7 +2776,14 @@ Module instruction_result.
                   ltac:(M.monadic
                     (M.match_operator (|
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              Value.DeclaredButUndefined,
+                              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                            |)))
+                      ]
                     |)))
               ]
             |)
@@ -1893,19 +2792,30 @@ Module instruction_result.
       end.
     
     Axiom Implements :
+      forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (Self HaltReasonT)
         (* Trait polymorphic types *) []
         (* Instance *)
-        [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
-  End Impl_core_cmp_Eq_for_revm_interpreter_instruction_result_SuccessOrHalt.
+        [
+          ("assert_receiver_is_total_eq",
+            InstanceField.Method (assert_receiver_is_total_eq HaltReasonT))
+        ].
+  End Impl_core_cmp_Eq_where_core_cmp_Eq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
   
-  Module Impl_core_hash_Hash_for_revm_interpreter_instruction_result_SuccessOrHalt.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::SuccessOrHalt".
+  Module Impl_core_hash_Hash_where_core_hash_Hash_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
+    Definition Self (HaltReasonT : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt") [] [ HaltReasonT ].
     
     (* Hash *)
-    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash
+        (HaltReasonT : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self HaltReasonT in
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
@@ -1917,7 +2827,12 @@ Module instruction_result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
-                    [ Ty.path "revm_interpreter::instruction_result::SuccessOrHalt" ]
+                    [
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ]
+                    ]
                   |),
                   [ M.read (| self |) ]
                 |)
@@ -1946,7 +2861,7 @@ Module instruction_result.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::hash::Hash",
-                          Ty.path "revm_primitives::result::SuccessReason",
+                          Ty.path "revm_context_interface::result::SuccessReason",
                           [],
                           "hash",
                           [ __H ]
@@ -1968,7 +2883,29 @@ Module instruction_result.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::hash::Hash",
-                          Ty.path "revm_primitives::result::HaltReason",
+                          HaltReasonT,
+                          [],
+                          "hash",
+                          [ __H ]
+                        |),
+                        [ M.read (| __self_0 |); M.read (| state |) ]
+                      |)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Internal",
+                        0
+                      |) in
+                    let __self_0 := M.alloc (| γ1_0 |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::hash::Hash",
+                          Ty.path "revm_interpreter::instruction_result::InternalResult",
                           [],
                           "hash",
                           [ __H ]
@@ -1984,22 +2921,30 @@ Module instruction_result.
       end.
     
     Axiom Implements :
+      forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (Self HaltReasonT)
         (* Trait polymorphic types *) []
-        (* Instance *) [ ("hash", InstanceField.Method hash) ].
-  End Impl_core_hash_Hash_for_revm_interpreter_instruction_result_SuccessOrHalt.
+        (* Instance *) [ ("hash", InstanceField.Method (hash HaltReasonT)) ].
+  End Impl_core_hash_Hash_where_core_hash_Hash_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
   
-  Module Impl_revm_interpreter_instruction_result_SuccessOrHalt.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::SuccessOrHalt".
+  Module Impl_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
+    Definition Self (HaltReasonT : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt") [] [ HaltReasonT ].
     
     (*
         pub fn is_success(self) -> bool {
             matches!(self, SuccessOrHalt::Success(_))
         }
     *)
-    Definition is_success (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_success
+        (HaltReasonT : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self HaltReasonT in
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
@@ -2024,7 +2969,9 @@ Module instruction_result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_success : M.IsAssociatedFunction Self "is_success" is_success.
+    Axiom AssociatedFunction_is_success :
+      forall (HaltReasonT : Ty.t),
+      M.IsAssociatedFunction (Self HaltReasonT) "is_success" (is_success HaltReasonT).
     
     (*
         pub fn to_success(self) -> Option<SuccessReason> {
@@ -2034,7 +2981,13 @@ Module instruction_result.
             }
         }
     *)
-    Definition to_success (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition to_success
+        (HaltReasonT : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self HaltReasonT in
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
@@ -2063,14 +3016,22 @@ Module instruction_result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_success : M.IsAssociatedFunction Self "to_success" to_success.
+    Axiom AssociatedFunction_to_success :
+      forall (HaltReasonT : Ty.t),
+      M.IsAssociatedFunction (Self HaltReasonT) "to_success" (to_success HaltReasonT).
     
     (*
         pub fn is_revert(self) -> bool {
             matches!(self, SuccessOrHalt::Revert)
         }
     *)
-    Definition is_revert (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_revert
+        (HaltReasonT : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self HaltReasonT in
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
@@ -2094,14 +3055,22 @@ Module instruction_result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_revert : M.IsAssociatedFunction Self "is_revert" is_revert.
+    Axiom AssociatedFunction_is_revert :
+      forall (HaltReasonT : Ty.t),
+      M.IsAssociatedFunction (Self HaltReasonT) "is_revert" (is_revert HaltReasonT).
     
     (*
         pub fn is_halt(self) -> bool {
             matches!(self, SuccessOrHalt::Halt(_))
         }
     *)
-    Definition is_halt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_halt
+        (HaltReasonT : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self HaltReasonT in
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
@@ -2126,17 +3095,25 @@ Module instruction_result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_halt : M.IsAssociatedFunction Self "is_halt" is_halt.
+    Axiom AssociatedFunction_is_halt :
+      forall (HaltReasonT : Ty.t),
+      M.IsAssociatedFunction (Self HaltReasonT) "is_halt" (is_halt HaltReasonT).
     
     (*
-        pub fn to_halt(self) -> Option<HaltReason> {
+        pub fn to_halt(self) -> Option<HaltReasonT> {
             match self {
                 SuccessOrHalt::Halt(reason) => Some(reason),
                 _ => None,
             }
         }
     *)
-    Definition to_halt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition to_halt
+        (HaltReasonT : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self HaltReasonT in
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
@@ -2165,70 +3142,145 @@ Module instruction_result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_halt : M.IsAssociatedFunction Self "to_halt" to_halt.
-  End Impl_revm_interpreter_instruction_result_SuccessOrHalt.
+    Axiom AssociatedFunction_to_halt :
+      forall (HaltReasonT : Ty.t),
+      M.IsAssociatedFunction (Self HaltReasonT) "to_halt" (to_halt HaltReasonT).
+  End Impl_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
   
-  Module Impl_core_convert_From_revm_interpreter_instruction_result_InstructionResult_for_revm_interpreter_instruction_result_SuccessOrHalt.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::SuccessOrHalt".
+  Module Impl_core_convert_From_where_revm_context_interface_result_HaltReasonTrait_HALT_revm_context_interface_result_HaltReason_for_revm_interpreter_instruction_result_SuccessOrHalt_HALT.
+    Definition Self (HALT : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt") [] [ HALT ].
+    
+    (*
+        fn from(reason: HaltReason) -> Self {
+            SuccessOrHalt::Halt(reason.into())
+        }
+    *)
+    Definition from (HALT : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self HALT in
+      match ε, τ, α with
+      | [], [], [ reason ] =>
+        ltac:(M.monadic
+          (let reason := M.alloc (| reason |) in
+          Value.StructTuple
+            "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+            [
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::convert::Into",
+                  Ty.path "revm_context_interface::result::HaltReason",
+                  [ HALT ],
+                  "into",
+                  []
+                |),
+                [ M.read (| reason |) ]
+              |)
+            ]))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      forall (HALT : Ty.t),
+      M.IsTraitInstance
+        "core::convert::From"
+        (Self HALT)
+        (* Trait polymorphic types *)
+        [ (* T *) Ty.path "revm_context_interface::result::HaltReason" ]
+        (* Instance *) [ ("from", InstanceField.Method (from HALT)) ].
+  End Impl_core_convert_From_where_revm_context_interface_result_HaltReasonTrait_HALT_revm_context_interface_result_HaltReason_for_revm_interpreter_instruction_result_SuccessOrHalt_HALT.
+  
+  Module Impl_core_convert_From_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_revm_interpreter_instruction_result_InstructionResult_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
+    Definition Self (HaltReasonT : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt") [] [ HaltReasonT ].
     
     (*
         fn from(result: InstructionResult) -> Self {
             match result {
-                InstructionResult::Continue => Self::InternalContinue, // used only in interpreter loop
+                InstructionResult::Continue => Self::Internal(InternalResult::InternalContinue), // used only in interpreter loop
                 InstructionResult::Stop => Self::Success(SuccessReason::Stop),
                 InstructionResult::Return => Self::Success(SuccessReason::Return),
                 InstructionResult::SelfDestruct => Self::Success(SuccessReason::SelfDestruct),
                 InstructionResult::Revert => Self::Revert,
-                InstructionResult::CallOrCreate => Self::InternalCallOrCreate, // used only in interpreter loop
-                InstructionResult::CallTooDeep => Self::Halt(HaltReason::CallTooDeep), // not gonna happen for first call
-                InstructionResult::OutOfFunds => Self::Halt(HaltReason::OutOfFunds), // Check for first call is done separately.
-                InstructionResult::OutOfGas => Self::Halt(HaltReason::OutOfGas(OutOfGasError::Basic)),
-                InstructionResult::MemoryLimitOOG => {
-                    Self::Halt(HaltReason::OutOfGas(OutOfGasError::MemoryLimit))
+                InstructionResult::CreateInitCodeStartingEF00 => Self::Revert,
+                InstructionResult::CallOrCreate => Self::Internal(InternalResult::InternalCallOrCreate), // used only in interpreter loop
+                InstructionResult::CallTooDeep => Self::Halt(HaltReason::CallTooDeep.into()), // not gonna happen for first call
+                InstructionResult::OutOfFunds => Self::Halt(HaltReason::OutOfFunds.into()), // Check for first call is done separately.
+                InstructionResult::OutOfGas => {
+                    Self::Halt(HaltReason::OutOfGas(OutOfGasError::Basic).into())
                 }
-                InstructionResult::MemoryOOG => Self::Halt(HaltReason::OutOfGas(OutOfGasError::Memory)),
+                InstructionResult::MemoryLimitOOG => {
+                    Self::Halt(HaltReason::OutOfGas(OutOfGasError::MemoryLimit).into())
+                }
+                InstructionResult::MemoryOOG => {
+                    Self::Halt(HaltReason::OutOfGas(OutOfGasError::Memory).into())
+                }
                 InstructionResult::PrecompileOOG => {
-                    Self::Halt(HaltReason::OutOfGas(OutOfGasError::Precompile))
+                    Self::Halt(HaltReason::OutOfGas(OutOfGasError::Precompile).into())
                 }
                 InstructionResult::InvalidOperandOOG => {
-                    Self::Halt(HaltReason::OutOfGas(OutOfGasError::InvalidOperand))
+                    Self::Halt(HaltReason::OutOfGas(OutOfGasError::InvalidOperand).into())
+                }
+                InstructionResult::ReentrancySentryOOG => {
+                    Self::Halt(HaltReason::OutOfGas(OutOfGasError::ReentrancySentry).into())
                 }
                 InstructionResult::OpcodeNotFound | InstructionResult::ReturnContractInNotInitEOF => {
-                    Self::Halt(HaltReason::OpcodeNotFound)
+                    Self::Halt(HaltReason::OpcodeNotFound.into())
                 }
                 InstructionResult::CallNotAllowedInsideStatic => {
-                    Self::Halt(HaltReason::CallNotAllowedInsideStatic)
+                    Self::Halt(HaltReason::CallNotAllowedInsideStatic.into())
                 } // first call is not static call
                 InstructionResult::StateChangeDuringStaticCall => {
-                    Self::Halt(HaltReason::StateChangeDuringStaticCall)
+                    Self::Halt(HaltReason::StateChangeDuringStaticCall.into())
                 }
-                InstructionResult::InvalidFEOpcode => Self::Halt(HaltReason::InvalidFEOpcode),
-                InstructionResult::InvalidJump => Self::Halt(HaltReason::InvalidJump),
-                InstructionResult::NotActivated => Self::Halt(HaltReason::NotActivated),
-                InstructionResult::StackUnderflow => Self::Halt(HaltReason::StackUnderflow),
-                InstructionResult::StackOverflow => Self::Halt(HaltReason::StackOverflow),
-                InstructionResult::OutOfOffset => Self::Halt(HaltReason::OutOfOffset),
-                InstructionResult::CreateCollision => Self::Halt(HaltReason::CreateCollision),
-                InstructionResult::OverflowPayment => Self::Halt(HaltReason::OverflowPayment), // Check for first call is done separately.
-                InstructionResult::PrecompileError => Self::Halt(HaltReason::PrecompileError),
-                InstructionResult::NonceOverflow => Self::Halt(HaltReason::NonceOverflow),
+                InstructionResult::InvalidFEOpcode => Self::Halt(HaltReason::InvalidFEOpcode.into()),
+                InstructionResult::InvalidJump => Self::Halt(HaltReason::InvalidJump.into()),
+                InstructionResult::NotActivated => Self::Halt(HaltReason::NotActivated.into()),
+                InstructionResult::StackUnderflow => Self::Halt(HaltReason::StackUnderflow.into()),
+                InstructionResult::StackOverflow => Self::Halt(HaltReason::StackOverflow.into()),
+                InstructionResult::OutOfOffset => Self::Halt(HaltReason::OutOfOffset.into()),
+                InstructionResult::CreateCollision => Self::Halt(HaltReason::CreateCollision.into()),
+                InstructionResult::OverflowPayment => Self::Halt(HaltReason::OverflowPayment.into()), // Check for first call is done separately.
+                InstructionResult::PrecompileError => Self::Halt(HaltReason::PrecompileError.into()),
+                InstructionResult::NonceOverflow => Self::Halt(HaltReason::NonceOverflow.into()),
                 InstructionResult::CreateContractSizeLimit
                 | InstructionResult::CreateContractStartingWithEF => {
-                    Self::Halt(HaltReason::CreateContractSizeLimit)
+                    Self::Halt(HaltReason::CreateContractSizeLimit.into())
                 }
                 InstructionResult::CreateInitCodeSizeLimit => {
-                    Self::Halt(HaltReason::CreateInitCodeSizeLimit)
+                    Self::Halt(HaltReason::CreateInitCodeSizeLimit.into())
                 }
+                // TODO : (EOF) Add proper Revert subtype.
+                InstructionResult::InvalidEOFInitCode => Self::Revert,
                 InstructionResult::FatalExternalError => Self::FatalExternalError,
-                InstructionResult::EOFOpcodeDisabledInLegacy => Self::Halt(HaltReason::OpcodeNotFound),
-                InstructionResult::EOFFunctionStackOverflow => Self::FatalExternalError,
-                InstructionResult::ReturnContract => {
-                    panic!("Unexpected EOF internal Return Contract")
+                InstructionResult::EOFOpcodeDisabledInLegacy => {
+                    Self::Halt(HaltReason::OpcodeNotFound.into())
+                }
+                InstructionResult::SubRoutineStackOverflow => {
+                    Self::Halt(HaltReason::SubRoutineStackOverflow.into())
+                }
+                InstructionResult::ReturnContract => Self::Success(SuccessReason::EofReturnContract),
+                InstructionResult::EofAuxDataOverflow => {
+                    Self::Halt(HaltReason::EofAuxDataOverflow.into())
+                }
+                InstructionResult::EofAuxDataTooSmall => {
+                    Self::Halt(HaltReason::EofAuxDataTooSmall.into())
+                }
+                InstructionResult::InvalidEXTCALLTarget => {
+                    Self::Halt(HaltReason::InvalidEXTCALLTarget.into())
+                }
+                InstructionResult::InvalidExtDelegateCallTarget => {
+                    Self::Internal(InternalResult::InvalidExtDelegateCallTarget)
                 }
             }
         }
     *)
-    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from
+        (HaltReasonT : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self HaltReasonT in
       match ε, τ, α with
       | [], [], [ result ] =>
         ltac:(M.monadic
@@ -2246,8 +3298,12 @@ Module instruction_result.
                       |) in
                     M.alloc (|
                       Value.StructTuple
-                        "revm_interpreter::instruction_result::SuccessOrHalt::InternalContinue"
-                        []
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Internal"
+                        [
+                          Value.StructTuple
+                            "revm_interpreter::instruction_result::InternalResult::InternalContinue"
+                            []
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2259,7 +3315,8 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Success"
-                        [ Value.StructTuple "revm_primitives::result::SuccessReason::Stop" [] ]
+                        [ Value.StructTuple "revm_context_interface::result::SuccessReason::Stop" []
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2271,7 +3328,11 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Success"
-                        [ Value.StructTuple "revm_primitives::result::SuccessReason::Return" [] ]
+                        [
+                          Value.StructTuple
+                            "revm_context_interface::result::SuccessReason::Return"
+                            []
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2285,7 +3346,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Success"
                         [
                           Value.StructTuple
-                            "revm_primitives::result::SuccessReason::SelfDestruct"
+                            "revm_context_interface::result::SuccessReason::SelfDestruct"
                             []
                         ]
                     |)));
@@ -2306,12 +3367,28 @@ Module instruction_result.
                     (let _ :=
                       M.is_struct_tuple (|
                         γ,
+                        "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeStartingEF00"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Revert"
+                        []
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
                         "revm_interpreter::instruction_result::InstructionResult::CallOrCreate"
                       |) in
                     M.alloc (|
                       Value.StructTuple
-                        "revm_interpreter::instruction_result::SuccessOrHalt::InternalCallOrCreate"
-                        []
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Internal"
+                        [
+                          Value.StructTuple
+                            "revm_interpreter::instruction_result::InternalResult::InternalCallOrCreate"
+                            []
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2323,7 +3400,22 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
-                        [ Value.StructTuple "revm_primitives::result::HaltReason::CallTooDeep" [] ]
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::CallTooDeep"
+                                []
+                            ]
+                          |)
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2335,7 +3427,22 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
-                        [ Value.StructTuple "revm_primitives::result::HaltReason::OutOfFunds" [] ]
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::OutOfFunds"
+                                []
+                            ]
+                          |)
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2348,9 +3455,24 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
-                          Value.StructTuple
-                            "revm_primitives::result::HaltReason::OutOfGas"
-                            [ Value.StructTuple "revm_primitives::result::OutOfGasError::Basic" [] ]
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::OutOfGas"
+                                [
+                                  Value.StructTuple
+                                    "revm_context_interface::result::OutOfGasError::Basic"
+                                    []
+                                ]
+                            ]
+                          |)
                         ]
                     |)));
                 fun γ =>
@@ -2364,13 +3486,24 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
-                          Value.StructTuple
-                            "revm_primitives::result::HaltReason::OutOfGas"
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
                             [
                               Value.StructTuple
-                                "revm_primitives::result::OutOfGasError::MemoryLimit"
-                                []
+                                "revm_context_interface::result::HaltReason::OutOfGas"
+                                [
+                                  Value.StructTuple
+                                    "revm_context_interface::result::OutOfGasError::MemoryLimit"
+                                    []
+                                ]
                             ]
+                          |)
                         ]
                     |)));
                 fun γ =>
@@ -2384,10 +3517,24 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
-                          Value.StructTuple
-                            "revm_primitives::result::HaltReason::OutOfGas"
-                            [ Value.StructTuple "revm_primitives::result::OutOfGasError::Memory" []
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::OutOfGas"
+                                [
+                                  Value.StructTuple
+                                    "revm_context_interface::result::OutOfGasError::Memory"
+                                    []
+                                ]
                             ]
+                          |)
                         ]
                     |)));
                 fun γ =>
@@ -2401,13 +3548,24 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
-                          Value.StructTuple
-                            "revm_primitives::result::HaltReason::OutOfGas"
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
                             [
                               Value.StructTuple
-                                "revm_primitives::result::OutOfGasError::Precompile"
-                                []
+                                "revm_context_interface::result::HaltReason::OutOfGas"
+                                [
+                                  Value.StructTuple
+                                    "revm_context_interface::result::OutOfGasError::Precompile"
+                                    []
+                                ]
                             ]
+                          |)
                         ]
                     |)));
                 fun γ =>
@@ -2421,13 +3579,55 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
-                          Value.StructTuple
-                            "revm_primitives::result::HaltReason::OutOfGas"
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
                             [
                               Value.StructTuple
-                                "revm_primitives::result::OutOfGasError::InvalidOperand"
-                                []
+                                "revm_context_interface::result::HaltReason::OutOfGas"
+                                [
+                                  Value.StructTuple
+                                    "revm_context_interface::result::OutOfGasError::InvalidOperand"
+                                    []
+                                ]
                             ]
+                          |)
+                        ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::ReentrancySentryOOG"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::OutOfGas"
+                                [
+                                  Value.StructTuple
+                                    "revm_context_interface::result::OutOfGasError::ReentrancySentry"
+                                    []
+                                ]
+                            ]
+                          |)
                         ]
                     |)));
                 fun γ =>
@@ -2462,9 +3662,20 @@ Module instruction_result.
                                   Value.StructTuple
                                     "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                                     [
-                                      Value.StructTuple
-                                        "revm_primitives::result::HaltReason::OpcodeNotFound"
-                                        []
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::convert::Into",
+                                          Ty.path "revm_context_interface::result::HaltReason",
+                                          [ HaltReasonT ],
+                                          "into",
+                                          []
+                                        |),
+                                        [
+                                          Value.StructTuple
+                                            "revm_context_interface::result::HaltReason::OpcodeNotFound"
+                                            []
+                                        ]
+                                      |)
                                     ]
                                 |)))
                             | _ => M.impossible "wrong number of arguments"
@@ -2481,9 +3692,20 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
-                          Value.StructTuple
-                            "revm_primitives::result::HaltReason::CallNotAllowedInsideStatic"
-                            []
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::CallNotAllowedInsideStatic"
+                                []
+                            ]
+                          |)
                         ]
                     |)));
                 fun γ =>
@@ -2497,9 +3719,20 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
-                          Value.StructTuple
-                            "revm_primitives::result::HaltReason::StateChangeDuringStaticCall"
-                            []
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::StateChangeDuringStaticCall"
+                                []
+                            ]
+                          |)
                         ]
                     |)));
                 fun γ =>
@@ -2513,9 +3746,20 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
-                          Value.StructTuple
-                            "revm_primitives::result::HaltReason::InvalidFEOpcode"
-                            []
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::InvalidFEOpcode"
+                                []
+                            ]
+                          |)
                         ]
                     |)));
                 fun γ =>
@@ -2528,7 +3772,22 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
-                        [ Value.StructTuple "revm_primitives::result::HaltReason::InvalidJump" [] ]
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::InvalidJump"
+                                []
+                            ]
+                          |)
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2540,7 +3799,22 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
-                        [ Value.StructTuple "revm_primitives::result::HaltReason::NotActivated" [] ]
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::NotActivated"
+                                []
+                            ]
+                          |)
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2552,7 +3826,21 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
-                        [ Value.StructTuple "revm_primitives::result::HaltReason::StackUnderflow" []
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::StackUnderflow"
+                                []
+                            ]
+                          |)
                         ]
                     |)));
                 fun γ =>
@@ -2565,7 +3853,21 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
-                        [ Value.StructTuple "revm_primitives::result::HaltReason::StackOverflow" []
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::StackOverflow"
+                                []
+                            ]
+                          |)
                         ]
                     |)));
                 fun γ =>
@@ -2578,7 +3880,22 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
-                        [ Value.StructTuple "revm_primitives::result::HaltReason::OutOfOffset" [] ]
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::OutOfOffset"
+                                []
+                            ]
+                          |)
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2591,9 +3908,20 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
-                          Value.StructTuple
-                            "revm_primitives::result::HaltReason::CreateCollision"
-                            []
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::CreateCollision"
+                                []
+                            ]
+                          |)
                         ]
                     |)));
                 fun γ =>
@@ -2607,9 +3935,20 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
-                          Value.StructTuple
-                            "revm_primitives::result::HaltReason::OverflowPayment"
-                            []
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::OverflowPayment"
+                                []
+                            ]
+                          |)
                         ]
                     |)));
                 fun γ =>
@@ -2623,9 +3962,20 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
-                          Value.StructTuple
-                            "revm_primitives::result::HaltReason::PrecompileError"
-                            []
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::PrecompileError"
+                                []
+                            ]
+                          |)
                         ]
                     |)));
                 fun γ =>
@@ -2638,7 +3988,21 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
-                        [ Value.StructTuple "revm_primitives::result::HaltReason::NonceOverflow" []
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::NonceOverflow"
+                                []
+                            ]
+                          |)
                         ]
                     |)));
                 fun γ =>
@@ -2673,9 +4037,20 @@ Module instruction_result.
                                   Value.StructTuple
                                     "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                                     [
-                                      Value.StructTuple
-                                        "revm_primitives::result::HaltReason::CreateContractSizeLimit"
-                                        []
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::convert::Into",
+                                          Ty.path "revm_context_interface::result::HaltReason",
+                                          [ HaltReasonT ],
+                                          "into",
+                                          []
+                                        |),
+                                        [
+                                          Value.StructTuple
+                                            "revm_context_interface::result::HaltReason::CreateContractSizeLimit"
+                                            []
+                                        ]
+                                      |)
                                     ]
                                 |)))
                             | _ => M.impossible "wrong number of arguments"
@@ -2692,10 +4067,33 @@ Module instruction_result.
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
-                          Value.StructTuple
-                            "revm_primitives::result::HaltReason::CreateInitCodeSizeLimit"
-                            []
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::CreateInitCodeSizeLimit"
+                                []
+                            ]
+                          |)
                         ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::InvalidEOFInitCode"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Revert"
+                        []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2719,7 +4117,21 @@ Module instruction_result.
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
-                        [ Value.StructTuple "revm_primitives::result::HaltReason::OpcodeNotFound" []
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::OpcodeNotFound"
+                                []
+                            ]
+                          |)
                         ]
                     |)));
                 fun γ =>
@@ -2727,12 +4139,27 @@ Module instruction_result.
                     (let _ :=
                       M.is_struct_tuple (|
                         γ,
-                        "revm_interpreter::instruction_result::InstructionResult::EOFFunctionStackOverflow"
+                        "revm_interpreter::instruction_result::InstructionResult::SubRoutineStackOverflow"
                       |) in
                     M.alloc (|
                       Value.StructTuple
-                        "revm_interpreter::instruction_result::SuccessOrHalt::FatalExternalError"
-                        []
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::SubRoutineStackOverflow"
+                                []
+                            ]
+                          |)
+                        ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2742,30 +4169,110 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::ReturnContract"
                       |) in
                     M.alloc (|
-                      M.never_to_any (|
-                        M.call_closure (|
-                          M.get_function (| "core::panicking::panic_fmt", [] |),
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_const",
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Success"
+                        [
+                          Value.StructTuple
+                            "revm_context_interface::result::SuccessReason::EofReturnContract"
+                            []
+                        ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::EofAuxDataOverflow"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::EofAuxDataOverflow"
                                 []
-                              |),
-                              [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "Unexpected EOF internal Return Contract"
-                                      |)
-                                    ]
-                                |)
-                              ]
-                            |)
-                          ]
-                        |)
-                      |)
+                            ]
+                          |)
+                        ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::EofAuxDataTooSmall"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::EofAuxDataTooSmall"
+                                []
+                            ]
+                          |)
+                        ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::InvalidEXTCALLTarget"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::Into",
+                              Ty.path "revm_context_interface::result::HaltReason",
+                              [ HaltReasonT ],
+                              "into",
+                              []
+                            |),
+                            [
+                              Value.StructTuple
+                                "revm_context_interface::result::HaltReason::InvalidEXTCALLTarget"
+                                []
+                            ]
+                          |)
+                        ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::InvalidExtDelegateCallTarget"
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Internal"
+                        [
+                          Value.StructTuple
+                            "revm_interpreter::instruction_result::InternalResult::InvalidExtDelegateCallTarget"
+                            []
+                        ]
                     |)))
               ]
             |)
@@ -2774,11 +4281,12 @@ Module instruction_result.
       end.
     
     Axiom Implements :
+      forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (Self HaltReasonT)
         (* Trait polymorphic types *)
         [ (* T *) Ty.path "revm_interpreter::instruction_result::InstructionResult" ]
-        (* Instance *) [ ("from", InstanceField.Method from) ].
-  End Impl_core_convert_From_revm_interpreter_instruction_result_InstructionResult_for_revm_interpreter_instruction_result_SuccessOrHalt.
+        (* Instance *) [ ("from", InstanceField.Method (from HaltReasonT)) ].
+  End Impl_core_convert_From_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_revm_interpreter_instruction_result_InstructionResult_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
 End instruction_result.

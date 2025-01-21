@@ -787,13 +787,367 @@ Module interpreter.
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_revm_interpreter_interpreter_stack_Stack.
     
+    Module Impl_core_clone_Clone_for_revm_interpreter_interpreter_stack_Stack.
+      Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::stack::Stack".
+      
+      (*
+          fn clone(&self) -> Self {
+              // Use `Self::new()` to ensure the cloned Stack maintains the STACK_LIMIT capacity,
+              // and then copy the data. This preserves the invariant that Stack always has
+              // STACK_LIMIT capacity, which is crucial for the safety and correctness of other methods.
+              let mut new_stack = Self::new();
+              new_stack.data.extend_from_slice(&self.data);
+              new_stack
+          }
+      *)
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              let~ new_stack :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "revm_interpreter::interpreter::stack::Stack",
+                      "new",
+                      []
+                    |),
+                    []
+                  |)
+                |) in
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
+                            [];
+                          Ty.path "alloc::alloc::Global"
+                        ],
+                      "extend_from_slice",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        new_stack,
+                        "revm_interpreter::interpreter::stack::Stack",
+                        "data"
+                      |);
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                [];
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          [],
+                          "deref",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter::stack::Stack",
+                            "data"
+                          |)
+                        ]
+                      |)
+                    ]
+                  |)
+                |) in
+              new_stack
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::clone::Clone"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("clone", InstanceField.Method clone) ].
+    End Impl_core_clone_Clone_for_revm_interpreter_interpreter_stack_Stack.
+    
+    Module Impl_revm_interpreter_interpreter_types_StackTrait_for_revm_interpreter_interpreter_stack_Stack.
+      Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::stack::Stack".
+      
+      (*
+          fn len(&self) -> usize {
+              self.len()
+          }
+      *)
+      Definition len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.path "revm_interpreter::interpreter::stack::Stack",
+                "len",
+                []
+              |),
+              [ M.read (| self |) ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          fn popn<const N: usize>(&mut self) -> Option<[U256; N]> {
+              if self.len() < N {
+                  return None;
+              }
+              // SAFETY: Stack length is checked above.
+              Some(unsafe { self.popn::<N>() })
+          }
+      *)
+      Definition popn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ N ], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.catch_return (|
+              ltac:(M.monadic
+                (M.read (|
+                  let~ _ :=
+                    M.match_operator (|
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  BinOp.lt (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "revm_interpreter::interpreter::stack::Stack",
+                                        "len",
+                                        []
+                                      |),
+                                      [ M.read (| self |) ]
+                                    |),
+                                    M.read (|
+                                      M.get_constant (|
+                                        "revm_interpreter::interpreter::stack::popn::N"
+                                      |)
+                                    |)
+                                  |)
+                                |)) in
+                            let _ :=
+                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                |)
+                              |)
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |) in
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "revm_interpreter::interpreter::stack::Stack",
+                            "popn",
+                            []
+                          |),
+                          [ M.read (| self |) ]
+                        |)
+                      ]
+                  |)
+                |)))
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          fn popn_top<const POPN: usize>(&mut self) -> Option<([U256; POPN], &mut U256)> {
+              if self.len() < POPN + 1 {
+                  return None;
+              }
+              // SAFETY: Stack length is checked above.
+              Some(unsafe { self.popn_top::<POPN>() })
+          }
+      *)
+      Definition popn_top (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ POPN ], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.catch_return (|
+              ltac:(M.monadic
+                (M.read (|
+                  let~ _ :=
+                    M.match_operator (|
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  BinOp.lt (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "revm_interpreter::interpreter::stack::Stack",
+                                        "len",
+                                        []
+                                      |),
+                                      [ M.read (| self |) ]
+                                    |),
+                                    BinOp.Wrap.add (|
+                                      M.read (|
+                                        M.get_constant (|
+                                          "revm_interpreter::interpreter::stack::popn_top::POPN"
+                                        |)
+                                      |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
+                                  |)
+                                |)) in
+                            let _ :=
+                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                                |)
+                              |)
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |) in
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "revm_interpreter::interpreter::stack::Stack",
+                            "popn_top",
+                            []
+                          |),
+                          [ M.read (| self |) ]
+                        |)
+                      ]
+                  |)
+                |)))
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          fn exchange(&mut self, n: usize, m: usize) -> bool {
+              self.exchange(n, m)
+          }
+      *)
+      Definition exchange (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; n; m ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let n := M.alloc (| n |) in
+            let m := M.alloc (| m |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.path "revm_interpreter::interpreter::stack::Stack",
+                "exchange",
+                []
+              |),
+              [ M.read (| self |); M.read (| n |); M.read (| m |) ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          fn dup(&mut self, n: usize) -> bool {
+              self.dup(n)
+          }
+      *)
+      Definition dup (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; n ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.path "revm_interpreter::interpreter::stack::Stack",
+                "dup",
+                []
+              |),
+              [ M.read (| self |); M.read (| n |) ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          fn push(&mut self, value: U256) -> bool {
+              self.push(value)
+          }
+      *)
+      Definition push (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; value ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let value := M.alloc (| value |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.path "revm_interpreter::interpreter::stack::Stack",
+                "push",
+                []
+              |),
+              [ M.read (| self |); M.read (| value |) ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "revm_interpreter::interpreter_types::StackTrait"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *)
+          [
+            ("len", InstanceField.Method len);
+            ("popn", InstanceField.Method popn);
+            ("popn_top", InstanceField.Method popn_top);
+            ("exchange", InstanceField.Method exchange);
+            ("dup", InstanceField.Method dup);
+            ("push", InstanceField.Method push)
+          ].
+    End Impl_revm_interpreter_interpreter_types_StackTrait_for_revm_interpreter_interpreter_stack_Stack.
+    
     Module Impl_revm_interpreter_interpreter_stack_Stack.
       Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::stack::Stack".
       
       (*
           pub fn new() -> Self {
               Self {
-                  // SAFETY: expansion functions assume that capacity is `STACK_LIMIT`.
+                  // SAFETY: Expansion functions assume that capacity is `STACK_LIMIT`.
                   data: Vec::with_capacity(STACK_LIMIT),
               }
           }
@@ -1179,24 +1533,240 @@ Module interpreter.
       Axiom AssociatedFunction_top_unsafe : M.IsAssociatedFunction Self "top_unsafe" top_unsafe.
       
       (*
-          pub unsafe fn pop_top_unsafe(&mut self) -> (U256, &mut U256) {
-              let pop = self.pop_unsafe();
-              let top = self.top_unsafe();
-              (pop, top)
+          pub unsafe fn popn<const N: usize>(&mut self) -> [U256; N] {
+              if N == 0 {
+                  return [U256::ZERO; N];
+              }
+              let mut result = [U256::ZERO; N];
+              for v in result.iter_mut() {
+                  *v = self.data.pop().unwrap_unchecked();
+              }
+              result
           }
       *)
-      Definition pop_top_unsafe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition popn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [], [], [ self ] =>
+        | [ N ], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.catch_return (|
+              ltac:(M.monadic
+                (M.read (|
+                  let~ _ :=
+                    M.match_operator (|
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  BinOp.eq (|
+                                    M.read (|
+                                      M.get_constant (|
+                                        "revm_interpreter::interpreter::stack::popn::N"
+                                      |)
+                                    |),
+                                    Value.Integer IntegerKind.Usize 0
+                                  |)
+                                |)) in
+                            let _ :=
+                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  M.return_ (|
+                                    repeat (| M.read (| M.get_constant (| "ruint::ZERO" |) |), N |)
+                                  |)
+                                |)
+                              |)
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |) in
+                  let~ result :=
+                    M.alloc (| repeat (| M.read (| M.get_constant (| "ruint::ZERO" |) |), N |) |) in
+                  let~ _ :=
+                    M.use
+                      (M.match_operator (|
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::iter::traits::collect::IntoIterator",
+                              Ty.apply
+                                (Ty.path "core::slice::iter::IterMut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
+                                    []
+                                ],
+                              [],
+                              "into_iter",
+                              []
+                            |),
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        []
+                                    ],
+                                  "iter_mut",
+                                  []
+                                |),
+                                [ result ]
+                              |)
+                            ]
+                          |)
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let iter := M.copy (| γ |) in
+                              M.loop (|
+                                ltac:(M.monadic
+                                  (let~ _ :=
+                                    M.match_operator (|
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::iter::traits::iterator::Iterator",
+                                            Ty.apply
+                                              (Ty.path "core::slice::iter::IterMut")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
+                                                  []
+                                              ],
+                                            [],
+                                            "next",
+                                            []
+                                          |),
+                                          [ iter ]
+                                        |)
+                                      |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let _ :=
+                                              M.is_struct_tuple (|
+                                                γ,
+                                                "core::option::Option::None"
+                                              |) in
+                                            M.alloc (|
+                                              M.never_to_any (| M.read (| M.break (||) |) |)
+                                            |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ0_0 :=
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                γ,
+                                                "core::option::Option::Some",
+                                                0
+                                              |) in
+                                            let v := M.copy (| γ0_0 |) in
+                                            let~ _ :=
+                                              M.write (|
+                                                M.read (| v |),
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 256;
+                                                            Value.Integer IntegerKind.Usize 4
+                                                          ]
+                                                          []
+                                                      ],
+                                                    "unwrap_unchecked",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path "alloc::vec::Vec")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "ruint::Uint")
+                                                              [
+                                                                Value.Integer IntegerKind.Usize 256;
+                                                                Value.Integer IntegerKind.Usize 4
+                                                              ]
+                                                              [];
+                                                            Ty.path "alloc::alloc::Global"
+                                                          ],
+                                                        "pop",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "revm_interpreter::interpreter::stack::Stack",
+                                                          "data"
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                                |)
+                                              |) in
+                                            M.alloc (| Value.Tuple [] |)))
+                                      ]
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |)))
+                              |)))
+                        ]
+                      |)) in
+                  result
+                |)))
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_popn : M.IsAssociatedFunction Self "popn" popn.
+      
+      (*
+          pub unsafe fn popn_top<const POPN: usize>(&mut self) -> ([U256; POPN], &mut U256) {
+              let result = self.popn::<POPN>();
+              let top = self.top_unsafe();
+              (result, top)
+          }
+      *)
+      Definition popn_top (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ POPN ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ pop :=
+              let~ result :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::stack::Stack",
-                      "pop_unsafe",
+                      "popn",
                       []
                     |),
                     [ M.read (| self |) ]
@@ -1213,378 +1783,22 @@ Module interpreter.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [ M.read (| pop |); M.read (| top |) ] |)
+              M.alloc (| Value.Tuple [ M.read (| result |); M.read (| top |) ] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_pop_top_unsafe :
-        M.IsAssociatedFunction Self "pop_top_unsafe" pop_top_unsafe.
+      Axiom AssociatedFunction_popn_top : M.IsAssociatedFunction Self "popn_top" popn_top.
       
       (*
-          pub unsafe fn pop2_unsafe(&mut self) -> (U256, U256) {
-              let pop1 = self.pop_unsafe();
-              let pop2 = self.pop_unsafe();
-              (pop1, pop2)
-          }
-      *)
-      Definition pop2_unsafe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            M.read (|
-              let~ pop1 :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "revm_interpreter::interpreter::stack::Stack",
-                      "pop_unsafe",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              let~ pop2 :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "revm_interpreter::interpreter::stack::Stack",
-                      "pop_unsafe",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [ M.read (| pop1 |); M.read (| pop2 |) ] |)
-            |)))
-        | _, _, _ => M.impossible "wrong number of arguments"
-        end.
-      
-      Axiom AssociatedFunction_pop2_unsafe : M.IsAssociatedFunction Self "pop2_unsafe" pop2_unsafe.
-      
-      (*
-          pub unsafe fn pop2_top_unsafe(&mut self) -> (U256, U256, &mut U256) {
-              let pop1 = self.pop_unsafe();
-              let pop2 = self.pop_unsafe();
-              let top = self.top_unsafe();
-      
-              (pop1, pop2, top)
-          }
-      *)
-      Definition pop2_top_unsafe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            M.read (|
-              let~ pop1 :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "revm_interpreter::interpreter::stack::Stack",
-                      "pop_unsafe",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              let~ pop2 :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "revm_interpreter::interpreter::stack::Stack",
-                      "pop_unsafe",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              let~ top :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "revm_interpreter::interpreter::stack::Stack",
-                      "top_unsafe",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [ M.read (| pop1 |); M.read (| pop2 |); M.read (| top |) ] |)
-            |)))
-        | _, _, _ => M.impossible "wrong number of arguments"
-        end.
-      
-      Axiom AssociatedFunction_pop2_top_unsafe :
-        M.IsAssociatedFunction Self "pop2_top_unsafe" pop2_top_unsafe.
-      
-      (*
-          pub unsafe fn pop3_unsafe(&mut self) -> (U256, U256, U256) {
-              let pop1 = self.pop_unsafe();
-              let pop2 = self.pop_unsafe();
-              let pop3 = self.pop_unsafe();
-      
-              (pop1, pop2, pop3)
-          }
-      *)
-      Definition pop3_unsafe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            M.read (|
-              let~ pop1 :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "revm_interpreter::interpreter::stack::Stack",
-                      "pop_unsafe",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              let~ pop2 :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "revm_interpreter::interpreter::stack::Stack",
-                      "pop_unsafe",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              let~ pop3 :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "revm_interpreter::interpreter::stack::Stack",
-                      "pop_unsafe",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [ M.read (| pop1 |); M.read (| pop2 |); M.read (| pop3 |) ] |)
-            |)))
-        | _, _, _ => M.impossible "wrong number of arguments"
-        end.
-      
-      Axiom AssociatedFunction_pop3_unsafe : M.IsAssociatedFunction Self "pop3_unsafe" pop3_unsafe.
-      
-      (*
-          pub unsafe fn pop4_unsafe(&mut self) -> (U256, U256, U256, U256) {
-              let pop1 = self.pop_unsafe();
-              let pop2 = self.pop_unsafe();
-              let pop3 = self.pop_unsafe();
-              let pop4 = self.pop_unsafe();
-      
-              (pop1, pop2, pop3, pop4)
-          }
-      *)
-      Definition pop4_unsafe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            M.read (|
-              let~ pop1 :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "revm_interpreter::interpreter::stack::Stack",
-                      "pop_unsafe",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              let~ pop2 :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "revm_interpreter::interpreter::stack::Stack",
-                      "pop_unsafe",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              let~ pop3 :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "revm_interpreter::interpreter::stack::Stack",
-                      "pop_unsafe",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              let~ pop4 :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "revm_interpreter::interpreter::stack::Stack",
-                      "pop_unsafe",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              M.alloc (|
-                Value.Tuple
-                  [ M.read (| pop1 |); M.read (| pop2 |); M.read (| pop3 |); M.read (| pop4 |) ]
-              |)
-            |)))
-        | _, _, _ => M.impossible "wrong number of arguments"
-        end.
-      
-      Axiom AssociatedFunction_pop4_unsafe : M.IsAssociatedFunction Self "pop4_unsafe" pop4_unsafe.
-      
-      (*
-          pub unsafe fn pop5_unsafe(&mut self) -> (U256, U256, U256, U256, U256) {
-              let pop1 = self.pop_unsafe();
-              let pop2 = self.pop_unsafe();
-              let pop3 = self.pop_unsafe();
-              let pop4 = self.pop_unsafe();
-              let pop5 = self.pop_unsafe();
-      
-              (pop1, pop2, pop3, pop4, pop5)
-          }
-      *)
-      Definition pop5_unsafe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            M.read (|
-              let~ pop1 :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "revm_interpreter::interpreter::stack::Stack",
-                      "pop_unsafe",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              let~ pop2 :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "revm_interpreter::interpreter::stack::Stack",
-                      "pop_unsafe",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              let~ pop3 :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "revm_interpreter::interpreter::stack::Stack",
-                      "pop_unsafe",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              let~ pop4 :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "revm_interpreter::interpreter::stack::Stack",
-                      "pop_unsafe",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              let~ pop5 :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "revm_interpreter::interpreter::stack::Stack",
-                      "pop_unsafe",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              M.alloc (|
-                Value.Tuple
-                  [
-                    M.read (| pop1 |);
-                    M.read (| pop2 |);
-                    M.read (| pop3 |);
-                    M.read (| pop4 |);
-                    M.read (| pop5 |)
-                  ]
-              |)
-            |)))
-        | _, _, _ => M.impossible "wrong number of arguments"
-        end.
-      
-      Axiom AssociatedFunction_pop5_unsafe : M.IsAssociatedFunction Self "pop5_unsafe" pop5_unsafe.
-      
-      (*
-          pub fn push_b256(&mut self, value: B256) -> Result<(), InstructionResult> {
-              self.push(value.into())
-          }
-      *)
-      Definition push_b256 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self; value ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let value := M.alloc (| value |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.path "revm_interpreter::interpreter::stack::Stack",
-                "push",
-                []
-              |),
-              [
-                M.read (| self |);
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::convert::Into",
-                    Ty.apply
-                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer IntegerKind.Usize 32 ]
-                      [],
-                    [
-                      Ty.apply
-                        (Ty.path "ruint::Uint")
-                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                        []
-                    ],
-                    "into",
-                    []
-                  |),
-                  [ M.read (| value |) ]
-                |)
-              ]
-            |)))
-        | _, _, _ => M.impossible "wrong number of arguments"
-        end.
-      
-      Axiom AssociatedFunction_push_b256 : M.IsAssociatedFunction Self "push_b256" push_b256.
-      
-      (*
-          pub fn push(&mut self, value: U256) -> Result<(), InstructionResult> {
+          pub fn push(&mut self, value: U256) -> bool {
               // Allows the compiler to optimize out the `Vec::push` capacity check.
               assume!(self.data.capacity() == STACK_LIMIT);
               if self.data.len() == STACK_LIMIT {
-                  return Err(InstructionResult::StackOverflow);
+                  return false;
               }
               self.data.push(value);
-              Ok(())
+              true
           }
       *)
       Definition push (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1774,19 +1988,7 @@ Module interpreter.
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      [
-                                        Value.StructTuple
-                                          "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
-                                          []
-                                      ]
-                                  |)
-                                |)
-                              |)
+                              M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
@@ -1821,7 +2023,7 @@ Module interpreter.
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (| Value.Bool true |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1972,21 +2174,19 @@ Module interpreter.
       Axiom AssociatedFunction_peek : M.IsAssociatedFunction Self "peek" peek.
       
       (*
-          pub fn dup(&mut self, n: usize) -> Result<(), InstructionResult> {
+          pub fn dup(&mut self, n: usize) -> bool {
               assume!(n > 0, "attempted to dup 0");
               let len = self.data.len();
-              if len < n {
-                  Err(InstructionResult::StackUnderflow)
-              } else if len + 1 > STACK_LIMIT {
-                  Err(InstructionResult::StackOverflow)
+              if len < n || len + 1 > STACK_LIMIT {
+                  false
               } else {
-                  // SAFETY: check for out of bounds is done above and it makes this safe to do.
+                  // SAFETY: Check for out of bounds is done above and it makes this safe to do.
                   unsafe {
                       let ptr = self.data.as_mut_ptr().add(len);
                       ptr::copy_nonoverlapping(ptr.sub(n), ptr, 1);
                       self.data.set_len(len + 1);
                   }
-                  Ok(())
+                  true
               }
           }
       *)
@@ -2127,111 +2327,102 @@ Module interpreter.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.lt (| M.read (| len |), M.read (| n |) |) |)) in
+                        M.use
+                          (M.alloc (|
+                            LogicalOp.or (|
+                              BinOp.lt (| M.read (| len |), M.read (| n |) |),
+                              ltac:(M.monadic
+                                (BinOp.gt (|
+                                  BinOp.Wrap.add (|
+                                    M.read (| len |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |),
+                                  M.read (|
+                                    M.get_constant (|
+                                      "revm_interpreter::interpreter::stack::STACK_LIMIT"
+                                    |)
+                                  |)
+                                |)))
+                            |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [
-                            Value.StructTuple
-                              "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
-                              []
-                          ]
-                      |)));
+                      M.alloc (| Value.Bool false |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    BinOp.gt (|
-                                      BinOp.Wrap.add (|
-                                        M.read (| len |),
-                                        Value.Integer IntegerKind.Usize 1
-                                      |),
-                                      M.read (|
-                                        M.get_constant (|
-                                          "revm_interpreter::interpreter::stack::STACK_LIMIT"
-                                        |)
-                                      |)
-                                    |)
-                                  |)) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
-                              M.alloc (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
+                      (let~ _ :=
+                        let~ ptr :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "*mut")
+                                  []
                                   [
-                                    Value.StructTuple
-                                      "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
-                                      []
-                                  ]
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let~ _ :=
-                                let~ ptr :=
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "*mut")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "ruint::Uint")
-                                              [
-                                                Value.Integer IntegerKind.Usize 256;
-                                                Value.Integer IntegerKind.Usize 4
-                                              ]
-                                              []
-                                          ],
-                                        "add",
-                                        []
-                                      |),
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
                                       [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "alloc::vec::Vec")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "ruint::Uint")
-                                                  [
-                                                    Value.Integer IntegerKind.Usize 256;
-                                                    Value.Integer IntegerKind.Usize 4
-                                                  ]
-                                                  [];
-                                                Ty.path "alloc::alloc::Global"
-                                              ],
-                                            "as_mut_ptr",
-                                            []
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "revm_interpreter::interpreter::stack::Stack",
-                                              "data"
-                                            |)
-                                          ]
-                                        |);
-                                        M.read (| len |)
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
                                       ]
+                                      []
+                                  ],
+                                "add",
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          [];
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    "as_mut_ptr",
+                                    []
+                                  |),
+                                  [
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "revm_interpreter::interpreter::stack::Stack",
+                                      "data"
                                     |)
-                                  |) in
-                                let~ _ :=
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::intrinsics::copy_nonoverlapping",
+                                  ]
+                                |);
+                                M.read (| len |)
+                              ]
+                            |)
+                          |) in
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_function (|
+                                "core::intrinsics::copy_nonoverlapping",
+                                [
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
+                                    []
+                                ]
+                              |),
+                              [
+                                (* MutToConstPointer *)
+                                M.pointer_coercion
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "*mut")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "ruint::Uint")
@@ -2240,74 +2431,52 @@ Module interpreter.
                                               Value.Integer IntegerKind.Usize 4
                                             ]
                                             []
-                                        ]
-                                      |),
+                                        ],
+                                      "sub",
+                                      []
+                                    |),
+                                    [ M.read (| ptr |); M.read (| n |) ]
+                                  |));
+                                M.read (| ptr |);
+                                Value.Integer IntegerKind.Usize 1
+                              ]
+                            |)
+                          |) in
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
                                       [
-                                        (* MutToConstPointer *)
-                                        M.pointer_coercion
-                                          (M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "*mut")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "ruint::Uint")
-                                                    [
-                                                      Value.Integer IntegerKind.Usize 256;
-                                                      Value.Integer IntegerKind.Usize 4
-                                                    ]
-                                                    []
-                                                ],
-                                              "sub",
-                                              []
-                                            |),
-                                            [ M.read (| ptr |); M.read (| n |) ]
-                                          |));
-                                        M.read (| ptr |);
-                                        Value.Integer IntegerKind.Usize 1
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
                                       ]
-                                    |)
-                                  |) in
-                                let~ _ :=
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "ruint::Uint")
-                                              [
-                                                Value.Integer IntegerKind.Usize 256;
-                                                Value.Integer IntegerKind.Usize 4
-                                              ]
-                                              [];
-                                            Ty.path "alloc::alloc::Global"
-                                          ],
-                                        "set_len",
-                                        []
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "revm_interpreter::interpreter::stack::Stack",
-                                          "data"
-                                        |);
-                                        BinOp.Wrap.add (|
-                                          M.read (| len |),
-                                          Value.Integer IntegerKind.Usize 1
-                                        |)
-                                      ]
-                                    |)
-                                  |) in
-                                M.alloc (| Value.Tuple [] |) in
-                              M.alloc (|
-                                Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
-                              |)))
-                        ]
-                      |)))
+                                      [];
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
+                                "set_len",
+                                []
+                              |),
+                              [
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "revm_interpreter::interpreter::stack::Stack",
+                                  "data"
+                                |);
+                                BinOp.Wrap.add (|
+                                  M.read (| len |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |)
+                              ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |) in
+                      M.alloc (| Value.Bool true |)))
                 ]
               |)
             |)))
@@ -2317,7 +2486,7 @@ Module interpreter.
       Axiom AssociatedFunction_dup : M.IsAssociatedFunction Self "dup" dup.
       
       (*
-          pub fn swap(&mut self, n: usize) -> Result<(), InstructionResult> {
+          pub fn swap(&mut self, n: usize) -> bool {
               self.exchange(0, n)
           }
       *)
@@ -2341,23 +2510,23 @@ Module interpreter.
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
       
       (*
-          pub fn exchange(&mut self, n: usize, m: usize) -> Result<(), InstructionResult> {
+          pub fn exchange(&mut self, n: usize, m: usize) -> bool {
               assume!(m > 0, "overlapping exchange");
               let len = self.data.len();
               let n_m_index = n + m;
               if n_m_index >= len {
-                  return Err(InstructionResult::StackUnderflow);
+                  return false;
               }
               // SAFETY: `n` and `n_m` are checked to be within bounds, and they don't overlap.
               unsafe {
-                  // NOTE: `ptr::swap_nonoverlapping` is more efficient than `slice::swap` or `ptr::swap`
+                  // Note: `ptr::swap_nonoverlapping` is more efficient than `slice::swap` or `ptr::swap`
                   // because it operates under the assumption that the pointers do not overlap,
                   // eliminating an intemediate copy,
                   // which is a condition we know to be true in this context.
                   let top = self.data.as_mut_ptr().add(len - 1);
                   core::ptr::swap_nonoverlapping(top.sub(n), top.sub(n_m_index), 1);
               }
-              Ok(())
+              true
           }
       *)
       Definition exchange (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -2515,19 +2684,7 @@ Module interpreter.
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      [
-                                        Value.StructTuple
-                                          "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
-                                          []
-                                      ]
-                                  |)
-                                |)
-                              |)
+                              M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
@@ -2642,7 +2799,7 @@ Module interpreter.
                         |)
                       |) in
                     M.alloc (| Value.Tuple [] |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (| Value.Bool true |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2662,18 +2819,18 @@ Module interpreter.
                   return Err(InstructionResult::StackOverflow);
               }
       
-              // SAFETY: length checked above.
+              // SAFETY: Length checked above.
               unsafe {
                   let dst = self.data.as_mut_ptr().add(self.data.len()).cast::<u64>();
                   self.data.set_len(new_len);
       
                   let mut i = 0;
       
-                  // write full words
+                  // Write full words
                   let words = slice.chunks_exact(32);
                   let partial_last_word = words.remainder();
                   for word in words {
-                      // Note: we unroll `U256::from_be_bytes` here to write directly into the buffer,
+                      // Note: We unroll `U256::from_be_bytes` here to write directly into the buffer,
                       // instead of creating a 32 byte array on the stack and then copying it over.
                       for l in word.rchunks_exact(8) {
                           dst.add(i).write(u64::from_be_bytes(l.try_into().unwrap()));
@@ -2685,7 +2842,7 @@ Module interpreter.
                       return Ok(());
                   }
       
-                  // write limbs of partial last word
+                  // Write limbs of partial last word
                   let limbs = partial_last_word.rchunks_exact(8);
                   let partial_last_limb = limbs.remainder();
                   for l in limbs {
@@ -2693,7 +2850,7 @@ Module interpreter.
                       i += 1;
                   }
       
-                  // write partial last limb by padding with zeros
+                  // Write partial last limb by padding with zeros
                   if !partial_last_limb.is_empty() {
                       let mut tmp = [0u8; 8];
                       tmp[8 - partial_last_limb.len()..].copy_from_slice(partial_last_limb);
@@ -2703,7 +2860,7 @@ Module interpreter.
       
                   debug_assert_eq!((i + 3) / 4, n_words, "wrote too much");
       
-                  // zero out upper bytes of last word
+                  // Zero out upper bytes of last word
                   let m = i % 4; // 32 / 8
                   if m != 0 {
                       dst.add(i).write_bytes(0, 4 - m);

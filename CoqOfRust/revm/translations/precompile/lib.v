@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 (*
 pub fn calc_linear_cost_u32(len: usize, base: u64, word: u64) -> u64 {
-    (len as u64 + 32 - 1) / 32 * word + base
+    (len as u64).div_ceil(32) * word + base
 }
 *)
 Definition calc_linear_cost_u32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -15,12 +15,9 @@ Definition calc_linear_cost_u32 (ε : list Value.t) (τ : list Ty.t) (α : list 
       let word := M.alloc (| word |) in
       BinOp.Wrap.add (|
         BinOp.Wrap.mul (|
-          BinOp.Wrap.div (|
-            BinOp.Wrap.sub (|
-              BinOp.Wrap.add (| M.rust_cast (M.read (| len |)), Value.Integer IntegerKind.U64 32 |),
-              Value.Integer IntegerKind.U64 1
-            |),
-            Value.Integer IntegerKind.U64 32
+          M.call_closure (|
+            M.get_associated_function (| Ty.path "u64", "div_ceil", [] |),
+            [ M.rust_cast (M.read (| len |)); Value.Integer IntegerKind.U64 32 ]
           |),
           M.read (| word |)
         |),
@@ -31,530 +28,6 @@ Definition calc_linear_cost_u32 (ε : list Value.t) (τ : list Ty.t) (α : list 
 
 Axiom Function_calc_linear_cost_u32 :
   M.IsFunction "revm_precompile::calc_linear_cost_u32" calc_linear_cost_u32.
-
-(* StructRecord
-  {
-    name := "PrecompileOutput";
-    const_params := [];
-    ty_params := [];
-    fields :=
-      [
-        ("cost", Ty.path "u64");
-        ("output",
-          Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]);
-        ("logs",
-          Ty.apply
-            (Ty.path "alloc::vec::Vec")
-            []
-            [
-              Ty.apply
-                (Ty.path "alloy_primitives::log::Log")
-                []
-                [ Ty.path "alloy_primitives::log::LogData" ];
-              Ty.path "alloc::alloc::Global"
-            ])
-      ];
-  } *)
-
-Module Impl_core_clone_Clone_for_revm_precompile_PrecompileOutput.
-  Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileOutput".
-  
-  (* Clone *)
-  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    match ε, τ, α with
-    | [], [], [ self ] =>
-      ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        Value.StructRecord
-          "revm_precompile::PrecompileOutput"
-          [
-            ("cost",
-              M.call_closure (|
-                M.get_trait_method (| "core::clone::Clone", Ty.path "u64", [], "clone", [] |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_precompile::PrecompileOutput",
-                    "cost"
-                  |)
-                ]
-              |));
-            ("output",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::clone::Clone",
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                  [],
-                  "clone",
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_precompile::PrecompileOutput",
-                    "output"
-                  |)
-                ]
-              |));
-            ("logs",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::clone::Clone",
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "alloy_primitives::log::Log")
-                        []
-                        [ Ty.path "alloy_primitives::log::LogData" ];
-                      Ty.path "alloc::alloc::Global"
-                    ],
-                  [],
-                  "clone",
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_precompile::PrecompileOutput",
-                    "logs"
-                  |)
-                ]
-              |))
-          ]))
-    | _, _, _ => M.impossible "wrong number of arguments"
-    end.
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::clone::Clone"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [ ("clone", InstanceField.Method clone) ].
-End Impl_core_clone_Clone_for_revm_precompile_PrecompileOutput.
-
-Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileOutput.
-  Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileOutput".
-  
-  (* Debug *)
-  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    match ε, τ, α with
-    | [], [], [ self; f ] =>
-      ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
-        M.call_closure (|
-          M.get_associated_function (|
-            Ty.path "core::fmt::Formatter",
-            "debug_struct_field3_finish",
-            []
-          |),
-          [
-            M.read (| f |);
-            M.read (| Value.String "PrecompileOutput" |);
-            M.read (| Value.String "cost" |);
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "revm_precompile::PrecompileOutput",
-              "cost"
-            |);
-            M.read (| Value.String "output" |);
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "revm_precompile::PrecompileOutput",
-              "output"
-            |);
-            M.read (| Value.String "logs" |);
-            M.alloc (|
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "revm_precompile::PrecompileOutput",
-                "logs"
-              |)
-            |)
-          ]
-        |)))
-    | _, _, _ => M.impossible "wrong number of arguments"
-    end.
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::fmt::Debug"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-End Impl_core_fmt_Debug_for_revm_precompile_PrecompileOutput.
-
-Module Impl_core_default_Default_for_revm_precompile_PrecompileOutput.
-  Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileOutput".
-  
-  (* Default *)
-  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    match ε, τ, α with
-    | [], [], [] =>
-      ltac:(M.monadic
-        (Value.StructRecord
-          "revm_precompile::PrecompileOutput"
-          [
-            ("cost",
-              M.call_closure (|
-                M.get_trait_method (| "core::default::Default", Ty.path "u64", [], "default", [] |),
-                []
-              |));
-            ("output",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("logs",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "alloy_primitives::log::Log")
-                        []
-                        [ Ty.path "alloy_primitives::log::LogData" ];
-                      Ty.path "alloc::alloc::Global"
-                    ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |))
-          ]))
-    | _, _, _ => M.impossible "wrong number of arguments"
-    end.
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::default::Default"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [ ("default", InstanceField.Method default) ].
-End Impl_core_default_Default_for_revm_precompile_PrecompileOutput.
-
-Module Impl_core_marker_StructuralPartialEq_for_revm_precompile_PrecompileOutput.
-  Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileOutput".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralPartialEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralPartialEq_for_revm_precompile_PrecompileOutput.
-
-Module Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileOutput.
-  Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileOutput".
-  
-  (* PartialEq *)
-  Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    match ε, τ, α with
-    | [], [], [ self; other ] =>
-      ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
-        LogicalOp.and (|
-          LogicalOp.and (|
-            BinOp.eq (|
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_precompile::PrecompileOutput",
-                  "cost"
-                |)
-              |),
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "revm_precompile::PrecompileOutput",
-                  "cost"
-                |)
-              |)
-            |),
-            ltac:(M.monadic
-              (M.call_closure (|
-                M.get_trait_method (|
-                  "core::cmp::PartialEq",
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                  [
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      []
-                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                  ],
-                  "eq",
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_precompile::PrecompileOutput",
-                    "output"
-                  |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "revm_precompile::PrecompileOutput",
-                    "output"
-                  |)
-                ]
-              |)))
-          |),
-          ltac:(M.monadic
-            (M.call_closure (|
-              M.get_trait_method (|
-                "core::cmp::PartialEq",
-                Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "alloy_primitives::log::Log")
-                      []
-                      [ Ty.path "alloy_primitives::log::LogData" ];
-                    Ty.path "alloc::alloc::Global"
-                  ],
-                [
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "alloy_primitives::log::Log")
-                        []
-                        [ Ty.path "alloy_primitives::log::LogData" ];
-                      Ty.path "alloc::alloc::Global"
-                    ]
-                ],
-                "eq",
-                []
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_precompile::PrecompileOutput",
-                  "logs"
-                |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "revm_precompile::PrecompileOutput",
-                  "logs"
-                |)
-              ]
-            |)))
-        |)))
-    | _, _, _ => M.impossible "wrong number of arguments"
-    end.
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::cmp::PartialEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [ ("eq", InstanceField.Method eq) ].
-End Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileOutput.
-
-Module Impl_core_cmp_Eq_for_revm_precompile_PrecompileOutput.
-  Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileOutput".
-  
-  (* Eq *)
-  Definition assert_receiver_is_total_eq
-      (ε : list Value.t)
-      (τ : list Ty.t)
-      (α : list Value.t)
-      : M :=
-    match ε, τ, α with
-    | [], [], [ self ] =>
-      ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        M.read (|
-          M.match_operator (|
-            Value.DeclaredButUndefined,
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (M.match_operator (|
-                    Value.DeclaredButUndefined,
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            Value.DeclaredButUndefined,
-                            [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
-                          |)))
-                    ]
-                  |)))
-            ]
-          |)
-        |)))
-    | _, _, _ => M.impossible "wrong number of arguments"
-    end.
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::cmp::Eq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *)
-      [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
-End Impl_core_cmp_Eq_for_revm_precompile_PrecompileOutput.
-
-Module Impl_core_hash_Hash_for_revm_precompile_PrecompileOutput.
-  Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileOutput".
-  
-  (* Hash *)
-  Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    match ε, τ, α with
-    | [], [ __H ], [ self; state ] =>
-      ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let state := M.alloc (| state |) in
-        M.read (|
-          let~ _ :=
-            M.alloc (|
-              M.call_closure (|
-                M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_precompile::PrecompileOutput",
-                    "cost"
-                  |);
-                  M.read (| state |)
-                ]
-              |)
-            |) in
-          let~ _ :=
-            M.alloc (|
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::hash::Hash",
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                  [],
-                  "hash",
-                  [ __H ]
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_precompile::PrecompileOutput",
-                    "output"
-                  |);
-                  M.read (| state |)
-                ]
-              |)
-            |) in
-          M.alloc (|
-            M.call_closure (|
-              M.get_trait_method (|
-                "core::hash::Hash",
-                Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "alloy_primitives::log::Log")
-                      []
-                      [ Ty.path "alloy_primitives::log::LogData" ];
-                    Ty.path "alloc::alloc::Global"
-                  ],
-                [],
-                "hash",
-                [ __H ]
-              |),
-              [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_precompile::PrecompileOutput",
-                  "logs"
-                |);
-                M.read (| state |)
-              ]
-            |)
-          |)
-        |)))
-    | _, _, _ => M.impossible "wrong number of arguments"
-    end.
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::hash::Hash"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [ ("hash", InstanceField.Method hash) ].
-End Impl_core_hash_Hash_for_revm_precompile_PrecompileOutput.
-
-Module Impl_revm_precompile_PrecompileOutput.
-  Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileOutput".
-  
-  (*
-      pub fn without_logs(cost: u64, output: Vec<u8>) -> Self {
-          Self {
-              cost,
-              output,
-              logs: Vec::new(),
-          }
-      }
-  *)
-  Definition without_logs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    match ε, τ, α with
-    | [], [], [ cost; output ] =>
-      ltac:(M.monadic
-        (let cost := M.alloc (| cost |) in
-        let output := M.alloc (| output |) in
-        Value.StructRecord
-          "revm_precompile::PrecompileOutput"
-          [
-            ("cost", M.read (| cost |));
-            ("output", M.read (| output |));
-            ("logs",
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "alloy_primitives::log::Log")
-                        []
-                        [ Ty.path "alloy_primitives::log::LogData" ];
-                      Ty.path "alloc::alloc::Global"
-                    ],
-                  "new",
-                  []
-                |),
-                []
-              |))
-          ]))
-    | _, _, _ => M.impossible "wrong number of arguments"
-    end.
-  
-  Axiom AssociatedFunction_without_logs : M.IsAssociatedFunction Self "without_logs" without_logs.
-End Impl_revm_precompile_PrecompileOutput.
 
 (* StructRecord
   {
@@ -569,7 +42,26 @@ End Impl_revm_precompile_PrecompileOutput.
             []
             [
               Ty.path "alloy_primitives::bits::address::Address";
-              Ty.path "revm_primitives::precompile::Precompile";
+              Ty.function
+                [
+                  Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                  Ty.path "u64"
+                ]
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                  ]);
+              Ty.path "std::hash::random::RandomState"
+            ]);
+        ("addresses",
+          Ty.apply
+            (Ty.path "std::collections::hash::set::HashSet")
+            []
+            [
+              Ty.path "alloy_primitives::bits::address::Address";
               Ty.path "std::hash::random::RandomState"
             ])
       ];
@@ -596,7 +88,18 @@ Module Impl_core_clone_Clone_for_revm_precompile_Precompiles.
                     []
                     [
                       Ty.path "alloy_primitives::bits::address::Address";
-                      Ty.path "revm_primitives::precompile::Precompile";
+                      Ty.function
+                        [
+                          Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                          Ty.path "u64"
+                        ]
+                        (Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "revm_precompile::interface::PrecompileOutput";
+                            Ty.path "revm_precompile::interface::PrecompileErrors"
+                          ]);
                       Ty.path "std::hash::random::RandomState"
                     ],
                   [],
@@ -608,6 +111,29 @@ Module Impl_core_clone_Clone_for_revm_precompile_Precompiles.
                     M.read (| self |),
                     "revm_precompile::Precompiles",
                     "inner"
+                  |)
+                ]
+              |));
+            ("addresses",
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::clone::Clone",
+                  Ty.apply
+                    (Ty.path "std::collections::hash::set::HashSet")
+                    []
+                    [
+                      Ty.path "alloy_primitives::bits::address::Address";
+                      Ty.path "std::hash::random::RandomState"
+                    ],
+                  [],
+                  "clone",
+                  []
+                |),
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm_precompile::Precompiles",
+                    "addresses"
                   |)
                 ]
               |))
@@ -643,7 +169,35 @@ Module Impl_core_default_Default_for_revm_precompile_Precompiles.
                     []
                     [
                       Ty.path "alloy_primitives::bits::address::Address";
-                      Ty.path "revm_primitives::precompile::Precompile";
+                      Ty.function
+                        [
+                          Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                          Ty.path "u64"
+                        ]
+                        (Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "revm_precompile::interface::PrecompileOutput";
+                            Ty.path "revm_precompile::interface::PrecompileErrors"
+                          ]);
+                      Ty.path "std::hash::random::RandomState"
+                    ],
+                  [],
+                  "default",
+                  []
+                |),
+                []
+              |));
+            ("addresses",
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::default::Default",
+                  Ty.apply
+                    (Ty.path "std::collections::hash::set::HashSet")
+                    []
+                    [
+                      Ty.path "alloy_primitives::bits::address::Address";
                       Ty.path "std::hash::random::RandomState"
                     ],
                   [],
@@ -677,18 +231,24 @@ Module Impl_core_fmt_Debug_for_revm_precompile_Precompiles.
         M.call_closure (|
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
-            "debug_struct_field1_finish",
+            "debug_struct_field2_finish",
             []
           |),
           [
             M.read (| f |);
             M.read (| Value.String "Precompiles" |);
             M.read (| Value.String "inner" |);
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "revm_precompile::Precompiles",
+              "inner"
+            |);
+            M.read (| Value.String "addresses" |);
             M.alloc (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "revm_precompile::Precompiles",
-                "inner"
+                "addresses"
               |)
             |)
           ]
@@ -715,6 +275,7 @@ Module Impl_revm_precompile_Precompiles.
               PrecompileSpecId::ISTANBUL => Self::istanbul(),
               PrecompileSpecId::BERLIN => Self::berlin(),
               PrecompileSpecId::CANCUN => Self::cancun(),
+              PrecompileSpecId::PRAGUE => Self::prague(),
               PrecompileSpecId::LATEST => Self::latest(),
           }
       }
@@ -793,6 +354,20 @@ Module Impl_revm_precompile_Precompiles.
                       M.get_associated_function (|
                         Ty.path "revm_precompile::Precompiles",
                         "cancun",
+                        []
+                      |),
+                      []
+                    |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::PRAGUE" |) in
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "revm_precompile::Precompiles",
+                        "prague",
                         []
                       |),
                       []
@@ -948,6 +523,26 @@ Module Impl_revm_precompile_Precompiles.
   Axiom AssociatedFunction_homestead : M.IsAssociatedFunction Self "homestead" homestead.
   
   (*
+      pub fn inner(&self) -> &HashMap<Address, PrecompileFn> {
+          &self.inner
+      }
+  *)
+  Definition inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.SubPointer.get_struct_record_field (|
+          M.read (| self |),
+          "revm_precompile::Precompiles",
+          "inner"
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
+  
+  Axiom AssociatedFunction_inner : M.IsAssociatedFunction Self "inner" inner.
+  
+  (*
       pub fn byzantium() -> &'static Self {
           static INSTANCE: OnceBox<Precompiles> = OnceBox::new();
           INSTANCE.get_or_init(|| {
@@ -1096,12 +691,12 @@ Module Impl_revm_precompile_Precompiles.
           INSTANCE.get_or_init(|| {
               let mut precompiles = Self::byzantium().clone();
               precompiles.extend([
-                  // EIP-152: Add BLAKE2 compression function `F` precompile.
-                  blake2::FUN,
                   // EIP-1108: Reduce alt_bn128 precompile gas costs.
                   bn128::add::ISTANBUL,
                   bn128::mul::ISTANBUL,
                   bn128::pair::ISTANBUL,
+                  // EIP-152: Add BLAKE2 compression function `F` precompile.
+                  blake2::FUN,
               ]);
               Box::new(precompiles)
           })
@@ -1181,9 +776,6 @@ Module Impl_revm_precompile_Precompiles.
                                         Value.Array
                                           [
                                             M.read (|
-                                              M.get_constant (| "revm_precompile::blake2::FUN" |)
-                                            |);
-                                            M.read (|
                                               M.get_constant (|
                                                 "revm_precompile::bn128::add::ISTANBUL"
                                               |)
@@ -1197,6 +789,9 @@ Module Impl_revm_precompile_Precompiles.
                                               M.get_constant (|
                                                 "revm_precompile::bn128::pair::ISTANBUL"
                                               |)
+                                            |);
+                                            M.read (|
+                                              M.get_constant (| "revm_precompile::blake2::FUN" |)
                                             |)
                                           ]
                                       ]
@@ -1355,18 +950,21 @@ Module Impl_revm_precompile_Precompiles.
       pub fn cancun() -> &'static Self {
           static INSTANCE: OnceBox<Precompiles> = OnceBox::new();
           INSTANCE.get_or_init(|| {
-              let precompiles = Self::berlin().clone();
+              let mut precompiles = Self::berlin().clone();
   
-              // Don't include KZG point evaluation precompile in no_std builds.
-              #[cfg(feature = "c-kzg")]
-              let precompiles = {
-                  let mut precompiles = precompiles;
-                  precompiles.extend([
-                      // EIP-4844: Shard Blob Transactions
-                      kzg_point_evaluation::POINT_EVALUATION,
-                  ]);
-                  precompiles
-              };
+              // EIP-4844: Shard Blob Transactions
+              cfg_if! {
+                  if #[cfg(any(feature = "c-kzg", feature = "kzg-rs"))] {
+                      let precompile = kzg_point_evaluation::POINT_EVALUATION.clone();
+                  } else {
+                      let precompile = PrecompileWithAddress(u64_to_address(0x0A), |_,_| Err(PrecompileErrors::Fatal { msg: "c-kzg feature is not enabled".into()}));
+                  }
+              }
+  
+  
+              precompiles.extend([
+                  precompile,
+              ]);
   
               Box::new(precompiles)
           })
@@ -1428,6 +1026,141 @@ Module Impl_revm_precompile_Precompiles.
                                       ]
                                     |)
                                   |) in
+                                let~ precompile :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::clone::Clone",
+                                        Ty.path "revm_precompile::PrecompileWithAddress",
+                                        [],
+                                        "clone",
+                                        []
+                                      |),
+                                      [
+                                        M.get_constant (|
+                                          "revm_precompile::kzg_point_evaluation::POINT_EVALUATION"
+                                        |)
+                                      ]
+                                    |)
+                                  |) in
+                                let~ _ :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "revm_precompile::Precompiles",
+                                        "extend",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 1 ]
+                                            [ Ty.path "revm_precompile::PrecompileWithAddress" ]
+                                        ]
+                                      |),
+                                      [ precompiles; Value.Array [ M.read (| precompile |) ] ]
+                                    |)
+                                  |) in
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.path "revm_precompile::Precompiles";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      "new",
+                                      []
+                                    |),
+                                    [ M.read (| precompiles |) ]
+                                  |)
+                                |)
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
+                  end))
+          ]
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
+  
+  Axiom AssociatedFunction_cancun : M.IsAssociatedFunction Self "cancun" cancun.
+  
+  (*
+      pub fn prague() -> &'static Self {
+          static INSTANCE: OnceBox<Precompiles> = OnceBox::new();
+          INSTANCE.get_or_init(|| {
+              let precompiles = Self::cancun().clone();
+  
+              // Don't include BLS12-381 precompiles in no_std builds.
+              #[cfg(feature = "blst")]
+              let precompiles = {
+                  let mut precompiles = precompiles;
+                  precompiles.extend(bls12_381::precompiles());
+                  precompiles
+              };
+  
+              Box::new(precompiles)
+          })
+      }
+  *)
+  Definition prague (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
+      ltac:(M.monadic
+        (M.call_closure (|
+          M.get_associated_function (|
+            Ty.apply
+              (Ty.path "once_cell::race::once_box::OnceBox")
+              []
+              [ Ty.path "revm_precompile::Precompiles" ],
+            "get_or_init",
+            [
+              Ty.function
+                [ Ty.tuple [] ]
+                (Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.path "revm_precompile::Precompiles"; Ty.path "alloc::alloc::Global" ])
+            ]
+          |),
+          [
+            M.read (| M.get_constant (| "revm_precompile::prague::INSTANCE" |) |);
+            M.closure
+              (fun γ =>
+                ltac:(M.monadic
+                  match γ with
+                  | [ α0 ] =>
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.read (|
+                                let~ precompiles :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::clone::Clone",
+                                        Ty.path "revm_precompile::Precompiles",
+                                        [],
+                                        "clone",
+                                        []
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_precompile::Precompiles",
+                                            "cancun",
+                                            []
+                                          |),
+                                          []
+                                        |)
+                                      ]
+                                    |)
+                                  |) in
                                 let~ precompiles :=
                                   M.copy (|
                                     let~ precompiles := M.copy (| precompiles |) in
@@ -1437,23 +1170,17 @@ Module Impl_revm_precompile_Precompiles.
                                           M.get_associated_function (|
                                             Ty.path "revm_precompile::Precompiles",
                                             "extend",
-                                            [
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer IntegerKind.Usize 1 ]
-                                                [ Ty.path "revm_precompile::PrecompileWithAddress" ]
-                                            ]
+                                            [ Ty.associated ]
                                           |),
                                           [
                                             precompiles;
-                                            Value.Array
-                                              [
-                                                M.read (|
-                                                  M.get_constant (|
-                                                    "revm_precompile::kzg_point_evaluation::POINT_EVALUATION"
-                                                  |)
-                                                |)
-                                              ]
+                                            M.call_closure (|
+                                              M.get_function (|
+                                                "revm_precompile::bls12_381::precompiles",
+                                                []
+                                              |),
+                                              []
+                                            |)
                                           ]
                                         |)
                                       |) in
@@ -1485,11 +1212,11 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_cancun : M.IsAssociatedFunction Self "cancun" cancun.
+  Axiom AssociatedFunction_prague : M.IsAssociatedFunction Self "prague" prague.
   
   (*
       pub fn latest() -> &'static Self {
-          Self::cancun()
+          Self::prague()
       }
   *)
   Definition latest (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1497,7 +1224,7 @@ Module Impl_revm_precompile_Precompiles.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
-          M.get_associated_function (| Ty.path "revm_precompile::Precompiles", "cancun", [] |),
+          M.get_associated_function (| Ty.path "revm_precompile::Precompiles", "prague", [] |),
           []
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1506,7 +1233,7 @@ Module Impl_revm_precompile_Precompiles.
   Axiom AssociatedFunction_latest : M.IsAssociatedFunction Self "latest" latest.
   
   (*
-      pub fn addresses(&self) -> impl Iterator<Item = &Address> {
+      pub fn addresses(&self) -> impl ExactSizeIterator<Item = &Address> {
           self.inner.keys()
       }
   *)
@@ -1522,7 +1249,18 @@ Module Impl_revm_precompile_Precompiles.
               []
               [
                 Ty.path "alloy_primitives::bits::address::Address";
-                Ty.path "revm_primitives::precompile::Precompile";
+                Ty.function
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                    Ty.path "u64"
+                  ]
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                    ]);
                 Ty.path "std::hash::random::RandomState"
               ],
             "keys",
@@ -1542,7 +1280,7 @@ Module Impl_revm_precompile_Precompiles.
   Axiom AssociatedFunction_addresses : M.IsAssociatedFunction Self "addresses" addresses.
   
   (*
-      pub fn into_addresses(self) -> impl Iterator<Item = Address> {
+      pub fn into_addresses(self) -> impl ExactSizeIterator<Item = Address> {
           self.inner.into_keys()
       }
   *)
@@ -1558,7 +1296,18 @@ Module Impl_revm_precompile_Precompiles.
               []
               [
                 Ty.path "alloy_primitives::bits::address::Address";
-                Ty.path "revm_primitives::precompile::Precompile";
+                Ty.function
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                    Ty.path "u64"
+                  ]
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                    ]);
                 Ty.path "std::hash::random::RandomState"
               ],
             "into_keys",
@@ -1598,7 +1347,18 @@ Module Impl_revm_precompile_Precompiles.
               []
               [
                 Ty.path "alloy_primitives::bits::address::Address";
-                Ty.path "revm_primitives::precompile::Precompile";
+                Ty.function
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                    Ty.path "u64"
+                  ]
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                    ]);
                 Ty.path "std::hash::random::RandomState"
               ],
             "contains_key",
@@ -1619,7 +1379,7 @@ Module Impl_revm_precompile_Precompiles.
   Axiom AssociatedFunction_contains : M.IsAssociatedFunction Self "contains" contains.
   
   (*
-      pub fn get(&self, address: &Address) -> Option<&Precompile> {
+      pub fn get(&self, address: &Address) -> Option<&PrecompileFn> {
           self.inner.get(address)
       }
   *)
@@ -1636,7 +1396,18 @@ Module Impl_revm_precompile_Precompiles.
               []
               [
                 Ty.path "alloy_primitives::bits::address::Address";
-                Ty.path "revm_primitives::precompile::Precompile";
+                Ty.function
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                    Ty.path "u64"
+                  ]
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                    ]);
                 Ty.path "std::hash::random::RandomState"
               ],
             "get",
@@ -1657,7 +1428,7 @@ Module Impl_revm_precompile_Precompiles.
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
   
   (*
-      pub fn get_mut(&mut self, address: &Address) -> Option<&mut Precompile> {
+      pub fn get_mut(&mut self, address: &Address) -> Option<&mut PrecompileFn> {
           self.inner.get_mut(address)
       }
   *)
@@ -1674,7 +1445,18 @@ Module Impl_revm_precompile_Precompiles.
               []
               [
                 Ty.path "alloy_primitives::bits::address::Address";
-                Ty.path "revm_primitives::precompile::Precompile";
+                Ty.function
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                    Ty.path "u64"
+                  ]
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                    ]);
                 Ty.path "std::hash::random::RandomState"
               ],
             "get_mut",
@@ -1712,7 +1494,18 @@ Module Impl_revm_precompile_Precompiles.
                 []
                 [
                   Ty.path "alloy_primitives::bits::address::Address";
-                  Ty.path "revm_primitives::precompile::Precompile";
+                  Ty.function
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                      Ty.path "u64"
+                    ]
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                      ]);
                   Ty.path "std::hash::random::RandomState"
                 ],
               "len",
@@ -1750,7 +1543,18 @@ Module Impl_revm_precompile_Precompiles.
               []
               [
                 Ty.path "alloy_primitives::bits::address::Address";
-                Ty.path "revm_primitives::precompile::Precompile";
+                Ty.function
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                    Ty.path "u64"
+                  ]
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                    ]);
                 Ty.path "std::hash::random::RandomState"
               ],
             "len",
@@ -1770,8 +1574,31 @@ Module Impl_revm_precompile_Precompiles.
   Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
   
   (*
+      pub fn addresses_set(&self) -> &HashSet<Address> {
+          &self.addresses
+      }
+  *)
+  Definition addresses_set (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.SubPointer.get_struct_record_field (|
+          M.read (| self |),
+          "revm_precompile::Precompiles",
+          "addresses"
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
+  
+  Axiom AssociatedFunction_addresses_set :
+    M.IsAssociatedFunction Self "addresses_set" addresses_set.
+  
+  (*
       pub fn extend(&mut self, other: impl IntoIterator<Item = PrecompileWithAddress>) {
-          self.inner.extend(other.into_iter().map(Into::into));
+          let items: Vec<PrecompileWithAddress> = other.into_iter().collect::<Vec<_>>();
+          self.addresses.extend(items.iter().map(|p| *p.address()));
+          self.inner.extend(items.into_iter().map(|p| (p.0, p.1)));
       }
   *)
   Definition extend (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1781,6 +1608,165 @@ Module Impl_revm_precompile_Precompiles.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
+          let~ items :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::iter::traits::iterator::Iterator",
+                  Ty.associated,
+                  [],
+                  "collect",
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path "revm_precompile::PrecompileWithAddress";
+                        Ty.path "alloc::alloc::Global"
+                      ]
+                  ]
+                |),
+                [
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::iter::traits::collect::IntoIterator",
+                      impl_IntoIterator_Item___PrecompileWithAddress_,
+                      [],
+                      "into_iter",
+                      []
+                    |),
+                    [ M.read (| other |) ]
+                  |)
+                ]
+              |)
+            |) in
+          let~ _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::iter::traits::collect::Extend",
+                  Ty.apply
+                    (Ty.path "std::collections::hash::set::HashSet")
+                    []
+                    [
+                      Ty.path "alloy_primitives::bits::address::Address";
+                      Ty.path "std::hash::random::RandomState"
+                    ],
+                  [ Ty.path "alloy_primitives::bits::address::Address" ],
+                  "extend",
+                  [
+                    Ty.apply
+                      (Ty.path "core::iter::adapters::map::Map")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::slice::iter::Iter")
+                          []
+                          [ Ty.path "revm_precompile::PrecompileWithAddress" ];
+                        Ty.function
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "revm_precompile::PrecompileWithAddress" ]
+                              ]
+                          ]
+                          (Ty.path "alloy_primitives::bits::address::Address")
+                      ]
+                  ]
+                |),
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm_precompile::Precompiles",
+                    "addresses"
+                  |);
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::iter::traits::iterator::Iterator",
+                      Ty.apply
+                        (Ty.path "core::slice::iter::Iter")
+                        []
+                        [ Ty.path "revm_precompile::PrecompileWithAddress" ],
+                      [],
+                      "map",
+                      [
+                        Ty.path "alloy_primitives::bits::address::Address";
+                        Ty.function
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "revm_precompile::PrecompileWithAddress" ]
+                              ]
+                          ]
+                          (Ty.path "alloy_primitives::bits::address::Address")
+                      ]
+                    |),
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.path "revm_precompile::PrecompileWithAddress" ],
+                          "iter",
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.path "revm_precompile::PrecompileWithAddress";
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              [],
+                              "deref",
+                              []
+                            |),
+                            [ items ]
+                          |)
+                        ]
+                      |);
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let p := M.copy (| γ |) in
+                                        M.read (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "revm_precompile::PrecompileWithAddress",
+                                              "address",
+                                              []
+                                            |),
+                                            [ M.read (| p |) ]
+                                          |)
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
           let~ _ :=
             M.alloc (|
               M.call_closure (|
@@ -1791,14 +1777,36 @@ Module Impl_revm_precompile_Precompiles.
                     []
                     [
                       Ty.path "alloy_primitives::bits::address::Address";
-                      Ty.path "revm_primitives::precompile::Precompile";
+                      Ty.function
+                        [
+                          Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                          Ty.path "u64"
+                        ]
+                        (Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "revm_precompile::interface::PrecompileOutput";
+                            Ty.path "revm_precompile::interface::PrecompileErrors"
+                          ]);
                       Ty.path "std::hash::random::RandomState"
                     ],
                   [
                     Ty.tuple
                       [
                         Ty.path "alloy_primitives::bits::address::Address";
-                        Ty.path "revm_primitives::precompile::Precompile"
+                        Ty.function
+                          [
+                            Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                            Ty.path "u64"
+                          ]
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "revm_precompile::interface::PrecompileOutput";
+                              Ty.path "revm_precompile::interface::PrecompileErrors"
+                            ])
                       ]
                   ],
                   "extend",
@@ -1807,13 +1815,33 @@ Module Impl_revm_precompile_Precompiles.
                       (Ty.path "core::iter::adapters::map::Map")
                       []
                       [
-                        Ty.associated;
+                        Ty.apply
+                          (Ty.path "alloc::vec::into_iter::IntoIter")
+                          []
+                          [
+                            Ty.path "revm_precompile::PrecompileWithAddress";
+                            Ty.path "alloc::alloc::Global"
+                          ];
                         Ty.function
-                          [ Ty.path "revm_precompile::PrecompileWithAddress" ]
+                          [ Ty.tuple [ Ty.path "revm_precompile::PrecompileWithAddress" ] ]
                           (Ty.tuple
                             [
                               Ty.path "alloy_primitives::bits::address::Address";
-                              Ty.path "revm_primitives::precompile::Precompile"
+                              Ty.function
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                  Ty.path "u64"
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                                  ])
                             ])
                       ]
                   ]
@@ -1827,21 +1855,55 @@ Module Impl_revm_precompile_Precompiles.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
-                      Ty.associated,
+                      Ty.apply
+                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                        []
+                        [
+                          Ty.path "revm_precompile::PrecompileWithAddress";
+                          Ty.path "alloc::alloc::Global"
+                        ],
                       [],
                       "map",
                       [
                         Ty.tuple
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
-                            Ty.path "revm_primitives::precompile::Precompile"
+                            Ty.function
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                Ty.path "u64"
+                              ]
+                              (Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "revm_precompile::interface::PrecompileOutput";
+                                  Ty.path "revm_precompile::interface::PrecompileErrors"
+                                ])
                           ];
                         Ty.function
-                          [ Ty.path "revm_precompile::PrecompileWithAddress" ]
+                          [ Ty.tuple [ Ty.path "revm_precompile::PrecompileWithAddress" ] ]
                           (Ty.tuple
                             [
                               Ty.path "alloy_primitives::bits::address::Address";
-                              Ty.path "revm_primitives::precompile::Precompile"
+                              Ty.function
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                  Ty.path "u64"
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                                  ])
                             ])
                       ]
                     |),
@@ -1849,26 +1911,52 @@ Module Impl_revm_precompile_Precompiles.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
-                          impl_IntoIterator_Item___PrecompileWithAddress_,
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.path "revm_precompile::PrecompileWithAddress";
+                              Ty.path "alloc::alloc::Global"
+                            ],
                           [],
                           "into_iter",
                           []
                         |),
-                        [ M.read (| other |) ]
+                        [ M.read (| items |) ]
                       |);
-                      M.get_trait_method (|
-                        "core::convert::Into",
-                        Ty.path "revm_precompile::PrecompileWithAddress",
-                        [
-                          Ty.tuple
-                            [
-                              Ty.path "alloy_primitives::bits::address::Address";
-                              Ty.path "revm_primitives::precompile::Precompile"
-                            ]
-                        ],
-                        "into",
-                        []
-                      |)
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let p := M.copy (| γ |) in
+                                        Value.Tuple
+                                          [
+                                            M.read (|
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                p,
+                                                "revm_precompile::PrecompileWithAddress",
+                                                0
+                                              |)
+                                            |);
+                                            M.read (|
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                p,
+                                                "revm_precompile::PrecompileWithAddress",
+                                                1
+                                              |)
+                                            |)
+                                          ]))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
                     ]
                   |)
                 ]
@@ -1890,7 +1978,15 @@ End Impl_revm_precompile_Precompiles.
     fields :=
       [
         Ty.path "alloy_primitives::bits::address::Address";
-        Ty.path "revm_primitives::precompile::Precompile"
+        Ty.function
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ]; Ty.path "u64" ]
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "revm_precompile::interface::PrecompileOutput";
+              Ty.path "revm_precompile::interface::PrecompileErrors"
+            ])
       ];
   } *)
 
@@ -1925,7 +2021,18 @@ Module Impl_core_clone_Clone_for_revm_precompile_PrecompileWithAddress.
             M.call_closure (|
               M.get_trait_method (|
                 "core::clone::Clone",
-                Ty.path "revm_primitives::precompile::Precompile",
+                Ty.function
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                    Ty.path "u64"
+                  ]
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                    ]),
                 [],
                 "clone",
                 []
@@ -1994,11 +2101,11 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileWithAddress.
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_revm_precompile_PrecompileWithAddress.
 
-Module Impl_core_convert_From_Tuple_alloy_primitives_bits_address_Address_revm_primitives_precompile_Precompile__for_revm_precompile_PrecompileWithAddress.
+Module Impl_core_convert_From_Tuple_alloy_primitives_bits_address_Address_ref__alloy_primitives_bytes__Bytesu64Tocore_result_Result_revm_precompile_interface_PrecompileOutput_revm_precompile_interface_PrecompileErrors__for_revm_precompile_PrecompileWithAddress.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileWithAddress".
   
   (*
-      fn from(value: (Address, Precompile)) -> Self {
+      fn from(value: (Address, PrecompileFn)) -> Self {
           PrecompileWithAddress(value.0, value.1)
       }
   *)
@@ -2026,18 +2133,37 @@ Module Impl_core_convert_From_Tuple_alloy_primitives_bits_address_Address_revm_p
         Ty.tuple
           [
             Ty.path "alloy_primitives::bits::address::Address";
-            Ty.path "revm_primitives::precompile::Precompile"
+            Ty.function
+              [
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                Ty.path "u64"
+              ]
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.path "revm_precompile::interface::PrecompileOutput";
+                  Ty.path "revm_precompile::interface::PrecompileErrors"
+                ])
           ]
       ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
-End Impl_core_convert_From_Tuple_alloy_primitives_bits_address_Address_revm_primitives_precompile_Precompile__for_revm_precompile_PrecompileWithAddress.
+End Impl_core_convert_From_Tuple_alloy_primitives_bits_address_Address_ref__alloy_primitives_bytes__Bytesu64Tocore_result_Result_revm_precompile_interface_PrecompileOutput_revm_precompile_interface_PrecompileErrors__for_revm_precompile_PrecompileWithAddress.
 
-Module Impl_core_convert_From_revm_precompile_PrecompileWithAddress_for_Tuple_alloy_primitives_bits_address_Address_revm_primitives_precompile_Precompile_.
+Module Impl_core_convert_From_revm_precompile_PrecompileWithAddress_for_Tuple_alloy_primitives_bits_address_Address_ref__alloy_primitives_bytes__Bytesu64Tocore_result_Result_revm_precompile_interface_PrecompileOutput_revm_precompile_interface_PrecompileErrors_.
   Definition Self : Ty.t :=
     Ty.tuple
       [
         Ty.path "alloy_primitives::bits::address::Address";
-        Ty.path "revm_primitives::precompile::Precompile"
+        Ty.function
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ]; Ty.path "u64" ]
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "revm_precompile::interface::PrecompileOutput";
+              Ty.path "revm_precompile::interface::PrecompileErrors"
+            ])
       ].
   
   (*
@@ -2076,7 +2202,51 @@ Module Impl_core_convert_From_revm_precompile_PrecompileWithAddress_for_Tuple_al
       Self
       (* Trait polymorphic types *) [ (* T *) Ty.path "revm_precompile::PrecompileWithAddress" ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
-End Impl_core_convert_From_revm_precompile_PrecompileWithAddress_for_Tuple_alloy_primitives_bits_address_Address_revm_primitives_precompile_Precompile_.
+End Impl_core_convert_From_revm_precompile_PrecompileWithAddress_for_Tuple_alloy_primitives_bits_address_Address_ref__alloy_primitives_bytes__Bytesu64Tocore_result_Result_revm_precompile_interface_PrecompileOutput_revm_precompile_interface_PrecompileErrors_.
+
+Module Impl_revm_precompile_PrecompileWithAddress.
+  Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileWithAddress".
+  
+  (*
+      pub fn address(&self) -> &Address {
+          &self.0
+      }
+  *)
+  Definition address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.SubPointer.get_struct_tuple_field (|
+          M.read (| self |),
+          "revm_precompile::PrecompileWithAddress",
+          0
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
+  
+  Axiom AssociatedFunction_address : M.IsAssociatedFunction Self "address" address.
+  
+  (*
+      pub fn precompile(&self) -> &PrecompileFn {
+          &self.1
+      }
+  *)
+  Definition precompile (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.SubPointer.get_struct_tuple_field (|
+          M.read (| self |),
+          "revm_precompile::PrecompileWithAddress",
+          1
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
+  
+  Axiom AssociatedFunction_precompile : M.IsAssociatedFunction Self "precompile" precompile.
+End Impl_revm_precompile_PrecompileWithAddress.
 
 (*
 Enum PrecompileSpecId
@@ -2107,6 +2277,11 @@ Enum PrecompileSpecId
       };
       {
         name := "CANCUN";
+        item := StructTuple [];
+        discriminant := None;
+      };
+      {
+        name := "PRAGUE";
         item := StructTuple [];
         discriminant := None;
       };
@@ -2195,6 +2370,12 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
                       let _ :=
                         M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::CANCUN" |) in
                       M.alloc (| M.read (| Value.String "CANCUN" |) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::PRAGUE" |) in
+                      M.alloc (| M.read (| Value.String "PRAGUE" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -2441,12 +2622,44 @@ Module Impl_core_cmp_PartialOrd_for_revm_precompile_PrecompileSpecId.
       (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
 End Impl_core_cmp_PartialOrd_for_revm_precompile_PrecompileSpecId.
 
+Module Impl_core_convert_From_revm_specification_hardfork_SpecId_for_revm_precompile_PrecompileSpecId.
+  Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileSpecId".
+  
+  (*
+      fn from(spec_id: SpecId) -> Self {
+          Self::from_spec_id(spec_id)
+      }
+  *)
+  Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ spec_id ] =>
+      ltac:(M.monadic
+        (let spec_id := M.alloc (| spec_id |) in
+        M.call_closure (|
+          M.get_associated_function (|
+            Ty.path "revm_precompile::PrecompileSpecId",
+            "from_spec_id",
+            []
+          |),
+          [ M.read (| spec_id |) ]
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
+  
+  Axiom Implements :
+    M.IsTraitInstance
+      "core::convert::From"
+      Self
+      (* Trait polymorphic types *) [ (* T *) Ty.path "revm_specification::hardfork::SpecId" ]
+      (* Instance *) [ ("from", InstanceField.Method from) ].
+End Impl_core_convert_From_revm_specification_hardfork_SpecId_for_revm_precompile_PrecompileSpecId.
+
 Module Impl_revm_precompile_PrecompileSpecId.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileSpecId".
   
   (*
-      pub const fn from_spec_id(spec_id: revm_primitives::SpecId) -> Self {
-          use revm_primitives::SpecId::*;
+      pub const fn from_spec_id(spec_id: specification::hardfork::SpecId) -> Self {
+          use specification::hardfork::SpecId::*;
           match spec_id {
               FRONTIER | FRONTIER_THAWING | HOMESTEAD | DAO_FORK | TANGERINE | SPURIOUS_DRAGON => {
                   Self::HOMESTEAD
@@ -2454,12 +2667,9 @@ Module Impl_revm_precompile_PrecompileSpecId.
               BYZANTIUM | CONSTANTINOPLE | PETERSBURG => Self::BYZANTIUM,
               ISTANBUL | MUIR_GLACIER => Self::ISTANBUL,
               BERLIN | LONDON | ARROW_GLACIER | GRAY_GLACIER | MERGE | SHANGHAI => Self::BERLIN,
-              CANCUN | PRAGUE => Self::CANCUN,
+              CANCUN => Self::CANCUN,
+              PRAGUE | OSAKA => Self::PRAGUE,
               LATEST => Self::LATEST,
-              #[cfg(feature = "optimism")]
-              BEDROCK | REGOLITH | CANYON => Self::BERLIN,
-              #[cfg(feature = "optimism")]
-              ECOTONE => Self::CANCUN,
           }
       }
   *)
@@ -2482,7 +2692,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                           (let _ :=
                             M.is_struct_tuple (|
                               γ,
-                              "revm_primitives::specification::SpecId::FRONTIER"
+                              "revm_specification::hardfork::SpecId::FRONTIER"
                             |) in
                           Value.Tuple []));
                       fun γ =>
@@ -2490,7 +2700,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                           (let _ :=
                             M.is_struct_tuple (|
                               γ,
-                              "revm_primitives::specification::SpecId::FRONTIER_THAWING"
+                              "revm_specification::hardfork::SpecId::FRONTIER_THAWING"
                             |) in
                           Value.Tuple []));
                       fun γ =>
@@ -2498,7 +2708,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                           (let _ :=
                             M.is_struct_tuple (|
                               γ,
-                              "revm_primitives::specification::SpecId::HOMESTEAD"
+                              "revm_specification::hardfork::SpecId::HOMESTEAD"
                             |) in
                           Value.Tuple []));
                       fun γ =>
@@ -2506,7 +2716,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                           (let _ :=
                             M.is_struct_tuple (|
                               γ,
-                              "revm_primitives::specification::SpecId::DAO_FORK"
+                              "revm_specification::hardfork::SpecId::DAO_FORK"
                             |) in
                           Value.Tuple []));
                       fun γ =>
@@ -2514,7 +2724,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                           (let _ :=
                             M.is_struct_tuple (|
                               γ,
-                              "revm_primitives::specification::SpecId::TANGERINE"
+                              "revm_specification::hardfork::SpecId::TANGERINE"
                             |) in
                           Value.Tuple []));
                       fun γ =>
@@ -2522,7 +2732,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                           (let _ :=
                             M.is_struct_tuple (|
                               γ,
-                              "revm_primitives::specification::SpecId::SPURIOUS_DRAGON"
+                              "revm_specification::hardfork::SpecId::SPURIOUS_DRAGON"
                             |) in
                           Value.Tuple []))
                     ],
@@ -2548,7 +2758,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                           (let _ :=
                             M.is_struct_tuple (|
                               γ,
-                              "revm_primitives::specification::SpecId::BYZANTIUM"
+                              "revm_specification::hardfork::SpecId::BYZANTIUM"
                             |) in
                           Value.Tuple []));
                       fun γ =>
@@ -2556,7 +2766,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                           (let _ :=
                             M.is_struct_tuple (|
                               γ,
-                              "revm_primitives::specification::SpecId::CONSTANTINOPLE"
+                              "revm_specification::hardfork::SpecId::CONSTANTINOPLE"
                             |) in
                           Value.Tuple []));
                       fun γ =>
@@ -2564,7 +2774,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                           (let _ :=
                             M.is_struct_tuple (|
                               γ,
-                              "revm_primitives::specification::SpecId::PETERSBURG"
+                              "revm_specification::hardfork::SpecId::PETERSBURG"
                             |) in
                           Value.Tuple []))
                     ],
@@ -2590,7 +2800,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                           (let _ :=
                             M.is_struct_tuple (|
                               γ,
-                              "revm_primitives::specification::SpecId::ISTANBUL"
+                              "revm_specification::hardfork::SpecId::ISTANBUL"
                             |) in
                           Value.Tuple []));
                       fun γ =>
@@ -2598,7 +2808,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                           (let _ :=
                             M.is_struct_tuple (|
                               γ,
-                              "revm_primitives::specification::SpecId::MUIR_GLACIER"
+                              "revm_specification::hardfork::SpecId::MUIR_GLACIER"
                             |) in
                           Value.Tuple []))
                     ],
@@ -2624,7 +2834,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                           (let _ :=
                             M.is_struct_tuple (|
                               γ,
-                              "revm_primitives::specification::SpecId::BERLIN"
+                              "revm_specification::hardfork::SpecId::BERLIN"
                             |) in
                           Value.Tuple []));
                       fun γ =>
@@ -2632,7 +2842,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                           (let _ :=
                             M.is_struct_tuple (|
                               γ,
-                              "revm_primitives::specification::SpecId::LONDON"
+                              "revm_specification::hardfork::SpecId::LONDON"
                             |) in
                           Value.Tuple []));
                       fun γ =>
@@ -2640,7 +2850,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                           (let _ :=
                             M.is_struct_tuple (|
                               γ,
-                              "revm_primitives::specification::SpecId::ARROW_GLACIER"
+                              "revm_specification::hardfork::SpecId::ARROW_GLACIER"
                             |) in
                           Value.Tuple []));
                       fun γ =>
@@ -2648,7 +2858,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                           (let _ :=
                             M.is_struct_tuple (|
                               γ,
-                              "revm_primitives::specification::SpecId::GRAY_GLACIER"
+                              "revm_specification::hardfork::SpecId::GRAY_GLACIER"
                             |) in
                           Value.Tuple []));
                       fun γ =>
@@ -2656,7 +2866,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                           (let _ :=
                             M.is_struct_tuple (|
                               γ,
-                              "revm_primitives::specification::SpecId::MERGE"
+                              "revm_specification::hardfork::SpecId::MERGE"
                             |) in
                           Value.Tuple []));
                       fun γ =>
@@ -2664,7 +2874,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                           (let _ :=
                             M.is_struct_tuple (|
                               γ,
-                              "revm_primitives::specification::SpecId::SHANGHAI"
+                              "revm_specification::hardfork::SpecId::SHANGHAI"
                             |) in
                           Value.Tuple []))
                     ],
@@ -2682,6 +2892,11 @@ Module Impl_revm_precompile_PrecompileSpecId.
                   |)));
               fun γ =>
                 ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::CANCUN" |) in
+                  M.alloc (| Value.StructTuple "revm_precompile::PrecompileSpecId::CANCUN" [] |)));
+              fun γ =>
+                ltac:(M.monadic
                   (M.find_or_pattern (|
                     γ,
                     [
@@ -2690,7 +2905,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                           (let _ :=
                             M.is_struct_tuple (|
                               γ,
-                              "revm_primitives::specification::SpecId::CANCUN"
+                              "revm_specification::hardfork::SpecId::PRAGUE"
                             |) in
                           Value.Tuple []));
                       fun γ =>
@@ -2698,7 +2913,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                           (let _ :=
                             M.is_struct_tuple (|
                               γ,
-                              "revm_primitives::specification::SpecId::PRAGUE"
+                              "revm_specification::hardfork::SpecId::OSAKA"
                             |) in
                           Value.Tuple []))
                     ],
@@ -2709,7 +2924,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                           | [] =>
                             ltac:(M.monadic
                               (M.alloc (|
-                                Value.StructTuple "revm_precompile::PrecompileSpecId::CANCUN" []
+                                Value.StructTuple "revm_precompile::PrecompileSpecId::PRAGUE" []
                               |)))
                           | _ => M.impossible "wrong number of arguments"
                           end))
@@ -2717,7 +2932,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
               fun γ =>
                 ltac:(M.monadic
                   (let _ :=
-                    M.is_struct_tuple (| γ, "revm_primitives::specification::SpecId::LATEST" |) in
+                    M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::LATEST" |) in
                   M.alloc (| Value.StructTuple "revm_precompile::PrecompileSpecId::LATEST" [] |)))
             ]
           |)

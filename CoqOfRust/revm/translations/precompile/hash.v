@@ -13,12 +13,8 @@ Module hash.
                 M.get_function (| "revm_precompile::u64_to_address", [] |),
                 [ Value.Integer IntegerKind.U64 2 ]
               |);
-              Value.StructTuple
-                "revm_primitives::precompile::Precompile::Standard"
-                [
-                  (* ReifyFnPointer *)
-                  M.pointer_coercion (M.get_function (| "revm_precompile::hash::sha256_run", [] |))
-                ]
+              (* ReifyFnPointer *)
+              M.pointer_coercion (M.get_function (| "revm_precompile::hash::sha256_run", [] |))
             ]
         |))).
   
@@ -33,13 +29,8 @@ Module hash.
                 M.get_function (| "revm_precompile::u64_to_address", [] |),
                 [ Value.Integer IntegerKind.U64 3 ]
               |);
-              Value.StructTuple
-                "revm_primitives::precompile::Precompile::Standard"
-                [
-                  (* ReifyFnPointer *)
-                  M.pointer_coercion
-                    (M.get_function (| "revm_precompile::hash::ripemd160_run", [] |))
-                ]
+              (* ReifyFnPointer *)
+              M.pointer_coercion (M.get_function (| "revm_precompile::hash::ripemd160_run", [] |))
             ]
         |))).
   
@@ -47,10 +38,10 @@ Module hash.
   pub fn sha256_run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
       let cost = calc_linear_cost_u32(input.len(), 60, 12);
       if cost > gas_limit {
-          Err(Error::OutOfGas)
+          Err(PrecompileError::OutOfGas.into())
       } else {
           let output = sha2::Sha256::digest(input);
-          Ok((cost, output.to_vec().into()))
+          Ok(PrecompileOutput::new(cost, output.to_vec().into()))
       }
   }
   *)
@@ -99,9 +90,20 @@ Module hash.
                     Value.StructTuple
                       "core::result::Result::Err"
                       [
-                        Value.StructTuple
-                          "revm_primitives::precompile::PrecompileError::OutOfGas"
-                          []
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::convert::Into",
+                            Ty.path "revm_precompile::interface::PrecompileError",
+                            [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+                            "into",
+                            []
+                          |),
+                          [
+                            Value.StructTuple
+                              "revm_precompile::interface::PrecompileError::OutOfGas"
+                              []
+                          ]
+                        |)
                       ]
                   |)));
               fun γ =>
@@ -172,7 +174,12 @@ Module hash.
                     Value.StructTuple
                       "core::result::Result::Ok"
                       [
-                        Value.Tuple
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "revm_precompile::interface::PrecompileOutput",
+                            "new",
+                            []
+                          |),
                           [
                             M.read (| cost |);
                             M.call_closure (|
@@ -251,6 +258,7 @@ Module hash.
                               ]
                             |)
                           ]
+                        |)
                       ]
                   |)))
             ]
@@ -265,14 +273,14 @@ Module hash.
   pub fn ripemd160_run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
       let gas_used = calc_linear_cost_u32(input.len(), 600, 120);
       if gas_used > gas_limit {
-          Err(Error::OutOfGas)
+          Err(PrecompileError::OutOfGas.into())
       } else {
           let mut hasher = ripemd::Ripemd160::new();
           hasher.update(input);
   
           let mut output = [0u8; 32];
           hasher.finalize_into((&mut output[12..]).into());
-          Ok((gas_used, output.to_vec().into()))
+          Ok(PrecompileOutput::new(gas_used, output.to_vec().into()))
       }
   }
   *)
@@ -323,9 +331,20 @@ Module hash.
                     Value.StructTuple
                       "core::result::Result::Err"
                       [
-                        Value.StructTuple
-                          "revm_primitives::precompile::PrecompileError::OutOfGas"
-                          []
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::convert::Into",
+                            Ty.path "revm_precompile::interface::PrecompileError",
+                            [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+                            "into",
+                            []
+                          |),
+                          [
+                            Value.StructTuple
+                              "revm_precompile::interface::PrecompileError::OutOfGas"
+                              []
+                          ]
+                        |)
                       ]
                   |)));
               fun γ =>
@@ -472,7 +491,12 @@ Module hash.
                     Value.StructTuple
                       "core::result::Result::Ok"
                       [
-                        Value.Tuple
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "revm_precompile::interface::PrecompileOutput",
+                            "new",
+                            []
+                          |),
                           [
                             M.read (| gas_used |);
                             M.call_closure (|
@@ -498,6 +522,7 @@ Module hash.
                               ]
                             |)
                           ]
+                        |)
                       ]
                   |)))
             ]

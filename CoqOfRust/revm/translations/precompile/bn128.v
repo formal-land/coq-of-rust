@@ -24,72 +24,67 @@ Module bn128.
               "revm_precompile::PrecompileWithAddress"
               [
                 M.read (| M.get_constant (| "revm_precompile::bn128::add::ADDRESS" |) |);
-                Value.StructTuple
-                  "revm_primitives::precompile::Precompile::Standard"
-                  [
-                    (* ClosureFnPointer(Safe) *)
-                    M.pointer_coercion
-                      (M.closure
-                        (fun γ =>
+                (* ClosureFnPointer(Safe) *)
+                M.pointer_coercion
+                  (M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0; α1 ] =>
                           ltac:(M.monadic
-                            match γ with
-                            | [ α0; α1 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let input := M.copy (| γ |) in
-                                        M.match_operator (|
-                                          M.alloc (| α1 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let gas_limit := M.copy (| γ |) in
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let input := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let gas_limit := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_function (|
+                                                "revm_precompile::bn128::run_add",
+                                                []
+                                              |),
+                                              [
                                                 M.call_closure (|
-                                                  M.get_function (|
-                                                    "revm_precompile::bn128::run_add",
+                                                  M.get_trait_method (|
+                                                    "core::ops::deref::Deref",
+                                                    Ty.path "bytes::bytes::Bytes",
+                                                    [],
+                                                    "deref",
                                                     []
                                                   |),
                                                   [
                                                     M.call_closure (|
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
-                                                        Ty.path "bytes::bytes::Bytes",
+                                                        Ty.path "alloy_primitives::bytes_::Bytes",
                                                         [],
                                                         "deref",
                                                         []
                                                       |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::deref::Deref",
-                                                            Ty.path
-                                                              "alloy_primitives::bytes_::Bytes",
-                                                            [],
-                                                            "deref",
-                                                            []
-                                                          |),
-                                                          [ M.read (| input |) ]
-                                                        |)
-                                                      ]
-                                                    |);
-                                                    M.read (|
-                                                      M.get_constant (|
-                                                        "revm_precompile::bn128::add::ISTANBUL_ADD_GAS_COST"
-                                                      |)
-                                                    |);
-                                                    M.read (| gas_limit |)
+                                                      [ M.read (| input |) ]
+                                                    |)
                                                   ]
-                                                |)))
-                                          ]
-                                        |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end)))
-                  ]
+                                                |);
+                                                M.read (|
+                                                  M.get_constant (|
+                                                    "revm_precompile::bn128::add::ISTANBUL_ADD_GAS_COST"
+                                                  |)
+                                                |);
+                                                M.read (| gas_limit |)
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end)))
               ]
           |))).
     
@@ -104,72 +99,67 @@ Module bn128.
               "revm_precompile::PrecompileWithAddress"
               [
                 M.read (| M.get_constant (| "revm_precompile::bn128::add::ADDRESS" |) |);
-                Value.StructTuple
-                  "revm_primitives::precompile::Precompile::Standard"
-                  [
-                    (* ClosureFnPointer(Safe) *)
-                    M.pointer_coercion
-                      (M.closure
-                        (fun γ =>
+                (* ClosureFnPointer(Safe) *)
+                M.pointer_coercion
+                  (M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0; α1 ] =>
                           ltac:(M.monadic
-                            match γ with
-                            | [ α0; α1 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let input := M.copy (| γ |) in
-                                        M.match_operator (|
-                                          M.alloc (| α1 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let gas_limit := M.copy (| γ |) in
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let input := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let gas_limit := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_function (|
+                                                "revm_precompile::bn128::run_add",
+                                                []
+                                              |),
+                                              [
                                                 M.call_closure (|
-                                                  M.get_function (|
-                                                    "revm_precompile::bn128::run_add",
+                                                  M.get_trait_method (|
+                                                    "core::ops::deref::Deref",
+                                                    Ty.path "bytes::bytes::Bytes",
+                                                    [],
+                                                    "deref",
                                                     []
                                                   |),
                                                   [
                                                     M.call_closure (|
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
-                                                        Ty.path "bytes::bytes::Bytes",
+                                                        Ty.path "alloy_primitives::bytes_::Bytes",
                                                         [],
                                                         "deref",
                                                         []
                                                       |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::deref::Deref",
-                                                            Ty.path
-                                                              "alloy_primitives::bytes_::Bytes",
-                                                            [],
-                                                            "deref",
-                                                            []
-                                                          |),
-                                                          [ M.read (| input |) ]
-                                                        |)
-                                                      ]
-                                                    |);
-                                                    M.read (|
-                                                      M.get_constant (|
-                                                        "revm_precompile::bn128::add::BYZANTIUM_ADD_GAS_COST"
-                                                      |)
-                                                    |);
-                                                    M.read (| gas_limit |)
+                                                      [ M.read (| input |) ]
+                                                    |)
                                                   ]
-                                                |)))
-                                          ]
-                                        |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end)))
-                  ]
+                                                |);
+                                                M.read (|
+                                                  M.get_constant (|
+                                                    "revm_precompile::bn128::add::BYZANTIUM_ADD_GAS_COST"
+                                                  |)
+                                                |);
+                                                M.read (| gas_limit |)
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end)))
               ]
           |))).
   End add.
@@ -196,72 +186,67 @@ Module bn128.
               "revm_precompile::PrecompileWithAddress"
               [
                 M.read (| M.get_constant (| "revm_precompile::bn128::mul::ADDRESS" |) |);
-                Value.StructTuple
-                  "revm_primitives::precompile::Precompile::Standard"
-                  [
-                    (* ClosureFnPointer(Safe) *)
-                    M.pointer_coercion
-                      (M.closure
-                        (fun γ =>
+                (* ClosureFnPointer(Safe) *)
+                M.pointer_coercion
+                  (M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0; α1 ] =>
                           ltac:(M.monadic
-                            match γ with
-                            | [ α0; α1 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let input := M.copy (| γ |) in
-                                        M.match_operator (|
-                                          M.alloc (| α1 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let gas_limit := M.copy (| γ |) in
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let input := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let gas_limit := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_function (|
+                                                "revm_precompile::bn128::run_mul",
+                                                []
+                                              |),
+                                              [
                                                 M.call_closure (|
-                                                  M.get_function (|
-                                                    "revm_precompile::bn128::run_mul",
+                                                  M.get_trait_method (|
+                                                    "core::ops::deref::Deref",
+                                                    Ty.path "bytes::bytes::Bytes",
+                                                    [],
+                                                    "deref",
                                                     []
                                                   |),
                                                   [
                                                     M.call_closure (|
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
-                                                        Ty.path "bytes::bytes::Bytes",
+                                                        Ty.path "alloy_primitives::bytes_::Bytes",
                                                         [],
                                                         "deref",
                                                         []
                                                       |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::deref::Deref",
-                                                            Ty.path
-                                                              "alloy_primitives::bytes_::Bytes",
-                                                            [],
-                                                            "deref",
-                                                            []
-                                                          |),
-                                                          [ M.read (| input |) ]
-                                                        |)
-                                                      ]
-                                                    |);
-                                                    M.read (|
-                                                      M.get_constant (|
-                                                        "revm_precompile::bn128::mul::ISTANBUL_MUL_GAS_COST"
-                                                      |)
-                                                    |);
-                                                    M.read (| gas_limit |)
+                                                      [ M.read (| input |) ]
+                                                    |)
                                                   ]
-                                                |)))
-                                          ]
-                                        |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end)))
-                  ]
+                                                |);
+                                                M.read (|
+                                                  M.get_constant (|
+                                                    "revm_precompile::bn128::mul::ISTANBUL_MUL_GAS_COST"
+                                                  |)
+                                                |);
+                                                M.read (| gas_limit |)
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end)))
               ]
           |))).
     
@@ -276,72 +261,67 @@ Module bn128.
               "revm_precompile::PrecompileWithAddress"
               [
                 M.read (| M.get_constant (| "revm_precompile::bn128::mul::ADDRESS" |) |);
-                Value.StructTuple
-                  "revm_primitives::precompile::Precompile::Standard"
-                  [
-                    (* ClosureFnPointer(Safe) *)
-                    M.pointer_coercion
-                      (M.closure
-                        (fun γ =>
+                (* ClosureFnPointer(Safe) *)
+                M.pointer_coercion
+                  (M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0; α1 ] =>
                           ltac:(M.monadic
-                            match γ with
-                            | [ α0; α1 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let input := M.copy (| γ |) in
-                                        M.match_operator (|
-                                          M.alloc (| α1 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let gas_limit := M.copy (| γ |) in
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let input := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let gas_limit := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_function (|
+                                                "revm_precompile::bn128::run_mul",
+                                                []
+                                              |),
+                                              [
                                                 M.call_closure (|
-                                                  M.get_function (|
-                                                    "revm_precompile::bn128::run_mul",
+                                                  M.get_trait_method (|
+                                                    "core::ops::deref::Deref",
+                                                    Ty.path "bytes::bytes::Bytes",
+                                                    [],
+                                                    "deref",
                                                     []
                                                   |),
                                                   [
                                                     M.call_closure (|
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
-                                                        Ty.path "bytes::bytes::Bytes",
+                                                        Ty.path "alloy_primitives::bytes_::Bytes",
                                                         [],
                                                         "deref",
                                                         []
                                                       |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::deref::Deref",
-                                                            Ty.path
-                                                              "alloy_primitives::bytes_::Bytes",
-                                                            [],
-                                                            "deref",
-                                                            []
-                                                          |),
-                                                          [ M.read (| input |) ]
-                                                        |)
-                                                      ]
-                                                    |);
-                                                    M.read (|
-                                                      M.get_constant (|
-                                                        "revm_precompile::bn128::mul::BYZANTIUM_MUL_GAS_COST"
-                                                      |)
-                                                    |);
-                                                    M.read (| gas_limit |)
+                                                      [ M.read (| input |) ]
+                                                    |)
                                                   ]
-                                                |)))
-                                          ]
-                                        |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end)))
-                  ]
+                                                |);
+                                                M.read (|
+                                                  M.get_constant (|
+                                                    "revm_precompile::bn128::mul::BYZANTIUM_MUL_GAS_COST"
+                                                  |)
+                                                |);
+                                                M.read (| gas_limit |)
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end)))
               ]
           |))).
   End mul.
@@ -371,77 +351,72 @@ Module bn128.
               "revm_precompile::PrecompileWithAddress"
               [
                 M.read (| M.get_constant (| "revm_precompile::bn128::pair::ADDRESS" |) |);
-                Value.StructTuple
-                  "revm_primitives::precompile::Precompile::Standard"
-                  [
-                    (* ClosureFnPointer(Safe) *)
-                    M.pointer_coercion
-                      (M.closure
-                        (fun γ =>
+                (* ClosureFnPointer(Safe) *)
+                M.pointer_coercion
+                  (M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0; α1 ] =>
                           ltac:(M.monadic
-                            match γ with
-                            | [ α0; α1 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let input := M.copy (| γ |) in
-                                        M.match_operator (|
-                                          M.alloc (| α1 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let gas_limit := M.copy (| γ |) in
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let input := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let gas_limit := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_function (|
+                                                "revm_precompile::bn128::run_pair",
+                                                []
+                                              |),
+                                              [
                                                 M.call_closure (|
-                                                  M.get_function (|
-                                                    "revm_precompile::bn128::run_pair",
+                                                  M.get_trait_method (|
+                                                    "core::ops::deref::Deref",
+                                                    Ty.path "bytes::bytes::Bytes",
+                                                    [],
+                                                    "deref",
                                                     []
                                                   |),
                                                   [
                                                     M.call_closure (|
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
-                                                        Ty.path "bytes::bytes::Bytes",
+                                                        Ty.path "alloy_primitives::bytes_::Bytes",
                                                         [],
                                                         "deref",
                                                         []
                                                       |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::deref::Deref",
-                                                            Ty.path
-                                                              "alloy_primitives::bytes_::Bytes",
-                                                            [],
-                                                            "deref",
-                                                            []
-                                                          |),
-                                                          [ M.read (| input |) ]
-                                                        |)
-                                                      ]
-                                                    |);
-                                                    M.read (|
-                                                      M.get_constant (|
-                                                        "revm_precompile::bn128::pair::ISTANBUL_PAIR_PER_POINT"
-                                                      |)
-                                                    |);
-                                                    M.read (|
-                                                      M.get_constant (|
-                                                        "revm_precompile::bn128::pair::ISTANBUL_PAIR_BASE"
-                                                      |)
-                                                    |);
-                                                    M.read (| gas_limit |)
+                                                      [ M.read (| input |) ]
+                                                    |)
                                                   ]
-                                                |)))
-                                          ]
-                                        |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end)))
-                  ]
+                                                |);
+                                                M.read (|
+                                                  M.get_constant (|
+                                                    "revm_precompile::bn128::pair::ISTANBUL_PAIR_PER_POINT"
+                                                  |)
+                                                |);
+                                                M.read (|
+                                                  M.get_constant (|
+                                                    "revm_precompile::bn128::pair::ISTANBUL_PAIR_BASE"
+                                                  |)
+                                                |);
+                                                M.read (| gas_limit |)
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end)))
               ]
           |))).
     
@@ -459,77 +434,72 @@ Module bn128.
               "revm_precompile::PrecompileWithAddress"
               [
                 M.read (| M.get_constant (| "revm_precompile::bn128::pair::ADDRESS" |) |);
-                Value.StructTuple
-                  "revm_primitives::precompile::Precompile::Standard"
-                  [
-                    (* ClosureFnPointer(Safe) *)
-                    M.pointer_coercion
-                      (M.closure
-                        (fun γ =>
+                (* ClosureFnPointer(Safe) *)
+                M.pointer_coercion
+                  (M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0; α1 ] =>
                           ltac:(M.monadic
-                            match γ with
-                            | [ α0; α1 ] =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let input := M.copy (| γ |) in
-                                        M.match_operator (|
-                                          M.alloc (| α1 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let gas_limit := M.copy (| γ |) in
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let input := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let gas_limit := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_function (|
+                                                "revm_precompile::bn128::run_pair",
+                                                []
+                                              |),
+                                              [
                                                 M.call_closure (|
-                                                  M.get_function (|
-                                                    "revm_precompile::bn128::run_pair",
+                                                  M.get_trait_method (|
+                                                    "core::ops::deref::Deref",
+                                                    Ty.path "bytes::bytes::Bytes",
+                                                    [],
+                                                    "deref",
                                                     []
                                                   |),
                                                   [
                                                     M.call_closure (|
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
-                                                        Ty.path "bytes::bytes::Bytes",
+                                                        Ty.path "alloy_primitives::bytes_::Bytes",
                                                         [],
                                                         "deref",
                                                         []
                                                       |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::deref::Deref",
-                                                            Ty.path
-                                                              "alloy_primitives::bytes_::Bytes",
-                                                            [],
-                                                            "deref",
-                                                            []
-                                                          |),
-                                                          [ M.read (| input |) ]
-                                                        |)
-                                                      ]
-                                                    |);
-                                                    M.read (|
-                                                      M.get_constant (|
-                                                        "revm_precompile::bn128::pair::BYZANTIUM_PAIR_PER_POINT"
-                                                      |)
-                                                    |);
-                                                    M.read (|
-                                                      M.get_constant (|
-                                                        "revm_precompile::bn128::pair::BYZANTIUM_PAIR_BASE"
-                                                      |)
-                                                    |);
-                                                    M.read (| gas_limit |)
+                                                      [ M.read (| input |) ]
+                                                    |)
                                                   ]
-                                                |)))
-                                          ]
-                                        |)))
-                                  ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end)))
-                  ]
+                                                |);
+                                                M.read (|
+                                                  M.get_constant (|
+                                                    "revm_precompile::bn128::pair::BYZANTIUM_PAIR_PER_POINT"
+                                                  |)
+                                                |);
+                                                M.read (|
+                                                  M.get_constant (|
+                                                    "revm_precompile::bn128::pair::BYZANTIUM_PAIR_BASE"
+                                                  |)
+                                                |);
+                                                M.read (| gas_limit |)
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end)))
               ]
           |))).
   End pair_.
@@ -565,8 +535,8 @@ Module bn128.
         |))).
   
   (*
-  pub fn read_fq(input: &[u8]) -> Result<Fq, Error> {
-      Fq::from_slice(&input[..32]).map_err(|_| Error::Bn128FieldPointNotAMember)
+  pub fn read_fq(input: &[u8]) -> Result<Fq, PrecompileError> {
+      Fq::from_slice(&input[..32]).map_err(|_| PrecompileError::Bn128FieldPointNotAMember)
   }
   *)
   Definition read_fq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -582,10 +552,10 @@ Module bn128.
               [ Ty.path "substrate_bn::Fq"; Ty.path "substrate_bn::FieldError" ],
             "map_err",
             [
-              Ty.path "revm_primitives::precompile::PrecompileError";
+              Ty.path "revm_precompile::interface::PrecompileError";
               Ty.function
                 [ Ty.tuple [ Ty.path "substrate_bn::FieldError" ] ]
-                (Ty.path "revm_primitives::precompile::PrecompileError")
+                (Ty.path "revm_precompile::interface::PrecompileError")
             ]
           |),
           [
@@ -621,7 +591,7 @@ Module bn128.
                           fun γ =>
                             ltac:(M.monadic
                               (Value.StructTuple
-                                "revm_primitives::precompile::PrecompileError::Bn128FieldPointNotAMember"
+                                "revm_precompile::interface::PrecompileError::Bn128FieldPointNotAMember"
                                 []))
                         ]
                       |)))
@@ -635,7 +605,7 @@ Module bn128.
   Axiom Function_read_fq : M.IsFunction "revm_precompile::bn128::read_fq" read_fq.
   
   (*
-  pub fn read_point(input: &[u8]) -> Result<G1, Error> {
+  pub fn read_point(input: &[u8]) -> Result<G1, PrecompileError> {
       let px = read_fq(&input[0..32])?;
       let py = read_fq(&input[32..64])?;
       new_g1_point(px, py)
@@ -661,7 +631,7 @@ Module bn128.
                             []
                             [
                               Ty.path "substrate_bn::Fq";
-                              Ty.path "revm_primitives::precompile::PrecompileError"
+                              Ty.path "revm_precompile::interface::PrecompileError"
                             ],
                           [],
                           "branch",
@@ -721,7 +691,7 @@ Module bn128.
                                         []
                                         [
                                           Ty.path "substrate_bn::G1";
-                                          Ty.path "revm_primitives::precompile::PrecompileError"
+                                          Ty.path "revm_precompile::interface::PrecompileError"
                                         ],
                                       [
                                         Ty.apply
@@ -729,7 +699,7 @@ Module bn128.
                                           []
                                           [
                                             Ty.path "core::convert::Infallible";
-                                            Ty.path "revm_primitives::precompile::PrecompileError"
+                                            Ty.path "revm_precompile::interface::PrecompileError"
                                           ]
                                       ],
                                       "from_residual",
@@ -766,7 +736,7 @@ Module bn128.
                             []
                             [
                               Ty.path "substrate_bn::Fq";
-                              Ty.path "revm_primitives::precompile::PrecompileError"
+                              Ty.path "revm_precompile::interface::PrecompileError"
                             ],
                           [],
                           "branch",
@@ -826,7 +796,7 @@ Module bn128.
                                         []
                                         [
                                           Ty.path "substrate_bn::G1";
-                                          Ty.path "revm_primitives::precompile::PrecompileError"
+                                          Ty.path "revm_precompile::interface::PrecompileError"
                                         ],
                                       [
                                         Ty.apply
@@ -834,7 +804,7 @@ Module bn128.
                                           []
                                           [
                                             Ty.path "core::convert::Infallible";
-                                            Ty.path "revm_primitives::precompile::PrecompileError"
+                                            Ty.path "revm_precompile::interface::PrecompileError"
                                           ]
                                       ],
                                       "from_residual",
@@ -873,13 +843,13 @@ Module bn128.
   Axiom Function_read_point : M.IsFunction "revm_precompile::bn128::read_point" read_point.
   
   (*
-  pub fn new_g1_point(px: Fq, py: Fq) -> Result<G1, Error> {
+  pub fn new_g1_point(px: Fq, py: Fq) -> Result<G1, PrecompileError> {
       if px == Fq::zero() && py == Fq::zero() {
           Ok(G1::zero())
       } else {
           AffineG1::new(px, py)
               .map(Into::into)
-              .map_err(|_| Error::Bn128AffineGFailedToCreate)
+              .map_err(|_| PrecompileError::Bn128AffineGFailedToCreate)
       }
   }
   *)
@@ -974,10 +944,10 @@ Module bn128.
                           [ Ty.path "substrate_bn::G1"; Ty.path "substrate_bn::groups::Error" ],
                         "map_err",
                         [
-                          Ty.path "revm_primitives::precompile::PrecompileError";
+                          Ty.path "revm_precompile::interface::PrecompileError";
                           Ty.function
                             [ Ty.tuple [ Ty.path "substrate_bn::groups::Error" ] ]
-                            (Ty.path "revm_primitives::precompile::PrecompileError")
+                            (Ty.path "revm_precompile::interface::PrecompileError")
                         ]
                       |),
                       [
@@ -1028,7 +998,7 @@ Module bn128.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (Value.StructTuple
-                                            "revm_primitives::precompile::PrecompileError::Bn128AffineGFailedToCreate"
+                                            "revm_precompile::interface::PrecompileError::Bn128AffineGFailedToCreate"
                                             []))
                                     ]
                                   |)))
@@ -1048,7 +1018,7 @@ Module bn128.
   (*
   pub fn run_add(input: &[u8], gas_cost: u64, gas_limit: u64) -> PrecompileResult {
       if gas_cost > gas_limit {
-          return Err(Error::OutOfGas);
+          return Err(PrecompileError::OutOfGas.into());
       }
   
       let input = right_pad::<ADD_INPUT_LEN>(input);
@@ -1061,7 +1031,7 @@ Module bn128.
           sum.x().to_big_endian(&mut output[..32]).unwrap();
           sum.y().to_big_endian(&mut output[32..]).unwrap();
       }
-      Ok((gas_cost, output.into()))
+      Ok(PrecompileOutput::new(gas_cost, output.into()))
   }
   *)
   Definition run_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1094,9 +1064,20 @@ Module bn128.
                                 Value.StructTuple
                                   "core::result::Result::Err"
                                   [
-                                    Value.StructTuple
-                                      "revm_primitives::precompile::PrecompileError::OutOfGas"
-                                      []
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::convert::Into",
+                                        Ty.path "revm_precompile::interface::PrecompileError",
+                                        [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+                                        "into",
+                                        []
+                                      |),
+                                      [
+                                        Value.StructTuple
+                                          "revm_precompile::interface::PrecompileError::OutOfGas"
+                                          []
+                                      ]
+                                    |)
                                   ]
                               |)
                             |)
@@ -1124,7 +1105,7 @@ Module bn128.
                             []
                             [
                               Ty.path "substrate_bn::G1";
-                              Ty.path "revm_primitives::precompile::PrecompileError"
+                              Ty.path "revm_precompile::interface::PrecompileError"
                             ],
                           [],
                           "branch",
@@ -1200,12 +1181,8 @@ Module bn128.
                                         (Ty.path "core::result::Result")
                                         []
                                         [
-                                          Ty.tuple
-                                            [
-                                              Ty.path "u64";
-                                              Ty.path "alloy_primitives::bytes_::Bytes"
-                                            ];
-                                          Ty.path "revm_primitives::precompile::PrecompileError"
+                                          Ty.path "revm_precompile::interface::PrecompileOutput";
+                                          Ty.path "revm_precompile::interface::PrecompileErrors"
                                         ],
                                       [
                                         Ty.apply
@@ -1213,7 +1190,7 @@ Module bn128.
                                           []
                                           [
                                             Ty.path "core::convert::Infallible";
-                                            Ty.path "revm_primitives::precompile::PrecompileError"
+                                            Ty.path "revm_precompile::interface::PrecompileError"
                                           ]
                                       ],
                                       "from_residual",
@@ -1250,7 +1227,7 @@ Module bn128.
                             []
                             [
                               Ty.path "substrate_bn::G1";
-                              Ty.path "revm_primitives::precompile::PrecompileError"
+                              Ty.path "revm_precompile::interface::PrecompileError"
                             ],
                           [],
                           "branch",
@@ -1326,12 +1303,8 @@ Module bn128.
                                         (Ty.path "core::result::Result")
                                         []
                                         [
-                                          Ty.tuple
-                                            [
-                                              Ty.path "u64";
-                                              Ty.path "alloy_primitives::bytes_::Bytes"
-                                            ];
-                                          Ty.path "revm_primitives::precompile::PrecompileError"
+                                          Ty.path "revm_precompile::interface::PrecompileOutput";
+                                          Ty.path "revm_precompile::interface::PrecompileErrors"
                                         ],
                                       [
                                         Ty.apply
@@ -1339,7 +1312,7 @@ Module bn128.
                                           []
                                           [
                                             Ty.path "core::convert::Infallible";
-                                            Ty.path "revm_primitives::precompile::PrecompileError"
+                                            Ty.path "revm_precompile::interface::PrecompileError"
                                           ]
                                       ],
                                       "from_residual",
@@ -1525,7 +1498,12 @@ Module bn128.
                 Value.StructTuple
                   "core::result::Result::Ok"
                   [
-                    Value.Tuple
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "revm_precompile::interface::PrecompileOutput",
+                        "new",
+                        []
+                      |),
                       [
                         M.read (| gas_cost |);
                         M.call_closure (|
@@ -1542,6 +1520,7 @@ Module bn128.
                           [ M.read (| output |) ]
                         |)
                       ]
+                    |)
                   ]
               |)
             |)))
@@ -1554,7 +1533,7 @@ Module bn128.
   (*
   pub fn run_mul(input: &[u8], gas_cost: u64, gas_limit: u64) -> PrecompileResult {
       if gas_cost > gas_limit {
-          return Err(Error::OutOfGas);
+          return Err(PrecompileError::OutOfGas.into());
       }
   
       let input = right_pad::<MUL_INPUT_LEN>(input);
@@ -1569,7 +1548,7 @@ Module bn128.
           mul.x().to_big_endian(&mut output[..32]).unwrap();
           mul.y().to_big_endian(&mut output[32..]).unwrap();
       }
-      Ok((gas_cost, output.into()))
+      Ok(PrecompileOutput::new(gas_cost, output.into()))
   }
   *)
   Definition run_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1602,9 +1581,20 @@ Module bn128.
                                 Value.StructTuple
                                   "core::result::Result::Err"
                                   [
-                                    Value.StructTuple
-                                      "revm_primitives::precompile::PrecompileError::OutOfGas"
-                                      []
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::convert::Into",
+                                        Ty.path "revm_precompile::interface::PrecompileError",
+                                        [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+                                        "into",
+                                        []
+                                      |),
+                                      [
+                                        Value.StructTuple
+                                          "revm_precompile::interface::PrecompileError::OutOfGas"
+                                          []
+                                      ]
+                                    |)
                                   ]
                               |)
                             |)
@@ -1632,7 +1622,7 @@ Module bn128.
                             []
                             [
                               Ty.path "substrate_bn::G1";
-                              Ty.path "revm_primitives::precompile::PrecompileError"
+                              Ty.path "revm_precompile::interface::PrecompileError"
                             ],
                           [],
                           "branch",
@@ -1708,12 +1698,8 @@ Module bn128.
                                         (Ty.path "core::result::Result")
                                         []
                                         [
-                                          Ty.tuple
-                                            [
-                                              Ty.path "u64";
-                                              Ty.path "alloy_primitives::bytes_::Bytes"
-                                            ];
-                                          Ty.path "revm_primitives::precompile::PrecompileError"
+                                          Ty.path "revm_precompile::interface::PrecompileOutput";
+                                          Ty.path "revm_precompile::interface::PrecompileErrors"
                                         ],
                                       [
                                         Ty.apply
@@ -1721,7 +1707,7 @@ Module bn128.
                                           []
                                           [
                                             Ty.path "core::convert::Infallible";
-                                            Ty.path "revm_primitives::precompile::PrecompileError"
+                                            Ty.path "revm_precompile::interface::PrecompileError"
                                           ]
                                       ],
                                       "from_residual",
@@ -1970,7 +1956,12 @@ Module bn128.
                 Value.StructTuple
                   "core::result::Result::Ok"
                   [
-                    Value.Tuple
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "revm_precompile::interface::PrecompileOutput",
+                        "new",
+                        []
+                      |),
                       [
                         M.read (| gas_cost |);
                         M.call_closure (|
@@ -1987,6 +1978,7 @@ Module bn128.
                           [ M.read (| output |) ]
                         |)
                       ]
+                    |)
                   ]
               |)
             |)))
@@ -2005,11 +1997,11 @@ Module bn128.
   ) -> PrecompileResult {
       let gas_used = (input.len() / PAIR_ELEMENT_LEN) as u64 * pair_per_point_cost + pair_base_cost;
       if gas_used > gas_limit {
-          return Err(Error::OutOfGas);
+          return Err(PrecompileError::OutOfGas.into());
       }
   
       if input.len() % PAIR_ELEMENT_LEN != 0 {
-          return Err(Error::Bn128PairLength);
+          return Err(PrecompileError::Bn128PairLength.into());
       }
   
       let success = if input.is_empty() {
@@ -2017,7 +2009,9 @@ Module bn128.
       } else {
           let elements = input.len() / PAIR_ELEMENT_LEN;
   
-          let mut mul = Gt::one();
+          let mut points = Vec::with_capacity(elements);
+  
+          // Read points
           for idx in 0..elements {
               let read_fq_at = |n: usize| {
                   debug_assert!(n < PAIR_ELEMENT_LEN / 32);
@@ -2025,7 +2019,7 @@ Module bn128.
                   // SAFETY: We're reading `6 * 32 == PAIR_ELEMENT_LEN` bytes from `input[idx..]`
                   // per iteration. This is guaranteed to be in-bounds.
                   let slice = unsafe { input.get_unchecked(start..start + 32) };
-                  Fq::from_slice(slice).map_err(|_| Error::Bn128FieldPointNotAMember)
+                  Fq::from_slice(slice).map_err(|_| PrecompileError::Bn128FieldPointNotAMember)
               };
               let ax = read_fq_at(0)?;
               let ay = read_fq_at(1)?;
@@ -2038,19 +2032,25 @@ Module bn128.
               let b = {
                   let ba = Fq2::new(bax, bay);
                   let bb = Fq2::new(bbx, bby);
+                  // TODO : Check whether or not we need these zero checks
                   if ba.is_zero() && bb.is_zero() {
                       G2::zero()
                   } else {
-                      G2::from(AffineG2::new(ba, bb).map_err(|_| Error::Bn128AffineGFailedToCreate)?)
+                      G2::from(
+                          AffineG2::new(ba, bb)
+                              .map_err(|_| PrecompileError::Bn128AffineGFailedToCreate)?,
+                      )
                   }
               };
   
-              mul = mul * bn::pairing(a, b);
+              points.push((a, b));
           }
+  
+          let mul = bn::pairing_batch(&points);
   
           mul == Gt::one()
       };
-      Ok((gas_used, bool_to_bytes32(success)))
+      Ok(PrecompileOutput::new(gas_used, bool_to_bytes32(success)))
   }
   *)
   Definition run_pair (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -2107,9 +2107,20 @@ Module bn128.
                                 Value.StructTuple
                                   "core::result::Result::Err"
                                   [
-                                    Value.StructTuple
-                                      "revm_primitives::precompile::PrecompileError::OutOfGas"
-                                      []
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::convert::Into",
+                                        Ty.path "revm_precompile::interface::PrecompileError",
+                                        [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+                                        "into",
+                                        []
+                                      |),
+                                      [
+                                        Value.StructTuple
+                                          "revm_precompile::interface::PrecompileError::OutOfGas"
+                                          []
+                                      ]
+                                    |)
                                   ]
                               |)
                             |)
@@ -2153,9 +2164,20 @@ Module bn128.
                                 Value.StructTuple
                                   "core::result::Result::Err"
                                   [
-                                    Value.StructTuple
-                                      "revm_primitives::precompile::PrecompileError::Bn128PairLength"
-                                      []
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::convert::Into",
+                                        Ty.path "revm_precompile::interface::PrecompileError",
+                                        [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+                                        "into",
+                                        []
+                                      |),
+                                      [
+                                        Value.StructTuple
+                                          "revm_precompile::interface::PrecompileError::Bn128PairLength"
+                                          []
+                                      ]
+                                    |)
                                   ]
                               |)
                             |)
@@ -2204,15 +2226,22 @@ Module bn128.
                                 |)
                               |)
                             |) in
-                          let~ mul :=
+                          let~ points :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.path "substrate_bn::Gt",
-                                  "one",
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [
+                                      Ty.tuple
+                                        [ Ty.path "substrate_bn::G1"; Ty.path "substrate_bn::G2" ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
+                                  "with_capacity",
                                   []
                                 |),
-                                []
+                                [ M.read (| elements |) ]
                               |)
                             |) in
                           let~ _ :=
@@ -2480,7 +2509,7 @@ Module bn128.
                                                                                   "map_err",
                                                                                   [
                                                                                     Ty.path
-                                                                                      "revm_primitives::precompile::PrecompileError";
+                                                                                      "revm_precompile::interface::PrecompileError";
                                                                                     Ty.function
                                                                                       [
                                                                                         Ty.tuple
@@ -2490,7 +2519,7 @@ Module bn128.
                                                                                           ]
                                                                                       ]
                                                                                       (Ty.path
-                                                                                        "revm_primitives::precompile::PrecompileError")
+                                                                                        "revm_precompile::interface::PrecompileError")
                                                                                   ]
                                                                                 |),
                                                                                 [
@@ -2522,7 +2551,7 @@ Module bn128.
                                                                                                     γ =>
                                                                                                   ltac:(M.monadic
                                                                                                     (Value.StructTuple
-                                                                                                      "revm_primitives::precompile::PrecompileError::Bn128FieldPointNotAMember"
+                                                                                                      "revm_precompile::interface::PrecompileError::Bn128FieldPointNotAMember"
                                                                                                       []))
                                                                                               ]
                                                                                             |)))
@@ -2554,7 +2583,7 @@ Module bn128.
                                                                   [
                                                                     Ty.path "substrate_bn::Fq";
                                                                     Ty.path
-                                                                      "revm_primitives::precompile::PrecompileError"
+                                                                      "revm_precompile::interface::PrecompileError"
                                                                   ],
                                                                 [],
                                                                 "branch",
@@ -2575,7 +2604,7 @@ Module bn128.
                                                                           Ty.path
                                                                             "substrate_bn::Fq";
                                                                           Ty.path
-                                                                            "revm_primitives::precompile::PrecompileError"
+                                                                            "revm_precompile::interface::PrecompileError"
                                                                         ]),
                                                                     [ Ty.tuple [ Ty.path "usize" ]
                                                                     ],
@@ -2617,14 +2646,10 @@ Module bn128.
                                                                                 "core::result::Result")
                                                                               []
                                                                               [
-                                                                                Ty.tuple
-                                                                                  [
-                                                                                    Ty.path "u64";
-                                                                                    Ty.path
-                                                                                      "alloy_primitives::bytes_::Bytes"
-                                                                                  ];
                                                                                 Ty.path
-                                                                                  "revm_primitives::precompile::PrecompileError"
+                                                                                  "revm_precompile::interface::PrecompileOutput";
+                                                                                Ty.path
+                                                                                  "revm_precompile::interface::PrecompileErrors"
                                                                               ],
                                                                             [
                                                                               Ty.apply
@@ -2635,7 +2660,7 @@ Module bn128.
                                                                                   Ty.path
                                                                                     "core::convert::Infallible";
                                                                                   Ty.path
-                                                                                    "revm_primitives::precompile::PrecompileError"
+                                                                                    "revm_precompile::interface::PrecompileError"
                                                                                 ]
                                                                             ],
                                                                             "from_residual",
@@ -2673,7 +2698,7 @@ Module bn128.
                                                                   [
                                                                     Ty.path "substrate_bn::Fq";
                                                                     Ty.path
-                                                                      "revm_primitives::precompile::PrecompileError"
+                                                                      "revm_precompile::interface::PrecompileError"
                                                                   ],
                                                                 [],
                                                                 "branch",
@@ -2694,7 +2719,7 @@ Module bn128.
                                                                           Ty.path
                                                                             "substrate_bn::Fq";
                                                                           Ty.path
-                                                                            "revm_primitives::precompile::PrecompileError"
+                                                                            "revm_precompile::interface::PrecompileError"
                                                                         ]),
                                                                     [ Ty.tuple [ Ty.path "usize" ]
                                                                     ],
@@ -2736,14 +2761,10 @@ Module bn128.
                                                                                 "core::result::Result")
                                                                               []
                                                                               [
-                                                                                Ty.tuple
-                                                                                  [
-                                                                                    Ty.path "u64";
-                                                                                    Ty.path
-                                                                                      "alloy_primitives::bytes_::Bytes"
-                                                                                  ];
                                                                                 Ty.path
-                                                                                  "revm_primitives::precompile::PrecompileError"
+                                                                                  "revm_precompile::interface::PrecompileOutput";
+                                                                                Ty.path
+                                                                                  "revm_precompile::interface::PrecompileErrors"
                                                                               ],
                                                                             [
                                                                               Ty.apply
@@ -2754,7 +2775,7 @@ Module bn128.
                                                                                   Ty.path
                                                                                     "core::convert::Infallible";
                                                                                   Ty.path
-                                                                                    "revm_primitives::precompile::PrecompileError"
+                                                                                    "revm_precompile::interface::PrecompileError"
                                                                                 ]
                                                                             ],
                                                                             "from_residual",
@@ -2792,7 +2813,7 @@ Module bn128.
                                                                   [
                                                                     Ty.path "substrate_bn::Fq";
                                                                     Ty.path
-                                                                      "revm_primitives::precompile::PrecompileError"
+                                                                      "revm_precompile::interface::PrecompileError"
                                                                   ],
                                                                 [],
                                                                 "branch",
@@ -2813,7 +2834,7 @@ Module bn128.
                                                                           Ty.path
                                                                             "substrate_bn::Fq";
                                                                           Ty.path
-                                                                            "revm_primitives::precompile::PrecompileError"
+                                                                            "revm_precompile::interface::PrecompileError"
                                                                         ]),
                                                                     [ Ty.tuple [ Ty.path "usize" ]
                                                                     ],
@@ -2855,14 +2876,10 @@ Module bn128.
                                                                                 "core::result::Result")
                                                                               []
                                                                               [
-                                                                                Ty.tuple
-                                                                                  [
-                                                                                    Ty.path "u64";
-                                                                                    Ty.path
-                                                                                      "alloy_primitives::bytes_::Bytes"
-                                                                                  ];
                                                                                 Ty.path
-                                                                                  "revm_primitives::precompile::PrecompileError"
+                                                                                  "revm_precompile::interface::PrecompileOutput";
+                                                                                Ty.path
+                                                                                  "revm_precompile::interface::PrecompileErrors"
                                                                               ],
                                                                             [
                                                                               Ty.apply
@@ -2873,7 +2890,7 @@ Module bn128.
                                                                                   Ty.path
                                                                                     "core::convert::Infallible";
                                                                                   Ty.path
-                                                                                    "revm_primitives::precompile::PrecompileError"
+                                                                                    "revm_precompile::interface::PrecompileError"
                                                                                 ]
                                                                             ],
                                                                             "from_residual",
@@ -2911,7 +2928,7 @@ Module bn128.
                                                                   [
                                                                     Ty.path "substrate_bn::Fq";
                                                                     Ty.path
-                                                                      "revm_primitives::precompile::PrecompileError"
+                                                                      "revm_precompile::interface::PrecompileError"
                                                                   ],
                                                                 [],
                                                                 "branch",
@@ -2932,7 +2949,7 @@ Module bn128.
                                                                           Ty.path
                                                                             "substrate_bn::Fq";
                                                                           Ty.path
-                                                                            "revm_primitives::precompile::PrecompileError"
+                                                                            "revm_precompile::interface::PrecompileError"
                                                                         ]),
                                                                     [ Ty.tuple [ Ty.path "usize" ]
                                                                     ],
@@ -2974,14 +2991,10 @@ Module bn128.
                                                                                 "core::result::Result")
                                                                               []
                                                                               [
-                                                                                Ty.tuple
-                                                                                  [
-                                                                                    Ty.path "u64";
-                                                                                    Ty.path
-                                                                                      "alloy_primitives::bytes_::Bytes"
-                                                                                  ];
                                                                                 Ty.path
-                                                                                  "revm_primitives::precompile::PrecompileError"
+                                                                                  "revm_precompile::interface::PrecompileOutput";
+                                                                                Ty.path
+                                                                                  "revm_precompile::interface::PrecompileErrors"
                                                                               ],
                                                                             [
                                                                               Ty.apply
@@ -2992,7 +3005,7 @@ Module bn128.
                                                                                   Ty.path
                                                                                     "core::convert::Infallible";
                                                                                   Ty.path
-                                                                                    "revm_primitives::precompile::PrecompileError"
+                                                                                    "revm_precompile::interface::PrecompileError"
                                                                                 ]
                                                                             ],
                                                                             "from_residual",
@@ -3030,7 +3043,7 @@ Module bn128.
                                                                   [
                                                                     Ty.path "substrate_bn::Fq";
                                                                     Ty.path
-                                                                      "revm_primitives::precompile::PrecompileError"
+                                                                      "revm_precompile::interface::PrecompileError"
                                                                   ],
                                                                 [],
                                                                 "branch",
@@ -3051,7 +3064,7 @@ Module bn128.
                                                                           Ty.path
                                                                             "substrate_bn::Fq";
                                                                           Ty.path
-                                                                            "revm_primitives::precompile::PrecompileError"
+                                                                            "revm_precompile::interface::PrecompileError"
                                                                         ]),
                                                                     [ Ty.tuple [ Ty.path "usize" ]
                                                                     ],
@@ -3093,14 +3106,10 @@ Module bn128.
                                                                                 "core::result::Result")
                                                                               []
                                                                               [
-                                                                                Ty.tuple
-                                                                                  [
-                                                                                    Ty.path "u64";
-                                                                                    Ty.path
-                                                                                      "alloy_primitives::bytes_::Bytes"
-                                                                                  ];
                                                                                 Ty.path
-                                                                                  "revm_primitives::precompile::PrecompileError"
+                                                                                  "revm_precompile::interface::PrecompileOutput";
+                                                                                Ty.path
+                                                                                  "revm_precompile::interface::PrecompileErrors"
                                                                               ],
                                                                             [
                                                                               Ty.apply
@@ -3111,7 +3120,7 @@ Module bn128.
                                                                                   Ty.path
                                                                                     "core::convert::Infallible";
                                                                                   Ty.path
-                                                                                    "revm_primitives::precompile::PrecompileError"
+                                                                                    "revm_precompile::interface::PrecompileError"
                                                                                 ]
                                                                             ],
                                                                             "from_residual",
@@ -3149,7 +3158,7 @@ Module bn128.
                                                                   [
                                                                     Ty.path "substrate_bn::Fq";
                                                                     Ty.path
-                                                                      "revm_primitives::precompile::PrecompileError"
+                                                                      "revm_precompile::interface::PrecompileError"
                                                                   ],
                                                                 [],
                                                                 "branch",
@@ -3170,7 +3179,7 @@ Module bn128.
                                                                           Ty.path
                                                                             "substrate_bn::Fq";
                                                                           Ty.path
-                                                                            "revm_primitives::precompile::PrecompileError"
+                                                                            "revm_precompile::interface::PrecompileError"
                                                                         ]),
                                                                     [ Ty.tuple [ Ty.path "usize" ]
                                                                     ],
@@ -3212,14 +3221,10 @@ Module bn128.
                                                                                 "core::result::Result")
                                                                               []
                                                                               [
-                                                                                Ty.tuple
-                                                                                  [
-                                                                                    Ty.path "u64";
-                                                                                    Ty.path
-                                                                                      "alloy_primitives::bytes_::Bytes"
-                                                                                  ];
                                                                                 Ty.path
-                                                                                  "revm_primitives::precompile::PrecompileError"
+                                                                                  "revm_precompile::interface::PrecompileOutput";
+                                                                                Ty.path
+                                                                                  "revm_precompile::interface::PrecompileErrors"
                                                                               ],
                                                                             [
                                                                               Ty.apply
@@ -3230,7 +3235,7 @@ Module bn128.
                                                                                   Ty.path
                                                                                     "core::convert::Infallible";
                                                                                   Ty.path
-                                                                                    "revm_primitives::precompile::PrecompileError"
+                                                                                    "revm_precompile::interface::PrecompileError"
                                                                                 ]
                                                                             ],
                                                                             "from_residual",
@@ -3268,7 +3273,7 @@ Module bn128.
                                                                   [
                                                                     Ty.path "substrate_bn::G1";
                                                                     Ty.path
-                                                                      "revm_primitives::precompile::PrecompileError"
+                                                                      "revm_precompile::interface::PrecompileError"
                                                                   ],
                                                                 [],
                                                                 "branch",
@@ -3308,14 +3313,10 @@ Module bn128.
                                                                                 "core::result::Result")
                                                                               []
                                                                               [
-                                                                                Ty.tuple
-                                                                                  [
-                                                                                    Ty.path "u64";
-                                                                                    Ty.path
-                                                                                      "alloy_primitives::bytes_::Bytes"
-                                                                                  ];
                                                                                 Ty.path
-                                                                                  "revm_primitives::precompile::PrecompileError"
+                                                                                  "revm_precompile::interface::PrecompileOutput";
+                                                                                Ty.path
+                                                                                  "revm_precompile::interface::PrecompileErrors"
                                                                               ],
                                                                             [
                                                                               Ty.apply
@@ -3326,7 +3327,7 @@ Module bn128.
                                                                                   Ty.path
                                                                                     "core::convert::Infallible";
                                                                                   Ty.path
-                                                                                    "revm_primitives::precompile::PrecompileError"
+                                                                                    "revm_precompile::interface::PrecompileError"
                                                                                 ]
                                                                             ],
                                                                             "from_residual",
@@ -3451,7 +3452,7 @@ Module bn128.
                                                                                     Ty.path
                                                                                       "substrate_bn::AffineG2";
                                                                                     Ty.path
-                                                                                      "revm_primitives::precompile::PrecompileError"
+                                                                                      "revm_precompile::interface::PrecompileError"
                                                                                   ],
                                                                                 [],
                                                                                 "branch",
@@ -3473,7 +3474,7 @@ Module bn128.
                                                                                     "map_err",
                                                                                     [
                                                                                       Ty.path
-                                                                                        "revm_primitives::precompile::PrecompileError";
+                                                                                        "revm_precompile::interface::PrecompileError";
                                                                                       Ty.function
                                                                                         [
                                                                                           Ty.tuple
@@ -3483,7 +3484,7 @@ Module bn128.
                                                                                             ]
                                                                                         ]
                                                                                         (Ty.path
-                                                                                          "revm_primitives::precompile::PrecompileError")
+                                                                                          "revm_precompile::interface::PrecompileError")
                                                                                     ]
                                                                                   |),
                                                                                   [
@@ -3520,7 +3521,7 @@ Module bn128.
                                                                                                       γ =>
                                                                                                     ltac:(M.monadic
                                                                                                       (Value.StructTuple
-                                                                                                        "revm_primitives::precompile::PrecompileError::Bn128AffineGFailedToCreate"
+                                                                                                        "revm_precompile::interface::PrecompileError::Bn128AffineGFailedToCreate"
                                                                                                         []))
                                                                                                 ]
                                                                                               |)))
@@ -3558,15 +3559,10 @@ Module bn128.
                                                                                                 "core::result::Result")
                                                                                               []
                                                                                               [
-                                                                                                Ty.tuple
-                                                                                                  [
-                                                                                                    Ty.path
-                                                                                                      "u64";
-                                                                                                    Ty.path
-                                                                                                      "alloy_primitives::bytes_::Bytes"
-                                                                                                  ];
                                                                                                 Ty.path
-                                                                                                  "revm_primitives::precompile::PrecompileError"
+                                                                                                  "revm_precompile::interface::PrecompileOutput";
+                                                                                                Ty.path
+                                                                                                  "revm_precompile::interface::PrecompileErrors"
                                                                                               ],
                                                                                             [
                                                                                               Ty.apply
@@ -3577,7 +3573,7 @@ Module bn128.
                                                                                                   Ty.path
                                                                                                     "core::convert::Infallible";
                                                                                                   Ty.path
-                                                                                                    "revm_primitives::precompile::PrecompileError"
+                                                                                                    "revm_precompile::interface::PrecompileError"
                                                                                                 ]
                                                                                             ],
                                                                                             "from_residual",
@@ -3616,25 +3612,27 @@ Module bn128.
                                                         |)
                                                       |) in
                                                     let~ _ :=
-                                                      M.write (|
-                                                        mul,
+                                                      M.alloc (|
                                                         M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::arith::Mul",
-                                                            Ty.path "substrate_bn::Gt",
-                                                            [ Ty.path "substrate_bn::Gt" ],
-                                                            "mul",
+                                                          M.get_associated_function (|
+                                                            Ty.apply
+                                                              (Ty.path "alloc::vec::Vec")
+                                                              []
+                                                              [
+                                                                Ty.tuple
+                                                                  [
+                                                                    Ty.path "substrate_bn::G1";
+                                                                    Ty.path "substrate_bn::G2"
+                                                                  ];
+                                                                Ty.path "alloc::alloc::Global"
+                                                              ],
+                                                            "push",
                                                             []
                                                           |),
                                                           [
-                                                            M.read (| mul |);
-                                                            M.call_closure (|
-                                                              M.get_function (|
-                                                                "substrate_bn::pairing",
-                                                                []
-                                                              |),
+                                                            points;
+                                                            Value.Tuple
                                                               [ M.read (| a |); M.read (| b |) ]
-                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -3645,6 +3643,32 @@ Module bn128.
                                       |)))
                                 ]
                               |)) in
+                          let~ mul :=
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_function (| "substrate_bn::pairing_batch", [] |),
+                                [
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::deref::Deref",
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.tuple
+                                            [ Ty.path "substrate_bn::G1"; Ty.path "substrate_bn::G2"
+                                            ];
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      [],
+                                      "deref",
+                                      []
+                                    |),
+                                    [ points ]
+                                  |)
+                                ]
+                              |)
+                            |) in
                           M.alloc (|
                             M.call_closure (|
                               M.get_trait_method (|
@@ -3676,7 +3700,12 @@ Module bn128.
                 Value.StructTuple
                   "core::result::Result::Ok"
                   [
-                    Value.Tuple
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "revm_precompile::interface::PrecompileOutput",
+                        "new",
+                        []
+                      |),
                       [
                         M.read (| gas_used |);
                         M.call_closure (|
@@ -3684,6 +3713,7 @@ Module bn128.
                           [ M.read (| success |) ]
                         |)
                       ]
+                    |)
                   ]
               |)
             |)))

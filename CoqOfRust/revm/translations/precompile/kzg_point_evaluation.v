@@ -10,13 +10,9 @@ Module kzg_point_evaluation.
             "revm_precompile::PrecompileWithAddress"
             [
               M.read (| M.get_constant (| "revm_precompile::kzg_point_evaluation::ADDRESS" |) |);
-              Value.StructTuple
-                "revm_primitives::precompile::Precompile::Env"
-                [
-                  (* ReifyFnPointer *)
-                  M.pointer_coercion
-                    (M.get_function (| "revm_precompile::kzg_point_evaluation::run", [] |))
-                ]
+              (* ReifyFnPointer *)
+              M.pointer_coercion
+                (M.get_function (| "revm_precompile::kzg_point_evaluation::run", [] |))
             ]
         |))).
   
@@ -44,21 +40,21 @@ Module kzg_point_evaluation.
         |))).
   
   (*
-  pub fn run(input: &Bytes, gas_limit: u64, env: &Env) -> PrecompileResult {
+  pub fn run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
       if gas_limit < GAS_COST {
-          return Err(Error::OutOfGas);
+          return Err(PrecompileError::OutOfGas.into());
       }
   
       // Verify input length.
       if input.len() != 192 {
-          return Err(Error::BlobInvalidInputLength);
+          return Err(PrecompileError::BlobInvalidInputLength.into());
       }
   
       // Verify commitment matches versioned_hash
       let versioned_hash = &input[..32];
       let commitment = &input[96..144];
       if kzg_to_versioned_hash(commitment) != versioned_hash {
-          return Err(Error::BlobMismatchedVersion);
+          return Err(PrecompileError::BlobMismatchedVersion.into());
       }
   
       // Verify KZG proof with z and y in big endian format
@@ -66,21 +62,20 @@ Module kzg_point_evaluation.
       let z = as_bytes32(&input[32..64]);
       let y = as_bytes32(&input[64..96]);
       let proof = as_bytes48(&input[144..192]);
-      if !verify_kzg_proof(commitment, z, y, proof, env.cfg.kzg_settings.get()) {
-          return Err(Error::BlobVerifyKzgProofFailed);
+      if !verify_kzg_proof(commitment, z, y, proof) {
+          return Err(PrecompileError::BlobVerifyKzgProofFailed.into());
       }
   
       // Return FIELD_ELEMENTS_PER_BLOB and BLS_MODULUS as padded 32 byte big endian values
-      Ok((GAS_COST, RETURN_VALUE.into()))
+      Ok(PrecompileOutput::new(GAS_COST, RETURN_VALUE.into()))
   }
   *)
   Definition run (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [], [], [ input; gas_limit; env ] =>
+    | [], [], [ input; gas_limit ] =>
       ltac:(M.monadic
         (let input := M.alloc (| input |) in
         let gas_limit := M.alloc (| gas_limit |) in
-        let env := M.alloc (| env |) in
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
@@ -111,9 +106,20 @@ Module kzg_point_evaluation.
                                 Value.StructTuple
                                   "core::result::Result::Err"
                                   [
-                                    Value.StructTuple
-                                      "revm_primitives::precompile::PrecompileError::OutOfGas"
-                                      []
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::convert::Into",
+                                        Ty.path "revm_precompile::interface::PrecompileError",
+                                        [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+                                        "into",
+                                        []
+                                      |),
+                                      [
+                                        Value.StructTuple
+                                          "revm_precompile::interface::PrecompileError::OutOfGas"
+                                          []
+                                      ]
+                                    |)
                                   ]
                               |)
                             |)
@@ -163,9 +169,20 @@ Module kzg_point_evaluation.
                                 Value.StructTuple
                                   "core::result::Result::Err"
                                   [
-                                    Value.StructTuple
-                                      "revm_primitives::precompile::PrecompileError::BlobInvalidInputLength"
-                                      []
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::convert::Into",
+                                        Ty.path "revm_precompile::interface::PrecompileError",
+                                        [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+                                        "into",
+                                        []
+                                      |),
+                                      [
+                                        Value.StructTuple
+                                          "revm_precompile::interface::PrecompileError::BlobInvalidInputLength"
+                                          []
+                                      ]
+                                    |)
                                   ]
                               |)
                             |)
@@ -301,9 +318,20 @@ Module kzg_point_evaluation.
                                 Value.StructTuple
                                   "core::result::Result::Err"
                                   [
-                                    Value.StructTuple
-                                      "revm_primitives::precompile::PrecompileError::BlobMismatchedVersion"
-                                      []
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::convert::Into",
+                                        Ty.path "revm_precompile::interface::PrecompileError",
+                                        [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+                                        "into",
+                                        []
+                                      |),
+                                      [
+                                        Value.StructTuple
+                                          "revm_precompile::interface::PrecompileError::BlobMismatchedVersion"
+                                          []
+                                      ]
+                                    |)
                                   ]
                               |)
                             |)
@@ -476,26 +504,7 @@ Module kzg_point_evaluation.
                                     M.read (| commitment |);
                                     M.read (| z |);
                                     M.read (| y |);
-                                    M.read (| proof |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path
-                                          "revm_primitives::kzg::env_settings::EnvKzgSettings",
-                                        "get",
-                                        []
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| env |),
-                                            "revm_primitives::env::Env",
-                                            "cfg"
-                                          |),
-                                          "revm_primitives::env::CfgEnv",
-                                          "kzg_settings"
-                                        |)
-                                      ]
-                                    |)
+                                    M.read (| proof |)
                                   ]
                                 |)
                               |)
@@ -509,9 +518,20 @@ Module kzg_point_evaluation.
                                 Value.StructTuple
                                   "core::result::Result::Err"
                                   [
-                                    Value.StructTuple
-                                      "revm_primitives::precompile::PrecompileError::BlobVerifyKzgProofFailed"
-                                      []
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::convert::Into",
+                                        Ty.path "revm_precompile::interface::PrecompileError",
+                                        [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+                                        "into",
+                                        []
+                                      |),
+                                      [
+                                        Value.StructTuple
+                                          "revm_precompile::interface::PrecompileError::BlobVerifyKzgProofFailed"
+                                          []
+                                      ]
+                                    |)
                                   ]
                               |)
                             |)
@@ -524,7 +544,12 @@ Module kzg_point_evaluation.
                 Value.StructTuple
                   "core::result::Result::Ok"
                   [
-                    Value.Tuple
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "revm_precompile::interface::PrecompileOutput",
+                        "new",
+                        []
+                      |),
                       [
                         M.read (|
                           M.get_constant (| "revm_precompile::kzg_point_evaluation::GAS_COST" |)
@@ -554,6 +579,7 @@ Module kzg_point_evaluation.
                           ]
                         |)
                       ]
+                    |)
                   ]
               |)
             |)))
@@ -719,51 +745,63 @@ Module kzg_point_evaluation.
       kzg_to_versioned_hash.
   
   (*
-  pub fn verify_kzg_proof(
-      commitment: &Bytes48,
-      z: &Bytes32,
-      y: &Bytes32,
-      proof: &Bytes48,
-      kzg_settings: &KzgSettings,
-  ) -> bool {
+  pub fn verify_kzg_proof(commitment: &Bytes48, z: &Bytes32, y: &Bytes32, proof: &Bytes48) -> bool {
+      cfg_if::cfg_if! {
+          if #[cfg(feature = "c-kzg")] {
+              let kzg_settings = c_kzg::ethereum_kzg_settings();
+          } else if #[cfg(feature = "kzg-rs")] {
+              let env = kzg_rs::EnvKzgSettings::default();
+              let kzg_settings = env.get();
+          }
+      }
       KzgProof::verify_kzg_proof(commitment, z, y, proof, kzg_settings).unwrap_or(false)
   }
   *)
   Definition verify_kzg_proof (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [], [], [ commitment; z; y; proof; kzg_settings ] =>
+    | [], [], [ commitment; z; y; proof ] =>
       ltac:(M.monadic
         (let commitment := M.alloc (| commitment |) in
         let z := M.alloc (| z |) in
         let y := M.alloc (| y |) in
         let proof := M.alloc (| proof |) in
-        let kzg_settings := M.alloc (| kzg_settings |) in
-        M.call_closure (|
-          M.get_associated_function (|
-            Ty.apply
-              (Ty.path "core::result::Result")
-              []
-              [ Ty.path "bool"; Ty.path "c_kzg::bindings::Error" ],
-            "unwrap_or",
-            []
-          |),
-          [
+        M.read (|
+          let~ kzg_settings :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "c_kzg::ethereum_kzg_settings::ethereum_kzg_settings", [] |),
+                []
+              |)
+            |) in
+          M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.path "c_kzg::bindings::KZGProof",
-                "verify_kzg_proof",
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "bool"; Ty.path "c_kzg::bindings::Error" ],
+                "unwrap_or",
                 []
               |),
               [
-                M.read (| commitment |);
-                M.read (| z |);
-                M.read (| y |);
-                M.read (| proof |);
-                M.read (| kzg_settings |)
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.path "c_kzg::bindings::KZGProof",
+                    "verify_kzg_proof",
+                    []
+                  |),
+                  [
+                    M.read (| commitment |);
+                    M.read (| z |);
+                    M.read (| y |);
+                    M.read (| proof |);
+                    M.read (| kzg_settings |)
+                  ]
+                |);
+                Value.Bool false
               ]
-            |);
-            Value.Bool false
-          ]
+            |)
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

@@ -405,7 +405,7 @@ Module instructions.
             Sign::Minus
         } else {
             // SAFETY: false == 0 == Zero, true == 1 == Plus
-            unsafe { core::mem::transmute( *val != U256::ZERO) }
+            unsafe { core::mem::transmute::<bool, Sign>(!val.is_zero()) }
         }
     }
     *)
@@ -457,29 +457,21 @@ Module instructions.
                           [ Ty.path "bool"; Ty.path "revm_interpreter::instructions::i256::Sign" ]
                         |),
                         [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::cmp::PartialEq",
-                              Ty.apply
-                                (Ty.path "ruint::Uint")
-                                [
-                                  Value.Integer IntegerKind.Usize 256;
-                                  Value.Integer IntegerKind.Usize 4
-                                ]
-                                [],
-                              [
+                          UnOp.not (|
+                            M.call_closure (|
+                              M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
                                   [
                                     Value.Integer IntegerKind.Usize 256;
                                     Value.Integer IntegerKind.Usize 4
                                   ]
-                                  []
-                              ],
-                              "ne",
-                              []
-                            |),
-                            [ M.read (| val |); M.get_constant (| "ruint::ZERO" |) ]
+                                  [],
+                                "is_zero",
+                                []
+                              |),
+                              [ M.read (| val |) ]
+                            |)
                           |)
                         ]
                       |)
@@ -670,7 +662,7 @@ Module instructions.
         let first_sign = i256_sign(first);
         let second_sign = i256_sign(second);
         match first_sign.cmp(&second_sign) {
-            // note: adding `if first_sign != Sign::Zero` to short circuit zero comparisons performs
+            // Note: Adding `if first_sign != Sign::Zero` to short circuit zero comparisons performs
             // slower on average, as of #582
             Ordering::Equal => first.cmp(second),
             o => o,
@@ -756,14 +748,14 @@ Module instructions.
             return two_compl(MIN_NEGATIVE_VALUE);
         }
     
-        // necessary overflow checks are done above, perform the division
+        // Necessary overflow checks are done above, perform the division
         let mut d = first / second;
     
-        // set sign bit to zero
+        // Set sign bit to zero
         u256_remove_sign(&mut d);
     
-        // two's complement only if the signs are different
-        // note: this condition has better codegen than an exhaustive match, as of #582
+        // Two's complement only if the signs are different
+        // Note: This condition has better codegen than an exhaustive match, as of #582
         if (first_sign == Sign::Minus && second_sign != Sign::Minus)
             || (second_sign == Sign::Minus && first_sign != Sign::Minus)
         {
@@ -1105,7 +1097,7 @@ Module instructions.
     
         let mut r = first % second;
     
-        // set sign bit to zero
+        // Set sign bit to zero
         u256_remove_sign(&mut r);
     
         if first_sign == Sign::Minus {

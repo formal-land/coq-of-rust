@@ -879,183 +879,6 @@ Module interpreter_action.
         Ty.path "revm_interpreter::interpreter_action::call_inputs::CallInputs".
       
       (*
-          pub fn new(tx_env: &TxEnv, gas_limit: u64) -> Option<Self> {
-              let TransactTo::Call(target_address) = tx_env.transact_to else {
-                  return None;
-              };
-              Some(CallInputs {
-                  input: tx_env.data.clone(),
-                  gas_limit,
-                  target_address,
-                  bytecode_address: target_address,
-                  caller: tx_env.caller,
-                  value: CallValue::Transfer(tx_env.value),
-                  scheme: CallScheme::Call,
-                  is_static: false,
-                  is_eof: false,
-                  return_memory_offset: 0..0,
-              })
-          }
-      *)
-      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ tx_env; gas_limit ] =>
-          ltac:(M.monadic
-            (let tx_env := M.alloc (| tx_env |) in
-            let gas_limit := M.alloc (| gas_limit |) in
-            M.read (|
-              M.match_operator (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| tx_env |),
-                  "revm_primitives::env::TxEnv",
-                  "transact_to"
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "revm_primitives::env::TransactTo::Call",
-                          0
-                        |) in
-                      let target_address := M.copy (| γ0_0 |) in
-                      M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            Value.StructRecord
-                              "revm_interpreter::interpreter_action::call_inputs::CallInputs"
-                              [
-                                ("input",
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::clone::Clone",
-                                      Ty.path "alloy_primitives::bytes_::Bytes",
-                                      [],
-                                      "clone",
-                                      []
-                                    |),
-                                    [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| tx_env |),
-                                        "revm_primitives::env::TxEnv",
-                                        "data"
-                                      |)
-                                    ]
-                                  |));
-                                ("gas_limit", M.read (| gas_limit |));
-                                ("target_address", M.read (| target_address |));
-                                ("bytecode_address", M.read (| target_address |));
-                                ("caller",
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| tx_env |),
-                                      "revm_primitives::env::TxEnv",
-                                      "caller"
-                                    |)
-                                  |));
-                                ("value",
-                                  Value.StructTuple
-                                    "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer"
-                                    [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| tx_env |),
-                                          "revm_primitives::env::TxEnv",
-                                          "value"
-                                        |)
-                                      |)
-                                    ]);
-                                ("scheme",
-                                  Value.StructTuple
-                                    "revm_interpreter::interpreter_action::call_inputs::CallScheme::Call"
-                                    []);
-                                ("is_static", Value.Bool false);
-                                ("is_eof", Value.Bool false);
-                                ("return_memory_offset",
-                                  Value.StructRecord
-                                    "core::ops::range::Range"
-                                    [
-                                      ("start", Value.Integer IntegerKind.Usize 0);
-                                      ("end_", Value.Integer IntegerKind.Usize 0)
-                                    ])
-                              ]
-                          ]
-                      |)))
-                ]
-              |)
-            |)))
-        | _, _, _ => M.impossible "wrong number of arguments"
-        end.
-      
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      
-      (*
-          pub fn new_boxed(tx_env: &TxEnv, gas_limit: u64) -> Option<Box<Self>> {
-              Self::new(tx_env, gas_limit).map(Box::new)
-          }
-      *)
-      Definition new_boxed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ tx_env; gas_limit ] =>
-          ltac:(M.monadic
-            (let tx_env := M.alloc (| tx_env |) in
-            let gas_limit := M.alloc (| gas_limit |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.path "revm_interpreter::interpreter_action::call_inputs::CallInputs" ],
-                "map",
-                [
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
-                    [
-                      Ty.path "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                      Ty.path "alloc::alloc::Global"
-                    ];
-                  Ty.function
-                    [ Ty.path "revm_interpreter::interpreter_action::call_inputs::CallInputs" ]
-                    (Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [
-                        Ty.path "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                        Ty.path "alloc::alloc::Global"
-                      ])
-                ]
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                    "new",
-                    []
-                  |),
-                  [ M.read (| tx_env |); M.read (| gas_limit |) ]
-                |);
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
-                    [
-                      Ty.path "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                      Ty.path "alloc::alloc::Global"
-                    ],
-                  "new",
-                  []
-                |)
-              ]
-            |)))
-        | _, _, _ => M.impossible "wrong number of arguments"
-        end.
-      
-      Axiom AssociatedFunction_new_boxed : M.IsAssociatedFunction Self "new_boxed" new_boxed.
-      
-      (*
           pub fn transfers_value(&self) -> bool {
               self.value.transfer().is_some_and(|x| x > U256::ZERO)
           }
@@ -1316,6 +1139,21 @@ Module interpreter_action.
             name := "StaticCall";
             item := StructTuple [];
             discriminant := None;
+          };
+          {
+            name := "ExtCall";
+            item := StructTuple [];
+            discriminant := None;
+          };
+          {
+            name := "ExtStaticCall";
+            item := StructTuple [];
+            discriminant := None;
+          };
+          {
+            name := "ExtDelegateCall";
+            item := StructTuple [];
+            discriminant := None;
           }
         ];
     }
@@ -1409,7 +1247,34 @@ Module interpreter_action.
                               γ,
                               "revm_interpreter::interpreter_action::call_inputs::CallScheme::StaticCall"
                             |) in
-                          M.alloc (| M.read (| Value.String "StaticCall" |) |)))
+                          M.alloc (| M.read (| Value.String "StaticCall" |) |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtCall"
+                            |) in
+                          M.alloc (| M.read (| Value.String "ExtCall" |) |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtStaticCall"
+                            |) in
+                          M.alloc (| M.read (| Value.String "ExtStaticCall" |) |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtDelegateCall"
+                            |) in
+                          M.alloc (| M.read (| Value.String "ExtDelegateCall" |) |)))
                     ]
                   |)
                 |)
@@ -1549,6 +1414,111 @@ Module interpreter_action.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_revm_interpreter_interpreter_action_call_inputs_CallScheme.
+    
+    Module Impl_revm_interpreter_interpreter_action_call_inputs_CallScheme.
+      Definition Self : Ty.t :=
+        Ty.path "revm_interpreter::interpreter_action::call_inputs::CallScheme".
+      
+      (*
+          pub fn is_ext(&self) -> bool {
+              matches!(
+                  self,
+                  Self::ExtCall | Self::ExtStaticCall | Self::ExtDelegateCall
+              )
+          }
+      *)
+      Definition is_ext (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              M.match_operator (|
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.find_or_pattern (|
+                        γ,
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ := M.read (| γ |) in
+                              let _ :=
+                                M.is_struct_tuple (|
+                                  γ,
+                                  "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtCall"
+                                |) in
+                              Value.Tuple []));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ := M.read (| γ |) in
+                              let _ :=
+                                M.is_struct_tuple (|
+                                  γ,
+                                  "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtStaticCall"
+                                |) in
+                              Value.Tuple []));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ := M.read (| γ |) in
+                              let _ :=
+                                M.is_struct_tuple (|
+                                  γ,
+                                  "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtDelegateCall"
+                                |) in
+                              Value.Tuple []))
+                        ],
+                        M.closure
+                          (fun γ =>
+                            ltac:(M.monadic
+                              match γ with
+                              | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end))
+                      |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_is_ext : M.IsAssociatedFunction Self "is_ext" is_ext.
+      
+      (*
+          pub fn is_ext_delegate_call(&self) -> bool {
+              matches!(self, Self::ExtDelegateCall)
+          }
+      *)
+      Definition is_ext_delegate_call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              M.match_operator (|
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtDelegateCall"
+                        |) in
+                      M.alloc (| Value.Bool true |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_is_ext_delegate_call :
+        M.IsAssociatedFunction Self "is_ext_delegate_call" is_ext_delegate_call.
+    End Impl_revm_interpreter_interpreter_action_call_inputs_CallScheme.
     
     (*
     Enum CallValue

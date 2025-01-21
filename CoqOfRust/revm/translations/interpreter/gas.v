@@ -8,7 +8,12 @@ Module gas.
       const_params := [];
       ty_params := [];
       fields :=
-        [ ("limit", Ty.path "u64"); ("remaining", Ty.path "u64"); ("refunded", Ty.path "i64") ];
+        [
+          ("limit", Ty.path "u64");
+          ("remaining", Ty.path "u64");
+          ("refunded", Ty.path "i64");
+          ("memory", Ty.path "revm_interpreter::gas::MemoryGas")
+        ];
     } *)
   
   Module Impl_core_clone_Clone_for_revm_interpreter_gas_Gas.
@@ -28,7 +33,14 @@ Module gas.
                   ltac:(M.monadic
                     (M.match_operator (|
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              Value.DeclaredButUndefined,
+                              [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                            |)))
+                      ]
                     |)))
               ]
             |)
@@ -68,7 +80,7 @@ Module gas.
           M.call_closure (|
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
-              "debug_struct_field3_finish",
+              "debug_struct_field4_finish",
               []
             |),
             [
@@ -87,11 +99,17 @@ Module gas.
                 "remaining"
               |);
               M.read (| Value.String "refunded" |);
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::gas::Gas",
+                "refunded"
+              |);
+              M.read (| Value.String "memory" |);
               M.alloc (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::gas::Gas",
-                  "refunded"
+                  "memory"
                 |)
               |)
             ]
@@ -150,6 +168,17 @@ Module gas.
                     []
                   |),
                   []
+                |));
+              ("memory",
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::default::Default",
+                    Ty.path "revm_interpreter::gas::MemoryGas",
+                    [],
+                    "default",
+                    []
+                  |),
+                  []
                 |))
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -186,21 +215,40 @@ Module gas.
           let other := M.alloc (| other |) in
           LogicalOp.and (|
             LogicalOp.and (|
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::gas::Gas",
-                    "limit"
+              LogicalOp.and (|
+                BinOp.eq (|
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "revm_interpreter::gas::Gas",
+                      "limit"
+                    |)
+                  |),
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "revm_interpreter::gas::Gas",
+                      "limit"
+                    |)
                   |)
                 |),
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| other |),
-                    "revm_interpreter::gas::Gas",
-                    "limit"
-                  |)
-                |)
+                ltac:(M.monadic
+                  (BinOp.eq (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_interpreter::gas::Gas",
+                        "remaining"
+                      |)
+                    |),
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "revm_interpreter::gas::Gas",
+                        "remaining"
+                      |)
+                    |)
+                  |)))
               |),
               ltac:(M.monadic
                 (BinOp.eq (|
@@ -208,34 +256,39 @@ Module gas.
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_interpreter::gas::Gas",
-                      "remaining"
+                      "refunded"
                     |)
                   |),
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "revm_interpreter::gas::Gas",
-                      "remaining"
+                      "refunded"
                     |)
                   |)
                 |)))
             |),
             ltac:(M.monadic
-              (BinOp.eq (|
-                M.read (|
+              (M.call_closure (|
+                M.get_trait_method (|
+                  "core::cmp::PartialEq",
+                  Ty.path "revm_interpreter::gas::MemoryGas",
+                  [ Ty.path "revm_interpreter::gas::MemoryGas" ],
+                  "eq",
+                  []
+                |),
+                [
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::gas::Gas",
-                    "refunded"
-                  |)
-                |),
-                M.read (|
+                    "memory"
+                  |);
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "revm_interpreter::gas::Gas",
-                    "refunded"
+                    "memory"
                   |)
-                |)
+                ]
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -270,7 +323,14 @@ Module gas.
                   ltac:(M.monadic
                     (M.match_operator (|
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              Value.DeclaredButUndefined,
+                              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                            |)))
+                      ]
                     |)))
               ]
             |)
@@ -326,14 +386,34 @@ Module gas.
                   ]
                 |)
               |) in
+            let~ _ :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_trait_method (| "core::hash::Hash", Ty.path "i64", [], "hash", [ __H ] |),
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "revm_interpreter::gas::Gas",
+                      "refunded"
+                    |);
+                    M.read (| state |)
+                  ]
+                |)
+              |) in
             M.alloc (|
               M.call_closure (|
-                M.get_trait_method (| "core::hash::Hash", Ty.path "i64", [], "hash", [ __H ] |),
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "revm_interpreter::gas::MemoryGas",
+                  [],
+                  "hash",
+                  [ __H ]
+                |),
                 [
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::gas::Gas",
-                    "refunded"
+                    "memory"
                   |);
                   M.read (| state |)
                 ]
@@ -360,6 +440,7 @@ Module gas.
                 limit,
                 remaining: limit,
                 refunded: 0,
+                memory: MemoryGas::new(),
             }
         }
     *)
@@ -373,7 +454,16 @@ Module gas.
             [
               ("limit", M.read (| limit |));
               ("remaining", M.read (| limit |));
-              ("refunded", Value.Integer IntegerKind.I64 0)
+              ("refunded", Value.Integer IntegerKind.I64 0);
+              ("memory",
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.path "revm_interpreter::gas::MemoryGas",
+                    "new",
+                    []
+                  |),
+                  []
+                |))
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -386,6 +476,7 @@ Module gas.
                 limit,
                 remaining: 0,
                 refunded: 0,
+                memory: MemoryGas::new(),
             }
         }
     *)
@@ -399,7 +490,16 @@ Module gas.
             [
               ("limit", M.read (| limit |));
               ("remaining", Value.Integer IntegerKind.U64 0);
-              ("refunded", Value.Integer IntegerKind.I64 0)
+              ("refunded", Value.Integer IntegerKind.I64 0);
+              ("memory",
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.path "revm_interpreter::gas::MemoryGas",
+                    "new",
+                    []
+                  |),
+                  []
+                |))
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -498,25 +598,6 @@ Module gas.
     Axiom AssociatedFunction_spent : M.IsAssociatedFunction Self "spent" spent.
     
     (*
-        pub const fn spend(&self) -> u64 {
-            self.spent()
-        }
-    *)
-    Definition spend (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (| Ty.path "revm_interpreter::gas::Gas", "spent", [] |),
-            [ M.read (| self |) ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_spend : M.IsAssociatedFunction Self "spend" spend.
-    
-    (*
         pub const fn remaining(&self) -> u64 {
             self.remaining
         }
@@ -537,6 +618,41 @@ Module gas.
       end.
     
     Axiom AssociatedFunction_remaining : M.IsAssociatedFunction Self "remaining" remaining.
+    
+    (*
+        pub const fn remaining_63_of_64_parts(&self) -> u64 {
+            self.remaining - self.remaining / 64
+        }
+    *)
+    Definition remaining_63_of_64_parts (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          BinOp.Wrap.sub (|
+            M.read (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::gas::Gas",
+                "remaining"
+              |)
+            |),
+            BinOp.Wrap.div (|
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_interpreter::gas::Gas",
+                  "remaining"
+                |)
+              |),
+              Value.Integer IntegerKind.U64 64
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_remaining_63_of_64_parts :
+      M.IsAssociatedFunction Self "remaining_63_of_64_parts" remaining_63_of_64_parts.
     
     (*
         pub fn erase_cost(&mut self, returned: u64) {
@@ -792,5 +908,568 @@ Module gas.
       end.
     
     Axiom AssociatedFunction_record_cost : M.IsAssociatedFunction Self "record_cost" record_cost.
+    
+    (*
+        pub fn record_memory_expansion(&mut self, new_len: usize) -> MemoryExtensionResult {
+            let Some(additional_cost) = self.memory.record_new_len(new_len) else {
+                return MemoryExtensionResult::Same;
+            };
+    
+            if !self.record_cost(additional_cost) {
+                return MemoryExtensionResult::OutOfGas;
+            }
+    
+            MemoryExtensionResult::Extended
+        }
+    *)
+    Definition record_memory_expansion (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; new_len ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let new_len := M.alloc (| new_len |) in
+          M.catch_return (|
+            ltac:(M.monadic
+              (M.read (|
+                M.match_operator (|
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "revm_interpreter::gas::MemoryGas",
+                        "record_new_len",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::gas::Gas",
+                          "memory"
+                        |);
+                        M.read (| new_len |)
+                      ]
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::option::Option::Some",
+                            0
+                          |) in
+                        let additional_cost := M.copy (| γ0_0 |) in
+                        let~ _ :=
+                          M.match_operator (|
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        UnOp.not (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "revm_interpreter::gas::Gas",
+                                              "record_cost",
+                                              []
+                                            |),
+                                            [ M.read (| self |); M.read (| additional_cost |) ]
+                                          |)
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    M.is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "revm_interpreter::gas::MemoryExtensionResult::OutOfGas"
+                                            []
+                                        |)
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |) in
+                        M.alloc (|
+                          Value.StructTuple
+                            "revm_interpreter::gas::MemoryExtensionResult::Extended"
+                            []
+                        |)))
+                  ]
+                |)
+              |)))
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_record_memory_expansion :
+      M.IsAssociatedFunction Self "record_memory_expansion" record_memory_expansion.
   End Impl_revm_interpreter_gas_Gas.
+  
+  (*
+  Enum MemoryExtensionResult
+  {
+    const_params := [];
+    ty_params := [];
+    variants :=
+      [
+        {
+          name := "Extended";
+          item := StructTuple [];
+          discriminant := None;
+        };
+        {
+          name := "Same";
+          item := StructTuple [];
+          discriminant := None;
+        };
+        {
+          name := "OutOfGas";
+          item := StructTuple [];
+          discriminant := None;
+        }
+      ];
+  }
+  *)
+  
+  (* StructRecord
+    {
+      name := "MemoryGas";
+      const_params := [];
+      ty_params := [];
+      fields := [ ("words_num", Ty.path "usize"); ("expansion_cost", Ty.path "u64") ];
+    } *)
+  
+  Module Impl_core_clone_Clone_for_revm_interpreter_gas_MemoryGas.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::gas::MemoryGas".
+    
+    (* Clone *)
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.read (|
+            M.match_operator (|
+              Value.DeclaredButUndefined,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      Value.DeclaredButUndefined,
+                      [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                    |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::clone::Clone"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("clone", InstanceField.Method clone) ].
+  End Impl_core_clone_Clone_for_revm_interpreter_gas_MemoryGas.
+  
+  Module Impl_core_marker_Copy_for_revm_interpreter_gas_MemoryGas.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::gas::MemoryGas".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::Copy"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_Copy_for_revm_interpreter_gas_MemoryGas.
+  
+  Module Impl_core_default_Default_for_revm_interpreter_gas_MemoryGas.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::gas::MemoryGas".
+    
+    (* Default *)
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (Value.StructRecord
+            "revm_interpreter::gas::MemoryGas"
+            [
+              ("words_num",
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::default::Default",
+                    Ty.path "usize",
+                    [],
+                    "default",
+                    []
+                  |),
+                  []
+                |));
+              ("expansion_cost",
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::default::Default",
+                    Ty.path "u64",
+                    [],
+                    "default",
+                    []
+                  |),
+                  []
+                |))
+            ]))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::default::Default"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("default", InstanceField.Method default) ].
+  End Impl_core_default_Default_for_revm_interpreter_gas_MemoryGas.
+  
+  Module Impl_core_fmt_Debug_for_revm_interpreter_gas_MemoryGas.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::gas::MemoryGas".
+    
+    (* Debug *)
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let f := M.alloc (| f |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.path "core::fmt::Formatter",
+              "debug_struct_field2_finish",
+              []
+            |),
+            [
+              M.read (| f |);
+              M.read (| Value.String "MemoryGas" |);
+              M.read (| Value.String "words_num" |);
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::gas::MemoryGas",
+                "words_num"
+              |);
+              M.read (| Value.String "expansion_cost" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_interpreter::gas::MemoryGas",
+                  "expansion_cost"
+                |)
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::fmt::Debug"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+  End Impl_core_fmt_Debug_for_revm_interpreter_gas_MemoryGas.
+  
+  Module Impl_core_marker_StructuralPartialEq_for_revm_interpreter_gas_MemoryGas.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::gas::MemoryGas".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::StructuralPartialEq"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_gas_MemoryGas.
+  
+  Module Impl_core_cmp_PartialEq_for_revm_interpreter_gas_MemoryGas.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::gas::MemoryGas".
+    
+    (* PartialEq *)
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let other := M.alloc (| other |) in
+          LogicalOp.and (|
+            BinOp.eq (|
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_interpreter::gas::MemoryGas",
+                  "words_num"
+                |)
+              |),
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "revm_interpreter::gas::MemoryGas",
+                  "words_num"
+                |)
+              |)
+            |),
+            ltac:(M.monadic
+              (BinOp.eq (|
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm_interpreter::gas::MemoryGas",
+                    "expansion_cost"
+                  |)
+                |),
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| other |),
+                    "revm_interpreter::gas::MemoryGas",
+                    "expansion_cost"
+                  |)
+                |)
+              |)))
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::cmp::PartialEq"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("eq", InstanceField.Method eq) ].
+  End Impl_core_cmp_PartialEq_for_revm_interpreter_gas_MemoryGas.
+  
+  Module Impl_core_cmp_Eq_for_revm_interpreter_gas_MemoryGas.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::gas::MemoryGas".
+    
+    (* Eq *)
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.read (|
+            M.match_operator (|
+              Value.DeclaredButUndefined,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      Value.DeclaredButUndefined,
+                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                    |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::cmp::Eq"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *)
+        [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
+  End Impl_core_cmp_Eq_for_revm_interpreter_gas_MemoryGas.
+  
+  Module Impl_core_hash_Hash_for_revm_interpreter_gas_MemoryGas.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::gas::MemoryGas".
+    
+    (* Hash *)
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let state := M.alloc (| state |) in
+          M.read (|
+            let~ _ :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_trait_method (| "core::hash::Hash", Ty.path "usize", [], "hash", [ __H ] |),
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "revm_interpreter::gas::MemoryGas",
+                      "words_num"
+                    |);
+                    M.read (| state |)
+                  ]
+                |)
+              |) in
+            M.alloc (|
+              M.call_closure (|
+                M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm_interpreter::gas::MemoryGas",
+                    "expansion_cost"
+                  |);
+                  M.read (| state |)
+                ]
+              |)
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::hash::Hash"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("hash", InstanceField.Method hash) ].
+  End Impl_core_hash_Hash_for_revm_interpreter_gas_MemoryGas.
+  
+  Module Impl_revm_interpreter_gas_MemoryGas.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::gas::MemoryGas".
+    
+    (*
+        pub const fn new() -> Self {
+            Self {
+                words_num: 0,
+                expansion_cost: 0,
+            }
+        }
+    *)
+    Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (Value.StructRecord
+            "revm_interpreter::gas::MemoryGas"
+            [
+              ("words_num", Value.Integer IntegerKind.Usize 0);
+              ("expansion_cost", Value.Integer IntegerKind.U64 0)
+            ]))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    
+    (*
+        pub fn record_new_len(&mut self, new_num: usize) -> Option<u64> {
+            if new_num <= self.words_num {
+                return None;
+            }
+            self.words_num = new_num;
+            let mut cost = crate::gas::calc::memory_gas(new_num);
+            core::mem::swap(&mut self.expansion_cost, &mut cost);
+            // Safe to subtract because we know that new_len > length
+            // Notice the swap above.
+            Some(self.expansion_cost - cost)
+        }
+    *)
+    Definition record_new_len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; new_num ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let new_num := M.alloc (| new_num |) in
+          M.catch_return (|
+            ltac:(M.monadic
+              (M.read (|
+                let~ _ :=
+                  M.match_operator (|
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                BinOp.le (|
+                                  M.read (| new_num |),
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "revm_interpreter::gas::MemoryGas",
+                                      "words_num"
+                                    |)
+                                  |)
+                                |)
+                              |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.alloc (|
+                            M.never_to_any (|
+                              M.read (|
+                                M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
+                              |)
+                            |)
+                          |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |) in
+                let~ _ :=
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "revm_interpreter::gas::MemoryGas",
+                      "words_num"
+                    |),
+                    M.read (| new_num |)
+                  |) in
+                let~ cost :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "revm_interpreter::gas::calc::memory_gas", [] |),
+                      [ M.read (| new_num |) ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "core::mem::swap", [ Ty.path "u64" ] |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::gas::MemoryGas",
+                          "expansion_cost"
+                        |);
+                        cost
+                      ]
+                    |)
+                  |) in
+                M.alloc (|
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    [
+                      BinOp.Wrap.sub (|
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::gas::MemoryGas",
+                            "expansion_cost"
+                          |)
+                        |),
+                        M.read (| cost |)
+                      |)
+                    ]
+                |)
+              |)))
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_record_new_len :
+      M.IsAssociatedFunction Self "record_new_len" record_new_len.
+  End Impl_revm_interpreter_gas_MemoryGas.
 End gas.
