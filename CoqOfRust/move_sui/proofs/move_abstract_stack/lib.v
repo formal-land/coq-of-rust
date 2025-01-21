@@ -349,7 +349,7 @@ Module AbstractStack.
           destruct  AbstractStack.pop_any_n_helper as [values'|]; cbn; [|exact I].
           destruct IHvalues' as [items [H_items_len H_items_eq]].
           exists (List.repeat last (Z.to_nat count) ++ items); split.
-          { rewrite List.app_length, List.repeat_length, H_items_len.
+          { rewrite List.length_app, List.repeat_length, H_items_len.
             rewrite Z2Nat.inj_sub; lia.
           }
           { rewrite <- List.app_assoc; f_equal.
