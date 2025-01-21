@@ -299,7 +299,7 @@ Definition output_with_exception (Output : Set) `{Link Output} (output : Output 
   end.
 
 Module Run.
-  Reserved Notation "{{ e ⇓ output_to_value }}" (at level 70, no associativity).
+  Reserved Notation "{{ e ⇓ output_to_value }}" (no associativity).
 
   (** The [Run.t] predicate to show that there exists a trace of execution for an expression [e]
       if we choose the right types/`to_value` functions and make a valid names and traits

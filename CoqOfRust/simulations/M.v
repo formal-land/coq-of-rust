@@ -7,8 +7,8 @@ Module Result.
   | Ok : A -> t A Error
   | Err : Error -> t A Error.
 
-  Arguments Ok {A Error}%type_scope.
-  Arguments Err {A Error}%type_scope.
+  Arguments Ok {A Error}%_type_scope.
+  Arguments Err {A Error}%_type_scope.
 
   Definition return_ {A Error : Set} (value : A) : t A Error := Ok value.
 
