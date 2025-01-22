@@ -1,5 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import CoqOfRust.alloc.vec.links.mod.
 Require Import CoqOfRust.core.links.array.
 
 (*
@@ -27,19 +28,16 @@ Require Import CoqOfRust.core.links.array.
 
 Module EofHeader.
   Record t : Set := {
-    types_size : Z;
-    code_sizes : list Z;
-    container_sizes : list Z;
-    data_size : Z;
-    sum_code_sizes : Z;
-    sum_container_sizes : Z;
+    types_size : U16.t;
+    code_sizes : Vec.t U16.t;
+    container_sizes : Vec.t U16.t;
+    data_size : U16.t;
+    sum_code_sizes : Usize.t;
+    sum_container_sizes : Usize.t;
   }.
 
-  Global Instance IsToTy : ToTy t := {
+  Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_primitives::bytecode::eof::header::EofHeader";
-  }.
-
-  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "revm_primitives::bytecode::eof::header::EofHeader" [
         ("types_size", φ x.(types_size));

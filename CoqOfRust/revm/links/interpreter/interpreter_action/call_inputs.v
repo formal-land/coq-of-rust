@@ -1,6 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import CoqOfRust.core.links.bool.
 Require Import CoqOfRust.revm.links.dependencies.
 
 (*
@@ -22,11 +21,8 @@ Module CallValue.
   | Transfer : U256.t -> t
   | Apparent : U256.t -> t.
 
-  Global Instance IsToTy : ToTy t := {
+  Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue";
-  }.
-
-  Global Instance IsToValue : ToValue t := {
     φ x :=
       match x with
       | Transfer x => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer" [φ x]
@@ -58,11 +54,8 @@ Module CallScheme.
   | DelegateCall
   | StaticCall.
 
-  Global Instance IsToTy : ToTy t := {
+  Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::interpreter_action::call_inputs::CallScheme";
-  }.
-
-  Global Instance IsToValue : ToValue t := {
     φ x :=
       match x with
       | Call => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::Call" []
@@ -72,7 +65,6 @@ Module CallScheme.
       end;
   }.
 End CallScheme.
-
 
 (*
   /// Inputs for a call.
@@ -131,11 +123,8 @@ Module CallInputs.
     is_eof : bool;
   }.
 
-  Global Instance IsToTy : ToTy t := {
+  Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::interpreter::call_inputs::CallInputs";
-  }.
-
-  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "revm_interpreter::interpreter::call_inputs::CallInputs" [
         ("input", φ x.(input));

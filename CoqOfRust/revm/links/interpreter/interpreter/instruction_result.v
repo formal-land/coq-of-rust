@@ -99,11 +99,8 @@ Module InstructionResult.
   | EOFOpcodeDisabledInLegacy
   | EOFFunctionStackOverflow.
 
-  Global Instance IsToTy : ToTy t := {
+  Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::instruction_result::InstructionResult";
-  }.
-
-  Global Instance IsToValue : ToValue t := {
     φ x :=
       match x with
       | Continue => Value.StructTuple "revm_interpreter::instruction_result::InstructionResult::Continue" []

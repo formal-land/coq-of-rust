@@ -1,7 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.simulations.M.
 Require CoqOfRust.alloc.simulations.vec.
-Require Import CoqOfRust.core.simulations.integer.
+Require Import CoqOfRust.simulations.integer.
 Require Import CoqOfRust.core.simulations.option.
 Require Import CoqOfRust.core.simulations.eq.
 Require Import CoqOfRust.core.simulations.assert.
@@ -316,7 +316,10 @@ Module AbstractStack.
   Definition assert_run_lengths {A : Set} (lengths : list Z) :
       MS! (t A) unit :=
     fun (self : t A) =>
-    let! _ := assert_eq! (List.length (values self)) (List.length lengths) in
+    let! _ :=
+      assert_eq!
+        (Z.of_nat $ List.length (values self))
+        (Z.of_nat $ List.length lengths) in
     let! sum :=
       fold! 0 (List.combine (values self) lengths) (fun acc '((actual, _), expected) =>
         let! _ := assert_eq! actual expected in

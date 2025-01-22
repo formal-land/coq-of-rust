@@ -23,16 +23,13 @@ Import Run.
 
 Module Gas.
   Record t : Set := {
-    limit : Z;
-    remaining : Z;
-    refunded : Z;
+    limit : U64.t;
+    remaining : U64.t;
+    refunded : I64.t;
   }.
 
-  Global Instance IsToTy : ToTy t := {
+  Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::gas::Gas";
-  }.
-
-  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "revm_interpreter::gas::Gas" [
         ("limit", φ x.(limit));
@@ -41,9 +38,8 @@ Module Gas.
       ];
   }.
 
-  
   Module SubPointer.
-    Definition get_limit : SubPointer.Runner.t t Z := {|
+    Definition get_limit : SubPointer.Runner.t t U64.t := {|
       SubPointer.Runner.index :=
         Pointer.Index.StructRecord "revm_interpreter::gas::Gas" "limit";
       SubPointer.Runner.projection x := Some x.(limit);
@@ -53,10 +49,10 @@ Module Gas.
     Lemma get_limit_is_valid :
       SubPointer.Runner.Valid.t get_limit.
     Proof.
-      hauto l: on.
+      now constructor.
     Qed.
 
-    Definition get_remaining : SubPointer.Runner.t t Z := {|
+    Definition get_remaining : SubPointer.Runner.t t U64.t := {|
       SubPointer.Runner.index :=
         Pointer.Index.StructRecord "revm_interpreter::gas::Gas" "remaining";
       SubPointer.Runner.projection x := Some x.(remaining);
@@ -66,10 +62,10 @@ Module Gas.
     Lemma get_remaining_is_valid :
       SubPointer.Runner.Valid.t get_remaining.
     Proof.
-      hauto l: on.
+      now constructor.
     Qed.
 
-    Definition get_refunded : SubPointer.Runner.t t Z := {|
+    Definition get_refunded : SubPointer.Runner.t t I64.t := {|
       SubPointer.Runner.index :=
         Pointer.Index.StructRecord "revm_interpreter::gas::Gas" "refunded";
       SubPointer.Runner.projection x := Some x.(refunded);
@@ -79,13 +75,13 @@ Module Gas.
     Lemma get_refunded_is_valid :
       SubPointer.Runner.Valid.t get_refunded.
     Proof.
-      hauto l: on.
+      now constructor.
     Qed.
   End SubPointer.
 End Gas.
 
 Module Impl_Clone.
-  Definition run_clone : clone.Clone.Run_clone Gas.t (Φ Gas.t).
+  Definition run_clone : clone.Clone.Run_clone Gas.t.
   Proof.
     eexists; split.
     { eapply IsTraitMethod.Explicit.

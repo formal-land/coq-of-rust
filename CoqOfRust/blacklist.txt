@@ -7,9 +7,7 @@ examples/axiomatized/examples/custom/provided_method.v
 examples/axiomatized/examples/rust_book/traits/traits.v
 examples/axiomatized/examples/subtle.v
 # examples/
-revm/links
 revm/simulations
-revm/translations/precompile/utilities.v
 # This file works but is taking a very long time (ten minutes)
 revm/translations/interpreter/opcode.v
 core/array/mod.v
@@ -18,7 +16,6 @@ core/net/ip_addr.v
 core/num/int_sqrt.v
 token-2022
 # Links that are not working yet
-core/links/cmp.v
 move_sui/links/
 # We ignore the metering for now
 move_sui/simulations/move_bytecode_verifier_meter/lib.v

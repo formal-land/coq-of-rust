@@ -13,7 +13,7 @@ Import Run.
 Module Default.
   Definition Run_default (Self : Set) `{Link Self} : Set :=
     {default @
-      IsTraitMethod.t "core::default::Default" (to_ty Self) [] "default" default *
+      IsTraitMethod.t "core::default::Default" (Φ Self) [] "default" default *
       {{
         default [] [] [] ⇓
         output_pure Self
@@ -100,7 +100,7 @@ Module Impl_Default_for_integer.
 
   Definition implements_of_integer_kind (kind : IntegerKind.t) :
       IsTraitInstance "core::default::Default"
-        (to_ty (Self kind))
+        (Φ (Self kind))
         []
         [("default", InstanceField.Method (method_of_ingeter_kind kind))] :=
     match kind with

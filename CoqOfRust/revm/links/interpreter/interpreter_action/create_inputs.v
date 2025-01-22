@@ -30,11 +30,8 @@ Module CreateInputs.
     gas_limit : Z;
   }.
 
-  Global Instance IsToTy : ToTy t := {
+  Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::interpreter::create_inputs::CreateInputs";
-  }.
-
-  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "revm_interpreter::interpreter::create_inputs::CreateInputs" [
         ("caller", φ x.(caller));

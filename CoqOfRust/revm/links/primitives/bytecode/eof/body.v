@@ -1,6 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import CoqOfRust.core.links.bool.
+Require Import CoqOfRust.alloc.vec.links.mod.
 Require Import CoqOfRust.core.links.array.
 Require Import CoqOfRust.revm.links.dependencies.
 Require Import CoqOfRust.revm.links.primitives.bytecode.eof.type_section.
@@ -22,18 +22,15 @@ Require Import CoqOfRust.revm.links.primitives.bytecode.eof.type_section.
 
 Module EofBody.
   Record t : Set := {
-    types_section : list TypesSection.t;
-    code_section : list Bytes.t;
-    container_section : list Bytes.t;
+    types_section : Vec.t TypesSection.t;
+    code_section : Vec.t Bytes.t;
+    container_section : Vec.t Bytes.t;
     data_section : Bytes.t;
     is_data_filled : bool;
   }.
 
-  Global Instance IsToTy : ToTy t := {
+  Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_primitives::bytecode::eof::body::EofBody";
-  }.
-
-  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "revm_primitives::bytecode::eof::body::EofBody" [
         ("types_section", φ x.(types_section));

@@ -19,8 +19,8 @@ Module Ordering.
   | Greater : t.
 
   Global Instance IsLink : Link t := {
-    to_ty := Ty.path "core::cmp::Ordering";
-    to_value x :=
+    Φ := Ty.path "core::cmp::Ordering";
+    φ x :=
       match x with
       | Less => Value.StructTuple "core::cmp::Ordering::Less" []
       | Equal => Value.StructTuple "core::cmp::Ordering::Equal" []
@@ -29,6 +29,7 @@ Module Ordering.
   }.
 End Ordering.
 
+(*
 (*
     pub fn max_by<T, F: FnOnce(&T, &T) -> Ordering>(v1: T, v2: T, compare: F) -> T {
         match compare(&v1, &v2) {
@@ -222,3 +223,4 @@ Module Impl_Ord_for_u64.
     }
   Admitted.
 End Impl_Ord_for_u64.
+*)

@@ -35,11 +35,8 @@ Module Contract.
     call_value : U256.t;
   }.
 
-  Global Instance IsToTy : ToTy t := {
+  Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::interpreter::contract::Contract";
-  }.
-
-  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "revm_interpreter::interpreter::contract::Contract" [
         ("input", φ x.(input));

@@ -21,7 +21,7 @@ Module Bytecode.
   Parameter to_value : t -> Value.t.
 
   Global Instance IsLink : Link t := {
-    to_ty := Ty.path "revm_primitives::bytecode::Bytecode";
-    to_value := to_value;
+    Φ := Ty.path "revm_primitives::bytecode::Bytecode";
+    φ := to_value;
   }.
 End Bytecode.

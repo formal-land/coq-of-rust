@@ -1,5 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import CoqOfRust.alloc.vec.links.mod.
 Require Import CoqOfRust.core.links.array.
 Require Import CoqOfRust.revm.links.dependencies.
 
@@ -14,15 +15,13 @@ Require Import CoqOfRust.revm.links.dependencies.
 *)
 
 Module Stack.
-  Inductive t : Set :=
-  | data : list U256.t -> t.
-
-  Global Instance IsToTy : ToTy t := {
-    Φ := Ty.path "revm_interpreter::interpreter::stack::Stack";
+  Record t : Set := {
+    data : Vec.t U256.t;
   }.
 
-  Global Instance IsToValue : ToValue t := {
-    φ '(data x) := 
-      Value.StructRecord "revm_interpreter::interpreter::stack::Stack" [("data", φ x)]
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_interpreter::interpreter::stack::Stack";
+    φ '{| data := data |} :=
+      Value.StructRecord "revm_interpreter::interpreter::stack::Stack" [("data", φ data)];
   }.
 End Stack.

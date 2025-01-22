@@ -2,8 +2,8 @@
     mutual dependency cycle. *)
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.simulations.M.
+Require simulations.integer.
 Require core.simulations.assert.
-Require core.simulations.integer.
 Require core.simulations.slice.
 
 Import simulations.M.Notations.

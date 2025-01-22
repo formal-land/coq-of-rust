@@ -1,5 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import alloc.vec.links.mod.
 Require Import CoqOfRust.core.links.option.
 Require Import CoqOfRust.core.links.array.
 
@@ -23,20 +24,16 @@ Require Import CoqOfRust.core.links.array.
       memory_limit: u64,
   }
 *)
-
 Module SharedMemory.
   Record t : Set := {
-    buffer : list Z;
-    checkpoints : list Z;
-    last_checkpoint : Z;
-    memory_limit : option Z;
+    buffer : Vec.t U8.t;
+    checkpoints : Vec.t Usize.t;
+    last_checkpoint : Usize.t;
+    memory_limit : option U64.t;
   }.
 
-  Global Instance IsToTy : ToTy t := {
+  Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory";
-  }.
-
-  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "revm_interpreter::interpreter::shared_memory::SharedMemory" [
         ("buffer", φ x.(buffer));

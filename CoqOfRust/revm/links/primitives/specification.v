@@ -57,11 +57,8 @@ Module SpecId.
     | PRAGUE
     | LATEST.
     
-  Global Instance IsToTy : ToTy t := {
+  Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_primitives::specification::SpecId";
-  }.
-    
-  Global Instance IsToValue : ToValue t := {
     φ x :=
       match x with
       | FRONTIER => Value.StructRecord "revm_primitives::specification::SpecId::FRONTIER" []
