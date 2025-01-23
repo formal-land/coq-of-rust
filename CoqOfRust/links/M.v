@@ -630,7 +630,6 @@ Proof.
   }
 Defined.
 
-(*
 Ltac run_symbolic_state_alloc :=
   (
     (* We hope the allocated value to be in a form that is already the image of a [φ] conversion. *)
@@ -673,7 +672,8 @@ Ltac run_symbolic_one_step :=
 
 (** We should use this tactic instead of the ones above, as this one calls all the others. *)
 Ltac run_symbolic :=
-  repeat run_symbolic_one_step.
+  (* Ideally, we should have the information about which kind of pointer to use. TODO: add it! *)
+  unshelve (repeat run_symbolic_one_step); try exact Pointer.Kind.Ref.
 
 (** For the specific case of sub-pointers, we still do it by hand by providing the corresponding
     validity statement for the index that we access. *)
@@ -701,4 +701,3 @@ Module Function2.
       {{ f [ φ a1; φ a2 ] ⇓ output_to_value }};
   }.
 End Function2.
-*)

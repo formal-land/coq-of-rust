@@ -57,7 +57,7 @@ Require Import CoqOfRust.revm.links.interpreter.interpreter_action.
 
 Module Interpreter.
   Record t : Set := {
-    instruction_pointer : Z;
+    instruction_pointer : Ref.t Pointer.Kind.ConstPointer U8.t;
     gas : Gas.t;
     contract : Contract.t;
     instruction_result : InstructionResult.t;
@@ -72,11 +72,8 @@ Module Interpreter.
     next_action : InterpreterAction.t;
   }.
 
-  Global Instance IsToTy : ToTy t := {
+  Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::interpreter::Interpreter";
-  }.
-
-  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "revm_interpreter::interpreter::Interpreter" [
         ("instruction_pointer", φ x.(instruction_pointer));

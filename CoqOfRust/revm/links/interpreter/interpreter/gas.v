@@ -8,6 +8,92 @@ Require Import revm.translations.interpreter.gas.
 Import Run.
 
 (*
+pub struct MemoryGas {
+    /// Current memory length
+    pub words_num: usize,
+    /// Current memory expansion cost
+    pub expansion_cost: u64,
+}
+*)
+Module MemoryGas.
+  Record t : Set := {
+    words_num : Usize.t;
+    expansion_cost : U64.t;
+  }.
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_interpreter::gas::MemoryGas";
+    φ x :=
+      Value.StructRecord "revm_interpreter::gas::MemoryGas" [
+        ("words_num", φ x.(words_num));
+        ("expansion_cost", φ x.(expansion_cost))
+      ];
+  }.
+
+  Module SubPointer.
+    Definition get_words_num : SubPointer.Runner.t t Usize.t := {|
+      SubPointer.Runner.index :=
+        Pointer.Index.StructRecord "revm_interpreter::gas::MemoryGas" "words_num";
+      SubPointer.Runner.projection x := Some x.(words_num);
+      SubPointer.Runner.injection x y := Some (x <| words_num := y |>);
+    |}.
+
+    Lemma get_words_num_is_valid :
+      SubPointer.Runner.Valid.t get_words_num.
+    Proof.
+      now constructor.
+    Qed.
+
+    Definition get_expansion_cost : SubPointer.Runner.t t U64.t := {|
+      SubPointer.Runner.index :=
+        Pointer.Index.StructRecord "revm_interpreter::gas::MemoryGas" "expansion_cost";
+      SubPointer.Runner.projection x := Some x.(expansion_cost);
+      SubPointer.Runner.injection x y := Some (x <| expansion_cost := y |>);
+    |}.
+
+    Lemma get_expansion_cost_is_valid :
+      SubPointer.Runner.Valid.t get_expansion_cost.
+    Proof.
+      now constructor.
+    Qed.
+  End SubPointer.
+End MemoryGas.
+
+Module Impl_Default_for_MemoryGas.
+  Definition run_default : default.Default.Run_default MemoryGas.t.
+  Proof.
+    eexists; split.
+    { eapply IsTraitMethod.Explicit.
+      { apply gas.Impl_core_default_Default_for_revm_interpreter_gas_MemoryGas.Implements. }
+      { reflexivity. }
+    }
+    { intros; cbn.
+      destruct (default.Impl_Default_for_integer.run_default IntegerKind.Usize)
+        as [default_usize [H_default_usize run_default_usize]].
+      destruct (default.Impl_Default_for_integer.run_default IntegerKind.U64)
+        as [default_u64 [H_default_u64 run_default_u64]].
+      eapply Run.CallPrimitiveGetTraitMethod. {
+        apply H_default_usize.
+      }
+      eapply Run.CallClosure. {
+        apply run_default_usize.
+      }
+      intros; cbn.
+      eapply Run.CallPrimitiveGetTraitMethod. {
+        apply H_default_u64.
+      }
+      eapply Run.CallClosure. {
+        apply run_default_u64.
+      }
+      intros; cbn.
+      run_symbolic.
+      { apply MemoryGas.Build_t; assumption. }
+      { reflexivity. }
+    }
+  Defined.
+End Impl_Default_for_MemoryGas.
+
+(*
   /// Represents the state of gas during execution.
   #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
   #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -18,6 +104,8 @@ Import Run.
       remaining: u64,
       /// Refunded gas. This is used only at the end of execution.
       refunded: i64,
+      /// Memoisation of values for memory expansion cost.
+      memory: MemoryGas,
   }
 *)
 
@@ -26,6 +114,7 @@ Module Gas.
     limit : U64.t;
     remaining : U64.t;
     refunded : I64.t;
+    memory : MemoryGas.t;
   }.
 
   Global Instance IsLink : Link t := {
@@ -34,7 +123,8 @@ Module Gas.
       Value.StructRecord "revm_interpreter::gas::Gas" [
         ("limit", φ x.(limit));
         ("remaining", φ x.(remaining));
-        ("refunded", φ x.(refunded))
+        ("refunded", φ x.(refunded));
+        ("memory", φ x.(memory))
       ];
   }.
 
@@ -77,6 +167,19 @@ Module Gas.
     Proof.
       now constructor.
     Qed.
+
+    Definition get_memory : SubPointer.Runner.t t MemoryGas.t := {|
+      SubPointer.Runner.index :=
+        Pointer.Index.StructRecord "revm_interpreter::gas::Gas" "memory";
+      SubPointer.Runner.projection x := Some x.(memory);
+      SubPointer.Runner.injection x y := Some (x <| memory := y |>);
+    |}.
+
+    Lemma get_memory_is_valid :
+      SubPointer.Runner.Valid.t get_memory.
+    Proof.
+      now constructor.
+    Qed.
   End SubPointer.
 End Gas.
 
@@ -93,7 +196,7 @@ Module Impl_Clone.
     }
   Defined.
 
-  Definition run : clone.Clone.Run Gas.t (Φ Gas.t).
+  Definition run : clone.Clone.Run Gas.t.
   Proof.
     constructor.
     { (* clone *)
@@ -103,7 +206,7 @@ Module Impl_Clone.
 End Impl_Clone.
 
 Module Impl_Default.
-  Definition run_default : default.Default.Run_default Gas.t (Φ Gas.t).
+  Definition run_default : default.Default.Run_default Gas.t.
   Proof.
     eexists; split.
     { eapply IsTraitMethod.Explicit.
@@ -111,10 +214,12 @@ Module Impl_Default.
       { reflexivity. }
     }
     { intros; cbn.
-      destruct default.Impl_Default_for_u64.run_default
+      destruct (default.Impl_Default_for_integer.run_default IntegerKind.U64)
         as [default_u64 [H_default_u64 run_default_u64]].
-      destruct default.Impl_Default_for_i64.run_default
+      destruct (default.Impl_Default_for_integer.run_default IntegerKind.I64)
         as [default_i64 [H_default_i64 run_default_i64]].
+      destruct (Impl_Default_for_MemoryGas.run_default)
+        as [default_memory_gas [H_default_memory_gas run_default_memory_gas]].
       eapply Run.CallPrimitiveGetTraitMethod. {
         apply H_default_u64.
       }
@@ -136,12 +241,19 @@ Module Impl_Default.
         apply run_default_i64.
       }
       intros; cbn.
-      run_symbolic.
-      now instantiate (1 := Gas.Build_t _ _ _).
+      eapply Run.CallPrimitiveGetTraitMethod. {
+        apply H_default_memory_gas.
+      }
+      eapply Run.CallClosure. {
+        apply run_default_memory_gas.
+      }
+      intros; cbn.
+      run_symbolic; [apply Gas.Build_t |].
+      all: try reflexivity.
     }
   Defined.
 
-  Definition run : default.Default.Run Gas.t (Φ Gas.t).
+  Definition run : default.Default.Run Gas.t.
   Proof.
     constructor.
     { (* default *)
@@ -150,6 +262,7 @@ Module Impl_Default.
   Defined.
 End Impl_Default.
 
+(*
 Module Impl_revm_interpreter_gas_Gas.
   Definition Self : Set := Gas.t.
 
@@ -162,13 +275,16 @@ Module Impl_revm_interpreter_gas_Gas.
           }
       }
   *)
-  Definition run_new (limit : Z) :
+  Definition run_new (limit : U64.t) :
     {{
       gas.Impl_revm_interpreter_gas_Gas.new [] [] [φ limit] ⇓
       fun (v : Self) => inl (φ v)
     }}.
   Proof.
     run_symbolic.
+    eapply CallPrimitiveGetAssociatedFunction. {
+      (* TODO *)
+    }
     now instantiate (1 := Gas.Build_t _ _ _).
   Defined.
 
@@ -394,3 +510,4 @@ Module Impl_revm_interpreter_gas_Gas.
     }
     intros; run_symbolic.
 End Impl_revm_interpreter_gas_Gas.
+*)
