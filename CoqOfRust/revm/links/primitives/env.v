@@ -22,11 +22,8 @@ Module CreateScheme.
   | Create
   | Create2 : U256.t -> t.
 
-  Global Instance IsToTy : ToTy t := {
+  Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_primitives::env::CreateScheme";
-  }.
-
-  Global Instance IsToValue : ToValue t := {
     φ x :=
       match x with
       | Create => Value.StructTuple "revm_primitives::env::CreateScheme::Create" []

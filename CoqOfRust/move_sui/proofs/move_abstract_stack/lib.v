@@ -1,7 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.lib.proofs.lib.
+Require Import CoqOfRust.proofs.integer.
 Require Import CoqOfRust.simulations.M.
-Require Import CoqOfRust.core.proofs.integer.
 Require Import CoqOfRust.core.simulations.eq.
 Require Import CoqOfRust.move_sui.simulations.move_abstract_stack.lib.
 

@@ -7,9 +7,9 @@ Module Array.
   Arguments Make {_ _} _.
 
   Global Instance IsLink (length : Z) (A : Set) (_ : Link A) : Link (t length A) := {
-    to_ty :=
-      Ty.apply (Ty.path "array") [Value.Integer IntegerKind.Usize length] [to_ty A];
-    to_value '(Make x) :=
-      Value.Array (List.map to_value x);
+    Φ :=
+      Ty.apply (Ty.path "array") [Value.Integer IntegerKind.Usize length] [Φ A];
+    φ '(Make x) :=
+      Value.Array (List.map φ x);
   }.
 End Array.

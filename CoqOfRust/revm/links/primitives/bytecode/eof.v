@@ -28,11 +28,8 @@ Module Eof.
     raw : Bytes.t;
   }.
 
-  Global Instance IsToTy : ToTy t := {
+  Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_primitives::bytecode::eof::Eof";
-  }.
-
-  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "revm_primitives::bytecode::eof::Eof" [
         ("header", φ x.(header));

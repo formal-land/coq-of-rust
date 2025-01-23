@@ -21,22 +21,13 @@ Require Import CoqOfRust.links.M.
 
 Module TypesSection.
   Record t : Set := {
-    inputs : Z;
-    outputs : Z;
-    max_stack_size : Z;
+    inputs : U8.t;
+    outputs : U8.t;
+    max_stack_size : U16.t;
   }.
 
   Global Instance IsLink : Link t := {
-    to_ty := Ty.path "revm_primitives::bytecode::eof::types_section::TypesSection";
-    to_value x :=
-      Value.StructRecord "revm_primitives::bytecode::eof::types_section::TypesSection" [
-        ("inputs", to_value x.(inputs));
-        ("outputs", to_value x.(outputs));
-        ("max_stack_size", to_value x.(max_stack_size))
-      ];
-  }.
-
-  Global Instance IsToValue : ToValue t := {
+    Φ := Ty.path "revm_primitives::bytecode::eof::types_section::TypesSection";
     φ x :=
       Value.StructRecord "revm_primitives::bytecode::eof::types_section::TypesSection" [
         ("inputs", φ x.(inputs));

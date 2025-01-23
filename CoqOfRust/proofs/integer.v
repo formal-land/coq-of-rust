@@ -1,6 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.lib.proofs.lib.
-Require Import core.simulations.integer.
+Require Import simulations.integer.
 
 Module U64.
   Lemma checked_add_is_valid (a b : Z)

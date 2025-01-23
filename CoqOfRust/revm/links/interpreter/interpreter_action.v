@@ -28,11 +28,8 @@ Module InterpreterResult.
     gas : Gas.t;
   }.
 
-  Global Instance IsToTy : ToTy t := {
+  Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::interpreter::InterpreterResult";
-  }.
-
-  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "revm_interpreter::interpreter::InterpreterResult" [
         ("result", φ x.(result));
@@ -70,11 +67,8 @@ Module InterpreterAction.
   | Return : InterpreterResult.t -> t
   | None.
 
-  Global Instance IsToTy : ToTy t := {
+  Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::interpreter_action::InterpreterAction";
-  }.
-
-  Global Instance IsToValue : ToValue t := {
     φ x :=
       match x with
       | Call x => Value.StructRecord "revm_interpreter::interpreter_action::InterpreterAction::Call" [("inputs", φ x)]

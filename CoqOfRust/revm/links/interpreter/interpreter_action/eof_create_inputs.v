@@ -18,9 +18,6 @@ Require Import CoqOfRust.revm.links.primitives.bytecode.eof.
       pub eof_init_code: Eof,
       /// Gas limit for the create call.
       pub gas_limit: u64,
-      /// Return memory range. If EOF creation Reverts it can return the
-      /// the memory range.
-      pub return_memory_range: Range<usize>,
   }
 *)
 
@@ -30,23 +27,18 @@ Module EOFCreateInput.
     created_address : Address.t;
     value : U256.t;
     eof_init_code : Eof.t;
-    gas_limit : Z;
-    return_memory_range : (Z * Z);
+    gas_limit : U64.t;
   }.
 
-  Global Instance IsToTy : ToTy t := {
+  Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::interpreter::eof_create_input::EOFCreateInput";
-  }.
-
-  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "revm_interpreter::interpreter::eof_create_input::EOFCreateInput" [
         ("caller", φ x.(caller));
         ("created_address", φ x.(created_address));
         ("value", φ x.(value));
         ("eof_init_code", φ x.(eof_init_code));
-        ("gas_limit", φ x.(gas_limit));
-        ("return_memory_range", φ x.(return_memory_range))
+        ("gas_limit", φ x.(gas_limit))
       ];
   }.
 End EOFCreateInput.

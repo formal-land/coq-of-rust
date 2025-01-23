@@ -1,7 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.simulations.M.
+Require simulations.integer.
 Require core.simulations.assert.
-Require core.simulations.integer.
 Require Import core.simulations.option.
 Require core.simulations.slice.
 

@@ -235,14 +235,14 @@ Module Value.
       end
     | Pointer.Index.Array index =>
       match value with
-      | Array fields => Some (Array (List.replace_at fields (Z.to_nat index) value))
+      | Array fields => Some (Array (List.replace_at fields (Z.to_nat index) update))
       | _ => None
       end
     | Pointer.Index.StructRecord constructor field =>
       match value with
       | StructRecord c fields =>
         if String.eqb c constructor then
-          Some (StructRecord c (List.assoc_replace fields field value))
+          Some (StructRecord c (List.assoc_replace fields field update))
         else
           None
       | _ => None
@@ -251,7 +251,7 @@ Module Value.
       match value with
       | StructTuple c fields =>
         if String.eqb c constructor then
-          Some (StructTuple c (List.replace_at fields (Z.to_nat index) value))
+          Some (StructTuple c (List.replace_at fields (Z.to_nat index) update))
         else
           None
       | _ => None

@@ -1,6 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import CoqOfRust.core.links.array.
+Require Import alloc.vec.links.mod.
+Require Import core.links.array.
 
 (*
   /// Function return frame.
@@ -17,15 +18,12 @@ Require Import CoqOfRust.core.links.array.
 
 Module FunctionReturnFrame.
   Record t : Set := {
-    idx : Z;
-    pc : Z;
+    idx : Integer.t IntegerKind.Usize;
+    pc : Integer.t IntegerKind.Usize;
   }.
 
-  Global Instance IsToTy : ToTy t := {
+  Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::interpreter::function_return_frame::FunctionReturnFrame";
-  }.
-
-  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "revm_interpreter::interpreter::function_return_frame::FunctionReturnFrame" [
         ("idx", φ x.(idx));
@@ -47,15 +45,12 @@ End FunctionReturnFrame.
 (* TODO: Vectors? *)
 Module FunctionStack.
   Record t : Set := {
-    return_stack : list FunctionReturnFrame.t;
-    current_code_idx : Z;
+    return_stack : Vec.t FunctionReturnFrame.t;
+    current_code_idx : Integer.t IntegerKind.Usize;
   }.
 
-  Global Instance IsToTy : ToTy t := {
+  Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::interpreter::function_stack::FunctionStack";
-  }.
-
-  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "revm_interpreter::interpreter::function_stack::FunctionStack" [
         ("return_stack", φ x.(return_stack));
