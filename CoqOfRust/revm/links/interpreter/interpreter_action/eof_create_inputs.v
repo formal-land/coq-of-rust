@@ -57,8 +57,21 @@ impl EOFCreateKind {
 }
 *)
 
+Module Impl_EOFCreateKind.
+  Definition created_address (k : EOFCreateKind.t) : option Address.t :=
+    match k with
+    | EOFCreateKind.Tx _ => None
+    | EOFCreateKind.Opcode _ _ addr => Some addr
+    end.
 
-
+  (* NOT WORKING as Value.Function doesn't exists in 'M.v' *)
+  (*
+  Global Instance IsLink : Link (EOFCreateKind.t -> option Address.t) := {
+    Φ := Ty.path "revm_interpreter::interpreter::eof_create_input::EOFCreateKind::created_address";
+    φ f := Value.Function (fun k => φ (f k));
+  }.
+  *)
+End Impl_EOFCreateKind.
 
 (*
   /// Inputs for EOF create call.
