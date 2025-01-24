@@ -2,6 +2,8 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import CoqOfRust.revm.links.dependencies.
 Require Import CoqOfRust.revm.links.primitives.bytecode.eof.
+Require Import CoqOfRust.revm.translations.interpreter.interpreter_action.eof_create_inputs.
+Import Run.
 
 (*
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -113,24 +115,14 @@ Module Impl_EOFCreateInputs.
     }
   *)
 
-  Parameter address_default : Address.t.
-  Parameter eof_decode : Bytes.t -> Eof.t.
-
-  Definition new (caller : Address.t) (value : U256.t)
-                 (gas_limit : U64.t) (kind : EOFCreateKind.t) : Self :=
-    {| EOFCreateInputs.caller := caller;
-       EOFCreateInputs.created_address :=
-         match kind with
-         | EOFCreateKind.Opcode _ _ addr => addr
-         | EOFCreateKind.Tx _ => address_default
-         end;
-       EOFCreateInputs.value := value;
-       EOFCreateInputs.eof_init_code :=
-         match kind with
-         | EOFCreateKind.Opcode code _ _ => code
-         | EOFCreateKind.Tx data => eof_decode data
-         end;
-       EOFCreateInputs.gas_limit := gas_limit |}.
+  Definition run_new (caller : Address.t) (value : U256.t) (gas_limit : U64.t) (kind : EOFCreateKind.t) :
+  {{
+    interpreter_action.eof_create_inputs.Impl_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.new
+      [] [] [φ caller; φ value; φ gas_limit; φ kind] ⇓
+    fun (v : Self) => inl (φ v)
+  }}.
+  Proof.
+  Admitted.
       
   (*
   pub fn new_opcode(
@@ -153,11 +145,17 @@ Module Impl_EOFCreateInputs.
         )
     }
   *)
-
-  Definition new_opcode (caller : Address.t) (created_address : Address.t)
-                        (value : U256.t) (eof_init_code : Eof.t)
-                        (gas_limit : U64.t) (input : Bytes.t) : Self :=
-    new caller value gas_limit (EOFCreateKind.Opcode eof_init_code input created_address).
+    (* Main run_new_opcode specification *)
+  (* Main run_new_opcode specification *)
+  Definition run_new_opcode  (caller : Address.t) (created_address : Address.t) (value : U256.t) 
+    (eof_init_code : Eof.t) (gas_limit : U64.t) (input : Bytes.t) :
+  {{
+    interpreter_action.eof_create_inputs.Impl_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.new
+      [] [] [φ caller; φ value; φ gas_limit; φ (EOFCreateKind.Opcode eof_init_code input created_address)] ⇓
+    fun (v : EOFCreateInputs.t) => inl (φ v)
+  }}.
+  Proof.
+  Admitted.
 
 End Impl_EOFCreateInputs.
 
