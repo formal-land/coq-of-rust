@@ -64,6 +64,7 @@ Module result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
                   |),
                   [ M.read (| self |) ]
@@ -74,6 +75,7 @@ Module result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
                   |),
                   [ M.read (| other |) ]
@@ -156,7 +158,7 @@ Module result.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::intrinsics::unreachable", [] |),
+                                  M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                   []
                                 |)
                               |)
@@ -196,6 +198,7 @@ Module result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
                   |),
                   [ M.read (| self |) ]
@@ -206,6 +209,7 @@ Module result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
                   |),
                   [ M.read (| other |) ]
@@ -365,6 +369,7 @@ Module result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
                   |),
                   [ M.read (| self |) ]
@@ -375,6 +380,7 @@ Module result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
                   |),
                   [ M.read (| other |) ]
@@ -451,7 +457,7 @@ Module result.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::intrinsics::unreachable", [] |),
+                                  M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                   []
                                 |)
                               |)
@@ -556,6 +562,7 @@ Module result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
                   |),
                   [ M.read (| self |) ]
@@ -1549,7 +1556,7 @@ Module result.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::result::unwrap_failed", [] |),
+                          M.get_function (| "core::result::unwrap_failed", [], [] |),
                           [ M.read (| msg |); e ]
                         |)
                       |)
@@ -1599,7 +1606,7 @@ Module result.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::result::unwrap_failed", [] |),
+                          M.get_function (| "core::result::unwrap_failed", [], [] |),
                           [
                             M.read (| Value.String "called `Result::unwrap()` on an `Err` value" |);
                             e
@@ -1699,7 +1706,7 @@ Module result.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::result::unwrap_failed", [] |),
+                          M.get_function (| "core::result::unwrap_failed", [], [] |),
                           [ M.read (| msg |); t ]
                         |)
                       |)
@@ -1749,7 +1756,7 @@ Module result.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::result::unwrap_failed", [] |),
+                          M.get_function (| "core::result::unwrap_failed", [], [] |),
                           [
                             M.read (|
                               Value.String "called `Result::unwrap_err()` on an `Ok` value"
@@ -2205,7 +2212,7 @@ Module result.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::hint::unreachable_unchecked", [] |),
+                          M.get_function (| "core::hint::unreachable_unchecked", [], [] |),
                           []
                         |)
                       |)
@@ -2251,7 +2258,7 @@ Module result.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::hint::unreachable_unchecked", [] |),
+                          M.get_function (| "core::hint::unreachable_unchecked", [], [] |),
                           []
                         |)
                       |)
@@ -2610,7 +2617,7 @@ Module result.
         (let msg := M.alloc (| msg |) in
         let error := M.alloc (| error |) in
         M.call_closure (|
-          M.get_function (| "core::panicking::panic_fmt", [] |),
+          M.get_function (| "core::panicking::panic_fmt", [], [] |),
           [
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -3757,6 +3764,7 @@ Module result.
           M.call_closure (|
             M.get_function (|
               "core::iter::adapters::try_process",
+              [],
               [
                 Ty.associated;
                 A;

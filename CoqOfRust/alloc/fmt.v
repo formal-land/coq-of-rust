@@ -51,7 +51,7 @@ Module fmt.
                           fun γ =>
                             ltac:(M.monadic
                               (M.call_closure (|
-                                M.get_function (| "alloc::fmt::format.format_inner", [] |),
+                                M.get_function (| "alloc::fmt::format.format_inner", [], [] |),
                                 [ M.read (| args |) ]
                               |)))
                         ]

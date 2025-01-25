@@ -212,6 +212,7 @@ Module future.
                                             (M.call_closure (|
                                               M.get_function (|
                                                 "core::future::async_drop::async_drop_in_place",
+                                                [],
                                                 [ T ]
                                               |),
                                               [
@@ -287,7 +288,7 @@ Module future.
         ltac:(M.monadic
           (let to_drop := M.alloc (| to_drop |) in
           M.call_closure (|
-            M.get_function (| "core::future::async_drop::async_drop_in_place_raw", [ T ] |),
+            M.get_function (| "core::future::async_drop::async_drop_in_place_raw", [], [ T ] |),
             [ M.read (| to_drop |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -311,7 +312,7 @@ Module future.
             "core::future::async_drop::AsyncDropInPlace"
             [
               M.call_closure (|
-                M.get_function (| "core::future::async_drop::async_drop_in_place_raw", [ T ] |),
+                M.get_function (| "core::future::async_drop::async_drop_in_place_raw", [], [ T ] |),
                 [ M.read (| to_drop |) ]
               |)
             ]))
@@ -568,6 +569,7 @@ Module future.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::future::get_context",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| _task_context |) ]
@@ -659,6 +661,7 @@ Module future.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::ops::drop::fallback_surface_drop",
+                                      [],
                                       [ T ]
                                     |),
                                     [ M.read (| ptr |) ]
@@ -1002,6 +1005,7 @@ Module future.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "core::future::async_drop::async_drop_in_place_raw",
+                                                                    [],
                                                                     [ T ]
                                                                   |),
                                                                   [
@@ -1065,6 +1069,7 @@ Module future.
                                                                               M.call_closure (|
                                                                                 M.get_function (|
                                                                                   "core::future::get_context",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -1224,6 +1229,7 @@ Module future.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::future::get_context",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| _task_context |) ]
@@ -1318,6 +1324,7 @@ Module future.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::future::get_context",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| _task_context |) ]
@@ -1419,6 +1426,7 @@ Module future.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::future::async_drop::async_drop_in_place",
+                                            [],
                                             [ T ]
                                           |),
                                           [ M.read (| to_drop |) ]
@@ -1473,6 +1481,7 @@ Module future.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::future::get_context",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| _task_context |) ]
@@ -1594,6 +1603,7 @@ Module future.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::intrinsics::discriminant_value",
+                                                        [],
                                                         [ T ]
                                                       |),
                                                       [ M.read (| this |) ]
@@ -1611,7 +1621,7 @@ Module future.
                                         let~ _ :=
                                           M.alloc (|
                                             M.call_closure (|
-                                              M.get_function (| "core::mem::drop", [ O ] |),
+                                              M.get_function (| "core::mem::drop", [], [ O ] |),
                                               [ M.read (| other |) ]
                                             |)
                                           |) in
@@ -1665,6 +1675,7 @@ Module future.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::future::get_context",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| _task_context |) ]
@@ -1713,7 +1724,7 @@ Module future.
                                         (let~ _ :=
                                           M.alloc (|
                                             M.call_closure (|
-                                              M.get_function (| "core::mem::drop", [ M_ ] |),
+                                              M.get_function (| "core::mem::drop", [], [ M_ ] |),
                                               [ M.read (| matched |) ]
                                             |)
                                           |) in
@@ -1767,6 +1778,7 @@ Module future.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::future::get_context",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| _task_context |) ]
@@ -1855,7 +1867,7 @@ Module future.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::ptr::drop_in_place", [ T ] |),
+                                    M.get_function (| "core::ptr::drop_in_place", [], [ T ] |),
                                     [ M.read (| to_drop |) ]
                                   |)
                                 |))

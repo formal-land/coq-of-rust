@@ -186,6 +186,7 @@ Module abi.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::abi::ScriptABI" ]
                   |),
                   [ M.read (| self |) ]
@@ -324,6 +325,7 @@ Module abi.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::abi::ScriptABI" ]
                   |),
                   [ M.read (| self |) ]
@@ -334,6 +336,7 @@ Module abi.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::abi::ScriptABI" ]
                   |),
                   [ M.read (| other |) ]
@@ -432,7 +435,7 @@ Module abi.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::intrinsics::unreachable", [] |),
+                                  M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                   []
                                 |)
                               |)

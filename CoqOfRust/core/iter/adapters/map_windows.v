@@ -115,7 +115,7 @@ Module iter.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic_fmt", [] |),
+                                M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -153,7 +153,11 @@ Module iter.
                               (M.alloc (|
                                 BinOp.eq (|
                                   M.call_closure (|
-                                    M.get_function (| "core::mem::size_of", [ Ty.associated ] |),
+                                    M.get_function (|
+                                      "core::mem::size_of",
+                                      [],
+                                      [ Ty.associated ]
+                                    |),
                                     []
                                   |),
                                   Value.Integer IntegerKind.Usize 0
@@ -210,7 +214,7 @@ Module iter.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                           [
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -901,6 +905,7 @@ Module iter.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::array::iter_next_chunk",
+                                        [ N ],
                                         [ T; impl_Iterator_Item___T_ ]
                                       |),
                                       [ M.read (| iter |) ]
@@ -1223,7 +1228,7 @@ Module iter.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String
@@ -1366,7 +1371,7 @@ Module iter.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String
@@ -1575,7 +1580,7 @@ Module iter.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String
@@ -1624,6 +1629,7 @@ Module iter.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::intrinsics::copy_nonoverlapping",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -1855,7 +1861,7 @@ Module iter.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::ptr::drop_in_place", [ T ] |),
+                      M.get_function (| "core::ptr::drop_in_place", [], [ T ] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -2118,7 +2124,7 @@ Module iter.
                 let~ initialized_part :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
+                      M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -2177,6 +2183,7 @@ Module iter.
                     M.call_closure (|
                       M.get_function (|
                         "core::ptr::drop_in_place",
+                        [],
                         [ Ty.apply (Ty.path "slice") [] [ T ] ]
                       |),
                       [ M.read (| initialized_part |) ]

@@ -224,6 +224,7 @@ Module errors.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::errors::Location" ]
                   |),
                   [ M.read (| self |) ]
@@ -234,6 +235,7 @@ Module errors.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::errors::Location" ]
                   |),
                   [ M.read (| other |) ]
@@ -335,6 +337,7 @@ Module errors.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::errors::Location" ]
                   |),
                   [ M.read (| self |) ]
@@ -345,6 +348,7 @@ Module errors.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::errors::Location" ]
                   |),
                   [ M.read (| other |) ]
@@ -432,6 +436,7 @@ Module errors.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::errors::Location" ]
                   |),
                   [ M.read (| self |) ]
@@ -442,6 +447,7 @@ Module errors.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::errors::Location" ]
                   |),
                   [ M.read (| other |) ]
@@ -3764,7 +3770,7 @@ Module errors.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String
@@ -3869,7 +3875,7 @@ Module errors.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String "assertion failed: self.0.message.is_none()"
@@ -3973,7 +3979,7 @@ Module errors.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String
@@ -4571,13 +4577,17 @@ Module errors.
             let~ status :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::hint::must_use", [ Ty.path "alloc::string::String" ] |),
+                  M.get_function (|
+                    "core::hint::must_use",
+                    [],
+                    [ Ty.path "alloc::string::String" ]
+                  |),
                   [
                     M.read (|
                       let~ res :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "alloc::fmt::format", [] |),
+                            M.get_function (| "alloc::fmt::format", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -4686,6 +4696,7 @@ Module errors.
                           M.call_closure (|
                             M.get_function (|
                               "core::hint::must_use",
+                              [],
                               [ Ty.path "alloc::string::String" ]
                             |),
                             [
@@ -4693,7 +4704,7 @@ Module errors.
                                 let~ res :=
                                   M.alloc (|
                                     M.call_closure (|
-                                      M.get_function (| "alloc::fmt::format", [] |),
+                                      M.get_function (| "alloc::fmt::format", [], [] |),
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -4778,6 +4789,7 @@ Module errors.
                           M.call_closure (|
                             M.get_function (|
                               "core::hint::must_use",
+                              [],
                               [ Ty.path "alloc::string::String" ]
                             |),
                             [
@@ -4785,7 +4797,7 @@ Module errors.
                                 let~ res :=
                                   M.alloc (|
                                     M.call_closure (|
-                                      M.get_function (| "alloc::fmt::format", [] |),
+                                      M.get_function (| "alloc::fmt::format", [], [] |),
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -4933,6 +4945,7 @@ Module errors.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -4940,7 +4953,11 @@ Module errors.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -5124,6 +5141,7 @@ Module errors.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -5131,7 +5149,11 @@ Module errors.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -5297,13 +5319,17 @@ Module errors.
             let~ status :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::hint::must_use", [ Ty.path "alloc::string::String" ] |),
+                  M.get_function (|
+                    "core::hint::must_use",
+                    [],
+                    [ Ty.path "alloc::string::String" ]
+                  |),
                   [
                     M.read (|
                       let~ res :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "alloc::fmt::format", [] |),
+                            M.get_function (| "alloc::fmt::format", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -5411,6 +5437,7 @@ Module errors.
                           M.call_closure (|
                             M.get_function (|
                               "core::hint::must_use",
+                              [],
                               [ Ty.path "alloc::string::String" ]
                             |),
                             [
@@ -5418,7 +5445,7 @@ Module errors.
                                 let~ res :=
                                   M.alloc (|
                                     M.call_closure (|
-                                      M.get_function (| "alloc::fmt::format", [] |),
+                                      M.get_function (| "alloc::fmt::format", [], [] |),
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -5473,13 +5500,17 @@ Module errors.
               M.write (|
                 status,
                 M.call_closure (|
-                  M.get_function (| "core::hint::must_use", [ Ty.path "alloc::string::String" ] |),
+                  M.get_function (|
+                    "core::hint::must_use",
+                    [],
+                    [ Ty.path "alloc::string::String" ]
+                  |),
                   [
                     M.read (|
                       let~ res :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "alloc::fmt::format", [] |),
+                            M.get_function (| "alloc::fmt::format", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -5572,6 +5603,7 @@ Module errors.
                           M.call_closure (|
                             M.get_function (|
                               "core::hint::must_use",
+                              [],
                               [ Ty.path "alloc::string::String" ]
                             |),
                             [
@@ -5579,7 +5611,7 @@ Module errors.
                                 let~ res :=
                                   M.alloc (|
                                     M.call_closure (|
-                                      M.get_function (| "alloc::fmt::format", [] |),
+                                      M.get_function (| "alloc::fmt::format", [], [] |),
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -5727,6 +5759,7 @@ Module errors.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -5734,7 +5767,11 @@ Module errors.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -5918,6 +5955,7 @@ Module errors.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -5925,7 +5963,11 @@ Module errors.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -6083,13 +6125,17 @@ Module errors.
           let~ msg :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::hint::must_use", [ Ty.path "alloc::string::String" ] |),
+                M.get_function (|
+                  "core::hint::must_use",
+                  [],
+                  [ Ty.path "alloc::string::String" ]
+                |),
                 [
                   M.read (|
                     let~ res :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "alloc::fmt::format", [] |),
+                          M.get_function (| "alloc::fmt::format", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -6232,13 +6278,17 @@ Module errors.
           let~ msg :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::hint::must_use", [ Ty.path "alloc::string::String" ] |),
+                M.get_function (|
+                  "core::hint::must_use",
+                  [],
+                  [ Ty.path "alloc::string::String" ]
+                |),
                 [
                   M.read (|
                     let~ res :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "alloc::fmt::format", [] |),
+                          M.get_function (| "alloc::fmt::format", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|

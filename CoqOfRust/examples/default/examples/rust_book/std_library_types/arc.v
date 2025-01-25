@@ -121,6 +121,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.call_closure (|
                                         M.get_function (|
                                           "std::thread::spawn",
+                                          [],
                                           [ Ty.function [ Ty.tuple [] ] (Ty.tuple []); Ty.tuple [] ]
                                         |),
                                         [
@@ -142,6 +143,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                     M.call_closure (|
                                                                       M.get_function (|
                                                                         "std::io::stdio::_print",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -221,7 +223,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "std::thread::sleep", [] |),
+              M.get_function (| "std::thread::sleep", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [] |),

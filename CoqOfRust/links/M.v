@@ -19,9 +19,10 @@ Global Instance BoolIsLink : Link bool := {
 Module Integer.
   (** We distinguish the various forms of integers at this level. We will use plain [Z] integers in
       the simulations. *)
-  Inductive t (kind : IntegerKind.t) : Set :=
-  | Make (i : Z).
-  Arguments Make {_}.
+  Record t {kind : IntegerKind.t} : Set := {
+    value : Z;
+  }.
+  Arguments t : clear implicits.
 
   Definition to_ty_path (kind : IntegerKind.t) : string :=
     match kind with
@@ -41,7 +42,7 @@ Module Integer.
 
   Global Instance IsLink {kind : IntegerKind.t} : Link (t kind) := {
     Φ := Ty.path (to_ty_path kind);
-    φ '(Make i) := Value.Integer kind i;
+    φ '{| value := value |} := Value.Integer kind value;
   }.
 End Integer.
 
@@ -430,6 +431,18 @@ Module Run.
       LowM.CallPrimitive (Primitive.GetSubPointer pointer runner.(SubPointer.Runner.index)) k ⇓
       output_to_value
     }}
+  | CallPrimitiveAreEqual {A : Set} `{Link A}
+      (x y : A) (x' y' : Value.t)
+      (k : Value.t -> M) :
+    x' = φ x ->
+    y' = φ y ->
+    (forall (b : bool),
+      {{ k (Value.Bool b) ⇓ output_to_value }}
+    ) ->
+    {{
+      LowM.CallPrimitive (Primitive.AreEqual x' y') k ⇓
+        output_to_value
+    }}
   | CallPrimitiveGetFunction
       (name : string) (generic_consts : list Value.t) (generic_tys : list Ty.t)
       (function : PolymorphicFunction.t)
@@ -437,7 +450,10 @@ Module Run.
     let closure := Value.Closure (existS (_, _) (function generic_consts generic_tys)) in
     M.IsFunction name function ->
     {{ k closure ⇓ output_to_value }} ->
-    {{ LowM.CallPrimitive (Primitive.GetFunction name generic_tys) k ⇓ output_to_value }}
+    {{
+      LowM.CallPrimitive (Primitive.GetFunction name generic_consts generic_tys) k ⇓
+      output_to_value
+    }}
   | CallPrimitiveGetAssociatedFunction
       (ty : Ty.t) (name : string) (generic_consts : list Value.t) (generic_tys : list Ty.t)
       (associated_function : PolymorphicFunction.t)
@@ -532,7 +548,8 @@ Module Primitive.
   | StateWrite {kind : Pointer.Kind.t} {A : Set} `{Link A} (ref : Ref.t kind A) (value : A) : t unit
   | GetSubPointer {kind : Pointer.Kind.t} {A Sub_A : Set} `{Link A} `{Link Sub_A}
     (ref : Ref.t kind A) (runner : SubPointer.Runner.t A Sub_A) :
-    t (Ref.t kind Sub_A).
+    t (Ref.t kind Sub_A)
+  | AreEqual {A : Set} `{Link A} (x y : A) : t bool.
 End Primitive.
 
 Module LowM.
@@ -597,6 +614,15 @@ Proof.
     match goal with
     | H : forall _, _ |- _ => apply (H sub_ref)
     end.
+  }
+  { (* AreEqual *)
+    apply (LowM.CallPrimitive (Primitive.AreEqual x y)).
+    intros b.
+    eapply evaluate.
+    match goal with
+    | H : forall _, _ |- _ => apply (H b)
+    end.
+
   }
   { (* CallPrimitiveGetFunction *)
     exact (evaluate _ _ _ run).
@@ -674,6 +700,27 @@ Ltac run_symbolic_one_step :=
 Ltac run_symbolic :=
   (* Ideally, we should have the information about which kind of pointer to use. TODO: add it! *)
   unshelve (repeat run_symbolic_one_step); try exact Pointer.Kind.Ref.
+
+Ltac run_symbolic_state_alloc_immediate :=
+  (
+    (* We hope the allocated value to be in a form that is already the image of a [φ] conversion. *)
+    with_strategy opaque [φ] cbn;
+    match goal with
+    | |-
+      {{
+        CoqOfRust.M.LowM.CallPrimitive
+          (CoqOfRust.M.Primitive.StateAlloc (φ (A := ?B) _)) _ ⇓
+        _
+      }} =>
+        eapply Run.CallPrimitiveStateAllocImmediate with (A := B);
+        [try reflexivity |];
+        intros
+    end
+  ) || (
+    (* An important case is the allocation of the unit value *)
+    eapply Run.CallPrimitiveStateAlloc with (value := tt); [reflexivity |];
+    intros
+  ).
 
 (** For the specific case of sub-pointers, we still do it by hand by providing the corresponding
     validity statement for the index that we access. *)

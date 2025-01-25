@@ -70,6 +70,7 @@ Module str.
               M.call_closure (|
                 M.get_function (|
                   "alloc::str::join_generic_copy",
+                  [],
                   [ Ty.path "str"; Ty.path "u8"; S ]
                 |),
                 [
@@ -474,7 +475,7 @@ Module str.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String
@@ -571,6 +572,7 @@ Module str.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::raw::from_raw_parts",
+                        [],
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                       |),
                       [
@@ -682,6 +684,7 @@ Module str.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::slice::raw::from_raw_parts",
+                                                  [],
                                                   [
                                                     Ty.apply
                                                       (Ty.path
@@ -3670,7 +3673,7 @@ Module str.
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "alloc::str::convert_while_ascii", [] |),
+                        M.get_function (| "alloc::str::convert_while_ascii", [], [] |),
                         [
                           M.read (| self |);
                           (* ReifyFnPointer *)
@@ -3821,6 +3824,7 @@ Module str.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "core::unicode::unicode_data::conversions::to_lower",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| c |) ]
@@ -4018,7 +4022,7 @@ Module str.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "alloc::str::convert_while_ascii", [] |),
+                  M.get_function (| "alloc::str::convert_while_ascii", [], [] |),
                   [
                     M.read (| self |);
                     (* ReifyFnPointer *)
@@ -4099,6 +4103,7 @@ Module str.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::unicode::unicode_data::conversions::to_upper",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| c |) ]
@@ -5283,7 +5288,7 @@ Module str.
           let~ rest :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::str::converts::from_utf8_unchecked", [] |),
+                M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
                 [ M.read (| slice |) ]
               |)
             |) in

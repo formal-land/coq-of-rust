@@ -1340,6 +1340,7 @@ Module check_duplication.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::errors::verification_error",
+                              [],
                               []
                             |),
                             [
@@ -1425,6 +1426,7 @@ Module check_duplication.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::errors::verification_error",
+                              [],
                               []
                             |),
                             [
@@ -1508,6 +1510,7 @@ Module check_duplication.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::errors::verification_error",
+                              [],
                               []
                             |),
                             [
@@ -1589,6 +1592,7 @@ Module check_duplication.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::errors::verification_error",
+                              [],
                               []
                             |),
                             [
@@ -1670,6 +1674,7 @@ Module check_duplication.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::errors::verification_error",
+                              [],
                               []
                             |),
                             [
@@ -1846,6 +1851,7 @@ Module check_duplication.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::errors::verification_error",
+                              [],
                               []
                             |),
                             [
@@ -1933,6 +1939,7 @@ Module check_duplication.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::errors::verification_error",
+                              [],
                               []
                             |),
                             [
@@ -2111,6 +2118,7 @@ Module check_duplication.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::errors::verification_error",
+                              [],
                               []
                             |),
                             [
@@ -2209,6 +2217,7 @@ Module check_duplication.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::errors::verification_error",
+                              [],
                               []
                             |),
                             [
@@ -2311,6 +2320,7 @@ Module check_duplication.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::errors::verification_error",
+                              [],
                               []
                             |),
                             [
@@ -2427,6 +2437,7 @@ Module check_duplication.
                                       M.call_closure (|
                                         M.get_function (|
                                           "move_binary_format::errors::verification_error",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2682,6 +2693,7 @@ Module check_duplication.
                                       M.call_closure (|
                                         M.get_function (|
                                           "move_binary_format::errors::verification_error",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2901,6 +2913,7 @@ Module check_duplication.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "move_binary_format::errors::verification_error",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -3082,6 +3095,7 @@ Module check_duplication.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "move_binary_format::errors::verification_error",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -3276,6 +3290,7 @@ Module check_duplication.
                                       M.call_closure (|
                                         M.get_function (|
                                           "move_binary_format::errors::verification_error",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3612,6 +3627,7 @@ Module check_duplication.
                                       M.call_closure (|
                                         M.get_function (|
                                           "move_binary_format::errors::verification_error",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3861,6 +3877,7 @@ Module check_duplication.
                                       M.call_closure (|
                                         M.get_function (|
                                           "move_binary_format::errors::verification_error",
+                                          [],
                                           []
                                         |),
                                         [
@@ -4101,6 +4118,7 @@ Module check_duplication.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "move_binary_format::errors::verification_error",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -4296,6 +4314,7 @@ Module check_duplication.
                                       M.call_closure (|
                                         M.get_function (|
                                           "move_binary_format::errors::verification_error",
+                                          [],
                                           []
                                         |),
                                         [
@@ -4634,6 +4653,7 @@ Module check_duplication.
                                       M.call_closure (|
                                         M.get_function (|
                                           "move_binary_format::errors::verification_error",
+                                          [],
                                           []
                                         |),
                                         [

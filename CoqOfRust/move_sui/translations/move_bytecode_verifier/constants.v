@@ -28,7 +28,7 @@ Module constants.
           |),
           [
             M.call_closure (|
-              M.get_function (| "move_bytecode_verifier::constants::verify_module_impl", [] |),
+              M.get_function (| "move_bytecode_verifier::constants::verify_module_impl", [], [] |),
               [ M.read (| module |) ]
             |);
             M.closure
@@ -221,6 +221,7 @@ Module constants.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "move_bytecode_verifier::constants::verify_constant",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| idx |); M.read (| constant |) ]
@@ -333,6 +334,7 @@ Module constants.
                         M.call_closure (|
                           M.get_function (|
                             "move_bytecode_verifier::constants::verify_constant_type",
+                            [],
                             []
                           |),
                           [
@@ -405,6 +407,7 @@ Module constants.
                 M.call_closure (|
                   M.get_function (|
                     "move_bytecode_verifier::constants::verify_constant_data",
+                    [],
                     []
                   |),
                   [ M.read (| idx |); M.read (| constant |) ]
@@ -464,7 +467,11 @@ Module constants.
                       "core::result::Result::Err"
                       [
                         M.call_closure (|
-                          M.get_function (| "move_binary_format::errors::verification_error", [] |),
+                          M.get_function (|
+                            "move_binary_format::errors::verification_error",
+                            [],
+                            []
+                          |),
                           [
                             Value.StructTuple
                               "move_core_types::vm_status::StatusCode::INVALID_CONSTANT_TYPE"
@@ -528,7 +535,11 @@ Module constants.
                       "core::result::Result::Err"
                       [
                         M.call_closure (|
-                          M.get_function (| "move_binary_format::errors::verification_error", [] |),
+                          M.get_function (|
+                            "move_binary_format::errors::verification_error",
+                            [],
+                            []
+                          |),
                           [
                             Value.StructTuple
                               "move_core_types::vm_status::StatusCode::MALFORMED_CONSTANT_DATA"

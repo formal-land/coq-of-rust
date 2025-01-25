@@ -444,6 +444,7 @@ Module iter.
               M.call_closure (|
                 M.get_function (|
                   "core::iter::adapters::intersperse::intersperse_size_hint",
+                  [],
                   [ Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ] ]
                 |),
                 [
@@ -516,6 +517,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::intersperse::intersperse_fold",
+                      [],
                       [
                         Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ];
                         B;
@@ -1092,6 +1094,7 @@ Module iter.
               M.call_closure (|
                 M.get_function (|
                   "core::iter::adapters::intersperse::intersperse_size_hint",
+                  [],
                   [ Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ] ]
                 |),
                 [
@@ -1146,6 +1149,7 @@ Module iter.
               M.call_closure (|
                 M.get_function (|
                   "core::iter::adapters::intersperse::intersperse_fold",
+                  [],
                   [ Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ]; B; F; G ]
                 |),
                 [

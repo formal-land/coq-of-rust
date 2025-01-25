@@ -419,6 +419,7 @@ Module hardfork.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "revm_specification::hardfork::SpecId" ]
                   |),
                   [ M.read (| self |) ]
@@ -429,6 +430,7 @@ Module hardfork.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "revm_specification::hardfork::SpecId" ]
                   |),
                   [ M.read (| other |) ]
@@ -489,6 +491,7 @@ Module hardfork.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "revm_specification::hardfork::SpecId" ]
                   |),
                   [ M.read (| self |) ]
@@ -499,6 +502,7 @@ Module hardfork.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "revm_specification::hardfork::SpecId" ]
                   |),
                   [ M.read (| other |) ]
@@ -544,6 +548,7 @@ Module hardfork.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "revm_specification::hardfork::SpecId" ]
                   |),
                   [ M.read (| self |) ]
@@ -554,6 +559,7 @@ Module hardfork.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "revm_specification::hardfork::SpecId" ]
                   |),
                   [ M.read (| other |) ]
@@ -593,6 +599,7 @@ Module hardfork.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "revm_specification::hardfork::SpecId" ]
                   |),
                   [ M.read (| self |) ]

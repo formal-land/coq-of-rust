@@ -223,7 +223,7 @@ Module str.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -632,7 +632,7 @@ Module str.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                M.get_function (| "core::intrinsics::ub_checks", [], [] |),
                                 []
                               |)
                             |)) in
@@ -682,7 +682,7 @@ Module str.
               let~ new_len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "usize" ] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -704,7 +704,7 @@ Module str.
               M.alloc (|
                 M.rust_cast
                   (M.call_closure (|
-                    M.get_function (| "core::ptr::slice_from_raw_parts", [ Ty.path "u8" ] |),
+                    M.get_function (| "core::ptr::slice_from_raw_parts", [], [ Ty.path "u8" ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -780,7 +780,7 @@ Module str.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                M.get_function (| "core::intrinsics::ub_checks", [], [] |),
                                 []
                               |)
                             |)) in
@@ -830,7 +830,7 @@ Module str.
               let~ new_len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "usize" ] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -852,7 +852,11 @@ Module str.
               M.alloc (|
                 M.rust_cast
                   (M.call_closure (|
-                    M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ Ty.path "u8" ] |),
+                    M.get_function (|
+                      "core::ptr::slice_from_raw_parts_mut",
+                      [],
+                      [ Ty.path "u8" ]
+                    |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -962,7 +966,7 @@ Module str.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::str::slice_error_fail", [] |),
+                                    M.get_function (| "core::str::slice_error_fail", [], [] |),
                                     [ M.read (| slice |); M.read (| start |); M.read (| end_ |) ]
                                   |)
                                 |)
@@ -1081,7 +1085,7 @@ Module str.
                       (M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::str::slice_error_fail", [] |),
+                            M.get_function (| "core::str::slice_error_fail", [], [] |),
                             [
                               M.read (| slice |);
                               M.read (|
@@ -1402,7 +1406,7 @@ Module str.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                M.get_function (| "core::intrinsics::ub_checks", [], [] |),
                                 []
                               |)
                             |)) in
@@ -1452,7 +1456,7 @@ Module str.
               let~ new_len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "usize" ] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (| self, "core::range::Range", "end" |)
@@ -1470,7 +1474,7 @@ Module str.
               M.alloc (|
                 M.rust_cast
                   (M.call_closure (|
-                    M.get_function (| "core::ptr::slice_from_raw_parts", [ Ty.path "u8" ] |),
+                    M.get_function (| "core::ptr::slice_from_raw_parts", [], [ Ty.path "u8" ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -1546,7 +1550,7 @@ Module str.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                M.get_function (| "core::intrinsics::ub_checks", [], [] |),
                                 []
                               |)
                             |)) in
@@ -1596,7 +1600,7 @@ Module str.
               let~ new_len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "usize" ] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (| self, "core::range::Range", "end" |)
@@ -1614,7 +1618,11 @@ Module str.
               M.alloc (|
                 M.rust_cast
                   (M.call_closure (|
-                    M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ Ty.path "u8" ] |),
+                    M.get_function (|
+                      "core::ptr::slice_from_raw_parts_mut",
+                      [],
+                      [ Ty.path "u8" ]
+                    |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -1720,7 +1728,7 @@ Module str.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::str::slice_error_fail", [] |),
+                                    M.get_function (| "core::str::slice_error_fail", [], [] |),
                                     [ M.read (| slice |); M.read (| start |); M.read (| end_ |) ]
                                   |)
                                 |)
@@ -1839,7 +1847,7 @@ Module str.
                       (M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::str::slice_error_fail", [] |),
+                            M.get_function (| "core::str::slice_error_fail", [], [] |),
                             [
                               M.read (| slice |);
                               M.read (|
@@ -1937,7 +1945,7 @@ Module str.
                             |),
                             [
                               M.call_closure (|
-                                M.get_function (| "core::slice::index::into_range", [] |),
+                                M.get_function (| "core::slice::index::into_range", [], [] |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (| Ty.path "str", "len", [] |),
@@ -2048,7 +2056,7 @@ Module str.
                             |),
                             [
                               M.call_closure (|
-                                M.get_function (| "core::slice::index::into_range", [] |),
+                                M.get_function (| "core::slice::index::into_range", [], [] |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (| Ty.path "str", "len", [] |),
@@ -2155,7 +2163,7 @@ Module str.
                   |),
                   [
                     M.call_closure (|
-                      M.get_function (| "core::slice::index::into_range_unchecked", [] |),
+                      M.get_function (| "core::slice::index::into_range_unchecked", [], [] |),
                       [ M.read (| len |); M.read (| self |) ]
                     |);
                     M.read (| slice |)
@@ -2205,7 +2213,7 @@ Module str.
                   |),
                   [
                     M.call_closure (|
-                      M.get_function (| "core::slice::index::into_range_unchecked", [] |),
+                      M.get_function (| "core::slice::index::into_range_unchecked", [], [] |),
                       [ M.read (| len |); M.read (| self |) ]
                     |);
                     M.read (| slice |)
@@ -2237,7 +2245,7 @@ Module str.
               |),
               [
                 M.call_closure (|
-                  M.get_function (| "core::slice::index::into_slice_range", [] |),
+                  M.get_function (| "core::slice::index::into_slice_range", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "len", [] |),
@@ -2273,7 +2281,7 @@ Module str.
               |),
               [
                 M.call_closure (|
-                  M.get_function (| "core::slice::index::into_slice_range", [] |),
+                  M.get_function (| "core::slice::index::into_slice_range", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "len", [] |),
@@ -2584,7 +2592,7 @@ Module str.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::str::slice_error_fail", [] |),
+                            M.get_function (| "core::str::slice_error_fail", [], [] |),
                             [
                               M.read (| slice |);
                               Value.Integer IntegerKind.Usize 0;
@@ -2657,7 +2665,7 @@ Module str.
                       (M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::str::slice_error_fail", [] |),
+                            M.get_function (| "core::str::slice_error_fail", [], [] |),
                             [
                               M.read (| slice |);
                               Value.Integer IntegerKind.Usize 0;
@@ -3031,7 +3039,7 @@ Module str.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::str::slice_error_fail", [] |),
+                                    M.get_function (| "core::str::slice_error_fail", [], [] |),
                                     [ M.read (| slice |); M.read (| start |); M.read (| end_ |) ]
                                   |)
                                 |)
@@ -3102,7 +3110,7 @@ Module str.
                       (M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::str::slice_error_fail", [] |),
+                            M.get_function (| "core::str::slice_error_fail", [], [] |),
                             [
                               M.read (| slice |);
                               M.read (|
@@ -3469,7 +3477,7 @@ Module str.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::str::slice_error_fail", [] |),
+                                    M.get_function (| "core::str::slice_error_fail", [], [] |),
                                     [ M.read (| slice |); M.read (| start |); M.read (| end_ |) ]
                                   |)
                                 |)
@@ -3540,7 +3548,7 @@ Module str.
                       (M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::str::slice_error_fail", [] |),
+                            M.get_function (| "core::str::slice_error_fail", [], [] |),
                             [
                               M.read (| slice |);
                               M.read (|
@@ -3848,7 +3856,11 @@ Module str.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::str::traits::str_index_overflow_fail", [] |),
+                              M.get_function (|
+                                "core::str::traits::str_index_overflow_fail",
+                                [],
+                                []
+                              |),
                               []
                             |)
                           |)
@@ -3931,7 +3943,11 @@ Module str.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::str::traits::str_index_overflow_fail", [] |),
+                              M.get_function (|
+                                "core::str::traits::str_index_overflow_fail",
+                                [],
+                                []
+                              |),
                               []
                             |)
                           |)
@@ -4234,7 +4250,11 @@ Module str.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::str::traits::str_index_overflow_fail", [] |),
+                              M.get_function (|
+                                "core::str::traits::str_index_overflow_fail",
+                                [],
+                                []
+                              |),
                               []
                             |)
                           |)
@@ -4308,7 +4328,11 @@ Module str.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::str::traits::str_index_overflow_fail", [] |),
+                              M.get_function (|
+                                "core::str::traits::str_index_overflow_fail",
+                                [],
+                                []
+                              |),
                               []
                             |)
                           |)

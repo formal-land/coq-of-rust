@@ -10,11 +10,12 @@ Module modexp.
             "revm_precompile::PrecompileWithAddress"
             [
               M.call_closure (|
-                M.get_function (| "revm_precompile::u64_to_address", [] |),
+                M.get_function (| "revm_precompile::u64_to_address", [], [] |),
                 [ Value.Integer IntegerKind.U64 5 ]
               |);
               (* ReifyFnPointer *)
-              M.pointer_coercion (M.get_function (| "revm_precompile::modexp::byzantium_run", [] |))
+              M.pointer_coercion
+                (M.get_function (| "revm_precompile::modexp::byzantium_run", [], [] |))
             ]
         |))).
   
@@ -26,11 +27,12 @@ Module modexp.
             "revm_precompile::PrecompileWithAddress"
             [
               M.call_closure (|
-                M.get_function (| "revm_precompile::u64_to_address", [] |),
+                M.get_function (| "revm_precompile::u64_to_address", [], [] |),
                 [ Value.Integer IntegerKind.U64 5 ]
               |);
               (* ReifyFnPointer *)
-              M.pointer_coercion (M.get_function (| "revm_precompile::modexp::berlin_run", [] |))
+              M.pointer_coercion
+                (M.get_function (| "revm_precompile::modexp::berlin_run", [], [] |))
             ]
         |))).
   
@@ -50,6 +52,7 @@ Module modexp.
         M.call_closure (|
           M.get_function (|
             "revm_precompile::modexp::run_inner",
+            [],
             [
               Ty.function
                 [
@@ -130,6 +133,7 @@ Module modexp.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "revm_precompile::modexp::byzantium_gas_calc",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -173,6 +177,7 @@ Module modexp.
         M.call_closure (|
           M.get_function (|
             "revm_precompile::modexp::run_inner",
+            [],
             [
               Ty.function
                 [
@@ -253,6 +258,7 @@ Module modexp.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "revm_precompile::modexp::berlin_gas_calc",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -425,6 +431,7 @@ Module modexp.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::cmp::max",
+                                                  [],
                                                   [ Ty.path "u64" ]
                                                 |),
                                                 [
@@ -461,7 +468,7 @@ Module modexp.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "core::cmp::max", [ Ty.path "u64" ] |),
+              M.get_function (| "core::cmp::max", [], [ Ty.path "u64" ] |),
               [ M.read (| iteration_count |); Value.Integer IntegerKind.U64 1 ]
             |)
           |)
@@ -631,6 +638,7 @@ Module modexp.
                           M.call_closure (|
                             M.get_function (|
                               "revm_precompile::utilities::right_pad_with_offset",
+                              [ Value.Integer IntegerKind.Usize 32 ],
                               []
                             |),
                             [ M.read (| input |); Value.Integer IntegerKind.Usize 0 ]
@@ -670,6 +678,7 @@ Module modexp.
                           M.call_closure (|
                             M.get_function (|
                               "revm_precompile::utilities::right_pad_with_offset",
+                              [ Value.Integer IntegerKind.Usize 32 ],
                               []
                             |),
                             [ M.read (| input |); Value.Integer IntegerKind.Usize 32 ]
@@ -709,6 +718,7 @@ Module modexp.
                           M.call_closure (|
                             M.get_function (|
                               "revm_precompile::utilities::right_pad_with_offset",
+                              [ Value.Integer IntegerKind.Usize 32 ],
                               []
                             |),
                             [ M.read (| input |); Value.Integer IntegerKind.Usize 64 ]
@@ -874,6 +884,7 @@ Module modexp.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::cmp::min",
+                                              [],
                                               [ Ty.path "usize" ]
                                             |),
                                             [
@@ -935,6 +946,7 @@ Module modexp.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "revm_precompile::utilities::right_pad_with_offset",
+                                                  [ Value.Integer IntegerKind.Usize 32 ],
                                                   []
                                                 |),
                                                 [ M.read (| input |); M.read (| base_len |) ]
@@ -945,6 +957,7 @@ Module modexp.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "revm_precompile::utilities::left_pad",
+                                                  [ Value.Integer IntegerKind.Usize 32 ],
                                                   []
                                                 |),
                                                 [
@@ -1145,6 +1158,7 @@ Module modexp.
                                           M.call_closure (|
                                             M.get_function (|
                                               "revm_precompile::utilities::right_pad_vec",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| input |); M.read (| input_len |) ]
@@ -1309,6 +1323,7 @@ Module modexp.
                                                                                           M.call_closure (|
                                                                                             M.get_function (|
                                                                                               "core::panicking::assert_failed",
+                                                                                              [],
                                                                                               [
                                                                                                 Ty.path
                                                                                                   "usize";
@@ -1355,6 +1370,7 @@ Module modexp.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "aurora_engine_modexp::modexp",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -1415,6 +1431,7 @@ Module modexp.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "revm_precompile::utilities::left_pad_vec",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -1506,11 +1523,12 @@ Module modexp.
               M.call_closure (|
                 M.get_function (|
                   "revm_precompile::modexp::byzantium_gas_calc.mul_complexity",
+                  [],
                   []
                 |),
                 [
                   M.call_closure (|
-                    M.get_function (| "core::cmp::max", [ Ty.path "u64" ] |),
+                    M.get_function (| "core::cmp::max", [], [ Ty.path "u64" ] |),
                     [ M.read (| mod_len |); M.read (| base_len |) ]
                   |)
                 ]
@@ -1529,7 +1547,11 @@ Module modexp.
                 |),
                 [
                   M.call_closure (|
-                    M.get_function (| "revm_precompile::modexp::calculate_iteration_count", [] |),
+                    M.get_function (|
+                      "revm_precompile::modexp::calculate_iteration_count",
+                      [],
+                      []
+                    |),
                     [ M.read (| exp_len |); M.read (| exp_highp |) ]
                   |)
                 ]
@@ -1937,6 +1959,7 @@ Module modexp.
               M.call_closure (|
                 M.get_function (|
                   "revm_precompile::modexp::berlin_gas_calc.calculate_multiplication_complexity",
+                  [],
                   []
                 |),
                 [ M.read (| base_length |); M.read (| mod_length |) ]
@@ -1945,7 +1968,7 @@ Module modexp.
           let~ iteration_count :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "revm_precompile::modexp::calculate_iteration_count", [] |),
+                M.get_function (| "revm_precompile::modexp::calculate_iteration_count", [], [] |),
                 [ M.read (| exp_length |); M.read (| exp_highp |) ]
               |)
             |) in
@@ -2016,7 +2039,7 @@ Module modexp.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "core::cmp::max", [ Ty.path "u64" ] |),
+              M.get_function (| "core::cmp::max", [], [ Ty.path "u64" ] |),
               [
                 Value.Integer IntegerKind.U64 200;
                 M.call_closure (|
@@ -2066,7 +2089,7 @@ Module modexp.
             let~ max_length :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::cmp::max", [ Ty.path "u64" ] |),
+                  M.get_function (| "core::cmp::max", [], [ Ty.path "u64" ] |),
                   [ M.read (| base_length |); M.read (| mod_length |) ]
                 |)
               |) in

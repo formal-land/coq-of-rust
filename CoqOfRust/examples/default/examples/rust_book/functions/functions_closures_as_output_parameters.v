@@ -36,7 +36,7 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                               let~ _ :=
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "std::io::stdio::_print", [] |),
+                                    M.get_function (| "std::io::stdio::_print", [], [] |),
                                     [
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -124,7 +124,7 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                               let~ _ :=
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "std::io::stdio::_print", [] |),
+                                    M.get_function (| "std::io::stdio::_print", [], [] |),
                                     [
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -212,7 +212,7 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                               let~ _ :=
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "std::io::stdio::_print", [] |),
+                                    M.get_function (| "std::io::stdio::_print", [], [] |),
                                     [
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -284,21 +284,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ fn_plain :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "functions_closures_as_output_parameters::create_fn", [] |),
+              M.get_function (| "functions_closures_as_output_parameters::create_fn", [], [] |),
               []
             |)
           |) in
         let~ fn_mut :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "functions_closures_as_output_parameters::create_fnmut", [] |),
+              M.get_function (| "functions_closures_as_output_parameters::create_fnmut", [], [] |),
               []
             |)
           |) in
         let~ fn_once :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "functions_closures_as_output_parameters::create_fnonce", [] |),
+              M.get_function (| "functions_closures_as_output_parameters::create_fnonce", [], [] |),
               []
             |)
           |) in

@@ -790,6 +790,7 @@ Module instructions.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_interpreter::instructions::i256::i256_div",
+                                [],
                                 []
                               |),
                               [ M.read (| op1 |); M.read (| M.read (| op2 |) |) ]
@@ -1125,6 +1126,7 @@ Module instructions.
                           M.call_closure (|
                             M.get_function (|
                               "revm_interpreter::instructions::i256::i256_mod",
+                              [],
                               []
                             |),
                             [ M.read (| op1 |); M.read (| M.read (| op2 |) |) ]
@@ -1525,7 +1527,11 @@ Module instructions.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "revm_interpreter::gas::calc::exp_cost", [] |),
+                                M.get_function (|
+                                  "revm_interpreter::gas::calc::exp_cost",
+                                  [],
+                                  []
+                                |),
                                 [ M.read (| spec_id |); M.read (| M.read (| op2 |) |) ]
                               |)
                             |),

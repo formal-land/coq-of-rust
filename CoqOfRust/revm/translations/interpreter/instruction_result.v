@@ -702,6 +702,7 @@ Module instruction_result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ]
                   |),
                   [ M.read (| self |) ]
@@ -712,6 +713,7 @@ Module instruction_result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ]
                   |),
                   [ M.read (| other |) ]
@@ -772,6 +774,7 @@ Module instruction_result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ]
                   |),
                   [ M.read (| self |) ]
@@ -2145,6 +2148,7 @@ Module instruction_result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "revm_interpreter::instruction_result::InternalResult" ]
                   |),
                   [ M.read (| self |) ]
@@ -2155,6 +2159,7 @@ Module instruction_result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "revm_interpreter::instruction_result::InternalResult" ]
                   |),
                   [ M.read (| other |) ]
@@ -2215,6 +2220,7 @@ Module instruction_result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "revm_interpreter::instruction_result::InternalResult" ]
                   |),
                   [ M.read (| self |) ]
@@ -2584,6 +2590,7 @@ Module instruction_result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
@@ -2599,6 +2606,7 @@ Module instruction_result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
@@ -2827,6 +2835,7 @@ Module instruction_result.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")

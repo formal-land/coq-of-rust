@@ -507,7 +507,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                     |),
                     []
                   |);
-                  M.call_closure (| M.get_function (| "dns::zero_address", [] |), [] |)
+                  M.call_closure (| M.get_function (| "dns::zero_address", [], [] |), [] |)
                 ]
               |)
             |) in
@@ -563,7 +563,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                     |),
                     []
                   |);
-                  M.call_closure (| M.get_function (| "dns::zero_address", [] |), [] |)
+                  M.call_closure (| M.get_function (| "dns::zero_address", [], [] |), [] |)
                 ]
               |)
             |) in
@@ -574,7 +574,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                 ("name_to_address", M.read (| name_to_address |));
                 ("name_to_owner", M.read (| name_to_owner |));
                 ("default_address",
-                  M.call_closure (| M.get_function (| "dns::zero_address", [] |), [] |))
+                  M.call_closure (| M.get_function (| "dns::zero_address", [], [] |), [] |))
               ]
           |)
         |)))
@@ -637,6 +637,7 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "dns::Error" ]
                 |),
                 [ M.read (| self |) ]
@@ -647,6 +648,7 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "dns::Error" ]
                 |),
                 [ M.read (| other |) ]

@@ -271,7 +271,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         M.match_operator (|
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "result::checked::div", [] |),
+              M.get_function (| "result::checked::div", [], [] |),
               [ M.read (| x |); M.read (| y |) ]
             |)
           |),
@@ -284,7 +284,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (|
                   M.never_to_any (|
                     M.call_closure (|
-                      M.get_function (| "core::panicking::panic_fmt", [] |),
+                      M.get_function (| "core::panicking::panic_fmt", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -321,7 +321,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "result::checked::ln", [] |),
+                      M.get_function (| "result::checked::ln", [], [] |),
                       [ M.read (| ratio |) ]
                     |)
                   |),
@@ -338,7 +338,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic_fmt", [] |),
+                              M.get_function (| "core::panicking::panic_fmt", [], [] |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -379,7 +379,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "result::checked::sqrt", [] |),
+                              M.get_function (| "result::checked::sqrt", [], [] |),
                               [ M.read (| ln |) ]
                             |)
                           |),
@@ -396,7 +396,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic_fmt", [] |),
+                                      M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -464,7 +464,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -485,7 +485,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               [
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "result::op", [] |),
+                                    M.get_function (| "result::op", [], [] |),
                                     [
                                       M.read (| UnsupportedLiteral |);
                                       M.read (| UnsupportedLiteral |)

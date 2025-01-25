@@ -20,7 +20,7 @@ Definition cos (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let z := M.alloc (| z |) in
       M.call_closure (|
-        M.get_function (| "foreign_function_interface::ccosf", [] |),
+        M.get_function (| "foreign_function_interface::ccosf", [], [] |),
         [ M.read (| z |) ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -56,7 +56,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ z_sqrt :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "foreign_function_interface::csqrtf", [] |),
+              M.get_function (| "foreign_function_interface::csqrtf", [], [] |),
               [ M.read (| z |) ]
             |)
           |) in
@@ -64,7 +64,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -109,7 +109,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -143,7 +143,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               [
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "foreign_function_interface::cos", [] |),
+                                    M.get_function (| "foreign_function_interface::cos", [], [] |),
                                     [ M.read (| z |) ]
                                   |)
                                 |)

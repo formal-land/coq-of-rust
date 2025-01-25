@@ -651,6 +651,7 @@ Module interpreter.
                     M.call_closure (|
                       M.get_function (|
                         "revm_interpreter::table::make_instruction_table",
+                        [],
                         [ WIRE; HOST ]
                       |),
                       []

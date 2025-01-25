@@ -215,6 +215,7 @@ Module fmt.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::fmt::rt::Alignment" ]
                     |),
                     [ M.read (| self |) ]
@@ -225,6 +226,7 @@ Module fmt.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::fmt::rt::Alignment" ]
                     |),
                     [ M.read (| other |) ]
@@ -602,6 +604,7 @@ Module fmt.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::transmute",
+                            [],
                             [
                               Ty.function
                                 [
@@ -986,7 +989,7 @@ Module fmt.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::hint::unreachable_unchecked", [] |),
+                            M.get_function (| "core::hint::unreachable_unchecked", [], [] |),
                             []
                           |)
                         |)

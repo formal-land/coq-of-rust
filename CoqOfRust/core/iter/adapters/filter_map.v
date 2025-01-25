@@ -692,6 +692,7 @@ Module iter.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::intrinsics::copy_nonoverlapping",
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path
@@ -712,6 +713,7 @@ Module iter.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::mem::forget",
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -975,6 +977,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::filter_map::filter_map_try_fold",
+                      [],
                       [ Ty.associated; B; Acc; R; F; Fold ]
                     |),
                     [
@@ -1027,6 +1030,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::filter_map::filter_map_fold",
+                      [],
                       [ Ty.associated; B; Acc; F; Fold ]
                     |),
                     [
@@ -1179,6 +1183,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::filter_map::filter_map_try_fold",
+                      [],
                       [ Ty.associated; B; Acc; R; F; Fold ]
                     |),
                     [
@@ -1231,6 +1236,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::filter_map::filter_map_fold",
+                      [],
                       [ Ty.associated; B; Acc; F; Fold ]
                     |),
                     [

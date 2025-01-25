@@ -246,7 +246,7 @@ Module iter.
                     |),
                     [ M.read (| iter |) ]
                   |);
-                  M.get_function (| "core::mem::drop", [ Ty.tuple [] ] |)
+                  M.get_function (| "core::mem::drop", [], [ Ty.tuple [] ] |)
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -648,6 +648,7 @@ Module iter.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::iter::traits::collect::default_extend_tuple.extend",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| a |); M.read (| b |) ]
@@ -779,6 +780,7 @@ Module iter.
                     M.call_closure (|
                       M.get_function (|
                         "core::iter::traits::collect::default_extend_tuple",
+                        [],
                         [ A; B; ExtendA; ExtendB; Iter ]
                       |),
                       [ M.read (| self |); M.read (| a |); M.read (| b |) ]
@@ -901,6 +903,7 @@ Module iter.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::iter::traits::collect::default_extend_tuple",
+                                                    [],
                                                     [ A; B; ExtendA; ExtendB; Iter ]
                                                   |),
                                                   [

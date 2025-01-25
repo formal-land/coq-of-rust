@@ -240,6 +240,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::chain::and_then_or_clear",
+                      [],
                       [
                         A;
                         Ty.associated;
@@ -1336,6 +1337,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::chain::and_then_or_clear",
+                      [],
                       [
                         A;
                         Ty.associated;
@@ -1917,6 +1919,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::chain::and_then_or_clear",
+                      [],
                       [
                         B;
                         Ty.associated;
@@ -2590,6 +2593,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::chain::and_then_or_clear",
+                      [],
                       [
                         B;
                         Ty.associated;

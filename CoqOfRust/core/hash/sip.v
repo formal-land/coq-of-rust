@@ -687,7 +687,7 @@ Module hash.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [ M.read (| Value.String "assertion failed: len < 8" |) ]
                                     |)
                                   |)
@@ -755,6 +755,7 @@ Module hash.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::mem::size_of",
+                                                                  [],
                                                                   [ Ty.path "u32" ]
                                                                 |),
                                                                 []
@@ -784,6 +785,7 @@ Module hash.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::panicking::panic",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -812,6 +814,7 @@ Module hash.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::copy_nonoverlapping",
+                                      [],
                                       [ Ty.path "u8" ]
                                     |),
                                     [
@@ -837,6 +840,7 @@ Module hash.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::mem::size_of",
+                                          [],
                                           [ Ty.path "u32" ]
                                         |),
                                         []
@@ -920,6 +924,7 @@ Module hash.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::mem::size_of",
+                                                                      [],
                                                                       [ Ty.path "u16" ]
                                                                     |),
                                                                     []
@@ -949,6 +954,7 @@ Module hash.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "core::panicking::panic",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -977,6 +983,7 @@ Module hash.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::intrinsics::copy_nonoverlapping",
+                                          [],
                                           [ Ty.path "u8" ]
                                         |),
                                         [
@@ -1005,6 +1012,7 @@ Module hash.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::mem::size_of",
+                                              [],
                                               [ Ty.path "u16" ]
                                             |),
                                             []
@@ -1100,7 +1108,7 @@ Module hash.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [ M.read (| Value.String "assertion failed: i == len" |) ]
                                     |)
                                   |)
@@ -1828,13 +1836,14 @@ Module hash.
                                   (M.read (| β |))
                                   (BinOp.Wrap.shl (|
                                     M.call_closure (|
-                                      M.get_function (| "core::hash::sip::u8to64_le", [] |),
+                                      M.get_function (| "core::hash::sip::u8to64_le", [], [] |),
                                       [
                                         M.read (| msg |);
                                         Value.Integer IntegerKind.Usize 0;
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::cmp::min",
+                                            [],
                                             [ Ty.path "usize" ]
                                           |),
                                           [ M.read (| length |); M.read (| needed |) ]
@@ -2029,6 +2038,7 @@ Module hash.
                                                                     M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::mem::size_of",
+                                                                        [],
                                                                         [ Ty.path "u64" ]
                                                                       |),
                                                                       []
@@ -2058,6 +2068,7 @@ Module hash.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::panicking::panic",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2087,6 +2098,7 @@ Module hash.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::intrinsics::copy_nonoverlapping",
+                                            [],
                                             [ Ty.path "u8" ]
                                           |),
                                           [
@@ -2112,6 +2124,7 @@ Module hash.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::mem::size_of",
+                                                [],
                                                 [ Ty.path "u64" ]
                                               |),
                                               []
@@ -2209,7 +2222,7 @@ Module hash.
                         "tail"
                       |),
                       M.call_closure (|
-                        M.get_function (| "core::hash::sip::u8to64_le", [] |),
+                        M.get_function (| "core::hash::sip::u8to64_le", [], [] |),
                         [ M.read (| msg |); M.read (| i |); M.read (| left |) ]
                       |)
                     |) in

@@ -938,6 +938,7 @@ Module code_unit_verifier.
                             M.call_closure (|
                               M.get_function (|
                                 "move_bytecode_verifier::control_flow::verify_function",
+                                [],
                                 [ impl_Meter__plus___Sized ]
                               |),
                               [
@@ -1639,6 +1640,7 @@ Module code_unit_verifier.
                           M.call_closure (|
                             M.get_function (|
                               "move_bytecode_verifier::type_safety::verify",
+                              [],
                               [ impl_Meter__plus___Sized ]
                             |),
                             [
@@ -1732,6 +1734,7 @@ Module code_unit_verifier.
                           M.call_closure (|
                             M.get_function (|
                               "move_bytecode_verifier::locals_safety::verify",
+                              [],
                               [ impl_Meter__plus___Sized ]
                             |),
                             [
@@ -1811,6 +1814,7 @@ Module code_unit_verifier.
                   M.call_closure (|
                     M.get_function (|
                       "move_bytecode_verifier::reference_safety::verify",
+                      [],
                       [ impl_Meter__plus___Sized ]
                     |),
                     [

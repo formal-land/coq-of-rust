@@ -67,6 +67,7 @@ Module future.
                           M.call_closure (|
                             M.get_function (|
                               "core::mem::replace",
+                              [],
                               [ Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ] ]
                             |),
                             [
@@ -93,7 +94,7 @@ Module future.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic", [] |),
+                                    M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
                                         Value.String "internal error: entered unreachable code"
@@ -304,7 +305,7 @@ Module future.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::panicking::panic", [] |),
+                                  M.get_function (| "core::panicking::panic", [], [] |),
                                   [
                                     M.read (|
                                       Value.String "internal error: entered unreachable code"

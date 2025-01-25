@@ -190,6 +190,7 @@ Module Impl_enums_testcase_linked_list_List.
                     M.call_closure (|
                       M.get_function (|
                         "core::hint::must_use",
+                        [],
                         [ Ty.path "alloc::string::String" ]
                       |),
                       [
@@ -197,7 +198,7 @@ Module Impl_enums_testcase_linked_list_List.
                           let~ res :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "alloc::fmt::format", [] |),
+                                M.get_function (| "alloc::fmt::format", [], [] |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -262,6 +263,7 @@ Module Impl_enums_testcase_linked_list_List.
                     M.call_closure (|
                       M.get_function (|
                         "core::hint::must_use",
+                        [],
                         [ Ty.path "alloc::string::String" ]
                       |),
                       [
@@ -269,7 +271,7 @@ Module Impl_enums_testcase_linked_list_List.
                           let~ res :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "alloc::fmt::format", [] |),
+                                M.get_function (| "alloc::fmt::format", [], [] |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -364,7 +366,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -411,7 +413,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),

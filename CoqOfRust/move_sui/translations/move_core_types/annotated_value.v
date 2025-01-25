@@ -633,6 +633,7 @@ Module annotated_value.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::annotated_value::MoveValue" ]
                   |),
                   [ M.read (| self |) ]
@@ -643,6 +644,7 @@ Module annotated_value.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::annotated_value::MoveValue" ]
                   |),
                   [ M.read (| other |) ]
@@ -1069,7 +1071,7 @@ Module annotated_value.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::intrinsics::unreachable", [] |),
+                                  M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                   []
                                 |)
                               |)
@@ -3171,6 +3173,7 @@ Module annotated_value.
                             M.call_closure (|
                               M.get_function (|
                                 "bcs::de::from_bytes_seed",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "&")
@@ -3292,6 +3295,7 @@ Module annotated_value.
                             M.call_closure (|
                               M.get_function (|
                                 "move_core_types::annotated_visitor::visit_value",
+                                [],
                                 [ V ]
                               |),
                               [ blob; M.read (| ty |); M.read (| visitor |) ]
@@ -3440,6 +3444,7 @@ Module annotated_value.
               M.call_closure (|
                 M.get_function (|
                   "bcs::ser::to_bytes",
+                  [],
                   [ Ty.path "move_core_types::annotated_value::MoveValue" ]
                 |),
                 [ M.read (| self |) ]
@@ -3935,6 +3940,7 @@ Module annotated_value.
                             M.call_closure (|
                               M.get_function (|
                                 "bcs::de::from_bytes_seed",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "&")
@@ -4056,6 +4062,7 @@ Module annotated_value.
                             M.call_closure (|
                               M.get_function (|
                                 "move_core_types::annotated_visitor::visit_struct",
+                                [],
                                 [ V ]
                               |),
                               [ blob; M.read (| ty |); M.read (| visitor |) ]

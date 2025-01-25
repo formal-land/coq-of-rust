@@ -86,6 +86,7 @@ Module deserializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::deserializer::deserialize_compiled_module",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| binary_config |) ]
@@ -255,6 +256,7 @@ Module deserializer.
           M.call_closure (|
             M.get_function (|
               "move_binary_format::deserializer::deserialize_compiled_module",
+              [],
               []
             |),
             [
@@ -1643,6 +1645,7 @@ Module deserializer.
                               M.call_closure (|
                                 M.get_function (|
                                   "move_binary_format::deserializer::read_uleb_internal",
+                                  [],
                                   [ Ty.path "u16" ]
                                 |),
                                 [
@@ -1764,6 +1767,7 @@ Module deserializer.
                               M.call_closure (|
                                 M.get_function (|
                                   "move_binary_format::deserializer::read_uleb_internal",
+                                  [],
                                   [ Ty.path "u16" ]
                                 |),
                                 [
@@ -1887,6 +1891,7 @@ Module deserializer.
                               M.call_closure (|
                                 M.get_function (|
                                   "move_binary_format::deserializer::read_uleb_internal",
+                                  [],
                                   [ Ty.path "u16" ]
                                 |),
                                 [
@@ -2008,6 +2013,7 @@ Module deserializer.
                               M.call_closure (|
                                 M.get_function (|
                                   "move_binary_format::deserializer::read_uleb_internal",
+                                  [],
                                   [ Ty.path "u16" ]
                                 |),
                                 [
@@ -2137,6 +2143,7 @@ Module deserializer.
                               M.call_closure (|
                                 M.get_function (|
                                   "move_binary_format::deserializer::read_uleb_internal",
+                                  [],
                                   [ Ty.path "u16" ]
                                 |),
                                 [
@@ -2262,6 +2269,7 @@ Module deserializer.
                               M.call_closure (|
                                 M.get_function (|
                                   "move_binary_format::deserializer::read_uleb_internal",
+                                  [],
                                   [ Ty.path "u16" ]
                                 |),
                                 [
@@ -2385,6 +2393,7 @@ Module deserializer.
                               M.call_closure (|
                                 M.get_function (|
                                   "move_binary_format::deserializer::read_uleb_internal",
+                                  [],
                                   [ Ty.path "u16" ]
                                 |),
                                 [
@@ -2508,6 +2517,7 @@ Module deserializer.
                               M.call_closure (|
                                 M.get_function (|
                                   "move_binary_format::deserializer::read_uleb_internal",
+                                  [],
                                   [ Ty.path "u16" ]
                                 |),
                                 [
@@ -2633,6 +2643,7 @@ Module deserializer.
                               M.call_closure (|
                                 M.get_function (|
                                   "move_binary_format::deserializer::read_uleb_internal",
+                                  [],
                                   [ Ty.path "u16" ]
                                 |),
                                 [
@@ -2756,6 +2767,7 @@ Module deserializer.
                               M.call_closure (|
                                 M.get_function (|
                                   "move_binary_format::deserializer::read_uleb_internal",
+                                  [],
                                   [ Ty.path "u16" ]
                                 |),
                                 [
@@ -2881,6 +2893,7 @@ Module deserializer.
                               M.call_closure (|
                                 M.get_function (|
                                   "move_binary_format::deserializer::read_uleb_internal",
+                                  [],
                                   [ Ty.path "u16" ]
                                 |),
                                 [
@@ -3004,6 +3017,7 @@ Module deserializer.
                               M.call_closure (|
                                 M.get_function (|
                                   "move_binary_format::deserializer::read_uleb_internal",
+                                  [],
                                   [ Ty.path "u16" ]
                                 |),
                                 [
@@ -3098,6 +3112,7 @@ Module deserializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::deserializer::read_uleb_internal",
+            [],
             [ Ty.path "usize" ]
           |),
           [
@@ -3126,6 +3141,7 @@ Module deserializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::deserializer::read_uleb_internal",
+            [],
             [ Ty.path "u16" ]
           |),
           [
@@ -3154,6 +3170,7 @@ Module deserializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::deserializer::read_uleb_internal",
+            [],
             [ Ty.path "u64" ]
           |),
           [
@@ -3182,6 +3199,7 @@ Module deserializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::deserializer::read_uleb_internal",
+            [],
             [ Ty.path "u64" ]
           |),
           [
@@ -3210,6 +3228,7 @@ Module deserializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::deserializer::read_uleb_internal",
+            [],
             [ Ty.path "usize" ]
           |),
           [
@@ -3242,6 +3261,7 @@ Module deserializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::deserializer::read_uleb_internal",
+            [],
             [ Ty.path "u64" ]
           |),
           [
@@ -3270,6 +3290,7 @@ Module deserializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::deserializer::read_uleb_internal",
+            [],
             [ Ty.path "usize" ]
           |),
           [
@@ -3298,6 +3319,7 @@ Module deserializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::deserializer::read_uleb_internal",
+            [],
             [ Ty.path "usize" ]
           |),
           [
@@ -3326,6 +3348,7 @@ Module deserializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::deserializer::read_uleb_internal",
+            [],
             [ Ty.path "usize" ]
           |),
           [
@@ -3356,6 +3379,7 @@ Module deserializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::deserializer::read_uleb_internal",
+            [],
             [ Ty.path "usize" ]
           |),
           [
@@ -3384,6 +3408,7 @@ Module deserializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::deserializer::read_uleb_internal",
+            [],
             [ Ty.path "u16" ]
           |),
           [
@@ -3416,6 +3441,7 @@ Module deserializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::deserializer::read_uleb_internal",
+            [],
             [ Ty.path "u16" ]
           |),
           [
@@ -3444,6 +3470,7 @@ Module deserializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::deserializer::read_uleb_internal",
+            [],
             [ Ty.path "u8" ]
           |),
           [
@@ -3472,6 +3499,7 @@ Module deserializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::deserializer::read_uleb_internal",
+            [],
             [ Ty.path "u32" ]
           |),
           [
@@ -3500,6 +3528,7 @@ Module deserializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::deserializer::read_uleb_internal",
+            [],
             [ Ty.path "u32" ]
           |),
           [
@@ -3528,6 +3557,7 @@ Module deserializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::deserializer::read_uleb_internal",
+            [],
             [ Ty.path "u8" ]
           |),
           [
@@ -3723,6 +3753,7 @@ Module deserializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::deserializer::build_compiled_module",
+                            [],
                             []
                           |),
                           [
@@ -4018,6 +4049,7 @@ Module deserializer.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "move_binary_format::deserializer::read_table",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| cursor |) ]
@@ -4223,6 +4255,7 @@ Module deserializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::deserializer::load_table_offset",
+                              [],
                               []
                             |),
                             [ M.read (| cursor |) ]
@@ -4304,6 +4337,7 @@ Module deserializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::deserializer::load_table_size",
+                              [],
                               []
                             |),
                             [ M.read (| cursor |) ]
@@ -5232,6 +5266,7 @@ Module deserializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::deserializer::build_common_tables",
+                            [],
                             [ Ty.path "move_binary_format::file_format::CompiledModule" ]
                           |),
                           [ M.read (| binary |); M.read (| tables |); M.read (| module |) ]
@@ -5311,6 +5346,7 @@ Module deserializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::deserializer::build_module_tables",
+                            [],
                             []
                           |),
                           [ M.read (| binary |); M.read (| tables |); M.read (| module |) ]
@@ -5731,6 +5767,7 @@ Module deserializer.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "move_binary_format::deserializer::load_module_handles",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -5878,6 +5915,7 @@ Module deserializer.
                                                                                   M.call_closure (|
                                                                                     M.get_function (|
                                                                                       "core::hint::must_use",
+                                                                                      [],
                                                                                       [
                                                                                         Ty.path
                                                                                           "alloc::string::String"
@@ -5890,6 +5928,7 @@ Module deserializer.
                                                                                             M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "alloc::fmt::format",
+                                                                                                [],
                                                                                                 []
                                                                                               |),
                                                                                               [
@@ -6059,6 +6098,7 @@ Module deserializer.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "move_binary_format::deserializer::load_struct_handles",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -6206,6 +6246,7 @@ Module deserializer.
                                                                                   M.call_closure (|
                                                                                     M.get_function (|
                                                                                       "core::hint::must_use",
+                                                                                      [],
                                                                                       [
                                                                                         Ty.path
                                                                                           "alloc::string::String"
@@ -6218,6 +6259,7 @@ Module deserializer.
                                                                                             M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "alloc::fmt::format",
+                                                                                                [],
                                                                                                 []
                                                                                               |),
                                                                                               [
@@ -6387,6 +6429,7 @@ Module deserializer.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "move_binary_format::deserializer::load_function_handles",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -6534,6 +6577,7 @@ Module deserializer.
                                                                                   M.call_closure (|
                                                                                     M.get_function (|
                                                                                       "core::hint::must_use",
+                                                                                      [],
                                                                                       [
                                                                                         Ty.path
                                                                                           "alloc::string::String"
@@ -6546,6 +6590,7 @@ Module deserializer.
                                                                                             M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "alloc::fmt::format",
+                                                                                                [],
                                                                                                 []
                                                                                               |),
                                                                                               [
@@ -6715,6 +6760,7 @@ Module deserializer.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "move_binary_format::deserializer::load_function_instantiations",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -6864,6 +6910,7 @@ Module deserializer.
                                                                                   M.call_closure (|
                                                                                     M.get_function (|
                                                                                       "core::hint::must_use",
+                                                                                      [],
                                                                                       [
                                                                                         Ty.path
                                                                                           "alloc::string::String"
@@ -6876,6 +6923,7 @@ Module deserializer.
                                                                                             M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "alloc::fmt::format",
+                                                                                                [],
                                                                                                 []
                                                                                               |),
                                                                                               [
@@ -7045,6 +7093,7 @@ Module deserializer.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "move_binary_format::deserializer::load_signatures",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -7192,6 +7241,7 @@ Module deserializer.
                                                                                   M.call_closure (|
                                                                                     M.get_function (|
                                                                                       "core::hint::must_use",
+                                                                                      [],
                                                                                       [
                                                                                         Ty.path
                                                                                           "alloc::string::String"
@@ -7204,6 +7254,7 @@ Module deserializer.
                                                                                             M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "alloc::fmt::format",
+                                                                                                [],
                                                                                                 []
                                                                                               |),
                                                                                               [
@@ -7373,6 +7424,7 @@ Module deserializer.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "move_binary_format::deserializer::load_constant_pool",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -7520,6 +7572,7 @@ Module deserializer.
                                                                                   M.call_closure (|
                                                                                     M.get_function (|
                                                                                       "core::hint::must_use",
+                                                                                      [],
                                                                                       [
                                                                                         Ty.path
                                                                                           "alloc::string::String"
@@ -7532,6 +7585,7 @@ Module deserializer.
                                                                                             M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "alloc::fmt::format",
+                                                                                                [],
                                                                                                 []
                                                                                               |),
                                                                                               [
@@ -7744,6 +7798,7 @@ Module deserializer.
                                                                                   M.call_closure (|
                                                                                     M.get_function (|
                                                                                       "core::hint::must_use",
+                                                                                      [],
                                                                                       [
                                                                                         Ty.path
                                                                                           "alloc::string::String"
@@ -7756,6 +7811,7 @@ Module deserializer.
                                                                                             M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "alloc::fmt::format",
+                                                                                                [],
                                                                                                 []
                                                                                               |),
                                                                                               [
@@ -7852,6 +7908,7 @@ Module deserializer.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "move_binary_format::deserializer::load_metadata",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -7976,6 +8033,7 @@ Module deserializer.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "move_binary_format::deserializer::load_identifiers",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -8123,6 +8181,7 @@ Module deserializer.
                                                                                   M.call_closure (|
                                                                                     M.get_function (|
                                                                                       "core::hint::must_use",
+                                                                                      [],
                                                                                       [
                                                                                         Ty.path
                                                                                           "alloc::string::String"
@@ -8135,6 +8194,7 @@ Module deserializer.
                                                                                             M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "alloc::fmt::format",
+                                                                                                [],
                                                                                                 []
                                                                                               |),
                                                                                               [
@@ -8304,6 +8364,7 @@ Module deserializer.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "move_binary_format::deserializer::load_address_identifiers",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -8453,6 +8514,7 @@ Module deserializer.
                                                                                   M.call_closure (|
                                                                                     M.get_function (|
                                                                                       "core::hint::must_use",
+                                                                                      [],
                                                                                       [
                                                                                         Ty.path
                                                                                           "alloc::string::String"
@@ -8465,6 +8527,7 @@ Module deserializer.
                                                                                             M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "alloc::fmt::format",
+                                                                                                [],
                                                                                                 []
                                                                                               |),
                                                                                               [
@@ -9069,6 +9132,7 @@ Module deserializer.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "move_binary_format::deserializer::load_struct_defs",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -9222,6 +9286,7 @@ Module deserializer.
                                                                                   M.call_closure (|
                                                                                     M.get_function (|
                                                                                       "core::hint::must_use",
+                                                                                      [],
                                                                                       [
                                                                                         Ty.path
                                                                                           "alloc::string::String"
@@ -9234,6 +9299,7 @@ Module deserializer.
                                                                                             M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "alloc::fmt::format",
+                                                                                                [],
                                                                                                 []
                                                                                               |),
                                                                                               [
@@ -9394,6 +9460,7 @@ Module deserializer.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "move_binary_format::deserializer::load_struct_instantiations",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -9547,6 +9614,7 @@ Module deserializer.
                                                                                   M.call_closure (|
                                                                                     M.get_function (|
                                                                                       "core::hint::must_use",
+                                                                                      [],
                                                                                       [
                                                                                         Ty.path
                                                                                           "alloc::string::String"
@@ -9559,6 +9627,7 @@ Module deserializer.
                                                                                             M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "alloc::fmt::format",
+                                                                                                [],
                                                                                                 []
                                                                                               |),
                                                                                               [
@@ -9719,6 +9788,7 @@ Module deserializer.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "move_binary_format::deserializer::load_function_defs",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -9872,6 +9942,7 @@ Module deserializer.
                                                                                   M.call_closure (|
                                                                                     M.get_function (|
                                                                                       "core::hint::must_use",
+                                                                                      [],
                                                                                       [
                                                                                         Ty.path
                                                                                           "alloc::string::String"
@@ -9884,6 +9955,7 @@ Module deserializer.
                                                                                             M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "alloc::fmt::format",
+                                                                                                [],
                                                                                                 []
                                                                                               |),
                                                                                               [
@@ -10044,6 +10116,7 @@ Module deserializer.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "move_binary_format::deserializer::load_field_handles",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -10197,6 +10270,7 @@ Module deserializer.
                                                                                   M.call_closure (|
                                                                                     M.get_function (|
                                                                                       "core::hint::must_use",
+                                                                                      [],
                                                                                       [
                                                                                         Ty.path
                                                                                           "alloc::string::String"
@@ -10209,6 +10283,7 @@ Module deserializer.
                                                                                             M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "alloc::fmt::format",
+                                                                                                [],
                                                                                                 []
                                                                                               |),
                                                                                               [
@@ -10369,6 +10444,7 @@ Module deserializer.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "move_binary_format::deserializer::load_field_instantiations",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -10522,6 +10598,7 @@ Module deserializer.
                                                                                   M.call_closure (|
                                                                                     M.get_function (|
                                                                                       "core::hint::must_use",
+                                                                                      [],
                                                                                       [
                                                                                         Ty.path
                                                                                           "alloc::string::String"
@@ -10534,6 +10611,7 @@ Module deserializer.
                                                                                             M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "alloc::fmt::format",
+                                                                                                [],
                                                                                                 []
                                                                                               |),
                                                                                               [
@@ -10694,6 +10772,7 @@ Module deserializer.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "move_binary_format::deserializer::load_module_handles",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -10847,6 +10926,7 @@ Module deserializer.
                                                                                   M.call_closure (|
                                                                                     M.get_function (|
                                                                                       "core::hint::must_use",
+                                                                                      [],
                                                                                       [
                                                                                         Ty.path
                                                                                           "alloc::string::String"
@@ -10859,6 +10939,7 @@ Module deserializer.
                                                                                             M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "alloc::fmt::format",
+                                                                                                [],
                                                                                                 []
                                                                                               |),
                                                                                               [
@@ -11219,6 +11300,7 @@ Module deserializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::deserializer::load_address_identifier_index",
+                                            [],
                                             []
                                           |),
                                           [ cursor ]
@@ -11306,6 +11388,7 @@ Module deserializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::deserializer::load_identifier_index",
+                                            [],
                                             []
                                           |),
                                           [ cursor ]
@@ -11544,6 +11627,7 @@ Module deserializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::deserializer::load_module_handle_index",
+                                            [],
                                             []
                                           |),
                                           [ cursor ]
@@ -11631,6 +11715,7 @@ Module deserializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::deserializer::load_identifier_index",
+                                            [],
                                             []
                                           |),
                                           [ cursor ]
@@ -11717,6 +11802,7 @@ Module deserializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::deserializer::load_ability_set",
+                                            [],
                                             []
                                           |),
                                           [
@@ -11815,6 +11901,7 @@ Module deserializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::deserializer::load_struct_type_parameters",
+                                            [],
                                             []
                                           |),
                                           [ cursor ]
@@ -12059,6 +12146,7 @@ Module deserializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::deserializer::load_module_handle_index",
+                                            [],
                                             []
                                           |),
                                           [ cursor ]
@@ -12146,6 +12234,7 @@ Module deserializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::deserializer::load_identifier_index",
+                                            [],
                                             []
                                           |),
                                           [ cursor ]
@@ -12233,6 +12322,7 @@ Module deserializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::deserializer::load_signature_index",
+                                            [],
                                             []
                                           |),
                                           [ cursor ]
@@ -12320,6 +12410,7 @@ Module deserializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::deserializer::load_signature_index",
+                                            [],
                                             []
                                           |),
                                           [ cursor ]
@@ -12413,6 +12504,7 @@ Module deserializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::deserializer::load_ability_sets",
+                                            [],
                                             []
                                           |),
                                           [
@@ -12656,6 +12748,7 @@ Module deserializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::deserializer::load_struct_def_index",
+                                            [],
                                             []
                                           |),
                                           [ cursor ]
@@ -12743,6 +12836,7 @@ Module deserializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::deserializer::load_signature_index",
+                                            [],
                                             []
                                           |),
                                           [ cursor ]
@@ -12984,6 +13078,7 @@ Module deserializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::deserializer::load_function_handle_index",
+                                            [],
                                             []
                                           |),
                                           [ cursor ]
@@ -13071,6 +13166,7 @@ Module deserializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::deserializer::load_signature_index",
+                                            [],
                                             []
                                           |),
                                           [ cursor ]
@@ -13324,6 +13420,7 @@ Module deserializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::deserializer::load_identifier_size",
+                                            [],
                                             []
                                           |),
                                           [ cursor ]
@@ -13391,7 +13488,11 @@ Module deserializer.
                             let~ buffer :=
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_function (| "alloc::vec::from_elem", [ Ty.path "u8" ] |),
+                                  M.get_function (|
+                                    "alloc::vec::from_elem",
+                                    [],
+                                    [ Ty.path "u8" ]
+                                  |),
                                   [ Value.Integer IntegerKind.U8 0; M.read (| size |) ]
                                 |)
                               |) in
@@ -14243,6 +14344,7 @@ Module deserializer.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "move_binary_format::deserializer::load_constant",
+                                                [],
                                                 []
                                               |),
                                               [ cursor ]
@@ -14370,6 +14472,7 @@ Module deserializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::deserializer::load_signature_token",
+                              [],
                               []
                             |),
                             [ M.read (| cursor |) ]
@@ -14457,6 +14560,7 @@ Module deserializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::deserializer::load_byte_blob",
+                              [],
                               [
                                 Ty.function
                                   [
@@ -14479,6 +14583,7 @@ Module deserializer.
                               M.read (| cursor |);
                               M.get_function (|
                                 "move_binary_format::deserializer::load_constant_size",
+                                [],
                                 []
                               |)
                             ]
@@ -14697,6 +14802,7 @@ Module deserializer.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "move_binary_format::deserializer::load_metadata_entry",
+                                                [],
                                                 []
                                               |),
                                               [ cursor ]
@@ -14827,6 +14933,7 @@ Module deserializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::deserializer::load_byte_blob",
+                              [],
                               [
                                 Ty.function
                                   [
@@ -14849,6 +14956,7 @@ Module deserializer.
                               M.read (| cursor |);
                               M.get_function (|
                                 "move_binary_format::deserializer::load_metadata_key_size",
+                                [],
                                 []
                               |)
                             ]
@@ -14936,6 +15044,7 @@ Module deserializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::deserializer::load_byte_blob",
+                              [],
                               [
                                 Ty.function
                                   [
@@ -14958,6 +15067,7 @@ Module deserializer.
                               M.read (| cursor |);
                               M.get_function (|
                                 "move_binary_format::deserializer::load_metadata_value_size",
+                                [],
                                 []
                               |)
                             ]
@@ -15166,7 +15276,7 @@ Module deserializer.
               let~ data :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "alloc::vec::from_elem", [ Ty.path "u8" ] |),
+                    M.get_function (| "alloc::vec::from_elem", [], [ Ty.path "u8" ] |),
                     [ Value.Integer IntegerKind.U8 0; M.read (| size |) ]
                   |)
                 |) in
@@ -15559,6 +15669,7 @@ Module deserializer.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "move_binary_format::deserializer::load_signature_tokens",
+                                                      [],
                                                       []
                                                     |),
                                                     [ cursor ]
@@ -15689,6 +15800,7 @@ Module deserializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::deserializer::load_signature_size",
+                              [],
                               []
                             |),
                             [ M.read (| cursor |) ]
@@ -15874,6 +15986,7 @@ Module deserializer.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "move_binary_format::deserializer::load_signature_token",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| cursor |) ]
@@ -16360,6 +16473,7 @@ Module deserializer.
                                                                                     M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "core::hint::must_use",
+                                                                                        [],
                                                                                         [
                                                                                           Ty.path
                                                                                             "alloc::string::String"
@@ -16373,6 +16487,7 @@ Module deserializer.
                                                                                               M.call_closure (|
                                                                                                 M.get_function (|
                                                                                                   "alloc::fmt::format",
+                                                                                                  [],
                                                                                                   []
                                                                                                 |),
                                                                                                 [
@@ -16762,6 +16877,7 @@ Module deserializer.
                                                                           M.call_closure (|
                                                                             M.get_function (|
                                                                               "move_binary_format::deserializer::load_struct_handle_index",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| cursor |) ]
@@ -16877,6 +16993,7 @@ Module deserializer.
                                                                           M.call_closure (|
                                                                             M.get_function (|
                                                                               "move_binary_format::deserializer::load_struct_handle_index",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| cursor |) ]
@@ -16975,6 +17092,7 @@ Module deserializer.
                                                                           M.call_closure (|
                                                                             M.get_function (|
                                                                               "move_binary_format::deserializer::load_type_parameter_count",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| cursor |) ]
@@ -17185,6 +17303,7 @@ Module deserializer.
                                                                           M.call_closure (|
                                                                             M.get_function (|
                                                                               "move_binary_format::deserializer::load_type_parameter_index",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [ M.read (| cursor |) ]
@@ -18228,7 +18347,7 @@ Module deserializer.
                       (M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -18336,7 +18455,7 @@ Module deserializer.
                       (M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -19081,6 +19200,7 @@ Module deserializer.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::panicking::panic",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -19162,6 +19282,7 @@ Module deserializer.
                                   M.call_closure (|
                                     M.get_function (|
                                       "move_binary_format::deserializer::read_uleb_internal",
+                                      [],
                                       [ Ty.path "u8" ]
                                     |),
                                     [
@@ -19345,6 +19466,7 @@ Module deserializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::deserializer::load_type_parameter_count",
+                              [],
                               []
                             |),
                             [ M.read (| cursor |) ]
@@ -19531,6 +19653,7 @@ Module deserializer.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "move_binary_format::deserializer::load_ability_set",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| cursor |); M.read (| pos |)
@@ -19671,6 +19794,7 @@ Module deserializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::deserializer::load_type_parameter_count",
+                              [],
                               []
                             |),
                             [ M.read (| cursor |) ]
@@ -19858,6 +19982,7 @@ Module deserializer.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "move_binary_format::deserializer::load_struct_type_parameter",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| cursor |) ]
@@ -20004,6 +20129,7 @@ Module deserializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::deserializer::load_ability_set",
+                              [],
                               []
                             |),
                             [
@@ -20125,6 +20251,7 @@ Module deserializer.
                                       M.call_closure (|
                                         M.get_function (|
                                           "move_binary_format::deserializer::read_uleb_internal",
+                                          [],
                                           [ Ty.path "u8" ]
                                         |),
                                         [ M.read (| cursor |); Value.Integer IntegerKind.U64 1 ]
@@ -20362,6 +20489,7 @@ Module deserializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::deserializer::load_struct_handle_index",
+                                            [],
                                             []
                                           |),
                                           [ cursor ]
@@ -20652,6 +20780,7 @@ Module deserializer.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "move_binary_format::deserializer::load_field_defs",
+                                                        [],
                                                         []
                                                       |),
                                                       [ cursor ]
@@ -20828,6 +20957,7 @@ Module deserializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::deserializer::load_field_count",
+                              [],
                               []
                             |),
                             [ M.read (| cursor |) ]
@@ -20998,6 +21128,7 @@ Module deserializer.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "move_binary_format::deserializer::load_field_def",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| cursor |) ]
@@ -21133,6 +21264,7 @@ Module deserializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::deserializer::load_identifier_index",
+                              [],
                               []
                             |),
                             [ M.read (| cursor |) ]
@@ -21218,6 +21350,7 @@ Module deserializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::deserializer::load_signature_token",
+                              [],
                               []
                             |),
                             [ M.read (| cursor |) ]
@@ -21431,6 +21564,7 @@ Module deserializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::deserializer::load_function_def",
+                                            [],
                                             []
                                           |),
                                           [ cursor ]
@@ -21680,6 +21814,7 @@ Module deserializer.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_binary_format::deserializer::load_struct_def_index",
+                                    [],
                                     []
                                   |),
                                   [ cursor ]
@@ -21765,6 +21900,7 @@ Module deserializer.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_binary_format::deserializer::load_field_offset",
+                                    [],
                                     []
                                   |),
                                   [ cursor ]
@@ -22003,6 +22139,7 @@ Module deserializer.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_binary_format::deserializer::load_field_handle_index",
+                                    [],
                                     []
                                   |),
                                   [ cursor ]
@@ -22088,6 +22225,7 @@ Module deserializer.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_binary_format::deserializer::load_signature_index",
+                                    [],
                                     []
                                   |),
                                   [ cursor ]
@@ -22294,6 +22432,7 @@ Module deserializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::deserializer::load_function_handle_index",
+                              [],
                               []
                             |),
                             [ M.read (| cursor |) ]
@@ -23442,6 +23581,7 @@ Module deserializer.
                                   M.call_closure (|
                                     M.get_function (|
                                       "move_binary_format::deserializer::load_struct_definition_indices",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| cursor |) ]
@@ -23575,6 +23715,7 @@ Module deserializer.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "move_binary_format::deserializer::load_code_unit",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| cursor |) ]
@@ -23762,6 +23903,7 @@ Module deserializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::deserializer::load_acquires_count",
+                              [],
                               []
                             |),
                             [ M.read (| cursor |) ]
@@ -23947,6 +24089,7 @@ Module deserializer.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "move_binary_format::deserializer::load_struct_def_index",
+                                                              [],
                                                               []
                                                             |),
                                                             [ M.read (| cursor |) ]
@@ -24087,6 +24230,7 @@ Module deserializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::deserializer::load_signature_index",
+                              [],
                               []
                             |),
                             [ M.read (| cursor |) ]
@@ -24188,7 +24332,11 @@ Module deserializer.
                       |),
                       [
                         M.call_closure (|
-                          M.get_function (| "move_binary_format::deserializer::load_code", [] |),
+                          M.get_function (|
+                            "move_binary_format::deserializer::load_code",
+                            [],
+                            []
+                          |),
                           [
                             M.read (| cursor |);
                             M.SubPointer.get_struct_record_field (|
@@ -24478,6 +24626,7 @@ Module deserializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::deserializer::load_bytecode_count",
+                              [],
                               []
                             |),
                             [ M.read (| cursor |) ]
@@ -24960,6 +25109,7 @@ Module deserializer.
                                                                           M.call_closure (|
                                                                             M.get_function (|
                                                                               "core::hint::must_use",
+                                                                              [],
                                                                               [
                                                                                 Ty.path
                                                                                   "alloc::string::String"
@@ -24972,6 +25122,7 @@ Module deserializer.
                                                                                     M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "alloc::fmt::format",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -25159,6 +25310,7 @@ Module deserializer.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::hint::must_use",
+                                                                      [],
                                                                       [
                                                                         Ty.path
                                                                           "alloc::string::String"
@@ -25171,6 +25323,7 @@ Module deserializer.
                                                                             M.call_closure (|
                                                                               M.get_function (|
                                                                                 "alloc::fmt::format",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -25308,6 +25461,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_bytecode_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -25410,6 +25564,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_bytecode_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -25512,6 +25667,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_bytecode_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -25787,6 +25943,7 @@ Module deserializer.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "move_binary_format::deserializer::read_u64_internal",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| cursor |) ]
@@ -25887,6 +26044,7 @@ Module deserializer.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "move_binary_format::deserializer::read_u128_internal",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| cursor |) ]
@@ -26040,6 +26198,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_constant_pool_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -26166,6 +26325,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_local_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -26268,6 +26428,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_local_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -26370,6 +26531,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_local_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -26472,6 +26634,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_local_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -26574,6 +26737,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_local_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -26677,6 +26841,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_field_handle_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -26780,6 +26945,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_field_inst_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -26883,6 +27049,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_field_handle_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -26986,6 +27153,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_field_inst_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -27089,6 +27257,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_function_handle_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -27192,6 +27361,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_function_inst_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -27295,6 +27465,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_struct_def_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -27398,6 +27569,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_struct_def_inst_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -27501,6 +27673,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_struct_def_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -27604,6 +27777,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_struct_def_inst_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -27995,6 +28169,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_signature_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -28084,6 +28259,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::read_u64_internal",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -28187,6 +28363,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_signature_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -28290,6 +28467,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_signature_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -28393,6 +28571,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_signature_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -28496,6 +28675,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_signature_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -28599,6 +28779,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_signature_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -28702,6 +28883,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_signature_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -28791,6 +28973,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::read_u64_internal",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -28894,6 +29077,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_signature_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -28993,6 +29177,7 @@ Module deserializer.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "move_binary_format::deserializer::read_u16_internal",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| cursor |) ]
@@ -29093,6 +29278,7 @@ Module deserializer.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "move_binary_format::deserializer::read_u32_internal",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| cursor |) ]
@@ -29193,6 +29379,7 @@ Module deserializer.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "move_binary_format::deserializer::read_u256_internal",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| cursor |) ]
@@ -29348,6 +29535,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_struct_def_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -29451,6 +29639,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_struct_def_inst_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -29554,6 +29743,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_struct_def_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -29657,6 +29847,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_struct_def_inst_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -29760,6 +29951,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_struct_def_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -29863,6 +30055,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_struct_def_inst_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -29966,6 +30159,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_struct_def_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -30069,6 +30263,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_struct_def_inst_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -30172,6 +30367,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_struct_def_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -30275,6 +30471,7 @@ Module deserializer.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "move_binary_format::deserializer::load_struct_def_inst_index",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| cursor |) ]
@@ -33193,6 +33390,7 @@ Module deserializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::file_format_common::read_u32",
+                            [],
                             []
                           |),
                           [ cursor ]
@@ -33362,6 +33560,7 @@ Module deserializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::deserializer::load_table_count",
+                                [],
                                 []
                               |),
                               [ versioned_cursor ]
@@ -33460,6 +33659,7 @@ Module deserializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::deserializer::read_tables",
+                              [],
                               []
                             |),
                             [ versioned_cursor; M.read (| table_count |); tables ]
@@ -33542,6 +33742,7 @@ Module deserializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::deserializer::check_tables",
+                                [],
                                 []
                               |),
                               [ tables; M.read (| binary_len |) ]
@@ -33738,6 +33939,7 @@ Module deserializer.
                                     M.call_closure (|
                                       M.get_function (|
                                         "move_binary_format::deserializer::load_module_handle_index",
+                                        [],
                                         []
                                       |),
                                       [ versioned_cursor ]
@@ -34169,7 +34371,7 @@ Module deserializer.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "move_binary_format::file_format_common::read_u8", [] |),
+            M.get_function (| "move_binary_format::file_format_common::read_u8", [], [] |),
             [
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
@@ -34235,7 +34437,7 @@ Module deserializer.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "move_binary_format::file_format_common::read_u32", [] |),
+            M.get_function (| "move_binary_format::file_format_common::read_u32", [], [] |),
             [
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
@@ -34260,7 +34462,11 @@ Module deserializer.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "move_binary_format::file_format_common::read_uleb128_as_u64", [] |),
+            M.get_function (|
+              "move_binary_format::file_format_common::read_uleb128_as_u64",
+              [],
+              []
+            |),
             [
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),

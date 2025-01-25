@@ -93,6 +93,7 @@ Module instructions.
                                       M.call_closure (|
                                         M.get_function (|
                                           "revm_interpreter::instructions::contract::call_helpers::resize_memory",
+                                          [],
                                           [ impl_InterpreterTypes ]
                                         |),
                                         [
@@ -283,6 +284,7 @@ Module instructions.
                                       M.call_closure (|
                                         M.get_function (|
                                           "revm_interpreter::instructions::contract::call_helpers::resize_memory",
+                                          [],
                                           [ impl_InterpreterTypes ]
                                         |),
                                         [
@@ -702,6 +704,7 @@ Module instructions.
                                   M.call_closure (|
                                     M.get_function (|
                                       "revm_interpreter::interpreter::shared_memory::num_words",
+                                      [],
                                       []
                                     |),
                                     [
@@ -897,7 +900,7 @@ Module instructions.
                   let~ call_cost :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "revm_interpreter::gas::calc::call_cost", [] |),
+                        M.get_function (| "revm_interpreter::gas::calc::call_cost", [], [] |),
                         [
                           M.call_closure (|
                             M.get_trait_method (|
@@ -1038,7 +1041,7 @@ Module instructions.
                                 |) in
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_function (| "core::cmp::min", [ Ty.path "u64" ] |),
+                                  M.get_function (| "core::cmp::min", [], [ Ty.path "u64" ] |),
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|

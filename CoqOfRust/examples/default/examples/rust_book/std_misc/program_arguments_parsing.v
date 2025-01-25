@@ -16,7 +16,7 @@ Definition increase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -73,7 +73,7 @@ Definition decrease (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -135,7 +135,7 @@ Definition help (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -234,7 +234,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ]
                     ]
                   |),
-                  [ M.call_closure (| M.get_function (| "std::env::args", [] |), [] |) ]
+                  [ M.call_closure (| M.get_function (| "std::env::args", [], [] |), [] |) ]
                 |)
               |) in
             M.match_operator (|
@@ -263,7 +263,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "std::io::stdio::_print", [] |),
+                            M.get_function (| "std::io::stdio::_print", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -348,7 +348,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_function (| "std::io::stdio::_print", [] |),
+                                  M.get_function (| "std::io::stdio::_print", [], [] |),
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -373,7 +373,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             (let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_function (| "std::io::stdio::_print", [] |),
+                                  M.get_function (| "std::io::stdio::_print", [], [] |),
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -484,7 +484,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         let~ _ :=
                                           M.alloc (|
                                             M.call_closure (|
-                                              M.get_function (| "std::io::stdio::_eprint", [] |),
+                                              M.get_function (|
+                                                "std::io::stdio::_eprint",
+                                                [],
+                                                []
+                                              |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -514,6 +518,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.call_closure (|
                                             M.get_function (|
                                               "program_arguments_parsing::help",
+                                              [],
                                               []
                                             |),
                                             []
@@ -549,7 +554,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               |) in
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "program_arguments_parsing::increase", [] |),
+                                M.get_function (| "program_arguments_parsing::increase", [], [] |),
                                 [ M.read (| number |) ]
                               |)
                             |)));
@@ -562,7 +567,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               |) in
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "program_arguments_parsing::decrease", [] |),
+                                M.get_function (| "program_arguments_parsing::decrease", [], [] |),
                                 [ M.read (| number |) ]
                               |)
                             |)));
@@ -572,7 +577,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               let~ _ :=
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "std::io::stdio::_eprint", [] |),
+                                    M.get_function (| "std::io::stdio::_eprint", [], [] |),
                                     [
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -596,7 +601,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_function (| "program_arguments_parsing::help", [] |),
+                                  M.get_function (| "program_arguments_parsing::help", [], [] |),
                                   []
                                 |)
                               |) in
@@ -608,7 +613,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     (let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "program_arguments_parsing::help", [] |),
+                          M.get_function (| "program_arguments_parsing::help", [], [] |),
                           []
                         |)
                       |) in

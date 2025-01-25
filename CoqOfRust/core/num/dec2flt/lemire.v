@@ -221,6 +221,7 @@ Module num.
                       M.call_closure (|
                         M.get_function (|
                           "core::num::dec2flt::lemire::compute_product_approx",
+                          [],
                           []
                         |),
                         [
@@ -338,7 +339,11 @@ Module num.
                                 BinOp.Wrap.sub (|
                                   BinOp.Wrap.add (|
                                     M.call_closure (|
-                                      M.get_function (| "core::num::dec2flt::lemire::power", [] |),
+                                      M.get_function (|
+                                        "core::num::dec2flt::lemire::power",
+                                        [],
+                                        []
+                                      |),
                                       [ M.rust_cast (M.read (| q |)) ]
                                     |),
                                     M.read (| upperbit |)
@@ -833,7 +838,7 @@ Module num.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String
@@ -888,7 +893,7 @@ Module num.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String
@@ -938,7 +943,7 @@ Module num.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String "assertion failed: precision <= 64"
@@ -1011,6 +1016,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::num::dec2flt::lemire::full_multiplication",
+                              [],
                               []
                             |),
                             [ M.read (| w |); M.read (| lo5 |) ]
@@ -1049,6 +1055,7 @@ Module num.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::num::dec2flt::lemire::full_multiplication",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| w |); M.read (| hi5 |) ]

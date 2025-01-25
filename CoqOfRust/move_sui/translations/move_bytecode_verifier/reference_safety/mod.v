@@ -177,6 +177,7 @@ Module reference_safety.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::hint::must_use",
+                                      [],
                                       [ Ty.path "alloc::string::String" ]
                                     |),
                                     [
@@ -184,7 +185,7 @@ Module reference_safety.
                                         let~ res :=
                                           M.alloc (|
                                             M.call_closure (|
-                                              M.get_function (| "alloc::fmt::format", [] |),
+                                              M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -278,7 +279,7 @@ Module reference_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -423,6 +424,7 @@ Module reference_safety.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::hint::must_use",
+                                      [],
                                       [ Ty.path "alloc::string::String" ]
                                     |),
                                     [
@@ -430,7 +432,7 @@ Module reference_safety.
                                         let~ res :=
                                           M.alloc (|
                                             M.call_closure (|
-                                              M.get_function (| "alloc::fmt::format", [] |),
+                                              M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -524,7 +526,7 @@ Module reference_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -1589,6 +1591,7 @@ Module reference_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::reference_safety::num_fields",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| struct_def |) ]
@@ -1723,6 +1726,7 @@ Module reference_safety.
                                                                             M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::hint::must_use",
+                                                                                [],
                                                                                 [
                                                                                   Ty.path
                                                                                     "alloc::string::String"
@@ -1735,6 +1739,7 @@ Module reference_safety.
                                                                                       M.call_closure (|
                                                                                         M.get_function (|
                                                                                           "alloc::fmt::format",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -1847,6 +1852,7 @@ Module reference_safety.
                                                                                 M.call_closure (|
                                                                                   M.get_function (|
                                                                                     "core::panicking::panic_fmt",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -1948,6 +1954,7 @@ Module reference_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::hint::must_use",
+                                                            [],
                                                             [ Ty.path "alloc::string::String" ]
                                                           |),
                                                           [
@@ -1957,6 +1964,7 @@ Module reference_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "alloc::fmt::format",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -2017,6 +2025,7 @@ Module reference_safety.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::panicking::panic_fmt",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2283,6 +2292,7 @@ Module reference_safety.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::hint::must_use",
+                                                        [],
                                                         [ Ty.path "alloc::string::String" ]
                                                       |),
                                                       [
@@ -2292,6 +2302,7 @@ Module reference_safety.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "alloc::fmt::format",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -2399,6 +2410,7 @@ Module reference_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::panicking::panic_fmt",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2483,6 +2495,7 @@ Module reference_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::hint::must_use",
+                                    [],
                                     [ Ty.path "alloc::string::String" ]
                                   |),
                                   [
@@ -2490,7 +2503,7 @@ Module reference_safety.
                                       let~ res :=
                                         M.alloc (|
                                           M.call_closure (|
-                                            M.get_function (| "alloc::fmt::format", [] |),
+                                            M.get_function (| "alloc::fmt::format", [], [] |),
                                             [
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -2544,7 +2557,7 @@ Module reference_safety.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic_fmt", [] |),
+                                      M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -2627,6 +2640,7 @@ Module reference_safety.
                               (M.call_closure (|
                                 M.get_function (|
                                   "move_bytecode_verifier::reference_safety::num_fields",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| struct_def |) ]
@@ -3492,6 +3506,7 @@ Module reference_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::hint::must_use",
+                                                    [],
                                                     [ Ty.path "alloc::string::String" ]
                                                   |),
                                                   [
@@ -3501,6 +3516,7 @@ Module reference_safety.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "alloc::fmt::format",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -3605,6 +3621,7 @@ Module reference_safety.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::panicking::panic_fmt",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -4145,6 +4162,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::hint::must_use",
+                                                          [],
                                                           [ Ty.path "alloc::string::String" ]
                                                         |),
                                                         [
@@ -4154,6 +4172,7 @@ Module reference_safety.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "alloc::fmt::format",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -4261,6 +4280,7 @@ Module reference_safety.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "core::panicking::panic_fmt",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -4466,6 +4486,7 @@ Module reference_safety.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::hint::must_use",
+                                                        [],
                                                         [ Ty.path "alloc::string::String" ]
                                                       |),
                                                       [
@@ -4475,6 +4496,7 @@ Module reference_safety.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "alloc::fmt::format",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -4582,6 +4604,7 @@ Module reference_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::panicking::panic_fmt",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -4679,6 +4702,7 @@ Module reference_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -4688,6 +4712,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -4746,6 +4771,7 @@ Module reference_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -5074,6 +5100,7 @@ Module reference_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::hint::must_use",
+                                                            [],
                                                             [ Ty.path "alloc::string::String" ]
                                                           |),
                                                           [
@@ -5083,6 +5110,7 @@ Module reference_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "alloc::fmt::format",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -5190,6 +5218,7 @@ Module reference_safety.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::panicking::panic_fmt",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -5320,6 +5349,7 @@ Module reference_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::hint::must_use",
+                                                            [],
                                                             [ Ty.path "alloc::string::String" ]
                                                           |),
                                                           [
@@ -5329,6 +5359,7 @@ Module reference_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "alloc::fmt::format",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -5436,6 +5467,7 @@ Module reference_safety.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::panicking::panic_fmt",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -5768,6 +5800,7 @@ Module reference_safety.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::hint::must_use",
+                                                        [],
                                                         [ Ty.path "alloc::string::String" ]
                                                       |),
                                                       [
@@ -5777,6 +5810,7 @@ Module reference_safety.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "alloc::fmt::format",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -5884,6 +5918,7 @@ Module reference_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::panicking::panic_fmt",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -5981,6 +6016,7 @@ Module reference_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -5990,6 +6026,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -6048,6 +6085,7 @@ Module reference_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -6364,6 +6402,7 @@ Module reference_safety.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::hint::must_use",
+                                                        [],
                                                         [ Ty.path "alloc::string::String" ]
                                                       |),
                                                       [
@@ -6373,6 +6412,7 @@ Module reference_safety.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "alloc::fmt::format",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -6480,6 +6520,7 @@ Module reference_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::panicking::panic_fmt",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -6577,6 +6618,7 @@ Module reference_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -6586,6 +6628,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -6644,6 +6687,7 @@ Module reference_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -6768,6 +6812,7 @@ Module reference_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -6777,6 +6822,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -6881,6 +6927,7 @@ Module reference_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -6985,6 +7032,7 @@ Module reference_safety.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -6992,7 +7040,11 @@ Module reference_safety.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -7048,6 +7100,7 @@ Module reference_safety.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::panicking::panic_fmt",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -7652,6 +7705,7 @@ Module reference_safety.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::hint::must_use",
+                                                        [],
                                                         [ Ty.path "alloc::string::String" ]
                                                       |),
                                                       [
@@ -7661,6 +7715,7 @@ Module reference_safety.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "alloc::fmt::format",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -7768,6 +7823,7 @@ Module reference_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::panicking::panic_fmt",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -7865,6 +7921,7 @@ Module reference_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -7874,6 +7931,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -7932,6 +7990,7 @@ Module reference_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -8276,6 +8335,7 @@ Module reference_safety.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::hint::must_use",
+                                                        [],
                                                         [ Ty.path "alloc::string::String" ]
                                                       |),
                                                       [
@@ -8285,6 +8345,7 @@ Module reference_safety.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "alloc::fmt::format",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -8392,6 +8453,7 @@ Module reference_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::panicking::panic_fmt",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -8489,6 +8551,7 @@ Module reference_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -8498,6 +8561,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -8556,6 +8620,7 @@ Module reference_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -8886,6 +8951,7 @@ Module reference_safety.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::hint::must_use",
+                                                        [],
                                                         [ Ty.path "alloc::string::String" ]
                                                       |),
                                                       [
@@ -8895,6 +8961,7 @@ Module reference_safety.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "alloc::fmt::format",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -9002,6 +9069,7 @@ Module reference_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::panicking::panic_fmt",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -9099,6 +9167,7 @@ Module reference_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -9108,6 +9177,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -9166,6 +9236,7 @@ Module reference_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -9510,6 +9581,7 @@ Module reference_safety.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::hint::must_use",
+                                                        [],
                                                         [ Ty.path "alloc::string::String" ]
                                                       |),
                                                       [
@@ -9519,6 +9591,7 @@ Module reference_safety.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "alloc::fmt::format",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -9626,6 +9699,7 @@ Module reference_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::panicking::panic_fmt",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -9723,6 +9797,7 @@ Module reference_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -9732,6 +9807,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -9790,6 +9866,7 @@ Module reference_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -10127,6 +10204,7 @@ Module reference_safety.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::hint::must_use",
+                                                                  [],
                                                                   [ Ty.path "alloc::string::String"
                                                                   ]
                                                                 |),
@@ -10137,6 +10215,7 @@ Module reference_safety.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "alloc::fmt::format",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -10245,6 +10324,7 @@ Module reference_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::panicking::panic_fmt",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -10337,6 +10417,7 @@ Module reference_safety.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -10344,7 +10425,11 @@ Module reference_safety.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -10400,6 +10485,7 @@ Module reference_safety.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::panicking::panic_fmt",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -10729,6 +10815,7 @@ Module reference_safety.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::hint::must_use",
+                                                                  [],
                                                                   [ Ty.path "alloc::string::String"
                                                                   ]
                                                                 |),
@@ -10739,6 +10826,7 @@ Module reference_safety.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "alloc::fmt::format",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -10847,6 +10935,7 @@ Module reference_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::panicking::panic_fmt",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -10939,6 +11028,7 @@ Module reference_safety.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -10946,7 +11036,11 @@ Module reference_safety.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -11002,6 +11096,7 @@ Module reference_safety.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::panicking::panic_fmt",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -11357,6 +11452,7 @@ Module reference_safety.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::hint::must_use",
+                                                                  [],
                                                                   [ Ty.path "alloc::string::String"
                                                                   ]
                                                                 |),
@@ -11367,6 +11463,7 @@ Module reference_safety.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "alloc::fmt::format",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -11475,6 +11572,7 @@ Module reference_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::panicking::panic_fmt",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -11567,6 +11665,7 @@ Module reference_safety.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -11574,7 +11673,11 @@ Module reference_safety.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -11630,6 +11733,7 @@ Module reference_safety.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::panicking::panic_fmt",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -11959,6 +12063,7 @@ Module reference_safety.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::hint::must_use",
+                                                                  [],
                                                                   [ Ty.path "alloc::string::String"
                                                                   ]
                                                                 |),
@@ -11969,6 +12074,7 @@ Module reference_safety.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "alloc::fmt::format",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -12077,6 +12183,7 @@ Module reference_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::panicking::panic_fmt",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -12169,6 +12276,7 @@ Module reference_safety.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -12176,7 +12284,11 @@ Module reference_safety.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -12232,6 +12344,7 @@ Module reference_safety.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::panicking::panic_fmt",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -12587,6 +12700,7 @@ Module reference_safety.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::hint::must_use",
+                                                                  [],
                                                                   [ Ty.path "alloc::string::String"
                                                                   ]
                                                                 |),
@@ -12597,6 +12711,7 @@ Module reference_safety.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "alloc::fmt::format",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -12705,6 +12820,7 @@ Module reference_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::panicking::panic_fmt",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -12797,6 +12913,7 @@ Module reference_safety.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -12804,7 +12921,11 @@ Module reference_safety.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -12860,6 +12981,7 @@ Module reference_safety.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::panicking::panic_fmt",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -13188,6 +13310,7 @@ Module reference_safety.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::hint::must_use",
+                                                                  [],
                                                                   [ Ty.path "alloc::string::String"
                                                                   ]
                                                                 |),
@@ -13198,6 +13321,7 @@ Module reference_safety.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "alloc::fmt::format",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -13306,6 +13430,7 @@ Module reference_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::panicking::panic_fmt",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -13398,6 +13523,7 @@ Module reference_safety.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -13405,7 +13531,11 @@ Module reference_safety.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -13461,6 +13591,7 @@ Module reference_safety.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::panicking::panic_fmt",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -13767,6 +13898,7 @@ Module reference_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::reference_safety::call",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -13911,6 +14043,7 @@ Module reference_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::reference_safety::call",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -14186,6 +14319,7 @@ Module reference_safety.
                                                                             M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::hint::must_use",
+                                                                                [],
                                                                                 [
                                                                                   Ty.path
                                                                                     "alloc::string::String"
@@ -14198,6 +14332,7 @@ Module reference_safety.
                                                                                       M.call_closure (|
                                                                                         M.get_function (|
                                                                                           "alloc::fmt::format",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -14310,6 +14445,7 @@ Module reference_safety.
                                                                                 M.call_closure (|
                                                                                   M.get_function (|
                                                                                     "core::panicking::panic_fmt",
+                                                                                    [],
                                                                                     []
                                                                                   |),
                                                                                   [
@@ -14755,6 +14891,7 @@ Module reference_safety.
                                                                           M.call_closure (|
                                                                             M.get_function (|
                                                                               "core::hint::must_use",
+                                                                              [],
                                                                               [
                                                                                 Ty.path
                                                                                   "alloc::string::String"
@@ -14767,6 +14904,7 @@ Module reference_safety.
                                                                                     M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "alloc::fmt::format",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -14879,6 +15017,7 @@ Module reference_safety.
                                                                               M.call_closure (|
                                                                                 M.get_function (|
                                                                                   "core::panicking::panic_fmt",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -14979,6 +15118,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::hint::must_use",
+                                                          [],
                                                           [ Ty.path "alloc::string::String" ]
                                                         |),
                                                         [
@@ -14988,6 +15128,7 @@ Module reference_safety.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "alloc::fmt::format",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -15048,6 +15189,7 @@ Module reference_safety.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "core::panicking::panic_fmt",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -15228,6 +15370,7 @@ Module reference_safety.
                                                                           M.call_closure (|
                                                                             M.get_function (|
                                                                               "core::hint::must_use",
+                                                                              [],
                                                                               [
                                                                                 Ty.path
                                                                                   "alloc::string::String"
@@ -15240,6 +15383,7 @@ Module reference_safety.
                                                                                     M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "alloc::fmt::format",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -15352,6 +15496,7 @@ Module reference_safety.
                                                                               M.call_closure (|
                                                                                 M.get_function (|
                                                                                   "core::panicking::panic_fmt",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -15452,6 +15597,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::hint::must_use",
+                                                          [],
                                                           [ Ty.path "alloc::string::String" ]
                                                         |),
                                                         [
@@ -15461,6 +15607,7 @@ Module reference_safety.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "alloc::fmt::format",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -15521,6 +15668,7 @@ Module reference_safety.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "core::panicking::panic_fmt",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -15659,6 +15807,7 @@ Module reference_safety.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::hint::must_use",
+                                                                  [],
                                                                   [ Ty.path "alloc::string::String"
                                                                   ]
                                                                 |),
@@ -15669,6 +15818,7 @@ Module reference_safety.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "alloc::fmt::format",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -15777,6 +15927,7 @@ Module reference_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::panicking::panic_fmt",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -17019,6 +17170,7 @@ Module reference_safety.
                                                                           M.call_closure (|
                                                                             M.get_function (|
                                                                               "core::hint::must_use",
+                                                                              [],
                                                                               [
                                                                                 Ty.path
                                                                                   "alloc::string::String"
@@ -17031,6 +17183,7 @@ Module reference_safety.
                                                                                     M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "alloc::fmt::format",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -17143,6 +17296,7 @@ Module reference_safety.
                                                                               M.call_closure (|
                                                                                 M.get_function (|
                                                                                   "core::panicking::panic_fmt",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -17243,6 +17397,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::hint::must_use",
+                                                          [],
                                                           [ Ty.path "alloc::string::String" ]
                                                         |),
                                                         [
@@ -17252,6 +17407,7 @@ Module reference_safety.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "alloc::fmt::format",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -17312,6 +17468,7 @@ Module reference_safety.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "core::panicking::panic_fmt",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -17456,6 +17613,7 @@ Module reference_safety.
                                                                           M.call_closure (|
                                                                             M.get_function (|
                                                                               "core::hint::must_use",
+                                                                              [],
                                                                               [
                                                                                 Ty.path
                                                                                   "alloc::string::String"
@@ -17468,6 +17626,7 @@ Module reference_safety.
                                                                                     M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "alloc::fmt::format",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -17580,6 +17739,7 @@ Module reference_safety.
                                                                               M.call_closure (|
                                                                                 M.get_function (|
                                                                                   "core::panicking::panic_fmt",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -17680,6 +17840,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::hint::must_use",
+                                                          [],
                                                           [ Ty.path "alloc::string::String" ]
                                                         |),
                                                         [
@@ -17689,6 +17850,7 @@ Module reference_safety.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "alloc::fmt::format",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -17749,6 +17911,7 @@ Module reference_safety.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "core::panicking::panic_fmt",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -17948,6 +18111,7 @@ Module reference_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::reference_safety::pack",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier |); M.read (| struct_def |) ]
@@ -18086,6 +18250,7 @@ Module reference_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::reference_safety::pack",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier |); M.read (| struct_def |) ]
@@ -18198,6 +18363,7 @@ Module reference_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::reference_safety::unpack",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier |); M.read (| struct_def |) ]
@@ -18336,6 +18502,7 @@ Module reference_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::reference_safety::unpack",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier |); M.read (| struct_def |) ]
@@ -18516,6 +18683,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::hint::must_use",
+                                                          [],
                                                           [ Ty.path "alloc::string::String" ]
                                                         |),
                                                         [
@@ -18525,6 +18693,7 @@ Module reference_safety.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "alloc::fmt::format",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -18632,6 +18801,7 @@ Module reference_safety.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "core::panicking::panic_fmt",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -18740,6 +18910,7 @@ Module reference_safety.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::hint::must_use",
+                                                        [],
                                                         [ Ty.path "alloc::string::String" ]
                                                       |),
                                                       [
@@ -18749,6 +18920,7 @@ Module reference_safety.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "alloc::fmt::format",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -18809,6 +18981,7 @@ Module reference_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::panicking::panic_fmt",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -18890,6 +19063,7 @@ Module reference_safety.
                                     M.call_closure (|
                                       M.get_function (|
                                         "move_bytecode_verifier::reference_safety::vec_element_type",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| verifier |); M.read (| M.read (| idx |) |) ]
@@ -19151,6 +19325,7 @@ Module reference_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -19160,6 +19335,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -19264,6 +19440,7 @@ Module reference_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -19608,6 +19785,7 @@ Module reference_safety.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::hint::must_use",
+                                                                  [],
                                                                   [ Ty.path "alloc::string::String"
                                                                   ]
                                                                 |),
@@ -19618,6 +19796,7 @@ Module reference_safety.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "alloc::fmt::format",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -19726,6 +19905,7 @@ Module reference_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::panicking::panic_fmt",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -19818,6 +19998,7 @@ Module reference_safety.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -19825,7 +20006,11 @@ Module reference_safety.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -19881,6 +20066,7 @@ Module reference_safety.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::panicking::panic_fmt",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -20004,6 +20190,7 @@ Module reference_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -20013,6 +20200,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -20117,6 +20305,7 @@ Module reference_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -20446,6 +20635,7 @@ Module reference_safety.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::hint::must_use",
+                                                                  [],
                                                                   [ Ty.path "alloc::string::String"
                                                                   ]
                                                                 |),
@@ -20456,6 +20646,7 @@ Module reference_safety.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "alloc::fmt::format",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -20564,6 +20755,7 @@ Module reference_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::panicking::panic_fmt",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -20656,6 +20848,7 @@ Module reference_safety.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -20663,7 +20856,11 @@ Module reference_safety.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -20719,6 +20916,7 @@ Module reference_safety.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::panicking::panic_fmt",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -20842,6 +21040,7 @@ Module reference_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -20851,6 +21050,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -20955,6 +21155,7 @@ Module reference_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -21284,6 +21485,7 @@ Module reference_safety.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::hint::must_use",
+                                                                  [],
                                                                   [ Ty.path "alloc::string::String"
                                                                   ]
                                                                 |),
@@ -21294,6 +21496,7 @@ Module reference_safety.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "alloc::fmt::format",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -21402,6 +21605,7 @@ Module reference_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::panicking::panic_fmt",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -21494,6 +21698,7 @@ Module reference_safety.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -21501,7 +21706,11 @@ Module reference_safety.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -21557,6 +21766,7 @@ Module reference_safety.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::panicking::panic_fmt",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -21680,6 +21890,7 @@ Module reference_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -21689,6 +21900,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -21793,6 +22005,7 @@ Module reference_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -22019,6 +22232,7 @@ Module reference_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -22028,6 +22242,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -22132,6 +22347,7 @@ Module reference_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -22299,6 +22515,7 @@ Module reference_safety.
                                     M.call_closure (|
                                       M.get_function (|
                                         "move_bytecode_verifier::reference_safety::vec_element_type",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| verifier |); M.read (| M.read (| idx |) |) ]
@@ -22563,6 +22780,7 @@ Module reference_safety.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::hint::must_use",
+                                                                  [],
                                                                   [ Ty.path "alloc::string::String"
                                                                   ]
                                                                 |),
@@ -22573,6 +22791,7 @@ Module reference_safety.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "alloc::fmt::format",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -22681,6 +22900,7 @@ Module reference_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::panicking::panic_fmt",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -22773,6 +22993,7 @@ Module reference_safety.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -22780,7 +23001,11 @@ Module reference_safety.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -22836,6 +23061,7 @@ Module reference_safety.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::panicking::panic_fmt",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -22911,6 +23137,7 @@ Module reference_safety.
                                     M.call_closure (|
                                       M.get_function (|
                                         "move_bytecode_verifier::reference_safety::vec_element_type",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| verifier |); M.read (| M.read (| idx |) |) ]
@@ -23168,6 +23395,7 @@ Module reference_safety.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::hint::must_use",
+                                                                  [],
                                                                   [ Ty.path "alloc::string::String"
                                                                   ]
                                                                 |),
@@ -23178,6 +23406,7 @@ Module reference_safety.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "alloc::fmt::format",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -23286,6 +23515,7 @@ Module reference_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::panicking::panic_fmt",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -23378,6 +23608,7 @@ Module reference_safety.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -23385,7 +23616,11 @@ Module reference_safety.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -23441,6 +23676,7 @@ Module reference_safety.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::panicking::panic_fmt",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -23582,6 +23818,7 @@ Module reference_safety.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::hint::must_use",
+                                                                  [],
                                                                   [ Ty.path "alloc::string::String"
                                                                   ]
                                                                 |),
@@ -23592,6 +23829,7 @@ Module reference_safety.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "alloc::fmt::format",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -23700,6 +23938,7 @@ Module reference_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::panicking::panic_fmt",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -23792,6 +24031,7 @@ Module reference_safety.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -23799,7 +24039,11 @@ Module reference_safety.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -23855,6 +24099,7 @@ Module reference_safety.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::panicking::panic_fmt",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -23978,6 +24223,7 @@ Module reference_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -23987,6 +24233,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -24091,6 +24338,7 @@ Module reference_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -24307,6 +24555,7 @@ Module reference_safety.
                           M.call_closure (|
                             M.get_function (|
                               "move_bytecode_verifier::reference_safety::execute_inner",
+                              [],
                               [ impl_Meter__plus___Sized ]
                             |),
                             [
@@ -24449,6 +24698,7 @@ Module reference_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -24458,6 +24708,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -24516,6 +24767,7 @@ Module reference_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [

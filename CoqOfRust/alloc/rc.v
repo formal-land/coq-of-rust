@@ -1493,7 +1493,7 @@ Module rc.
             let~ layout :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "alloc::rc::rcbox_layout_for_value_layout", [] |),
+                  M.get_function (| "alloc::rc::rcbox_layout_for_value_layout", [], [] |),
                   [ M.read (| value_layout |) ]
                 |)
               |) in
@@ -1545,7 +1545,11 @@ Module rc.
                                   ltac:(M.monadic
                                     (M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "alloc::alloc::handle_alloc_error", [] |),
+                                        M.get_function (|
+                                          "alloc::alloc::handle_alloc_error",
+                                          [],
+                                          []
+                                        |),
                                         [ M.read (| layout |) ]
                                       |)
                                     |)))
@@ -1611,7 +1615,7 @@ Module rc.
                 let~ layout :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "alloc::rc::rcbox_layout_for_value_layout", [] |),
+                      M.get_function (| "alloc::rc::rcbox_layout_for_value_layout", [], [] |),
                       [ M.read (| value_layout |) ]
                     |)
                   |) in
@@ -1829,6 +1833,7 @@ Module rc.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::panicking::assert_failed",
+                                                          [],
                                                           [
                                                             Ty.path "core::alloc::layout::Layout";
                                                             Ty.path "core::alloc::layout::Layout"
@@ -2013,7 +2018,7 @@ Module rc.
                     |)
                   |);
                   M.call_closure (|
-                    M.get_function (| "core::ptr::read", [ A ] |),
+                    M.get_function (| "core::ptr::read", [], [ A ] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.call_closure (|
@@ -2157,7 +2162,7 @@ Module rc.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "alloc::alloc::handle_alloc_error", [] |),
+                          M.get_function (| "alloc::alloc::handle_alloc_error", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -2691,7 +2696,7 @@ Module rc.
                         let~ _ :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ptr::write", [ T ] |),
+                              M.get_function (| "core::ptr::write", [], [ T ] |),
                               [
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| inner |),
@@ -2780,6 +2785,7 @@ Module rc.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::panicking::assert_failed",
+                                                                [],
                                                                 [ Ty.path "usize"; Ty.path "usize" ]
                                                               |),
                                                               [
@@ -3693,7 +3699,7 @@ Module rc.
                     let~ val :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::ptr::read", [ T ] |),
+                          M.get_function (| "core::ptr::read", [], [ T ] |),
                           [
                             M.call_closure (|
                               M.get_trait_method (|
@@ -3725,7 +3731,7 @@ Module rc.
                     let~ alloc :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::ptr::read", [ A ] |),
+                          M.get_function (| "core::ptr::read", [], [ A ] |),
                           [
                             M.SubPointer.get_struct_record_field (|
                               M.call_closure (|
@@ -4007,7 +4013,7 @@ Module rc.
             let~ alloc :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::ptr::read", [ A ] |),
+                  M.get_function (| "core::ptr::read", [], [ A ] |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.call_closure (|
@@ -4115,7 +4121,7 @@ Module rc.
             let~ offset :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "alloc::rc::data_offset", [ T ] |),
+                  M.get_function (| "alloc::rc::data_offset", [], [ T ] |),
                   [ M.read (| ptr |) ]
                 |)
               |) in
@@ -4211,6 +4217,7 @@ Module rc.
                                           M.call_closure (|
                                             M.get_function (|
                                               "alloc::rc::is_dangling",
+                                              [],
                                               [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                                             |),
                                             [
@@ -4253,7 +4260,7 @@ Module rc.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String
@@ -4480,6 +4487,7 @@ Module rc.
                 M.call_closure (|
                   M.get_function (|
                     "core::mem::drop",
+                    [],
                     [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ]
                   |),
                   [
@@ -4665,6 +4673,7 @@ Module rc.
           M.call_closure (|
             M.get_function (|
               "core::ptr::addr_eq",
+              [],
               [
                 Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ];
                 Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ]
@@ -4786,7 +4795,7 @@ Module rc.
             let~ size_of_val :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::mem::size_of_val", [ T ] |),
+                  M.get_function (| "core::mem::size_of_val", [], [ T ] |),
                   [
                     M.call_closure (|
                       M.get_trait_method (|
@@ -4967,6 +4976,7 @@ Module rc.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::copy_nonoverlapping",
+                                      [],
                                       [ Ty.path "u8" ]
                                     |),
                                     [
@@ -4978,7 +4988,7 @@ Module rc.
                                         |),
                                         [
                                           M.call_closure (|
-                                            M.get_function (| "core::ptr::from_ref", [ T ] |),
+                                            M.get_function (| "core::ptr::from_ref", [], [ T ] |),
                                             [
                                               M.call_closure (|
                                                 M.get_trait_method (|
@@ -5067,6 +5077,7 @@ Module rc.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::ptr::write",
+                                      [],
                                       [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ]
                                     |),
                                     [
@@ -5340,7 +5351,7 @@ Module rc.
             let~ value_size :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::mem::size_of_val", [ T ] |),
+                  M.get_function (| "core::mem::size_of_val", [], [ T ] |),
                   [ M.read (| src |) ]
                 |)
               |) in
@@ -5368,7 +5379,11 @@ Module rc.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::copy_nonoverlapping", [ Ty.path "u8" ] |),
+                  M.get_function (|
+                    "core::intrinsics::copy_nonoverlapping",
+                    [],
+                    [ Ty.path "u8" ]
+                  |),
                   [
                     M.rust_cast (M.read (| src |));
                     M.rust_cast
@@ -5436,6 +5451,7 @@ Module rc.
                         M.call_closure (|
                           M.get_function (|
                             "core::mem::drop",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
@@ -5695,6 +5711,7 @@ Module rc.
                                       (M.call_closure (|
                                         M.get_function (|
                                           "core::ptr::slice_from_raw_parts_mut",
+                                          [],
                                           [ T ]
                                         |),
                                         [
@@ -5847,6 +5864,7 @@ Module rc.
                                   (M.call_closure (|
                                     M.get_function (|
                                       "core::ptr::slice_from_raw_parts_mut",
+                                      [],
                                       [ T ]
                                     |),
                                     [
@@ -5921,7 +5939,7 @@ Module rc.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                  M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -6162,7 +6180,7 @@ Module rc.
                                       let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
-                                            M.get_function (| "core::ptr::write", [ T ] |),
+                                            M.get_function (| "core::ptr::write", [], [ T ] |),
                                             [
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -6202,6 +6220,7 @@ Module rc.
                 M.call_closure (|
                   M.get_function (|
                     "core::mem::forget",
+                    [],
                     [ Ty.apply (Ty.path "alloc::rc::from_iter_exact::Guard") [] [ T ] ]
                   |),
                   [ M.read (| guard |) ]
@@ -6449,6 +6468,7 @@ Module rc.
                                       (M.call_closure (|
                                         M.get_function (|
                                           "core::ptr::slice_from_raw_parts_mut",
+                                          [],
                                           [ T ]
                                         |),
                                         [
@@ -6600,6 +6620,7 @@ Module rc.
                                   (M.call_closure (|
                                     M.get_function (|
                                       "core::ptr::slice_from_raw_parts_mut",
+                                      [],
                                       [ T ]
                                     |),
                                     [
@@ -7320,7 +7341,7 @@ Module rc.
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::ptr::drop_in_place", [ T ] |),
+                          M.get_function (| "core::ptr::drop_in_place", [], [ T ] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -8800,7 +8821,7 @@ Module rc.
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                          M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                           [
                             (* MutToConstPointer *) M.pointer_coercion (M.read (| vec_ptr |));
                             M.rust_cast
@@ -9392,6 +9413,7 @@ Module rc.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "core::panicking::assert_failed",
+                                                                    [],
                                                                     [
                                                                       Ty.path "usize";
                                                                       Ty.path "usize"
@@ -9496,7 +9518,7 @@ Module rc.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::panicking::panic_fmt", [] |),
+                                  M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -9634,6 +9656,7 @@ Module rc.
                     M.call_closure (|
                       M.get_function (|
                         "core::ptr::without_provenance_mut",
+                        [],
                         [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                       |),
                       [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
@@ -9709,6 +9732,7 @@ Module rc.
                     M.call_closure (|
                       M.get_function (|
                         "core::ptr::without_provenance_mut",
+                        [],
                         [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                       |),
                       [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
@@ -9798,6 +9822,7 @@ Module rc.
                           M.call_closure (|
                             M.get_function (|
                               "alloc::rc::is_dangling",
+                              [],
                               [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                             |),
                             [ (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |)) ]
@@ -9943,7 +9968,7 @@ Module rc.
             let~ alloc :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::ptr::read", [ A ] |),
+                  M.get_function (| "core::ptr::read", [], [ A ] |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.call_closure (|
@@ -10013,7 +10038,7 @@ Module rc.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "alloc::rc::is_dangling", [ T ] |),
+                                M.get_function (| "alloc::rc::is_dangling", [], [ T ] |),
                                 [ M.read (| ptr |) ]
                               |)
                             |)) in
@@ -10025,7 +10050,7 @@ Module rc.
                         (let~ offset :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "alloc::rc::data_offset", [ T ] |),
+                              M.get_function (| "alloc::rc::data_offset", [], [ T ] |),
                               [ M.read (| ptr |) ]
                             |)
                           |) in
@@ -10453,6 +10478,7 @@ Module rc.
                           M.call_closure (|
                             M.get_function (|
                               "alloc::rc::is_dangling",
+                              [],
                               [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                             |),
                             [
@@ -10557,6 +10583,7 @@ Module rc.
           M.call_closure (|
             M.get_function (|
               "core::ptr::addr_eq",
+              [],
               [
                 Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ];
                 Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ]
@@ -11062,7 +11089,7 @@ Module rc.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::hint::assert_unchecked", [] |),
+                    M.get_function (| "core::hint::assert_unchecked", [], [] |),
                     [ BinOp.ne (| M.read (| strong |), Value.Integer IntegerKind.Usize 0 |) ]
                   |)
                 |) in
@@ -11100,7 +11127,7 @@ Module rc.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| strong |), Value.Integer IntegerKind.Usize 0 |)
                             ]
                           |)
@@ -11108,7 +11135,10 @@ Module rc.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.never_to_any (|
-                        M.call_closure (| M.get_function (| "core::intrinsics::abort", [] |), [] |)
+                        M.call_closure (|
+                          M.get_function (| "core::intrinsics::abort", [], [] |),
+                          []
+                        |)
                       |)
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -11195,7 +11225,7 @@ Module rc.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::hint::assert_unchecked", [] |),
+                    M.get_function (| "core::hint::assert_unchecked", [], [] |),
                     [ BinOp.ne (| M.read (| weak |), Value.Integer IntegerKind.Usize 0 |) ]
                   |)
                 |) in
@@ -11233,14 +11263,17 @@ Module rc.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| weak |), Value.Integer IntegerKind.Usize 0 |) ]
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.never_to_any (|
-                        M.call_closure (| M.get_function (| "core::intrinsics::abort", [] |), [] |)
+                        M.call_closure (|
+                          M.get_function (| "core::intrinsics::abort", [], [] |),
+                          []
+                        |)
                       |)
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -11494,10 +11527,10 @@ Module rc.
       ltac:(M.monadic
         (let ptr := M.alloc (| ptr |) in
         M.call_closure (|
-          M.get_function (| "alloc::rc::data_offset_align", [] |),
+          M.get_function (| "alloc::rc::data_offset_align", [], [] |),
           [
             M.call_closure (|
-              M.get_function (| "core::mem::align_of_val_raw", [ T ] |),
+              M.get_function (| "core::mem::align_of_val_raw", [], [ T ] |),
               [ M.read (| ptr |) ]
             |)
           ]
@@ -11830,7 +11863,7 @@ Module rc.
             let~ alloc :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::ptr::read", [ A ] |),
+                  M.get_function (| "core::ptr::read", [], [ A ] |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.call_closure (|
@@ -12167,7 +12200,7 @@ Module rc.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::ptr::drop_in_place", [ T ] |),
+                  M.get_function (| "core::ptr::drop_in_place", [], [ T ] |),
                   [
                     M.call_closure (|
                       M.get_trait_method (|
@@ -12469,7 +12502,7 @@ Module rc.
                                           M.read (| mem |);
                                           M.rust_cast
                                             (M.call_closure (|
-                                              M.get_function (| "core::ptr::from_ref", [ T ] |),
+                                              M.get_function (| "core::ptr::from_ref", [], [ T ] |),
                                               [ M.read (| for_value |) ]
                                             |))
                                         ]
@@ -12542,7 +12575,7 @@ Module rc.
             let~ offset :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "alloc::rc::data_offset_align", [] |),
+                  M.get_function (| "alloc::rc::data_offset_align", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -12797,7 +12830,7 @@ Module rc.
                       ]
                     |);
                     M.call_closure (|
-                      M.get_function (| "alloc::rc::rcbox_layout_for_value_layout", [] |),
+                      M.get_function (| "alloc::rc::rcbox_layout_for_value_layout", [], [] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|

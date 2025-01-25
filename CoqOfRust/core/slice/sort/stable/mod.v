@@ -107,7 +107,7 @@ Module slice.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::likely", [] |),
+                                    M.get_function (| "core::intrinsics::likely", [], [] |),
                                     [
                                       BinOp.lt (|
                                         M.read (| len |),
@@ -134,7 +134,7 @@ Module slice.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::likely", [] |),
+                                    M.get_function (| "core::intrinsics::likely", [], [] |),
                                     [
                                       BinOp.le (|
                                         M.read (| len |),
@@ -157,6 +157,7 @@ Module slice.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::slice::sort::shared::smallsort::insertion_sort_shift_left",
+                                          [],
                                           [ T; F ]
                                         |),
                                         [
@@ -178,6 +179,7 @@ Module slice.
                       M.call_closure (|
                         M.get_function (|
                           "core::slice::sort::stable::driftsort_main",
+                          [],
                           [ T; F; BufT ]
                         |),
                         [ M.read (| v |); M.read (| is_less |) ]
@@ -246,7 +248,7 @@ Module slice.
                         "core::slice::sort::stable::driftsort_main::MAX_FULL_ALLOC_BYTES"
                       |)
                     |),
-                    M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
+                    M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
                   |)
                 |) in
               let~ len :=
@@ -259,14 +261,14 @@ Module slice.
               let~ alloc_len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::cmp::max", [], [ Ty.path "usize" ] |),
                     [
                       M.call_closure (|
-                        M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
+                        M.get_function (| "core::cmp::max", [], [ Ty.path "usize" ] |),
                         [
                           BinOp.Wrap.div (| M.read (| len |), Value.Integer IntegerKind.Usize 2 |);
                           M.call_closure (|
-                            M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                            M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                             [ M.read (| len |); M.read (| max_full_alloc |) ]
                           |)
                         ]
@@ -398,7 +400,7 @@ Module slice.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::slice::sort::stable::drift::sort", [ T; F ] |),
+                    M.get_function (| "core::slice::sort::stable::drift::sort", [], [ T; F ] |),
                     [
                       M.read (| v |);
                       M.read (| scratch |);
@@ -503,13 +505,14 @@ Module slice.
                   M.alloc (|
                     BinOp.Wrap.div (|
                       M.read (| M.get_constant (| "core::slice::sort::stable::N" |) |),
-                      M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
+                      M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
                     |)
                   |) in
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
                       "core::slice::raw::from_raw_parts_mut",
+                      [],
                       [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                     |),
                     [

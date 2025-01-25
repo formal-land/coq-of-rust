@@ -177,7 +177,7 @@ Module num.
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
-            M.get_function (| "core::num::int_log10::less_than_5", [] |),
+            M.get_function (| "core::num::int_log10::less_than_5", [], [] |),
             [ M.rust_cast (M.read (| val |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -234,7 +234,7 @@ Module num.
               BinOp.Wrap.add (|
                 M.read (| log |),
                 M.call_closure (|
-                  M.get_function (| "core::num::int_log10::less_than_5", [] |),
+                  M.get_function (| "core::num::int_log10::less_than_5", [], [] |),
                   [ M.read (| val |) ]
                 |)
               |)
@@ -332,7 +332,7 @@ Module num.
               BinOp.Wrap.add (|
                 M.read (| log |),
                 M.call_closure (|
-                  M.get_function (| "core::num::int_log10::less_than_5", [] |),
+                  M.get_function (| "core::num::int_log10::less_than_5", [], [] |),
                   [ M.rust_cast (M.read (| val |)) ]
                 |)
               |)
@@ -410,7 +410,7 @@ Module num.
                                   BinOp.Wrap.add (|
                                     M.read (| log |),
                                     M.call_closure (|
-                                      M.get_function (| "core::num::int_log10::u32", [] |),
+                                      M.get_function (| "core::num::int_log10::u32", [], [] |),
                                       [ M.rust_cast (M.read (| val |)) ]
                                     |)
                                   |)
@@ -460,7 +460,7 @@ Module num.
                   BinOp.Wrap.add (|
                     M.read (| log |),
                     M.call_closure (|
-                      M.get_function (| "core::num::int_log10::u64", [] |),
+                      M.get_function (| "core::num::int_log10::u64", [], [] |),
                       [ M.rust_cast (M.read (| val |)) ]
                     |)
                   |)
@@ -483,7 +483,7 @@ Module num.
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
-            M.get_function (| "core::num::int_log10::u64", [] |),
+            M.get_function (| "core::num::int_log10::u64", [], [] |),
             [ M.rust_cast (M.read (| val |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -502,7 +502,7 @@ Module num.
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
-            M.get_function (| "core::num::int_log10::u8", [] |),
+            M.get_function (| "core::num::int_log10::u8", [], [] |),
             [ M.rust_cast (M.read (| val |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -521,7 +521,7 @@ Module num.
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
-            M.get_function (| "core::num::int_log10::u16", [] |),
+            M.get_function (| "core::num::int_log10::u16", [], [] |),
             [ M.rust_cast (M.read (| val |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -540,7 +540,7 @@ Module num.
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
-            M.get_function (| "core::num::int_log10::u32", [] |),
+            M.get_function (| "core::num::int_log10::u32", [], [] |),
             [ M.rust_cast (M.read (| val |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -559,7 +559,7 @@ Module num.
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
-            M.get_function (| "core::num::int_log10::u64", [] |),
+            M.get_function (| "core::num::int_log10::u64", [], [] |),
             [ M.rust_cast (M.read (| val |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -578,7 +578,7 @@ Module num.
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
-            M.get_function (| "core::num::int_log10::u128", [] |),
+            M.get_function (| "core::num::int_log10::u128", [], [] |),
             [ M.rust_cast (M.read (| val |)) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -600,7 +600,7 @@ Module num.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),

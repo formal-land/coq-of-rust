@@ -207,6 +207,7 @@ Module u256.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::u256::U256CastErrorKind" ]
                   |),
                   [ M.read (| self |) ]
@@ -217,6 +218,7 @@ Module u256.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::u256::U256CastErrorKind" ]
                   |),
                   [ M.read (| other |) ]
@@ -309,6 +311,7 @@ Module u256.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::u256::U256CastErrorKind" ]
                   |),
                   [ M.read (| self |) ]
@@ -518,13 +521,17 @@ Module u256.
             let~ err_str :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::hint::must_use", [ Ty.path "alloc::string::String" ] |),
+                  M.get_function (|
+                    "core::hint::must_use",
+                    [],
+                    [ Ty.path "alloc::string::String" ]
+                  |),
                   [
                     M.read (|
                       let~ res :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "alloc::fmt::format", [] |),
+                            M.get_function (| "alloc::fmt::format", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -3040,7 +3047,7 @@ Module u256.
           M.read (|
             let~ type_size :=
               M.alloc (|
-                M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
+                M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
               |) in
             let~ max_val :=
               M.copy (|
@@ -3121,7 +3128,7 @@ Module u256.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -3944,13 +3951,17 @@ Module u256.
             let~ num_str :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::hint::must_use", [ Ty.path "alloc::string::String" ] |),
+                  M.get_function (|
+                    "core::hint::must_use",
+                    [],
+                    [ Ty.path "alloc::string::String" ]
+                  |),
                   [
                     M.read (|
                       let~ res :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "alloc::fmt::format", [] |),
+                            M.get_function (| "alloc::fmt::format", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -4851,7 +4862,7 @@ Module u256.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -5003,7 +5014,7 @@ Module u256.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -5466,7 +5477,7 @@ Module u256.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -5630,7 +5641,7 @@ Module u256.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic_fmt", [] |),
+                                M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|

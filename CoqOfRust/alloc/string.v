@@ -697,7 +697,7 @@ Module string.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::str::converts::from_utf8", [] |),
+                  M.get_function (| "core::str::converts::from_utf8", [], [] |),
                   [
                     M.call_closure (|
                       M.get_trait_method (|
@@ -969,6 +969,7 @@ Module string.
                                                                                 M.call_closure (|
                                                                                   M.get_function (|
                                                                                     "core::panicking::assert_failed",
+                                                                                    [],
                                                                                     [
                                                                                       Ty.path
                                                                                         "usize";
@@ -3435,7 +3436,7 @@ Module string.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::index::range", [ R ] |),
+                  M.get_function (| "core::slice::index::range", [], [ R ] |),
                   [
                     M.read (| src |);
                     Value.StructRecord
@@ -3512,7 +3513,7 @@ Module string.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic", [] |),
+                                    M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
                                         Value.String
@@ -3565,7 +3566,7 @@ Module string.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic", [] |),
+                                    M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
                                         Value.String "assertion failed: self.is_char_boundary(end)"
@@ -4051,7 +4052,7 @@ Module string.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic", [] |),
+                                    M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
                                         Value.String
@@ -4345,7 +4346,7 @@ Module string.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic_fmt", [] |),
+                              M.get_function (| "core::panicking::panic_fmt", [], [] |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -4393,7 +4394,7 @@ Module string.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::copy", [ Ty.path "u8" ] |),
+                    M.get_function (| "core::intrinsics::copy", [], [ Ty.path "u8" ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -4602,6 +4603,7 @@ Module string.
                         M.call_closure (|
                           M.get_function (|
                             "core::iter::sources::from_fn::from_fn",
+                            [],
                             [
                               Ty.tuple [ Ty.path "usize"; Ty.path "usize" ];
                               Ty.function
@@ -4790,6 +4792,7 @@ Module string.
                       M.call_closure (|
                         M.get_function (|
                           "core::iter::sources::once::once",
+                          [],
                           [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
                         |),
                         [
@@ -4945,6 +4948,7 @@ Module string.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::intrinsics::copy",
+                                                        [],
                                                         [ Ty.path "u8" ]
                                                       |),
                                                       [
@@ -5288,6 +5292,7 @@ Module string.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::slice::raw::from_raw_parts_mut",
+                                                        [],
                                                         [ Ty.path "u8" ]
                                                       |),
                                                       [
@@ -5396,6 +5401,7 @@ Module string.
                 M.call_closure (|
                   M.get_function (|
                     "core::mem::drop",
+                    [],
                     [ Ty.path "alloc::string::retain::SetLenOnDrop" ]
                   |),
                   [ M.read (| guard |) ]
@@ -5463,7 +5469,7 @@ Module string.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [
                               M.read (|
                                 Value.String "assertion failed: self.is_char_boundary(idx)"
@@ -5572,7 +5578,7 @@ Module string.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::copy", [ Ty.path "u8" ] |),
+                  M.get_function (| "core::intrinsics::copy", [], [ Ty.path "u8" ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -5635,7 +5641,11 @@ Module string.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::copy_nonoverlapping", [ Ty.path "u8" ] |),
+                  M.get_function (|
+                    "core::intrinsics::copy_nonoverlapping",
+                    [],
+                    [ Ty.path "u8" ]
+                  |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -5757,7 +5767,7 @@ Module string.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [
                               M.read (|
                                 Value.String "assertion failed: self.is_char_boundary(idx)"
@@ -5918,7 +5928,7 @@ Module string.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [
                               M.read (|
                                 Value.String "assertion failed: self.is_char_boundary(at)"
@@ -6033,7 +6043,7 @@ Module string.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::index::range", [ R ] |),
+                  M.get_function (| "core::slice::index::range", [], [ R ] |),
                   [
                     M.read (| range |);
                     Value.StructRecord
@@ -6109,7 +6119,7 @@ Module string.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic", [] |),
+                                    M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
                                         Value.String
@@ -6162,7 +6172,7 @@ Module string.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic", [] |),
+                                    M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
                                         Value.String "assertion failed: self.is_char_boundary(end)"
@@ -6333,7 +6343,7 @@ Module string.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic", [] |),
+                                    M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
                                         Value.String "assertion failed: self.is_char_boundary(n)"
@@ -6397,7 +6407,7 @@ Module string.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic", [] |),
+                                    M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
                                         Value.String
@@ -6485,7 +6495,7 @@ Module string.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic", [] |),
+                                    M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
                                         Value.String
@@ -6547,7 +6557,7 @@ Module string.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic", [] |),
+                                    M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
                                         Value.String "assertion failed: self.is_char_boundary(n)"
@@ -6650,7 +6660,7 @@ Module string.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "alloc::str::from_boxed_utf8_unchecked", [] |),
+                M.get_function (| "alloc::str::from_boxed_utf8_unchecked", [], [] |),
                 [ M.read (| slice |) ]
               |)
             |)
@@ -6697,7 +6707,7 @@ Module string.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [] |),
+                M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [], [] |),
                 [ M.read (| slice |) ]
               |)
             |)
@@ -10240,7 +10250,7 @@ Module string.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::str::converts::from_utf8_unchecked", [] |),
+            M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
@@ -10300,7 +10310,7 @@ Module string.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [] |),
+            M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
@@ -11837,7 +11847,7 @@ Module string.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "alloc::fmt::format", [] |),
+            M.get_function (| "alloc::fmt::format", [], [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

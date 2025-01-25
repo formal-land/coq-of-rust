@@ -633,6 +633,7 @@ Module collections.
                                                                           M.call_closure (|
                                                                             M.get_function (|
                                                                               "core::ptr::read",
+                                                                              [],
                                                                               [ T ]
                                                                             |),
                                                                             [ M.read (| elem |) ]
@@ -766,6 +767,7 @@ Module collections.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::ptr::read",
+                                                                  [],
                                                                   [ T ]
                                                                 |),
                                                                 [ M.read (| elem |) ]
@@ -1090,6 +1092,7 @@ Module collections.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::intrinsics::copy_nonoverlapping",
+                                                    [],
                                                     [ T ]
                                                   |),
                                                   [
@@ -1214,6 +1217,7 @@ Module collections.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::intrinsics::copy_nonoverlapping",
+                                    [],
                                     [ T ]
                                   |),
                                   [
@@ -1285,6 +1289,7 @@ Module collections.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::intrinsics::copy_nonoverlapping",
+                                            [],
                                             [ T ]
                                           |),
                                           [
@@ -1416,6 +1421,7 @@ Module collections.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::intrinsics::copy_nonoverlapping",
+                                            [],
                                             [ T ]
                                           |),
                                           [
@@ -1937,6 +1943,7 @@ Module collections.
                                                                           M.call_closure (|
                                                                             M.get_function (|
                                                                               "core::ptr::read",
+                                                                              [],
                                                                               [ T ]
                                                                             |),
                                                                             [ M.read (| elem |) ]
@@ -2070,6 +2077,7 @@ Module collections.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::ptr::read",
+                                                                  [],
                                                                   [ T ]
                                                                 |),
                                                                 [ M.read (| elem |) ]

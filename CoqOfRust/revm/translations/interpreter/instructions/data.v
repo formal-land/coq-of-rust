@@ -1567,6 +1567,7 @@ Module instructions.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_interpreter::interpreter::shared_memory::num_words",
+                                [],
                                 []
                               |),
                               [
@@ -1695,6 +1696,7 @@ Module instructions.
                               M.call_closure (|
                                 M.get_function (|
                                   "revm_interpreter::gas::calc::cost_per_word",
+                                  [],
                                   []
                                 |),
                                 [

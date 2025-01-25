@@ -1138,6 +1138,7 @@ Module instantiation_loops.
                         M.call_closure (|
                           M.get_function (|
                             "core::hint::must_use",
+                            [],
                             [ Ty.path "alloc::string::String" ]
                           |),
                           [
@@ -1145,7 +1146,7 @@ Module instantiation_loops.
                               let~ res :=
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "alloc::fmt::format", [] |),
+                                    M.get_function (| "alloc::fmt::format", [], [] |),
                                     [
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -2682,6 +2683,7 @@ Module instantiation_loops.
                       M.call_closure (|
                         M.get_function (|
                           "petgraph::algo::tarjan_scc",
+                          [],
                           [
                             Ty.apply
                               (Ty.path "&")
@@ -3667,6 +3669,7 @@ Module instantiation_loops.
                       M.call_closure (|
                         M.get_function (|
                           "core::hint::must_use",
+                          [],
                           [ Ty.path "alloc::string::String" ]
                         |),
                         [
@@ -3674,7 +3677,7 @@ Module instantiation_loops.
                             let~ res :=
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_function (| "alloc::fmt::format", [] |),
+                                  M.get_function (| "alloc::fmt::format", [], [] |),
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -3895,6 +3898,7 @@ Module instantiation_loops.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::hint::must_use",
+                                  [],
                                   [ Ty.path "alloc::string::String" ]
                                 |),
                                 [
@@ -3902,7 +3906,7 @@ Module instantiation_loops.
                                     let~ res :=
                                       M.alloc (|
                                         M.call_closure (|
-                                          M.get_function (| "alloc::fmt::format", [] |),
+                                          M.get_function (| "alloc::fmt::format", [], [] |),
                                           [
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -3983,6 +3987,7 @@ Module instantiation_loops.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::hint::must_use",
+                                  [],
                                   [ Ty.path "alloc::string::String" ]
                                 |),
                                 [
@@ -3990,7 +3995,7 @@ Module instantiation_loops.
                                     let~ res :=
                                       M.alloc (|
                                         M.call_closure (|
-                                          M.get_function (| "alloc::fmt::format", [] |),
+                                          M.get_function (| "alloc::fmt::format", [], [] |),
                                           [
                                             M.call_closure (|
                                               M.get_associated_function (|

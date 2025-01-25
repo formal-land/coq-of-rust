@@ -246,6 +246,7 @@ Module struct_defs.
                     M.call_closure (|
                       M.get_function (|
                         "petgraph::algo::toposort",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "&")
@@ -293,6 +294,7 @@ Module struct_defs.
                               M.call_closure (|
                                 M.get_function (|
                                   "move_binary_format::errors::verification_error",
+                                  [],
                                   []
                                 |),
                                 [

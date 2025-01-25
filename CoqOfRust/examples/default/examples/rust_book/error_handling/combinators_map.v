@@ -498,7 +498,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
+                      M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -540,7 +540,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
+                      M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -604,13 +604,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ cooked_apple :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "combinators_map::cook", [] |),
+              M.get_function (| "combinators_map::cook", [], [] |),
               [
                 M.call_closure (|
-                  M.get_function (| "combinators_map::chop", [] |),
+                  M.get_function (| "combinators_map::chop", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_function (| "combinators_map::peel", [] |),
+                      M.get_function (| "combinators_map::peel", [], [] |),
                       [ M.read (| apple |) ]
                     |)
                   ]
@@ -621,13 +621,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ cooked_carrot :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "combinators_map::cook", [] |),
+              M.get_function (| "combinators_map::cook", [], [] |),
               [
                 M.call_closure (|
-                  M.get_function (| "combinators_map::chop", [] |),
+                  M.get_function (| "combinators_map::chop", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_function (| "combinators_map::peel", [] |),
+                      M.get_function (| "combinators_map::peel", [], [] |),
                       [ M.read (| carrot |) ]
                     |)
                   ]
@@ -638,28 +638,28 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ cooked_potato :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "combinators_map::process", [] |),
+              M.get_function (| "combinators_map::process", [], [] |),
               [ M.read (| potato |) ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "combinators_map::eat", [] |),
+              M.get_function (| "combinators_map::eat", [], [] |),
               [ M.read (| cooked_apple |) ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "combinators_map::eat", [] |),
+              M.get_function (| "combinators_map::eat", [], [] |),
               [ M.read (| cooked_carrot |) ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "combinators_map::eat", [] |),
+              M.get_function (| "combinators_map::eat", [], [] |),
               [ M.read (| cooked_potato |) ]
             |)
           |) in

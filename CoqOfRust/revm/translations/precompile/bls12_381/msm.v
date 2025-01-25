@@ -190,7 +190,7 @@ Module bls12_381.
                 let~ index :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                      M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                       [
                         BinOp.Wrap.sub (| M.read (| k |), Value.Integer IntegerKind.Usize 1 |);
                         BinOp.Wrap.sub (|

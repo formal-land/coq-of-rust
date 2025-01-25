@@ -11,7 +11,7 @@ Module bls12_381.
               "revm_precompile::PrecompileWithAddress"
               [
                 M.call_closure (|
-                  M.get_function (| "revm_precompile::u64_to_address", [] |),
+                  M.get_function (| "revm_precompile::u64_to_address", [], [] |),
                   [
                     M.read (|
                       M.get_constant (| "revm_precompile::bls12_381::map_fp_to_g1::ADDRESS" |)
@@ -22,6 +22,7 @@ Module bls12_381.
                 M.pointer_coercion
                   (M.get_function (|
                     "revm_precompile::bls12_381::map_fp_to_g1::map_fp_to_g1",
+                    [],
                     []
                   |))
               ]
@@ -183,6 +184,7 @@ Module bls12_381.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::hint::must_use",
+                                                  [],
                                                   [ Ty.path "alloc::string::String" ]
                                                 |),
                                                 [
@@ -192,6 +194,7 @@ Module bls12_381.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "alloc::fmt::format",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -343,6 +346,7 @@ Module bls12_381.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_precompile::bls12_381::utils::remove_padding",
+                                [],
                                 []
                               |),
                               [
@@ -449,6 +453,7 @@ Module bls12_381.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_precompile::bls12_381::utils::fp_from_bendian",
+                                [],
                                 []
                               |),
                               [ M.read (| input_p0 |) ]
@@ -527,12 +532,12 @@ Module bls12_381.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "blst::blst_map_to_g1", [] |),
+                      M.get_function (| "blst::blst_map_to_g1", [], [] |),
                       [
                         p;
                         fp;
                         M.call_closure (|
-                          M.get_function (| "core::ptr::null", [ Ty.path "blst::blst_fp" ] |),
+                          M.get_function (| "core::ptr::null", [], [ Ty.path "blst::blst_fp" ] |),
                           []
                         |)
                       ]
@@ -554,14 +559,18 @@ Module bls12_381.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "blst::blst_p1_to_affine", [] |),
+                      M.get_function (| "blst::blst_p1_to_affine", [], [] |),
                       [ p_aff; p ]
                     |)
                   |) in
                 let~ out :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "revm_precompile::bls12_381::g1::encode_g1_point", [] |),
+                      M.get_function (|
+                        "revm_precompile::bls12_381::g1::encode_g1_point",
+                        [],
+                        []
+                      |),
                       [ p_aff ]
                     |)
                   |) in

@@ -9403,6 +9403,7 @@ Module iter.
               M.call_closure (|
                 M.get_function (|
                   "core::iter::adapters::try_process",
+                  [],
                   [
                     I;
                     U;
@@ -9508,6 +9509,7 @@ Module iter.
               M.call_closure (|
                 M.get_function (|
                   "core::iter::adapters::try_process",
+                  [],
                   [
                     I;
                     U;
@@ -9607,6 +9609,7 @@ Module iter.
               M.call_closure (|
                 M.get_function (|
                   "core::iter::adapters::try_process",
+                  [],
                   [
                     I;
                     U;
@@ -9706,6 +9709,7 @@ Module iter.
               M.call_closure (|
                 M.get_function (|
                   "core::iter::adapters::try_process",
+                  [],
                   [
                     I;
                     U;

@@ -68,6 +68,7 @@ Module alloc.
                             M.call_closure (|
                               M.get_function (|
                                 "core::intrinsics::write_bytes",
+                                [],
                                 [ Ty.path "u8" ]
                               |),
                               [ M.read (| ptr |); Value.Integer IntegerKind.U8 0; M.read (| size |)
@@ -155,13 +156,14 @@ Module alloc.
                             M.call_closure (|
                               M.get_function (|
                                 "core::intrinsics::copy_nonoverlapping",
+                                [],
                                 [ Ty.path "u8" ]
                               |),
                               [
                                 (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |));
                                 M.read (| new_ptr |);
                                 M.call_closure (|
-                                  M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                                  M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|

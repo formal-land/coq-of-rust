@@ -39,6 +39,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f16"; Ty.path "u8" ]
               |),
               [ M.read (| self |) ]
@@ -71,6 +72,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f16"; Ty.path "u16" ]
               |),
               [ M.read (| self |) ]
@@ -103,6 +105,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f16"; Ty.path "u32" ]
               |),
               [ M.read (| self |) ]
@@ -135,6 +138,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f16"; Ty.path "u64" ]
               |),
               [ M.read (| self |) ]
@@ -167,6 +171,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f16"; Ty.path "u128" ]
               |),
               [ M.read (| self |) ]
@@ -199,6 +204,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f16"; Ty.path "usize" ]
               |),
               [ M.read (| self |) ]
@@ -231,6 +237,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f16"; Ty.path "i8" ]
               |),
               [ M.read (| self |) ]
@@ -263,6 +270,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f16"; Ty.path "i16" ]
               |),
               [ M.read (| self |) ]
@@ -295,6 +303,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f16"; Ty.path "i32" ]
               |),
               [ M.read (| self |) ]
@@ -327,6 +336,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f16"; Ty.path "i64" ]
               |),
               [ M.read (| self |) ]
@@ -359,6 +369,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f16"; Ty.path "i128" ]
               |),
               [ M.read (| self |) ]
@@ -391,6 +402,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f16"; Ty.path "isize" ]
               |),
               [ M.read (| self |) ]
@@ -434,6 +446,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f32"; Ty.path "u8" ]
               |),
               [ M.read (| self |) ]
@@ -466,6 +479,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f32"; Ty.path "u16" ]
               |),
               [ M.read (| self |) ]
@@ -498,6 +512,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f32"; Ty.path "u32" ]
               |),
               [ M.read (| self |) ]
@@ -530,6 +545,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f32"; Ty.path "u64" ]
               |),
               [ M.read (| self |) ]
@@ -562,6 +578,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f32"; Ty.path "u128" ]
               |),
               [ M.read (| self |) ]
@@ -594,6 +611,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f32"; Ty.path "usize" ]
               |),
               [ M.read (| self |) ]
@@ -626,6 +644,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f32"; Ty.path "i8" ]
               |),
               [ M.read (| self |) ]
@@ -658,6 +677,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f32"; Ty.path "i16" ]
               |),
               [ M.read (| self |) ]
@@ -690,6 +710,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f32"; Ty.path "i32" ]
               |),
               [ M.read (| self |) ]
@@ -722,6 +743,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f32"; Ty.path "i64" ]
               |),
               [ M.read (| self |) ]
@@ -754,6 +776,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f32"; Ty.path "i128" ]
               |),
               [ M.read (| self |) ]
@@ -786,6 +809,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f32"; Ty.path "isize" ]
               |),
               [ M.read (| self |) ]
@@ -829,6 +853,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f64"; Ty.path "u8" ]
               |),
               [ M.read (| self |) ]
@@ -861,6 +886,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f64"; Ty.path "u16" ]
               |),
               [ M.read (| self |) ]
@@ -893,6 +919,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f64"; Ty.path "u32" ]
               |),
               [ M.read (| self |) ]
@@ -925,6 +952,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f64"; Ty.path "u64" ]
               |),
               [ M.read (| self |) ]
@@ -957,6 +985,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f64"; Ty.path "u128" ]
               |),
               [ M.read (| self |) ]
@@ -989,6 +1018,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f64"; Ty.path "usize" ]
               |),
               [ M.read (| self |) ]
@@ -1021,6 +1051,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f64"; Ty.path "i8" ]
               |),
               [ M.read (| self |) ]
@@ -1053,6 +1084,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f64"; Ty.path "i16" ]
               |),
               [ M.read (| self |) ]
@@ -1085,6 +1117,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f64"; Ty.path "i32" ]
               |),
               [ M.read (| self |) ]
@@ -1117,6 +1150,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f64"; Ty.path "i64" ]
               |),
               [ M.read (| self |) ]
@@ -1149,6 +1183,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f64"; Ty.path "i128" ]
               |),
               [ M.read (| self |) ]
@@ -1181,6 +1216,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f64"; Ty.path "isize" ]
               |),
               [ M.read (| self |) ]
@@ -1224,6 +1260,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f128"; Ty.path "u8" ]
               |),
               [ M.read (| self |) ]
@@ -1256,6 +1293,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f128"; Ty.path "u16" ]
               |),
               [ M.read (| self |) ]
@@ -1288,6 +1326,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f128"; Ty.path "u32" ]
               |),
               [ M.read (| self |) ]
@@ -1320,6 +1359,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f128"; Ty.path "u64" ]
               |),
               [ M.read (| self |) ]
@@ -1352,6 +1392,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f128"; Ty.path "u128" ]
               |),
               [ M.read (| self |) ]
@@ -1384,6 +1425,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f128"; Ty.path "usize" ]
               |),
               [ M.read (| self |) ]
@@ -1416,6 +1458,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f128"; Ty.path "i8" ]
               |),
               [ M.read (| self |) ]
@@ -1448,6 +1491,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f128"; Ty.path "i16" ]
               |),
               [ M.read (| self |) ]
@@ -1480,6 +1524,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f128"; Ty.path "i32" ]
               |),
               [ M.read (| self |) ]
@@ -1512,6 +1557,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f128"; Ty.path "i64" ]
               |),
               [ M.read (| self |) ]
@@ -1544,6 +1590,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f128"; Ty.path "i128" ]
               |),
               [ M.read (| self |) ]
@@ -1576,6 +1623,7 @@ Module convert.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
+                [],
                 [ Ty.path "f128"; Ty.path "isize" ]
               |),
               [ M.read (| self |) ]

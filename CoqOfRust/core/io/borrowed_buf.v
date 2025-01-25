@@ -513,6 +513,7 @@ Module io.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::transmute",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "&mut")
@@ -581,7 +582,7 @@ Module io.
                     "init"
                   |),
                   M.call_closure (|
-                    M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::cmp::max", [], [ Ty.path "usize" ] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -689,6 +690,7 @@ Module io.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::transmute",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "&mut")
@@ -1188,7 +1190,7 @@ Module io.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
                                   Value.String "assertion failed: filled <= self.buf.init"
@@ -1264,7 +1266,7 @@ Module io.
                     "init"
                   |),
                   M.call_closure (|
-                    M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::cmp::max", [], [ Ty.path "usize" ] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -1339,6 +1341,7 @@ Module io.
                     M.call_closure (|
                       M.get_function (|
                         "core::intrinsics::write_bytes",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -1448,7 +1451,7 @@ Module io.
                     "init"
                   |),
                   M.call_closure (|
-                    M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::cmp::max", [], [ Ty.path "usize" ] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -1547,7 +1550,7 @@ Module io.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
                                   Value.String "assertion failed: self.capacity() >= buf.len()"

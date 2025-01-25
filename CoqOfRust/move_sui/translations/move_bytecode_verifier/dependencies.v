@@ -2268,6 +2268,7 @@ Module dependencies.
             M.call_closure (|
               M.get_function (|
                 "move_bytecode_verifier::dependencies::verify_module_impl",
+                [],
                 [ impl_IntoIterator_Item____'a_CompiledModule_ ]
               |),
               [ M.read (| module |); M.read (| dependencies |) ]
@@ -2371,6 +2372,7 @@ Module dependencies.
                         M.call_closure (|
                           M.get_function (|
                             "move_bytecode_verifier::dependencies::verify_imported_modules",
+                            [],
                             []
                           |),
                           [ M.read (| context |) ]
@@ -2450,6 +2452,7 @@ Module dependencies.
                         M.call_closure (|
                           M.get_function (|
                             "move_bytecode_verifier::dependencies::verify_imported_structs",
+                            [],
                             []
                           |),
                           [ M.read (| context |) ]
@@ -2529,6 +2532,7 @@ Module dependencies.
                         M.call_closure (|
                           M.get_function (|
                             "move_bytecode_verifier::dependencies::verify_imported_functions",
+                            [],
                             []
                           |),
                           [ M.read (| context |) ]
@@ -2594,6 +2598,7 @@ Module dependencies.
                 M.call_closure (|
                   M.get_function (|
                     "move_bytecode_verifier::dependencies::verify_all_script_visibility_usage",
+                    [],
                     []
                   |),
                   [ M.read (| context |) ]
@@ -2873,6 +2878,7 @@ Module dependencies.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "move_binary_format::errors::verification_error",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -3269,6 +3275,7 @@ Module dependencies.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::hint::must_use",
+                                                                [],
                                                                 [ Ty.path "alloc::string::String" ]
                                                               |),
                                                               [
@@ -3278,6 +3285,7 @@ Module dependencies.
                                                                       M.call_closure (|
                                                                         M.get_function (|
                                                                           "alloc::fmt::format",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -3339,6 +3347,7 @@ Module dependencies.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "core::panicking::panic_fmt",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -3521,6 +3530,7 @@ Module dependencies.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "move_bytecode_verifier::dependencies::compatible_struct_abilities",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -3548,6 +3558,7 @@ Module dependencies.
                                                                     M.call_closure (|
                                                                       M.get_function (|
                                                                         "move_bytecode_verifier::dependencies::compatible_struct_type_parameters",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -3625,6 +3636,7 @@ Module dependencies.
                                                                     M.call_closure (|
                                                                       M.get_function (|
                                                                         "move_binary_format::errors::verification_error",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -3665,6 +3677,7 @@ Module dependencies.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "move_binary_format::errors::verification_error",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -4126,6 +4139,7 @@ Module dependencies.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::hint::must_use",
+                                                                [],
                                                                 [ Ty.path "alloc::string::String" ]
                                                               |),
                                                               [
@@ -4135,6 +4149,7 @@ Module dependencies.
                                                                       M.call_closure (|
                                                                         M.get_function (|
                                                                           "alloc::fmt::format",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -4196,6 +4211,7 @@ Module dependencies.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "core::panicking::panic_fmt",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -4361,6 +4377,7 @@ Module dependencies.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "move_bytecode_verifier::dependencies::compatible_fun_type_parameters",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -4435,6 +4452,7 @@ Module dependencies.
                                                                       M.call_closure (|
                                                                         M.get_function (|
                                                                           "move_binary_format::errors::verification_error",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -4570,6 +4588,7 @@ Module dependencies.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "move_binary_format::errors::verification_error",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -4640,6 +4659,7 @@ Module dependencies.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "move_bytecode_verifier::dependencies::compare_cross_module_signatures",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -4910,6 +4930,7 @@ Module dependencies.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "move_binary_format::errors::verification_error",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -4980,6 +5001,7 @@ Module dependencies.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "move_bytecode_verifier::dependencies::compare_cross_module_signatures",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -5156,6 +5178,7 @@ Module dependencies.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "move_binary_format::errors::verification_error",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -5382,6 +5405,7 @@ Module dependencies.
                                   M.call_closure (|
                                     M.get_function (|
                                       "move_bytecode_verifier::dependencies::compatible_type_parameter_constraints",
+                                      [],
                                       []
                                     |),
                                     [
@@ -5561,6 +5585,7 @@ Module dependencies.
                                     M.call_closure (|
                                       M.get_function (|
                                         "move_bytecode_verifier::dependencies::compatible_type_parameter_phantom_decl",
+                                        [],
                                         []
                                       |),
                                       [
@@ -5572,6 +5597,7 @@ Module dependencies.
                                       (M.call_closure (|
                                         M.get_function (|
                                           "move_bytecode_verifier::dependencies::compatible_type_parameter_constraints",
+                                          [],
                                           []
                                         |),
                                         [
@@ -5932,6 +5958,7 @@ Module dependencies.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "move_bytecode_verifier::dependencies::compare_types",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -6289,6 +6316,7 @@ Module dependencies.
                         M.call_closure (|
                           M.get_function (|
                             "move_bytecode_verifier::dependencies::compare_types",
+                            [],
                             []
                           |),
                           [
@@ -6323,6 +6351,7 @@ Module dependencies.
                         M.call_closure (|
                           M.get_function (|
                             "move_bytecode_verifier::dependencies::compare_structs",
+                            [],
                             []
                           |),
                           [
@@ -6395,6 +6424,7 @@ Module dependencies.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "move_bytecode_verifier::dependencies::compare_structs",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -6468,6 +6498,7 @@ Module dependencies.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_bytecode_verifier::dependencies::compare_cross_module_signatures",
+                                            [],
                                             []
                                           |),
                                           [
@@ -6572,6 +6603,7 @@ Module dependencies.
                                     M.call_closure (|
                                       M.get_function (|
                                         "move_bytecode_verifier::dependencies::compare_types",
+                                        [],
                                         []
                                       |),
                                       [
@@ -7260,7 +7292,7 @@ Module dependencies.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String
@@ -7460,6 +7492,7 @@ Module dependencies.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "move_bytecode_verifier::dependencies::verify_script_visibility_usage",
+                                                    [],
                                                     []
                                                   |),
                                                   [

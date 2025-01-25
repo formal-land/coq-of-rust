@@ -275,7 +275,7 @@ Module slice.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ptr::without_provenance", [ T ] |),
+                              M.get_function (| "core::ptr::without_provenance", [], [ T ] |),
                               [ M.read (| len |) ]
                             |)
                           |)));
@@ -630,7 +630,7 @@ Module slice.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ptr::without_provenance_mut", [ T ] |),
+                              M.get_function (| "core::ptr::without_provenance_mut", [], [ T ] |),
                               [ M.read (| len |) ]
                             |)
                           |)));
@@ -691,7 +691,7 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::slice::raw::from_raw_parts_mut", [ T ] |),
+              M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -838,7 +838,7 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::slice::raw::from_raw_parts_mut", [ T ] |),
+              M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -2431,7 +2431,7 @@ Module slice.
                               "core::option::Option::Some"
                               [
                                 M.call_closure (|
-                                  M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
+                                  M.get_function (| "core::cmp::max", [], [ Ty.path "usize" ] |),
                                   [
                                     Value.Integer IntegerKind.Usize 1;
                                     M.call_closure (|
@@ -3015,6 +3015,7 @@ Module slice.
                             M.call_closure (|
                               M.get_function (|
                                 "core::mem::take",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
@@ -3209,6 +3210,7 @@ Module slice.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::mem::take",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&mut")
@@ -3549,6 +3551,7 @@ Module slice.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::mem::take",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&mut")
@@ -4035,6 +4038,7 @@ Module slice.
                       M.call_closure (|
                         M.get_function (|
                           "core::mem::take",
+                          [],
                           [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
                         |),
                         [
@@ -4134,7 +4138,7 @@ Module slice.
                               "core::option::Option::Some"
                               [
                                 M.call_closure (|
-                                  M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
+                                  M.get_function (| "core::cmp::max", [], [ Ty.path "usize" ] |),
                                   [
                                     Value.Integer IntegerKind.Usize 1;
                                     M.call_closure (|
@@ -4476,6 +4480,7 @@ Module slice.
                       M.call_closure (|
                         M.get_function (|
                           "core::mem::take",
+                          [],
                           [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
                         |),
                         [
@@ -5442,7 +5447,7 @@ Module slice.
                         Value.Tuple
                           [
                             M.call_closure (|
-                              M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                              M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                               [
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
@@ -5493,6 +5498,7 @@ Module slice.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::cmp::min",
+                                                          [],
                                                           [ Ty.path "usize" ]
                                                         |),
                                                         [
@@ -6776,7 +6782,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
             M.call_closure (|
-              M.get_function (| "core::slice::raw::from_raw_parts", [ T ] |),
+              M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "add", [] |),
@@ -7523,7 +7529,7 @@ Module slice.
                       (let~ chunksz :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                            M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -7909,6 +7915,7 @@ Module slice.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::cmp::min",
+                                                [],
                                                 [ Ty.path "usize" ]
                                               |),
                                               [
@@ -8204,7 +8211,7 @@ Module slice.
               let~ len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
@@ -8240,7 +8247,7 @@ Module slice.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::raw::from_raw_parts", [ T ] |),
+                  M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -8595,7 +8602,11 @@ Module slice.
                                   let res := M.copy (| γ0_0 |) in
                                   M.alloc (|
                                     M.call_closure (|
-                                      M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                                      M.get_function (|
+                                        "core::cmp::min",
+                                        [],
+                                        [ Ty.path "usize" ]
+                                      |),
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -8957,7 +8968,7 @@ Module slice.
                       (let~ sz :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                            M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -9362,6 +9373,7 @@ Module slice.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::cmp::min",
+                                                [],
                                                 [ Ty.path "usize" ]
                                               |),
                                               [
@@ -9674,7 +9686,7 @@ Module slice.
                   let~ len :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                        M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
@@ -9713,7 +9725,7 @@ Module slice.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts_mut", [ T ] |),
+                      M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10074,7 +10086,11 @@ Module slice.
                                   let res := M.copy (| γ0_0 |) in
                                   M.alloc (|
                                     M.call_closure (|
-                                      M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                                      M.get_function (|
+                                        "core::cmp::min",
+                                        [],
+                                        [ Ty.path "usize" ]
+                                      |),
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -10949,7 +10965,7 @@ Module slice.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::raw::from_raw_parts", [ T ] |),
+                  M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -12023,7 +12039,7 @@ Module slice.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::raw::from_raw_parts_mut", [ T ] |),
+                  M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
@@ -12325,6 +12341,7 @@ Module slice.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::mem::replace",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "*mut")
@@ -15147,7 +15164,7 @@ Module slice.
                       let~ chunksz :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                            M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                             [
                               M.read (| len |);
                               M.read (|
@@ -15866,7 +15883,7 @@ Module slice.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::raw::from_raw_parts", [ T ] |),
+                  M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -16517,7 +16534,7 @@ Module slice.
                       (let~ sz :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                            M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -17308,7 +17325,7 @@ Module slice.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::raw::from_raw_parts_mut", [ T ] |),
+                  M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
@@ -18524,7 +18541,7 @@ Module slice.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::raw::from_raw_parts", [ T ] |),
+                  M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -19650,7 +19667,7 @@ Module slice.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::raw::from_raw_parts_mut", [ T ] |),
+                  M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
@@ -21163,6 +21180,7 @@ Module slice.
                           M.call_closure (|
                             M.get_function (|
                               "core::mem::take",
+                              [],
                               [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
                               ]
                             |),
@@ -21519,6 +21537,7 @@ Module slice.
                           M.call_closure (|
                             M.get_function (|
                               "core::mem::take",
+                              [],
                               [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
                               ]
                             |),

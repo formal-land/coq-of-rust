@@ -577,7 +577,7 @@ Module boxed.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "alloc::alloc::handle_alloc_error", [] |),
+                          M.get_function (| "alloc::alloc::handle_alloc_error", [], [] |),
                           [ M.read (| layout |) ]
                         |)
                       |)
@@ -893,7 +893,7 @@ Module boxed.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "alloc::alloc::handle_alloc_error", [] |),
+                          M.get_function (| "alloc::alloc::handle_alloc_error", [], [] |),
                           [ M.read (| layout |) ]
                         |)
                       |)
@@ -1473,7 +1473,7 @@ Module boxed.
             let~ alloc :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::ptr::read", [ A ] |),
+                  M.get_function (| "core::ptr::read", [], [ A ] |),
                   [
                     M.SubPointer.get_struct_tuple_field (|
                       M.call_closure (|
@@ -3742,7 +3742,7 @@ Module boxed.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "alloc::str::from_boxed_utf8_unchecked", [] |),
+                M.get_function (| "alloc::str::from_boxed_utf8_unchecked", [], [] |),
                 [ M.read (| buf |) ]
               |)
             |)
@@ -4505,7 +4505,7 @@ Module boxed.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                  M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -4734,7 +4734,7 @@ Module boxed.
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
-            M.get_function (| "alloc::str::from_boxed_utf8_unchecked", [] |),
+            M.get_function (| "alloc::str::from_boxed_utf8_unchecked", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
@@ -5050,6 +5050,7 @@ Module boxed.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::panicking::assert_failed",
+                                                  [],
                                                   [ Ty.path "usize"; Ty.path "usize" ]
                                                 |),
                                                 [
@@ -5179,6 +5180,7 @@ Module boxed.
                           M.call_closure (|
                             M.get_function (|
                               "alloc::boxed::boxed_slice_as_array_unchecked",
+                              [ N ],
                               [ T; Ty.path "alloc::alloc::Global" ]
                             |),
                             [ M.read (| boxed_slice |) ]
@@ -5295,6 +5297,7 @@ Module boxed.
                           M.call_closure (|
                             M.get_function (|
                               "alloc::boxed::boxed_slice_as_array_unchecked",
+                              [ N ],
                               [ T; Ty.path "alloc::alloc::Global" ]
                             |),
                             [ M.read (| boxed_slice |) ]
@@ -5449,7 +5452,7 @@ Module boxed.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [ M.read (| Value.String "assertion failed: self.is::<T>()" |)
                                       ]
                                     |)
@@ -5645,7 +5648,7 @@ Module boxed.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [ M.read (| Value.String "assertion failed: self.is::<T>()" |)
                                       ]
                                     |)
@@ -5857,7 +5860,7 @@ Module boxed.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [ M.read (| Value.String "assertion failed: self.is::<T>()" |)
                                       ]
                                     |)
@@ -8013,6 +8016,7 @@ Module boxed.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::intrinsics::transmute",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::boxed::Box")
@@ -8159,6 +8163,7 @@ Module boxed.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::intrinsics::transmute",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::boxed::Box")

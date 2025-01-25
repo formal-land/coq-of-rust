@@ -390,6 +390,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::copied::copy_try_fold",
+                      [],
                       [ T; B; R; F ]
                     |),
                     [ M.read (| f |) ]
@@ -433,7 +434,11 @@ Module iter.
                   |);
                   M.read (| init |);
                   M.call_closure (|
-                    M.get_function (| "core::iter::adapters::copied::copy_fold", [ T; Acc; F ] |),
+                    M.get_function (|
+                      "core::iter::adapters::copied::copy_fold",
+                      [],
+                      [ T; Acc; F ]
+                    |),
                     [ M.read (| f |) ]
                   |)
                 ]
@@ -616,7 +621,7 @@ Module iter.
               let idx := M.alloc (| idx |) in
               M.read (|
                 M.call_closure (|
-                  M.get_function (| "core::iter::adapters::zip::try_get_unchecked", [ I ] |),
+                  M.get_function (| "core::iter::adapters::zip::try_get_unchecked", [], [ I ] |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -741,6 +746,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::copied::copy_try_fold",
+                      [],
                       [ T; B; R; F ]
                     |),
                     [ M.read (| f |) ]
@@ -784,7 +790,11 @@ Module iter.
                   |);
                   M.read (| init |);
                   M.call_closure (|
-                    M.get_function (| "core::iter::adapters::copied::copy_fold", [ T; Acc; F ] |),
+                    M.get_function (|
+                      "core::iter::adapters::copied::copy_fold",
+                      [],
+                      [ T; Acc; F ]
+                    |),
                     [ M.read (| f |) ]
                   |)
                 ]
@@ -1016,6 +1026,7 @@ Module iter.
               M.call_closure (|
                 M.get_function (|
                   "core::array::iter_next_chunk",
+                  [ N ],
                   [
                     T;
                     Ty.apply
@@ -1313,6 +1324,7 @@ Module iter.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::intrinsics::copy_nonoverlapping",
+                                            [],
                                             [ T ]
                                           |),
                                           [
@@ -1418,7 +1430,7 @@ Module iter.
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                          M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|

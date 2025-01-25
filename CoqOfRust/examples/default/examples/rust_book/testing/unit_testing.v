@@ -53,7 +53,7 @@ Module tests.
                   [
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "unit_testing::add", [] |),
+                        M.get_function (| "unit_testing::add", [], [] |),
                         [ Value.Integer IntegerKind.I32 1; Value.Integer IntegerKind.I32 2 ]
                       |)
                     |);
@@ -95,6 +95,7 @@ Module tests.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::panicking::assert_failed",
+                                        [],
                                         [ Ty.path "i32"; Ty.path "i32" ]
                                       |),
                                       [
@@ -139,7 +140,7 @@ Module tests.
                   [
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "unit_testing::bad_add", [] |),
+                        M.get_function (| "unit_testing::bad_add", [], [] |),
                         [ Value.Integer IntegerKind.I32 1; Value.Integer IntegerKind.I32 2 ]
                       |)
                     |);
@@ -181,6 +182,7 @@ Module tests.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::panicking::assert_failed",
+                                        [],
                                         [ Ty.path "i32"; Ty.path "i32" ]
                                       |),
                                       [

@@ -195,6 +195,7 @@ Module vm_status.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::vm_status::StatusType" ]
                   |),
                   [ M.read (| self |) ]
@@ -205,6 +206,7 @@ Module vm_status.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::vm_status::StatusType" ]
                   |),
                   [ M.read (| other |) ]
@@ -353,6 +355,7 @@ Module vm_status.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::vm_status::StatusType" ]
                   |),
                   [ M.read (| self |) ]
@@ -3469,6 +3472,7 @@ Module vm_status.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::vm_status::StatusCode" ]
                   |),
                   [ M.read (| self |) ]
@@ -3519,6 +3523,7 @@ Module vm_status.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::vm_status::StatusCode" ]
                   |),
                   [ M.read (| self |) ]
@@ -3529,6 +3534,7 @@ Module vm_status.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::vm_status::StatusCode" ]
                   |),
                   [ M.read (| other |) ]
@@ -3563,6 +3569,7 @@ Module vm_status.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::vm_status::StatusCode" ]
                   |),
                   [ M.read (| self |) ]
@@ -3573,6 +3580,7 @@ Module vm_status.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::vm_status::StatusCode" ]
                   |),
                   [ M.read (| other |) ]
@@ -3618,6 +3626,7 @@ Module vm_status.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::vm_status::StatusCode" ]
                   |),
                   [ M.read (| self |) ]
@@ -3628,6 +3637,7 @@ Module vm_status.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::vm_status::StatusCode" ]
                   |),
                   [ M.read (| other |) ]

@@ -55,7 +55,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         M.match_operator (|
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "std::sync::mpsc::channel", [ Ty.path "i32" ] |),
+              M.get_function (| "std::sync::mpsc::channel", [], [ Ty.path "i32" ] |),
               []
             |)
           |),
@@ -172,6 +172,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "std::thread::spawn",
+                                                  [],
                                                   [
                                                     Ty.function [ Ty.tuple [] ] (Ty.tuple []);
                                                     Ty.tuple []
@@ -236,6 +237,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                             M.call_closure (|
                                                                               M.get_function (|
                                                                                 "std::io::stdio::_print",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -579,7 +581,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "std::io::stdio::_print", [] |),
+                        M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|

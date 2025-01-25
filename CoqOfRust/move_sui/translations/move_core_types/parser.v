@@ -206,6 +206,7 @@ Module parser.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::parser::Token" ]
                   |),
                   [ M.read (| self |) ]
@@ -216,6 +217,7 @@ Module parser.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::parser::Token" ]
                   |),
                   [ M.read (| other |) ]
@@ -1477,6 +1479,7 @@ Module parser.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::hint::must_use",
+                                                          [],
                                                           [ Ty.path "alloc::string::String" ]
                                                         |),
                                                         [
@@ -1486,6 +1489,7 @@ Module parser.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "alloc::fmt::format",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -2003,6 +2007,7 @@ Module parser.
                                                                                       M.call_closure (|
                                                                                         M.get_function (|
                                                                                           "anyhow::__private::format_err",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -2374,6 +2379,7 @@ Module parser.
                                                                     M.call_closure (|
                                                                       M.get_function (|
                                                                         "anyhow::__private::format_err",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -2806,6 +2812,7 @@ Module parser.
                                                                     M.call_closure (|
                                                                       M.get_function (|
                                                                         "anyhow::__private::format_err",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -2883,6 +2890,7 @@ Module parser.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "move_core_types::parser::next_number",
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path
@@ -3145,6 +3153,7 @@ Module parser.
                                                                           M.call_closure (|
                                                                             M.get_function (|
                                                                               "anyhow::__private::format_err",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -3203,6 +3212,7 @@ Module parser.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "hex::encode",
+                                                        [],
                                                         [ Ty.path "alloc::string::String" ]
                                                       |),
                                                       [ M.read (| r |) ]
@@ -3395,6 +3405,7 @@ Module parser.
                                                                           M.call_closure (|
                                                                             M.get_function (|
                                                                               "anyhow::__private::format_err",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -3760,6 +3771,7 @@ Module parser.
                                                                                   M.call_closure (|
                                                                                     M.get_function (|
                                                                                       "move_core_types::identifier::is_valid_identifier_char",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [ M.read (| c |)
@@ -3823,6 +3835,7 @@ Module parser.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "move_core_types::parser::name_token",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| r |) ]
@@ -3845,6 +3858,7 @@ Module parser.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "anyhow::__private::format_err",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -3962,6 +3976,7 @@ Module parser.
                                       M.call_closure (|
                                         M.get_function (|
                                           "move_core_types::parser::next_token",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| s |) ]
@@ -4224,6 +4239,7 @@ Module parser.
                                           M.call_closure (|
                                             M.get_function (|
                                               "anyhow::__private::format_err",
+                                              [],
                                               []
                                             |),
                                             [
@@ -4435,6 +4451,7 @@ Module parser.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -4442,7 +4459,11 @@ Module parser.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -5139,6 +5160,7 @@ Module parser.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -5148,6 +5170,7 @@ Module parser.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -5897,6 +5920,7 @@ Module parser.
                                             |);
                                             M.get_function (|
                                               "move_core_types::parser::token_as_name",
+                                              [],
                                               []
                                             |)
                                           ]
@@ -6103,6 +6127,7 @@ Module parser.
                                             |);
                                             M.get_function (|
                                               "move_core_types::parser::token_as_name",
+                                              [],
                                               []
                                             |)
                                           ]
@@ -6929,6 +6954,7 @@ Module parser.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -6938,6 +6964,7 @@ Module parser.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -8111,6 +8138,7 @@ Module parser.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "hex::decode",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [ M.read (| s |) ]
@@ -8196,6 +8224,7 @@ Module parser.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -8205,6 +8234,7 @@ Module parser.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -8407,6 +8437,7 @@ Module parser.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_core_types::parser::tokenize",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| s |) ]
@@ -8755,6 +8786,7 @@ Module parser.
         M.call_closure (|
           M.get_function (|
             "move_core_types::parser::parse",
+            [],
             [
               Ty.function
                 [
@@ -8927,6 +8959,7 @@ Module parser.
         M.call_closure (|
           M.get_function (|
             "move_core_types::parser::parse",
+            [],
             [
               Ty.function
                 [
@@ -9105,6 +9138,7 @@ Module parser.
         M.call_closure (|
           M.get_function (|
             "move_core_types::parser::parse",
+            [],
             [
               Ty.function
                 [
@@ -9205,6 +9239,7 @@ Module parser.
         M.call_closure (|
           M.get_function (|
             "move_core_types::parser::parse",
+            [],
             [
               Ty.function
                 [
@@ -9385,6 +9420,7 @@ Module parser.
         M.call_closure (|
           M.get_function (|
             "move_core_types::parser::parse",
+            [],
             [
               Ty.function
                 [
@@ -9523,6 +9559,7 @@ Module parser.
                               M.call_closure (|
                                 M.get_function (|
                                   "move_core_types::parser::parse",
+                                  [],
                                   [
                                     Ty.function
                                       [
@@ -9621,6 +9658,7 @@ Module parser.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::hint::must_use",
+                                                        [],
                                                         [ Ty.path "alloc::string::String" ]
                                                       |),
                                                       [
@@ -9630,6 +9668,7 @@ Module parser.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "alloc::fmt::format",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -9797,6 +9836,7 @@ Module parser.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::hint::must_use",
+                                          [],
                                           [ Ty.path "alloc::string::String" ]
                                         |),
                                         [
@@ -9804,7 +9844,7 @@ Module parser.
                                             let~ res :=
                                               M.alloc (|
                                                 M.call_closure (|
-                                                  M.get_function (| "alloc::fmt::format", [] |),
+                                                  M.get_function (| "alloc::fmt::format", [], [] |),
                                                   [
                                                     M.call_closure (|
                                                       M.get_associated_function (|

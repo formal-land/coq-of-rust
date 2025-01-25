@@ -181,6 +181,7 @@ Module locals_safety.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
                       ]
                     |),
@@ -192,6 +193,7 @@ Module locals_safety.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
                       ]
                     |),
@@ -1410,7 +1412,7 @@ Module locals_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
                                   Value.String
@@ -1614,7 +1616,7 @@ Module locals_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
                                   Value.String
@@ -1686,7 +1688,7 @@ Module locals_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
                                   Value.String
@@ -1760,7 +1762,7 @@ Module locals_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
                                   Value.String
@@ -2618,7 +2620,7 @@ Module locals_safety.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::panicking::panic", [] |),
+                                  M.get_function (| "core::panicking::panic", [], [] |),
                                   [
                                     M.read (|
                                       Value.String

@@ -332,6 +332,7 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
                       M.call_closure (|
                         M.get_function (|
                           "std::panicking::begin_panic",
+                          [],
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
                         [ M.read (| Value.String "Unexpected error from `pallet-contracts`." |) ]

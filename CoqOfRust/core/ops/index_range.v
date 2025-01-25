@@ -231,7 +231,7 @@ Module ops.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                M.get_function (| "core::intrinsics::ub_checks", [], [] |),
                                 []
                               |)
                             |)) in
@@ -422,7 +422,7 @@ Module ops.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String "assertion failed: self.start < self.end"
@@ -527,7 +527,7 @@ Module ops.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String "assertion failed: self.start < self.end"

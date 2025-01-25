@@ -316,6 +316,7 @@ Module str.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "core::panicking::assert_failed",
+                                                              [],
                                                               [ Ty.path "usize"; Ty.path "usize" ]
                                                             |),
                                                             [
@@ -523,6 +524,7 @@ Module str.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "core::panicking::assert_failed",
+                                                              [],
                                                               [ Ty.path "usize"; Ty.path "usize" ]
                                                             |),
                                                             [
@@ -726,6 +728,7 @@ Module str.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::str::pattern::SearchStep" ]
                     |),
                     [ M.read (| self |) ]
@@ -736,6 +739,7 @@ Module str.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::str::pattern::SearchStep" ]
                     |),
                     [ M.read (| other |) ]
@@ -2062,7 +2066,7 @@ Module str.
                                 (let γ :=
                                   M.alloc (|
                                     M.call_closure (|
-                                      M.get_function (| "core::slice::memchr::memchr", [] |),
+                                      M.get_function (| "core::slice::memchr::memchr", [], [] |),
                                       [ M.read (| last_byte |); M.read (| bytes |) ]
                                     |)
                                   |) in
@@ -2821,7 +2825,11 @@ Module str.
                                     (let γ :=
                                       M.alloc (|
                                         M.call_closure (|
-                                          M.get_function (| "core::slice::memchr::memrchr", [] |),
+                                          M.get_function (|
+                                            "core::slice::memchr::memrchr",
+                                            [],
+                                            []
+                                          |),
                                           [ M.read (| last_byte |); M.read (| bytes |) ]
                                         |)
                                       |) in
@@ -7778,6 +7786,7 @@ Module str.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::str::pattern::simd_contains",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| self |); M.read (| haystack |) ]
@@ -9174,7 +9183,11 @@ Module str.
                                         "position"
                                       |),
                                       M.call_closure (|
-                                        M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
+                                        M.get_function (|
+                                          "core::cmp::max",
+                                          [],
+                                          [ Ty.path "usize" ]
+                                        |),
                                         [
                                           M.read (| b |);
                                           M.read (|
@@ -9935,7 +9948,11 @@ Module str.
                                         "end"
                                       |),
                                       M.call_closure (|
-                                        M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                                        M.get_function (|
+                                          "core::cmp::min",
+                                          [],
+                                          [ Ty.path "usize" ]
+                                        |),
                                         [
                                           M.read (| a |);
                                           M.read (|
@@ -10737,6 +10754,7 @@ Module str.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::cmp::max",
+                                                        [],
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [
@@ -10842,6 +10860,7 @@ Module str.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::cmp::max",
+                                                            [],
                                                             [ Ty.path "usize" ]
                                                           |),
                                                           [
@@ -11386,6 +11405,7 @@ Module str.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::cmp::max",
+                                              [],
                                               [ Ty.path "usize" ]
                                             |),
                                             [
@@ -12360,6 +12380,7 @@ Module str.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::cmp::min",
+                                              [],
                                               [ Ty.path "usize" ]
                                             |),
                                             [
@@ -13589,7 +13610,7 @@ Module str.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String "assertion failed: period <= known_period"
@@ -13953,7 +13974,7 @@ Module str.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String "assertion failed: needle.len() > 1"
@@ -14505,6 +14526,7 @@ Module str.
                                                                                       M.call_closure (|
                                                                                         M.get_function (|
                                                                                           "core::str::pattern::small_slice_eq",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -15554,6 +15576,7 @@ Module str.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::panicking::assert_failed",
+                                                        [],
                                                         [ Ty.path "usize"; Ty.path "usize" ]
                                                       |),
                                                       [

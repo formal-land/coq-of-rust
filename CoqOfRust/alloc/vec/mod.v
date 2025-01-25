@@ -735,7 +735,7 @@ Module vec.
             let~ alloc :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::ptr::read", [ A ] |),
+                  M.get_function (| "core::ptr::read", [], [ A ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -1190,7 +1190,7 @@ Module vec.
                               "buf"
                             |);
                             M.call_closure (|
-                              M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
+                              M.get_function (| "core::cmp::max", [], [ Ty.path "usize" ] |),
                               [
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
@@ -1270,6 +1270,7 @@ Module vec.
                 M.call_closure (|
                   M.get_function (|
                     "core::ptr::read",
+                    [],
                     [ Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ] ]
                   |),
                   [
@@ -1431,7 +1432,7 @@ Module vec.
                 let~ s :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
+                      M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -1469,6 +1470,7 @@ Module vec.
                     M.call_closure (|
                       M.get_function (|
                         "core::ptr::drop_in_place",
+                        [],
                         [ Ty.apply (Ty.path "slice") [] [ T ] ]
                       |),
                       [ M.read (| s |) ]
@@ -1727,7 +1729,7 @@ Module vec.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String
@@ -1830,7 +1832,7 @@ Module vec.
             let~ value :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::ptr::read", [ T ] |),
+                  M.get_function (| "core::ptr::read", [], [ T ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -1867,7 +1869,7 @@ Module vec.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::copy", [ T ] |),
+                  M.get_function (| "core::intrinsics::copy", [], [ T ] |),
                   [
                     (* MutToConstPointer *)
                     M.pointer_coercion
@@ -2072,7 +2074,7 @@ Module vec.
                         let~ _ :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::intrinsics::copy", [ T ] |),
+                              M.get_function (| "core::intrinsics::copy", [], [ T ] |),
                               [
                                 (* MutToConstPointer *) M.pointer_coercion (M.read (| p |));
                                 M.call_closure (|
@@ -2094,7 +2096,7 @@ Module vec.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::ptr::write", [ T ] |),
+                    M.get_function (| "core::ptr::write", [], [ T ] |),
                     [ M.read (| p |); M.read (| element |) ]
                   |)
                 |) in
@@ -2216,14 +2218,14 @@ Module vec.
                 M.write (|
                   ret,
                   M.call_closure (|
-                    M.get_function (| "core::ptr::read", [ T ] |),
+                    M.get_function (| "core::ptr::read", [], [ T ] |),
                     [ (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |)) ]
                   |)
                 |) in
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::copy", [ T ] |),
+                    M.get_function (| "core::intrinsics::copy", [], [ T ] |),
                     [
                       (* MutToConstPointer *)
                       M.pointer_coercion
@@ -2519,6 +2521,7 @@ Module vec.
                     M.call_closure (|
                       M.get_function (|
                         "core::mem::drop",
+                        [],
                         [ Ty.apply (Ty.path "alloc::vec::retain_mut::BackshiftOnDrop") [] [ T; A ] ]
                       |),
                       [ M.read (| g |) ]
@@ -2982,7 +2985,7 @@ Module vec.
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::ptr::drop_in_place", [ T ] |),
+                        M.get_function (| "core::ptr::drop_in_place", [], [ T ] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -3123,7 +3126,11 @@ Module vec.
                                       let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
-                                            M.get_function (| "core::ptr::drop_in_place", [ T ] |),
+                                            M.get_function (|
+                                              "core::ptr::drop_in_place",
+                                              [],
+                                              [ T ]
+                                            |),
                                             [ M.read (| read_ptr |) ]
                                           |)
                                         |) in
@@ -3155,6 +3162,7 @@ Module vec.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::intrinsics::copy_nonoverlapping",
+                                              [],
                                               [ T ]
                                             |),
                                             [
@@ -3243,6 +3251,7 @@ Module vec.
                     M.call_closure (|
                       M.get_function (|
                         "core::mem::forget",
+                        [],
                         [ Ty.apply (Ty.path "alloc::vec::dedup_by::FillGapOnDrop") [] [ T; A ] ]
                       |),
                       [ M.read (| gap |) ]
@@ -3359,7 +3368,7 @@ Module vec.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::ptr::write", [ T ] |),
+                  M.get_function (| "core::ptr::write", [], [ T ] |),
                   [ M.read (| end_ |); M.read (| value |) ]
                 |)
               |) in
@@ -3489,7 +3498,7 @@ Module vec.
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::ptr::write", [ T ] |),
+                        M.get_function (| "core::ptr::write", [], [ T ] |),
                         [ M.read (| end_ |); M.read (| value |) ]
                       |)
                     |) in
@@ -3572,7 +3581,7 @@ Module vec.
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::hint::assert_unchecked", [] |),
+                          M.get_function (| "core::hint::assert_unchecked", [], [] |),
                           [
                             BinOp.lt (|
                               M.read (|
@@ -3599,7 +3608,7 @@ Module vec.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_function (| "core::ptr::read", [ T ] |),
+                            M.get_function (| "core::ptr::read", [], [ T ] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -3904,7 +3913,7 @@ Module vec.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                  M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                   [
                     M.rust_cast (M.read (| other |));
                     M.call_closure (|
@@ -3995,7 +4004,7 @@ Module vec.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::index::range", [ R ] |),
+                  M.get_function (| "core::slice::index::range", [], [ R ] |),
                   [
                     M.read (| range |);
                     Value.StructRecord "core::ops::range::RangeTo" [ ("end_", M.read (| len |)) ]
@@ -4033,7 +4042,7 @@ Module vec.
                     let~ range_slice :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::slice::raw::from_raw_parts", [ T ] |),
+                          M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -4151,6 +4160,7 @@ Module vec.
                 M.call_closure (|
                   M.get_function (|
                     "core::ptr::drop_in_place",
+                    [],
                     [ Ty.apply (Ty.path "slice") [] [ T ] ]
                   |),
                   [ M.read (| elems |) ]
@@ -4361,7 +4371,7 @@ Module vec.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                    M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -4486,6 +4496,7 @@ Module vec.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::iter::sources::repeat_with::repeat_with",
+                                    [],
                                     [ T; F ]
                                   |),
                                   [ M.read (| f |) ]
@@ -4553,7 +4564,7 @@ Module vec.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::slice::raw::from_raw_parts_mut", [ T ] |),
+                M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
@@ -4634,6 +4645,7 @@ Module vec.
           M.call_closure (|
             M.get_function (|
               "core::slice::raw::from_raw_parts_mut",
+              [],
               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
             |),
             [
@@ -4843,7 +4855,7 @@ Module vec.
             let~ initialized :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::raw::from_raw_parts_mut", [ T ] |),
+                  M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
                   [
                     M.read (| ptr |);
                     M.read (|
@@ -4861,6 +4873,7 @@ Module vec.
                 M.call_closure (|
                   M.get_function (|
                     "core::slice::raw::from_raw_parts_mut",
+                    [],
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                   |),
                   [ M.read (| spare_ptr |); M.read (| spare_len |) ]
@@ -5039,7 +5052,7 @@ Module vec.
             let~ range :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::index::range", [ R ] |),
+                  M.get_function (| "core::slice::index::range", [], [ R ] |),
                   [
                     M.read (| src |);
                     Value.StructRecord
@@ -5253,7 +5266,7 @@ Module vec.
                                       let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
-                                            M.get_function (| "core::ptr::write", [ T ] |),
+                                            M.get_function (| "core::ptr::write", [], [ T ] |),
                                             [
                                               M.read (| ptr |);
                                               M.call_closure (|
@@ -5313,7 +5326,7 @@ Module vec.
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::ptr::write", [ T ] |),
+                          M.get_function (| "core::ptr::write", [], [ T ] |),
                           [ M.read (| ptr |); M.read (| value |) ]
                         |)
                       |) in
@@ -5561,7 +5574,7 @@ Module vec.
                         let~ _ :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ptr::write", [ T ] |),
+                              M.get_function (| "core::ptr::write", [], [ T ] |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -5764,6 +5777,7 @@ Module vec.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "core::panicking::assert_failed",
+                                                                    [],
                                                                     [
                                                                       Ty.path "usize";
                                                                       Ty.path "usize"
@@ -5922,6 +5936,7 @@ Module vec.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::ptr::write",
+                                                                [],
                                                                 [ T ]
                                                               |),
                                                               [
@@ -5981,7 +5996,7 @@ Module vec.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::panicking::panic_fmt", [] |),
+                                  M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -6537,6 +6552,7 @@ Module vec.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::iter::adapters::zip::zip",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
@@ -6742,7 +6758,7 @@ Module vec.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                            M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -6817,7 +6833,7 @@ Module vec.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::slice::raw::from_raw_parts", [ T ] |),
+            M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
@@ -6864,7 +6880,7 @@ Module vec.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::slice::raw::from_raw_parts_mut", [ T ] |),
+            M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
@@ -7279,7 +7295,7 @@ Module vec.
                   |),
                   [
                     M.call_closure (|
-                      M.get_function (| "core::ptr::read", [ A ] |),
+                      M.get_function (| "core::ptr::read", [], [ A ] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -7744,7 +7760,7 @@ Module vec.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::ptr::write", [ T ] |),
+                  M.get_function (| "core::ptr::write", [], [ T ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
@@ -7955,7 +7971,7 @@ Module vec.
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::ptr::write", [ T ] |),
+                          M.get_function (| "core::ptr::write", [], [ T ] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -8172,11 +8188,12 @@ Module vec.
           M.call_closure (|
             M.get_function (|
               "core::ptr::drop_in_place",
+              [],
               [ Ty.apply (Ty.path "slice") [] [ T ] ]
             |),
             [
               M.call_closure (|
-                M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
+                M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
@@ -8881,6 +8898,7 @@ Module vec.
                     M.call_closure (|
                       M.get_function (|
                         "core::ptr::read",
+                        [],
                         [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
                       |),
                       [

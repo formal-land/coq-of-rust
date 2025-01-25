@@ -30,6 +30,7 @@ Module ability_field_requirements.
             M.call_closure (|
               M.get_function (|
                 "move_bytecode_verifier::ability_field_requirements::verify_module_impl",
+                [],
                 []
               |),
               [ M.read (| module |) ]
@@ -849,6 +850,7 @@ Module ability_field_requirements.
                                                                                     M.call_closure (|
                                                                                       M.get_function (|
                                                                                         "move_binary_format::errors::verification_error",
+                                                                                        [],
                                                                                         []
                                                                                       |),
                                                                                       [

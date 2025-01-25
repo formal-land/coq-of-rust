@@ -62,7 +62,7 @@ Module boxed.
               let~ meta :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::ptr::metadata::metadata", [ T ] |),
+                    M.get_function (| "core::ptr::metadata::metadata", [], [ T ] |),
                     [ value ]
                   |)
                 |) in
@@ -109,7 +109,7 @@ Module boxed.
               let~ meta :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::ptr::metadata::metadata", [ T ] |),
+                    M.get_function (| "core::ptr::metadata::metadata", [], [ T ] |),
                     [ value ]
                   |)
                 |) in
@@ -314,7 +314,7 @@ Module boxed.
                           (M.alloc (|
                             BinOp.eq (|
                               M.call_closure (|
-                                M.get_function (| "core::mem::size_of", [ T ] |),
+                                M.get_function (| "core::mem::size_of", [], [ T ] |),
                                 []
                               |),
                               Value.Integer IntegerKind.Usize 0
@@ -345,7 +345,7 @@ Module boxed.
                       (let~ meta :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::ptr::metadata::metadata", [ Dyn ] |),
+                            M.get_function (| "core::ptr::metadata::metadata", [], [ Dyn ] |),
                             [ M.read (| M.use (M.alloc (| value |)) |) ]
                           |)
                         |) in
@@ -514,7 +514,11 @@ Module boxed.
               let~ pointer :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::ptr::metadata::from_raw_parts", [ T; Ty.tuple [] ] |),
+                    M.get_function (|
+                      "core::ptr::metadata::from_raw_parts",
+                      [],
+                      [ T; Ty.tuple [] ]
+                    |),
                     [ M.rust_cast (M.read (| value |)); M.read (| metadata |) ]
                   |)
                 |) in
@@ -579,6 +583,7 @@ Module boxed.
                   M.call_closure (|
                     M.get_function (|
                       "core::ptr::metadata::from_raw_parts_mut",
+                      [],
                       [ T; Ty.tuple [] ]
                     |),
                     [ M.rust_cast (M.read (| value |)); M.read (| metadata |) ]
@@ -1025,6 +1030,7 @@ Module boxed.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "core::panicking::panic",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -1059,7 +1065,7 @@ Module boxed.
                                   (let~ ptr :=
                                     M.alloc (|
                                       M.call_closure (|
-                                        M.get_function (| "alloc::alloc::alloc", [] |),
+                                        M.get_function (| "alloc::alloc::alloc", [], [] |),
                                         [ M.read (| layout |) ]
                                       |)
                                     |) in
@@ -1091,6 +1097,7 @@ Module boxed.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "alloc::alloc::handle_alloc_error",
+                                                    [],
                                                     []
                                                   |),
                                                   [ M.read (| layout |) ]
@@ -1137,7 +1144,7 @@ Module boxed.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::ptr::write", [ H ] |),
+                            M.get_function (| "core::ptr::write", [], [ H ] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -1154,7 +1161,7 @@ Module boxed.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::ptr::write", [ T ] |),
+                            M.get_function (| "core::ptr::write", [], [ T ] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -1334,6 +1341,7 @@ Module boxed.
                                                                           M.call_closure (|
                                                                             M.get_function (|
                                                                               "core::mem::size_of",
+                                                                              [],
                                                                               [ T ]
                                                                             |),
                                                                             []
@@ -1348,6 +1356,7 @@ Module boxed.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "core::mem::size_of",
+                                                                            [],
                                                                             [ H ]
                                                                           |),
                                                                           []
@@ -1369,6 +1378,7 @@ Module boxed.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::panicking::panic",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -1404,7 +1414,7 @@ Module boxed.
                                       (let~ ptr :=
                                         M.alloc (|
                                           M.call_closure (|
-                                            M.get_function (| "alloc::alloc::alloc", [] |),
+                                            M.get_function (| "alloc::alloc::alloc", [], [] |),
                                             [ M.read (| layout |) ]
                                           |)
                                         |) in
@@ -1490,7 +1500,7 @@ Module boxed.
                           let~ _ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::ptr::write", [ H ] |),
+                                M.get_function (| "core::ptr::write", [], [ H ] |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -1507,7 +1517,7 @@ Module boxed.
                           let~ _ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::ptr::write", [ T ] |),
+                                M.get_function (| "core::ptr::write", [], [ T ] |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -1622,7 +1632,7 @@ Module boxed.
                               UnOp.not (|
                                 BinOp.eq (|
                                   M.call_closure (|
-                                    M.get_function (| "core::mem::size_of", [ T ] |),
+                                    M.get_function (| "core::mem::size_of", [], [ T ] |),
                                     []
                                   |),
                                   Value.Integer IntegerKind.Usize 0
@@ -1634,7 +1644,7 @@ Module boxed.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
                                   Value.String "assertion failed: mem::size_of::<T>() == 0"
@@ -1719,7 +1729,7 @@ Module boxed.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String "assertion failed: value_ptr.is_aligned()"
@@ -1738,7 +1748,7 @@ Module boxed.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::mem::forget", [ T ] |),
+                    M.get_function (| "core::mem::forget", [], [ T ] |),
                     [ M.read (| value |) ]
                   |)
                 |) in
@@ -1863,7 +1873,7 @@ Module boxed.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::ptr::drop_in_place", [ T ] |),
+                    M.get_function (| "core::ptr::drop_in_place", [], [ T ] |),
                     [ M.read (| value |) ]
                   |)
                 |) in
@@ -1971,7 +1981,7 @@ Module boxed.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String "assertion failed: hp.is_aligned()"
@@ -2040,7 +2050,7 @@ Module boxed.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::mem::size_of", [ H ] |), [] |)))
+            (M.call_closure (| M.get_function (| "core::mem::size_of", [], [ H ] |), [] |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

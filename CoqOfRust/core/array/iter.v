@@ -66,6 +66,7 @@ Module array.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::transmute_unchecked",
+                      [],
                       [
                         Ty.apply (Ty.path "array") [ N ] [ T ];
                         Ty.apply
@@ -866,6 +867,7 @@ Module array.
                     M.call_closure (|
                       M.get_function (|
                         "core::ptr::drop_in_place",
+                        [],
                         [ Ty.apply (Ty.path "slice") [] [ T ] ]
                       |),
                       [
@@ -1385,6 +1387,7 @@ Module array.
                     M.call_closure (|
                       M.get_function (|
                         "core::ptr::drop_in_place",
+                        [],
                         [ Ty.apply (Ty.path "slice") [] [ T ] ]
                       |),
                       [
@@ -1486,6 +1489,7 @@ Module array.
             M.call_closure (|
               M.get_function (|
                 "core::ptr::drop_in_place",
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ]
               |),
               [
@@ -1743,6 +1747,7 @@ Module array.
                           M.call_closure (|
                             M.get_function (|
                               "core::iter::adapters::zip::zip",
+                              [],
                               [
                                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
                                 Ty.apply

@@ -383,6 +383,7 @@ Module instructions.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_interpreter::instructions::contract::call_helpers::resize_memory",
+                                [],
                                 [ WIRE ]
                               |),
                               [
@@ -576,6 +577,7 @@ Module instructions.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::panicking::panic_fmt",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -610,6 +612,7 @@ Module instructions.
                                       M.call_closure (|
                                         M.get_function (|
                                           "revm_interpreter::gas::calc::cost_per_word",
+                                          [],
                                           []
                                         |),
                                         [
@@ -816,6 +819,7 @@ Module instructions.
                                         M.call_closure (|
                                           M.get_function (|
                                             "alloy_primitives::utils::keccak256",
+                                            [],
                                             [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                           |),
                                           [ M.read (| container |) ]
@@ -1690,6 +1694,7 @@ Module instructions.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "revm_interpreter::interpreter::shared_memory::num_words",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -2323,6 +2328,7 @@ Module instructions.
                                     M.call_closure (|
                                       M.get_function (|
                                         "revm_interpreter::instructions::contract::call_helpers::resize_memory",
+                                        [],
                                         [ impl_InterpreterTypes ]
                                       |),
                                       [
@@ -2596,7 +2602,7 @@ Module instructions.
                         let~ call_cost :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "revm_interpreter::gas::calc::call_cost", [] |),
+                              M.get_function (| "revm_interpreter::gas::calc::call_cost", [], [] |),
                               [
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -2699,7 +2705,7 @@ Module instructions.
                         let~ gas_reduce :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::cmp::max", [ Ty.path "u64" ] |),
+                              M.get_function (| "core::cmp::max", [], [ Ty.path "u64" ] |),
                               [
                                 BinOp.Wrap.div (|
                                   M.call_closure (|
@@ -3331,6 +3337,7 @@ Module instructions.
                     M.call_closure (|
                       M.get_function (|
                         "revm_interpreter::instructions::contract::pop_extcall_target_address",
+                        [],
                         [ WIRE ]
                       |),
                       [ M.read (| interpreter |) ]
@@ -3351,6 +3358,7 @@ Module instructions.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_interpreter::instructions::contract::extcall_input",
+                                [],
                                 [ WIRE ]
                               |),
                               [ M.read (| interpreter |) ]
@@ -3488,6 +3496,7 @@ Module instructions.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "revm_interpreter::instructions::contract::extcall_gas_calc",
+                                                [],
                                                 [ WIRE; H ]
                                               |),
                                               [
@@ -3763,6 +3772,7 @@ Module instructions.
                     M.call_closure (|
                       M.get_function (|
                         "revm_interpreter::instructions::contract::pop_extcall_target_address",
+                        [],
                         [ WIRE ]
                       |),
                       [ M.read (| interpreter |) ]
@@ -3783,6 +3793,7 @@ Module instructions.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_interpreter::instructions::contract::extcall_input",
+                                [],
                                 [ WIRE ]
                               |),
                               [ M.read (| interpreter |) ]
@@ -3803,6 +3814,7 @@ Module instructions.
                                     M.call_closure (|
                                       M.get_function (|
                                         "revm_interpreter::instructions::contract::extcall_gas_calc",
+                                        [],
                                         [ WIRE; H ]
                                       |),
                                       [
@@ -4100,6 +4112,7 @@ Module instructions.
                     M.call_closure (|
                       M.get_function (|
                         "revm_interpreter::instructions::contract::pop_extcall_target_address",
+                        [],
                         [ WIRE ]
                       |),
                       [ M.read (| interpreter |) ]
@@ -4120,6 +4133,7 @@ Module instructions.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_interpreter::instructions::contract::extcall_input",
+                                [],
                                 [ WIRE ]
                               |),
                               [ M.read (| interpreter |) ]
@@ -4140,6 +4154,7 @@ Module instructions.
                                     M.call_closure (|
                                       M.get_function (|
                                         "revm_interpreter::instructions::contract::extcall_gas_calc",
+                                        [],
                                         [ WIRE; H ]
                                       |),
                                       [
@@ -4882,6 +4897,7 @@ Module instructions.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "revm_interpreter::gas::calc::initcode_cost",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [ M.read (| len |) ]
@@ -5085,6 +5101,7 @@ Module instructions.
                                       M.call_closure (|
                                         M.get_function (|
                                           "revm_interpreter::interpreter::shared_memory::num_words",
+                                          [],
                                           []
                                         |),
                                         [
@@ -5320,6 +5337,7 @@ Module instructions.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "revm_interpreter::gas::calc::create2_cost",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| len |) ]
@@ -6042,6 +6060,7 @@ Module instructions.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_interpreter::instructions::contract::call_helpers::get_memory_input_and_out_ranges",
+                                [],
                                 [ WIRE ]
                               |),
                               [ M.read (| interpreter |) ]
@@ -6088,6 +6107,7 @@ Module instructions.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "revm_interpreter::instructions::contract::call_helpers::calc_call_gas",
+                                                [],
                                                 [ WIRE ]
                                               |),
                                               [
@@ -6526,6 +6546,7 @@ Module instructions.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_interpreter::instructions::contract::call_helpers::get_memory_input_and_out_ranges",
+                                [],
                                 [ WIRE ]
                               |),
                               [ M.read (| interpreter |) ]
@@ -6581,6 +6602,7 @@ Module instructions.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "revm_interpreter::instructions::contract::call_helpers::calc_call_gas",
+                                                [],
                                                 [ WIRE ]
                                               |),
                                               [
@@ -7141,6 +7163,7 @@ Module instructions.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_interpreter::instructions::contract::call_helpers::get_memory_input_and_out_ranges",
+                                [],
                                 [ WIRE ]
                               |),
                               [ M.read (| interpreter |) ]
@@ -7196,6 +7219,7 @@ Module instructions.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "revm_interpreter::instructions::contract::call_helpers::calc_call_gas",
+                                                [],
                                                 [ WIRE ]
                                               |),
                                               [
@@ -7699,6 +7723,7 @@ Module instructions.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_interpreter::instructions::contract::call_helpers::get_memory_input_and_out_ranges",
+                                [],
                                 [ WIRE ]
                               |),
                               [ M.read (| interpreter |) ]
@@ -7754,6 +7779,7 @@ Module instructions.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "revm_interpreter::instructions::contract::call_helpers::calc_call_gas",
+                                                [],
                                                 [ WIRE ]
                                               |),
                                               [

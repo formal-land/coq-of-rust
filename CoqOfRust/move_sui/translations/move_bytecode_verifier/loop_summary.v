@@ -449,14 +449,14 @@ Module loop_summary.
             let~ blocks :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "alloc::vec::from_elem", [ Ty.path "u16" ] |),
+                  M.get_function (| "alloc::vec::from_elem", [], [ Ty.path "u16" ] |),
                   [ Value.Integer IntegerKind.U16 0; M.read (| num_blocks |) ]
                 |)
               |) in
             let~ descs :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "alloc::vec::from_elem", [ Ty.path "u16" ] |),
+                  M.get_function (| "alloc::vec::from_elem", [], [ Ty.path "u16" ] |),
                   [ Value.Integer IntegerKind.U16 0; M.read (| num_blocks |) ]
                 |)
               |) in
@@ -465,6 +465,7 @@ Module loop_summary.
                 M.call_closure (|
                   M.get_function (|
                     "alloc::vec::from_elem",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -499,6 +500,7 @@ Module loop_summary.
                 M.call_closure (|
                   M.get_function (|
                     "alloc::vec::from_elem",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -1875,7 +1877,7 @@ Module loop_summary.
                     |));
                   ("depths",
                     M.call_closure (|
-                      M.get_function (| "alloc::vec::from_elem", [ Ty.path "u16" ] |),
+                      M.get_function (| "alloc::vec::from_elem", [], [ Ty.path "u16" ] |),
                       [ Value.Integer IntegerKind.U16 0; M.read (| num_blocks |) ]
                     |))
                 ]
@@ -2283,6 +2285,7 @@ Module loop_summary.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::assert_failed",
+                                                    [],
                                                     [
                                                       Ty.path
                                                         "move_bytecode_verifier::loop_summary::NodeId";
@@ -2486,6 +2489,7 @@ Module loop_summary.
                                                                           M.call_closure (|
                                                                             M.get_function (|
                                                                               "core::panicking::assert_failed",
+                                                                              [],
                                                                               [
                                                                                 Ty.path
                                                                                   "move_bytecode_verifier::loop_summary::NodeId";

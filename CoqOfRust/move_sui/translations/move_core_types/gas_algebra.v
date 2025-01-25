@@ -764,6 +764,7 @@ Module gas_algebra.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::panicking::assert_failed",
+                                          [],
                                           [ Ty.path "u64"; Ty.path "u64" ]
                                         |),
                                         [
@@ -847,7 +848,7 @@ Module gas_algebra.
             |),
             [
               M.call_closure (|
-                M.get_function (| "move_core_types::gas_algebra::apply_ratio_round_down", [] |),
+                M.get_function (| "move_core_types::gas_algebra::apply_ratio_round_down", [], [] |),
                 [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
@@ -902,7 +903,7 @@ Module gas_algebra.
             |),
             [
               M.call_closure (|
-                M.get_function (| "move_core_types::gas_algebra::apply_ratio_round_up", [] |),
+                M.get_function (| "move_core_types::gas_algebra::apply_ratio_round_up", [], [] |),
                 [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
@@ -1009,6 +1010,7 @@ Module gas_algebra.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::panicking::assert_failed",
+                                          [],
                                           [ Ty.path "u64"; Ty.path "u64" ]
                                         |),
                                         [
@@ -1115,6 +1117,7 @@ Module gas_algebra.
                           M.call_closure (|
                             M.get_function (|
                               "move_core_types::gas_algebra::apply_ratio_round_down",
+                              [],
                               []
                             |),
                             [
@@ -1201,6 +1204,7 @@ Module gas_algebra.
                           M.call_closure (|
                             M.get_function (|
                               "move_core_types::gas_algebra::apply_ratio_round_up",
+                              [],
                               []
                             |),
                             [
@@ -1473,7 +1477,7 @@ Module gas_algebra.
                           [
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::any::type_name", [ U ] |),
+                                M.get_function (| "core::any::type_name", [], [ U ] |),
                                 []
                               |)
                             |)
@@ -1806,7 +1810,7 @@ Module gas_algebra.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "move_core_types::gas_algebra::mul_impl", [ U1; U2 ] |),
+            M.get_function (| "move_core_types::gas_algebra::mul_impl", [], [ U1; U2 ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1853,7 +1857,7 @@ Module gas_algebra.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "move_core_types::gas_algebra::mul_impl", [ U1; U2 ] |),
+            M.get_function (| "move_core_types::gas_algebra::mul_impl", [], [ U1; U2 ] |),
             [ M.read (| rhs |); M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1929,6 +1933,7 @@ Module gas_algebra.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::panicking::assert_failed",
+                                        [],
                                         [ Ty.path "u64"; Ty.path "u64" ]
                                       |),
                                       [
@@ -1985,6 +1990,7 @@ Module gas_algebra.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::panicking::assert_failed",
+                                        [],
                                         [ Ty.path "u64"; Ty.path "u64" ]
                                       |),
                                       [
@@ -2100,6 +2106,7 @@ Module gas_algebra.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::panicking::assert_failed",
+                                        [],
                                         [ Ty.path "u64"; Ty.path "u64" ]
                                       |),
                                       [
@@ -2156,6 +2163,7 @@ Module gas_algebra.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::panicking::assert_failed",
+                                        [],
                                         [ Ty.path "u64"; Ty.path "u64" ]
                                       |),
                                       [

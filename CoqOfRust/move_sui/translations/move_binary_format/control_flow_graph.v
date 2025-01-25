@@ -100,7 +100,7 @@ Module control_flow_graph.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "std::io::stdio::_print", [] |),
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -123,7 +123,7 @@ Module control_flow_graph.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "std::io::stdio::_print", [] |),
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -163,7 +163,7 @@ Module control_flow_graph.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "std::io::stdio::_print", [] |),
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -186,7 +186,7 @@ Module control_flow_graph.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "std::io::stdio::_print", [] |),
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -237,7 +237,7 @@ Module control_flow_graph.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "std::io::stdio::_print", [] |),
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -260,7 +260,7 @@ Module control_flow_graph.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "std::io::stdio::_print", [] |),
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -306,7 +306,7 @@ Module control_flow_graph.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "std::io::stdio::_print", [] |),
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -892,6 +892,7 @@ Module control_flow_graph.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::panicking::assert_failed",
+                                          [],
                                           [ Ty.path "u16"; Ty.path "u16" ]
                                         |),
                                         [
@@ -1661,6 +1662,7 @@ Module control_flow_graph.
                                                                     M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::panicking::panic",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -1845,7 +1847,7 @@ Module control_flow_graph.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "std::io::stdio::_print", [] |),
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -2667,7 +2669,7 @@ Module control_flow_graph.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String

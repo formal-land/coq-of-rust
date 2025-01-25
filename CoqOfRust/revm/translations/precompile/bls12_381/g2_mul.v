@@ -11,13 +11,13 @@ Module bls12_381.
               "revm_precompile::PrecompileWithAddress"
               [
                 M.call_closure (|
-                  M.get_function (| "revm_precompile::u64_to_address", [] |),
+                  M.get_function (| "revm_precompile::u64_to_address", [], [] |),
                   [ M.read (| M.get_constant (| "revm_precompile::bls12_381::g2_mul::ADDRESS" |) |)
                   ]
                 |);
                 (* ReifyFnPointer *)
                 M.pointer_coercion
-                  (M.get_function (| "revm_precompile::bls12_381::g2_mul::g2_mul", [] |))
+                  (M.get_function (| "revm_precompile::bls12_381::g2_mul::g2_mul", [], [] |))
               ]
           |))).
     
@@ -184,6 +184,7 @@ Module bls12_381.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::hint::must_use",
+                                                  [],
                                                   [ Ty.path "alloc::string::String" ]
                                                 |),
                                                 [
@@ -193,6 +194,7 @@ Module bls12_381.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "alloc::fmt::format",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -336,6 +338,7 @@ Module bls12_381.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_precompile::bls12_381::g2::extract_g2_input",
+                                [],
                                 []
                               |),
                               [
@@ -463,7 +466,7 @@ Module bls12_381.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "blst::blst_p2_from_affine", [] |),
+                      M.get_function (| "blst::blst_p2_from_affine", [], [] |),
                       [ p0; M.read (| p0_aff |) ]
                     |)
                   |) in
@@ -489,6 +492,7 @@ Module bls12_381.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_precompile::bls12_381::utils::extract_scalar_input",
+                                [],
                                 []
                               |),
                               [
@@ -615,7 +619,7 @@ Module bls12_381.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "blst::blst_p2_mult", [] |),
+                      M.get_function (| "blst::blst_p2_mult", [], [] |),
                       [
                         p;
                         p0;
@@ -653,14 +657,18 @@ Module bls12_381.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "blst::blst_p2_to_affine", [] |),
+                      M.get_function (| "blst::blst_p2_to_affine", [], [] |),
                       [ p_aff; p ]
                     |)
                   |) in
                 let~ out :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "revm_precompile::bls12_381::g2::encode_g2_point", [] |),
+                      M.get_function (|
+                        "revm_precompile::bls12_381::g2::encode_g2_point",
+                        [],
+                        []
+                      |),
                       [ p_aff ]
                     |)
                   |) in

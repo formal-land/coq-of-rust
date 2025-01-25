@@ -107,7 +107,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [] |),
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -163,7 +163,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [] |),
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -210,7 +210,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -260,7 +260,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),

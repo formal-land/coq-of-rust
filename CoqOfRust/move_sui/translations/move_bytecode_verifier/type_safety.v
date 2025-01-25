@@ -599,6 +599,7 @@ Module type_safety.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::hint::must_use",
+                                      [],
                                       [ Ty.path "alloc::string::String" ]
                                     |),
                                     [
@@ -606,7 +607,7 @@ Module type_safety.
                                         let~ res :=
                                           M.alloc (|
                                             M.call_closure (|
-                                              M.get_function (| "alloc::fmt::format", [] |),
+                                              M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -700,7 +701,7 @@ Module type_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -929,6 +930,7 @@ Module type_safety.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::hint::must_use",
+                                      [],
                                       [ Ty.path "alloc::string::String" ]
                                     |),
                                     [
@@ -936,7 +938,7 @@ Module type_safety.
                                         let~ res :=
                                           M.alloc (|
                                             M.call_closure (|
-                                              M.get_function (| "alloc::fmt::format", [] |),
+                                              M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -1030,7 +1032,7 @@ Module type_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -1673,6 +1675,7 @@ Module type_safety.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "move_bytecode_verifier::type_safety::verify_instr",
+                                                                            [],
                                                                             [
                                                                               impl_Meter__plus___Sized
                                                                             ]
@@ -1902,6 +1905,7 @@ Module type_safety.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::hint::must_use",
+                                      [],
                                       [ Ty.path "alloc::string::String" ]
                                     |),
                                     [
@@ -1909,7 +1913,7 @@ Module type_safety.
                                         let~ res :=
                                           M.alloc (|
                                             M.call_closure (|
-                                              M.get_function (| "alloc::fmt::format", [] |),
+                                              M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -2003,7 +2007,7 @@ Module type_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -2162,6 +2166,7 @@ Module type_safety.
                   M.call_closure (|
                     M.get_function (|
                       "move_bytecode_verifier::type_safety::materialize_type",
+                      [],
                       []
                     |),
                     [
@@ -2372,7 +2377,11 @@ Module type_safety.
                     |),
                     [
                       M.call_closure (|
-                        M.get_function (| "move_bytecode_verifier::type_safety::instantiate", [] |),
+                        M.get_function (|
+                          "move_bytecode_verifier::type_safety::instantiate",
+                          [],
+                          []
+                        |),
                         [
                           M.SubPointer.get_struct_tuple_field (|
                             M.SubPointer.get_struct_record_field (|
@@ -2880,6 +2889,7 @@ Module type_safety.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::hint::must_use",
+                                      [],
                                       [ Ty.path "alloc::string::String" ]
                                     |),
                                     [
@@ -2887,7 +2897,7 @@ Module type_safety.
                                         let~ res :=
                                           M.alloc (|
                                             M.call_closure (|
-                                              M.get_function (| "alloc::fmt::format", [] |),
+                                              M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -2981,7 +2991,7 @@ Module type_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -3117,6 +3127,7 @@ Module type_safety.
                   M.call_closure (|
                     M.get_function (|
                       "move_bytecode_verifier::type_safety::materialize_type",
+                      [],
                       []
                     |),
                     [
@@ -3278,6 +3289,7 @@ Module type_safety.
                   M.call_closure (|
                     M.get_function (|
                       "move_bytecode_verifier::type_safety::materialize_type",
+                      [],
                       []
                     |),
                     [
@@ -3697,6 +3709,7 @@ Module type_safety.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::hint::must_use",
+                                                                [],
                                                                 [ Ty.path "alloc::string::String" ]
                                                               |),
                                                               [
@@ -3706,6 +3719,7 @@ Module type_safety.
                                                                       M.call_closure (|
                                                                         M.get_function (|
                                                                           "alloc::fmt::format",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -3814,6 +3828,7 @@ Module type_safety.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "core::panicking::panic_fmt",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -3951,6 +3966,7 @@ Module type_safety.
                                                                     M.call_closure (|
                                                                       M.get_function (|
                                                                         "move_bytecode_verifier::type_safety::instantiate",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -4133,6 +4149,7 @@ Module type_safety.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "move_bytecode_verifier::type_safety::instantiate",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -4427,6 +4444,7 @@ Module type_safety.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "move_bytecode_verifier::type_safety::instantiate",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -4508,6 +4526,7 @@ Module type_safety.
                   M.call_closure (|
                     M.get_function (|
                       "move_bytecode_verifier::type_safety::materialize_type",
+                      [],
                       []
                     |),
                     [
@@ -4544,6 +4563,7 @@ Module type_safety.
                           M.call_closure (|
                             M.get_function (|
                               "move_bytecode_verifier::type_safety::type_fields_signature",
+                              [],
                               [ impl_Meter__plus___Sized ]
                             |),
                             [
@@ -4803,6 +4823,7 @@ Module type_safety.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::hint::must_use",
+                                                                [],
                                                                 [ Ty.path "alloc::string::String" ]
                                                               |),
                                                               [
@@ -4812,6 +4833,7 @@ Module type_safety.
                                                                       M.call_closure (|
                                                                         M.get_function (|
                                                                           "alloc::fmt::format",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -4920,6 +4942,7 @@ Module type_safety.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "core::panicking::panic_fmt",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -5183,6 +5206,7 @@ Module type_safety.
                   M.call_closure (|
                     M.get_function (|
                       "move_bytecode_verifier::type_safety::materialize_type",
+                      [],
                       []
                     |),
                     [
@@ -5263,6 +5287,7 @@ Module type_safety.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::hint::must_use",
+                                      [],
                                       [ Ty.path "alloc::string::String" ]
                                     |),
                                     [
@@ -5270,7 +5295,7 @@ Module type_safety.
                                         let~ res :=
                                           M.alloc (|
                                             M.call_closure (|
-                                              M.get_function (| "alloc::fmt::format", [] |),
+                                              M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -5364,7 +5389,7 @@ Module type_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -5490,6 +5515,7 @@ Module type_safety.
                           M.call_closure (|
                             M.get_function (|
                               "move_bytecode_verifier::type_safety::type_fields_signature",
+                              [],
                               [ impl_Meter__plus___Sized ]
                             |),
                             [
@@ -5782,6 +5808,7 @@ Module type_safety.
                   M.call_closure (|
                     M.get_function (|
                       "move_bytecode_verifier::type_safety::materialize_type",
+                      [],
                       []
                     |),
                     [
@@ -6004,6 +6031,7 @@ Module type_safety.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::hint::must_use",
+                                      [],
                                       [ Ty.path "alloc::string::String" ]
                                     |),
                                     [
@@ -6011,7 +6039,7 @@ Module type_safety.
                                         let~ res :=
                                           M.alloc (|
                                             M.call_closure (|
-                                              M.get_function (| "alloc::fmt::format", [] |),
+                                              M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -6105,7 +6133,7 @@ Module type_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -6350,6 +6378,7 @@ Module type_safety.
                   M.call_closure (|
                     M.get_function (|
                       "move_bytecode_verifier::type_safety::materialize_type",
+                      [],
                       []
                     |),
                     [
@@ -6511,6 +6540,7 @@ Module type_safety.
                   M.call_closure (|
                     M.get_function (|
                       "move_bytecode_verifier::type_safety::materialize_type",
+                      [],
                       []
                     |),
                     [
@@ -6591,6 +6621,7 @@ Module type_safety.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::hint::must_use",
+                                      [],
                                       [ Ty.path "alloc::string::String" ]
                                     |),
                                     [
@@ -6598,7 +6629,7 @@ Module type_safety.
                                         let~ res :=
                                           M.alloc (|
                                             M.call_closure (|
-                                              M.get_function (| "alloc::fmt::format", [] |),
+                                              M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -6692,7 +6723,7 @@ Module type_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -6935,6 +6966,7 @@ Module type_safety.
                   M.call_closure (|
                     M.get_function (|
                       "move_bytecode_verifier::type_safety::materialize_type",
+                      [],
                       []
                     |),
                     [
@@ -7096,6 +7128,7 @@ Module type_safety.
                   M.call_closure (|
                     M.get_function (|
                       "move_bytecode_verifier::type_safety::materialize_type",
+                      [],
                       []
                     |),
                     [
@@ -7176,6 +7209,7 @@ Module type_safety.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::hint::must_use",
+                                      [],
                                       [ Ty.path "alloc::string::String" ]
                                     |),
                                     [
@@ -7183,7 +7217,7 @@ Module type_safety.
                                         let~ res :=
                                           M.alloc (|
                                             M.call_closure (|
-                                              M.get_function (| "alloc::fmt::format", [] |),
+                                              M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -7277,7 +7311,7 @@ Module type_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -7395,6 +7429,7 @@ Module type_safety.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::hint::must_use",
+                                      [],
                                       [ Ty.path "alloc::string::String" ]
                                     |),
                                     [
@@ -7402,7 +7437,7 @@ Module type_safety.
                                         let~ res :=
                                           M.alloc (|
                                             M.call_closure (|
-                                              M.get_function (| "alloc::fmt::format", [] |),
+                                              M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -7496,7 +7531,7 @@ Module type_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -7792,6 +7827,7 @@ Module type_safety.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::hint::must_use",
+                                      [],
                                       [ Ty.path "alloc::string::String" ]
                                     |),
                                     [
@@ -7799,7 +7835,7 @@ Module type_safety.
                                         let~ res :=
                                           M.alloc (|
                                             M.call_closure (|
-                                              M.get_function (| "alloc::fmt::format", [] |),
+                                              M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -7893,7 +7929,7 @@ Module type_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -8011,6 +8047,7 @@ Module type_safety.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::hint::must_use",
+                                      [],
                                       [ Ty.path "alloc::string::String" ]
                                     |),
                                     [
@@ -8018,7 +8055,7 @@ Module type_safety.
                                         let~ res :=
                                           M.alloc (|
                                             M.call_closure (|
-                                              M.get_function (| "alloc::fmt::format", [] |),
+                                              M.get_function (| "alloc::fmt::format", [], [] |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -8112,7 +8149,7 @@ Module type_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -8230,6 +8267,7 @@ Module type_safety.
                       M.call_closure (|
                         M.get_function (|
                           "move_bytecode_verifier::type_safety::get_vector_element_type",
+                          [],
                           []
                         |),
                         [ M.read (| operand_vec |); M.read (| mut_ref_only |) ]
@@ -9025,6 +9063,7 @@ Module type_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -9034,6 +9073,7 @@ Module type_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -9138,6 +9178,7 @@ Module type_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -9467,6 +9508,7 @@ Module type_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::hint::must_use",
+                                                            [],
                                                             [ Ty.path "alloc::string::String" ]
                                                           |),
                                                           [
@@ -9476,6 +9518,7 @@ Module type_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "alloc::fmt::format",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -9583,6 +9626,7 @@ Module type_safety.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::panicking::panic_fmt",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -9787,6 +9831,7 @@ Module type_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -9796,6 +9841,7 @@ Module type_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -9900,6 +9946,7 @@ Module type_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -10111,6 +10158,7 @@ Module type_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -10120,6 +10168,7 @@ Module type_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -10224,6 +10273,7 @@ Module type_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -10567,6 +10617,7 @@ Module type_safety.
                                                                     M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::hint::must_use",
+                                                                        [],
                                                                         [
                                                                           Ty.path
                                                                             "alloc::string::String"
@@ -10579,6 +10630,7 @@ Module type_safety.
                                                                               M.call_closure (|
                                                                                 M.get_function (|
                                                                                   "alloc::fmt::format",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -10689,6 +10741,7 @@ Module type_safety.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "core::panicking::panic_fmt",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -10935,6 +10988,7 @@ Module type_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -10944,6 +10998,7 @@ Module type_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -11048,6 +11103,7 @@ Module type_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -11266,6 +11322,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_field",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -11543,6 +11600,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_field",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -11648,6 +11706,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_field",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -11925,6 +11984,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_field",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -13321,6 +13381,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_loc",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -13419,6 +13480,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_loc",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -13537,6 +13599,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::call",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -13841,6 +13904,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::call",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -13959,6 +14023,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::pack",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -14261,6 +14326,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::pack",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -14379,6 +14445,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::unpack",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -14681,6 +14748,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::unpack",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -14824,6 +14892,7 @@ Module type_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -14833,6 +14902,7 @@ Module type_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -14937,6 +15007,7 @@ Module type_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -15392,6 +15463,7 @@ Module type_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -15401,6 +15473,7 @@ Module type_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -15505,6 +15578,7 @@ Module type_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -15626,6 +15700,7 @@ Module type_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -15635,6 +15710,7 @@ Module type_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -15739,6 +15815,7 @@ Module type_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -16123,6 +16200,7 @@ Module type_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -16132,6 +16210,7 @@ Module type_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -16236,6 +16315,7 @@ Module type_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -16514,6 +16594,7 @@ Module type_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -16523,6 +16604,7 @@ Module type_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -16627,6 +16709,7 @@ Module type_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -16905,6 +16988,7 @@ Module type_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -16914,6 +16998,7 @@ Module type_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -17018,6 +17103,7 @@ Module type_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -17376,6 +17462,7 @@ Module type_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::hint::must_use",
+                                                            [],
                                                             [ Ty.path "alloc::string::String" ]
                                                           |),
                                                           [
@@ -17385,6 +17472,7 @@ Module type_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "alloc::fmt::format",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -17492,6 +17580,7 @@ Module type_safety.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::panicking::panic_fmt",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -17622,6 +17711,7 @@ Module type_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::hint::must_use",
+                                                            [],
                                                             [ Ty.path "alloc::string::String" ]
                                                           |),
                                                           [
@@ -17631,6 +17721,7 @@ Module type_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "alloc::fmt::format",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -17738,6 +17829,7 @@ Module type_safety.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::panicking::panic_fmt",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -18066,6 +18158,7 @@ Module type_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::hint::must_use",
+                                                            [],
                                                             [ Ty.path "alloc::string::String" ]
                                                           |),
                                                           [
@@ -18075,6 +18168,7 @@ Module type_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "alloc::fmt::format",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -18182,6 +18276,7 @@ Module type_safety.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::panicking::panic_fmt",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -18312,6 +18407,7 @@ Module type_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::hint::must_use",
+                                                            [],
                                                             [ Ty.path "alloc::string::String" ]
                                                           |),
                                                           [
@@ -18321,6 +18417,7 @@ Module type_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "alloc::fmt::format",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -18428,6 +18525,7 @@ Module type_safety.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::panicking::panic_fmt",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -18763,6 +18861,7 @@ Module type_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::hint::must_use",
+                                                            [],
                                                             [ Ty.path "alloc::string::String" ]
                                                           |),
                                                           [
@@ -18772,6 +18871,7 @@ Module type_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "alloc::fmt::format",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -18879,6 +18979,7 @@ Module type_safety.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::panicking::panic_fmt",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -19009,6 +19110,7 @@ Module type_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::hint::must_use",
+                                                            [],
                                                             [ Ty.path "alloc::string::String" ]
                                                           |),
                                                           [
@@ -19018,6 +19120,7 @@ Module type_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "alloc::fmt::format",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -19125,6 +19228,7 @@ Module type_safety.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::panicking::panic_fmt",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -19448,6 +19552,7 @@ Module type_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -19457,6 +19562,7 @@ Module type_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -19561,6 +19667,7 @@ Module type_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -19874,6 +19981,7 @@ Module type_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::hint::must_use",
+                                                            [],
                                                             [ Ty.path "alloc::string::String" ]
                                                           |),
                                                           [
@@ -19883,6 +19991,7 @@ Module type_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "alloc::fmt::format",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -19990,6 +20099,7 @@ Module type_safety.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::panicking::panic_fmt",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -20120,6 +20230,7 @@ Module type_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::hint::must_use",
+                                                            [],
                                                             [ Ty.path "alloc::string::String" ]
                                                           |),
                                                           [
@@ -20129,6 +20240,7 @@ Module type_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "alloc::fmt::format",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -20236,6 +20348,7 @@ Module type_safety.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::panicking::panic_fmt",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -20682,6 +20795,7 @@ Module type_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::hint::must_use",
+                                                            [],
                                                             [ Ty.path "alloc::string::String" ]
                                                           |),
                                                           [
@@ -20691,6 +20805,7 @@ Module type_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "alloc::fmt::format",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -20798,6 +20913,7 @@ Module type_safety.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::panicking::panic_fmt",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -20928,6 +21044,7 @@ Module type_safety.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::hint::must_use",
+                                                            [],
                                                             [ Ty.path "alloc::string::String" ]
                                                           |),
                                                           [
@@ -20937,6 +21054,7 @@ Module type_safety.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "alloc::fmt::format",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -21044,6 +21162,7 @@ Module type_safety.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::panicking::panic_fmt",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -21300,6 +21419,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_global",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -21577,6 +21697,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_global",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -21682,6 +21803,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_global",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -21959,6 +22081,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_global",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -22084,6 +22207,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::exists",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -22386,6 +22510,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::exists",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -22504,6 +22629,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::move_from",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -22806,6 +22932,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::move_from",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -22924,6 +23051,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::move_to",
+                                    [],
                                     []
                                   |),
                                   [
@@ -23225,6 +23353,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::move_to",
+                                    [],
                                     []
                                   |),
                                   [
@@ -23727,6 +23856,7 @@ Module type_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -23736,6 +23866,7 @@ Module type_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -23840,6 +23971,7 @@ Module type_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -23942,6 +24074,7 @@ Module type_safety.
                               M.call_closure (|
                                 M.get_function (|
                                   "move_bytecode_verifier::type_safety::get_vector_element_type",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| operand |); Value.Bool false ]
@@ -24187,6 +24320,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_vector_element",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -24327,6 +24461,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::borrow_vector_element",
+                                    [],
                                     [ impl_Meter__plus___Sized ]
                                   |),
                                   [
@@ -24472,6 +24607,7 @@ Module type_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -24481,6 +24617,7 @@ Module type_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -24585,6 +24722,7 @@ Module type_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -24706,6 +24844,7 @@ Module type_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -24715,6 +24854,7 @@ Module type_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -24819,6 +24959,7 @@ Module type_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -24990,6 +25131,7 @@ Module type_safety.
                               M.call_closure (|
                                 M.get_function (|
                                   "move_bytecode_verifier::type_safety::get_vector_element_type",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| operand_vec |); Value.Bool true ]
@@ -25148,6 +25290,7 @@ Module type_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -25157,6 +25300,7 @@ Module type_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -25261,6 +25405,7 @@ Module type_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -25363,6 +25508,7 @@ Module type_safety.
                               M.call_closure (|
                                 M.get_function (|
                                   "move_bytecode_verifier::type_safety::get_vector_element_type",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| operand_vec |); Value.Bool true ]
@@ -25618,6 +25764,7 @@ Module type_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -25627,6 +25774,7 @@ Module type_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -25731,6 +25879,7 @@ Module type_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -26099,6 +26248,7 @@ Module type_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -26108,6 +26258,7 @@ Module type_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -26212,6 +26363,7 @@ Module type_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -26333,6 +26485,7 @@ Module type_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -26342,6 +26495,7 @@ Module type_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -26446,6 +26600,7 @@ Module type_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -26567,6 +26722,7 @@ Module type_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -26576,6 +26732,7 @@ Module type_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -26680,6 +26837,7 @@ Module type_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -26872,6 +27030,7 @@ Module type_safety.
                               M.call_closure (|
                                 M.get_function (|
                                   "move_bytecode_verifier::type_safety::get_vector_element_type",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| operand_vec |); Value.Bool true ]
@@ -27028,6 +27187,7 @@ Module type_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -27037,6 +27197,7 @@ Module type_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -27141,6 +27302,7 @@ Module type_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -27419,6 +27581,7 @@ Module type_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -27428,6 +27591,7 @@ Module type_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -27532,6 +27696,7 @@ Module type_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -27810,6 +27975,7 @@ Module type_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -27819,6 +27985,7 @@ Module type_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -27923,6 +28090,7 @@ Module type_safety.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -28483,6 +28651,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::instantiate",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| M.read (| ty |) |); M.read (| subst |) ]
@@ -28682,6 +28851,7 @@ Module type_safety.
                                                                       M.call_closure (|
                                                                         M.get_function (|
                                                                           "move_bytecode_verifier::type_safety::instantiate",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -28735,6 +28905,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::instantiate",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| M.read (| ty |) |); M.read (| subst |) ]
@@ -28773,6 +28944,7 @@ Module type_safety.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::type_safety::instantiate",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| M.read (| ty |) |); M.read (| subst |) ]
@@ -28835,7 +29007,11 @@ Module type_safety.
                                           M.alloc (|
                                             M.never_to_any (|
                                               M.call_closure (|
-                                                M.get_function (| "core::panicking::panic", [] |),
+                                                M.get_function (|
+                                                  "core::panicking::panic",
+                                                  [],
+                                                  []
+                                                |),
                                                 [
                                                   M.read (|
                                                     Value.String

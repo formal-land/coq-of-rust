@@ -79,6 +79,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::hint::must_use",
+                                            [],
                                             [ Ty.path "alloc::string::String" ]
                                           |),
                                           [
@@ -86,7 +87,11 @@ Module serializer.
                                               let~ res :=
                                                 M.alloc (|
                                                   M.call_closure (|
-                                                    M.get_function (| "alloc::fmt::format", [] |),
+                                                    M.get_function (|
+                                                      "alloc::fmt::format",
+                                                      [],
+                                                      []
+                                                    |),
                                                     [
                                                       M.call_closure (|
                                                         M.get_associated_function (|
@@ -151,6 +156,7 @@ Module serializer.
                 M.call_closure (|
                   M.get_function (|
                     "move_binary_format::file_format_common::write_u64_as_uleb128",
+                    [],
                     []
                   |),
                   [ M.read (| binary |); M.read (| x |) ]
@@ -178,6 +184,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
@@ -220,6 +227,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
@@ -258,6 +266,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
@@ -300,6 +309,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
@@ -345,6 +355,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
@@ -383,6 +394,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
@@ -428,6 +440,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
@@ -472,6 +485,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
@@ -513,6 +527,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
@@ -558,6 +573,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
@@ -603,6 +619,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
@@ -643,6 +660,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u32"; Ty.path "u64" ]
           |),
           [
@@ -673,6 +691,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u32"; Ty.path "u64" ]
           |),
           [
@@ -707,6 +726,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
@@ -745,6 +765,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u64"; Ty.path "u64" ]
           |),
           [
@@ -777,6 +798,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u64"; Ty.path "u64" ]
           |),
           [
@@ -809,6 +831,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u64"; Ty.path "u64" ]
           |),
           [
@@ -843,6 +866,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u64"; Ty.path "u64" ]
           |),
           [
@@ -879,6 +903,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u64"; Ty.path "u64" ]
           |),
           [
@@ -911,6 +936,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u64"; Ty.path "u64" ]
           |),
           [
@@ -941,6 +967,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
@@ -971,6 +998,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u64"; Ty.path "u64" ]
           |),
           [
@@ -1003,6 +1031,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u64"; Ty.path "u64" ]
           |),
           [
@@ -1039,6 +1068,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
@@ -1077,6 +1107,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u64"; Ty.path "u64" ]
           |),
           [
@@ -1111,6 +1142,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u16"; Ty.path "u64" ]
           |),
           [
@@ -1143,6 +1175,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u8"; Ty.path "u64" ]
           |),
           [
@@ -1173,6 +1206,7 @@ Module serializer.
         M.call_closure (|
           M.get_function (|
             "move_binary_format::serializer::write_as_uleb128",
+            [],
             [ Ty.path "u8"; Ty.path "u64" ]
           |),
           [
@@ -1277,6 +1311,7 @@ Module serializer.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::hint::must_use",
+                                          [],
                                           [ Ty.path "alloc::string::String" ]
                                         |),
                                         [
@@ -1284,7 +1319,7 @@ Module serializer.
                                             let~ res :=
                                               M.alloc (|
                                                 M.call_closure (|
-                                                  M.get_function (| "alloc::fmt::format", [] |),
+                                                  M.get_function (| "alloc::fmt::format", [], [] |),
                                                   [
                                                     M.call_closure (|
                                                       M.get_associated_function (|
@@ -1481,6 +1516,7 @@ Module serializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::serializer::validate_version",
+                              [],
                               []
                             |),
                             [ M.read (| version |) ]
@@ -1718,6 +1754,7 @@ Module serializer.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -1725,7 +1762,11 @@ Module serializer.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -2078,6 +2119,7 @@ Module serializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::serializer::serialize_module_handle_index",
+                              [],
                               []
                             |),
                             [
@@ -2480,6 +2522,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::hint::must_use",
+                                            [],
                                             [ Ty.path "alloc::string::String" ]
                                           |),
                                           [
@@ -2487,7 +2530,11 @@ Module serializer.
                                               let~ res :=
                                                 M.alloc (|
                                                   M.call_closure (|
-                                                    M.get_function (| "alloc::fmt::format", [] |),
+                                                    M.get_function (|
+                                                      "alloc::fmt::format",
+                                                      [],
+                                                      []
+                                                    |),
                                                     [
                                                       M.call_closure (|
                                                         M.get_associated_function (|
@@ -2706,6 +2753,7 @@ Module serializer.
                                   M.call_closure (|
                                     M.get_function (|
                                       "move_binary_format::serializer::seiralize_table_offset",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| binary |); M.read (| offset |) ]
@@ -2782,6 +2830,7 @@ Module serializer.
                                   M.call_closure (|
                                     M.get_function (|
                                       "move_binary_format::serializer::serialize_table_size",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| binary |); M.read (| count |) ]
@@ -3407,6 +3456,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_address_identifier_index",
+                            [],
                             []
                           |),
                           [
@@ -3490,6 +3540,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_identifier_index",
+                            [],
                             []
                           |),
                           [
@@ -3599,6 +3650,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_module_handle_index",
+                            [],
                             []
                           |),
                           [
@@ -3682,6 +3734,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_identifier_index",
+                            [],
                             []
                           |),
                           [
@@ -3765,6 +3818,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_ability_set",
+                            [],
                             []
                           |),
                           [
@@ -3836,6 +3890,7 @@ Module serializer.
                 M.call_closure (|
                   M.get_function (|
                     "move_binary_format::serializer::serialize_type_parameters",
+                    [],
                     []
                   |),
                   [
@@ -3912,6 +3967,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_type_parameter_count",
+                            [],
                             []
                           |),
                           [
@@ -4068,6 +4124,7 @@ Module serializer.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "move_binary_format::serializer::serialize_type_parameter",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| binary |); M.read (| type_param |) ]
@@ -4184,6 +4241,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_ability_set",
+                            [],
                             []
                           |),
                           [
@@ -4255,6 +4313,7 @@ Module serializer.
                 M.call_closure (|
                   M.get_function (|
                     "move_binary_format::serializer::write_as_uleb128",
+                    [],
                     [ Ty.path "u8"; Ty.path "u64" ]
                   |),
                   [
@@ -4320,6 +4379,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_module_handle_index",
+                            [],
                             []
                           |),
                           [
@@ -4403,6 +4463,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_identifier_index",
+                            [],
                             []
                           |),
                           [
@@ -4486,6 +4547,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_signature_index",
+                            [],
                             []
                           |),
                           [
@@ -4569,6 +4631,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_signature_index",
+                            [],
                             []
                           |),
                           [
@@ -4636,7 +4699,11 @@ Module serializer.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "move_binary_format::serializer::serialize_ability_sets", [] |),
+                  M.get_function (|
+                    "move_binary_format::serializer::serialize_ability_sets",
+                    [],
+                    []
+                  |),
                   [
                     M.read (| binary |);
                     M.call_closure (|
@@ -4715,6 +4782,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_function_handle_index",
+                            [],
                             []
                           |),
                           [
@@ -4798,6 +4866,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_signature_index",
+                            [],
                             []
                           |),
                           [
@@ -4918,6 +4987,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_identifier_size",
+                            [],
                             []
                           |),
                           [
@@ -5365,6 +5435,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_signature_token",
+                            [],
                             []
                           |),
                           [
@@ -5434,6 +5505,7 @@ Module serializer.
                 M.call_closure (|
                   M.get_function (|
                     "move_binary_format::serializer::serialize_byte_blob",
+                    [],
                     [
                       Ty.function
                         [
@@ -5453,6 +5525,7 @@ Module serializer.
                     M.read (| binary |);
                     M.get_function (|
                       "move_binary_format::serializer::serialize_constant_size",
+                      [],
                       []
                     |);
                     M.call_closure (|
@@ -5518,6 +5591,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_byte_blob",
+                            [],
                             [
                               Ty.function
                                 [
@@ -5538,6 +5612,7 @@ Module serializer.
                             M.read (| binary |);
                             M.get_function (|
                               "move_binary_format::serializer::serialize_metadata_key_size",
+                              [],
                               []
                             |);
                             M.call_closure (|
@@ -5619,6 +5694,7 @@ Module serializer.
                 M.call_closure (|
                   M.get_function (|
                     "move_binary_format::serializer::serialize_byte_blob",
+                    [],
                     [
                       Ty.function
                         [
@@ -5638,6 +5714,7 @@ Module serializer.
                     M.read (| binary |);
                     M.get_function (|
                       "move_binary_format::serializer::serialize_metadata_value_size",
+                      [],
                       []
                     |);
                     M.call_closure (|
@@ -6003,6 +6080,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_struct_handle_index",
+                            [],
                             []
                           |),
                           [
@@ -6204,6 +6282,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_field_definitions",
+                            [],
                             []
                           |),
                           [
@@ -6280,6 +6359,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_struct_def_index",
+                            [],
                             []
                           |),
                           [
@@ -6363,6 +6443,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_signature_index",
+                            [],
                             []
                           |),
                           [
@@ -6479,6 +6560,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_field_count",
+                            [],
                             []
                           |),
                           [
@@ -6634,6 +6716,7 @@ Module serializer.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "move_binary_format::serializer::serialize_field_definition",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -6753,6 +6836,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_identifier_index",
+                            [],
                             []
                           |),
                           [
@@ -6822,6 +6906,7 @@ Module serializer.
                 M.call_closure (|
                   M.get_function (|
                     "move_binary_format::serializer::serialize_signature_token",
+                    [],
                     []
                   |),
                   [
@@ -6882,6 +6967,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_struct_def_index",
+                            [],
                             []
                           |),
                           [
@@ -6965,6 +7051,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_field_offset",
+                            [],
                             []
                           |),
                           [
@@ -7082,6 +7169,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_field_handle_index",
+                            [],
                             []
                           |),
                           [
@@ -7165,6 +7253,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_signature_index",
+                            [],
                             []
                           |),
                           [
@@ -7277,6 +7366,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_acquires_count",
+                            [],
                             []
                           |),
                           [
@@ -7433,6 +7523,7 @@ Module serializer.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "move_binary_format::serializer::serialize_struct_def_index",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| binary |); M.read (| def_idx |) ]
@@ -7523,7 +7614,7 @@ Module serializer.
         (let binary := M.alloc (| binary |) in
         let signature := M.alloc (| signature |) in
         M.call_closure (|
-          M.get_function (| "move_binary_format::serializer::serialize_signature_tokens", [] |),
+          M.get_function (| "move_binary_format::serializer::serialize_signature_tokens", [], [] |),
           [
             M.read (| binary |);
             M.call_closure (|
@@ -7592,6 +7683,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_signature_size",
+                            [],
                             []
                           |),
                           [
@@ -7747,6 +7839,7 @@ Module serializer.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "move_binary_format::serializer::serialize_signature_token",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| binary |); M.read (| token |) ]
@@ -8933,6 +9026,7 @@ Module serializer.
                                   M.call_closure (|
                                     M.get_function (|
                                       "move_binary_format::serializer::serialize_struct_handle_index",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| binary |); M.read (| idx |) ]
@@ -9117,6 +9211,7 @@ Module serializer.
                                           M.call_closure (|
                                             M.get_function (|
                                               "move_binary_format::serializer::serialize_struct_handle_index",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| binary |); M.read (| idx |) ]
@@ -9193,6 +9288,7 @@ Module serializer.
                                           M.call_closure (|
                                             M.get_function (|
                                               "move_binary_format::serializer::serialize_signature_size",
+                                              [],
                                               []
                                             |),
                                             [
@@ -9577,6 +9673,7 @@ Module serializer.
                                   M.call_closure (|
                                     M.get_function (|
                                       "move_binary_format::serializer::serialize_type_parameter_index",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| binary |); M.read (| M.read (| idx |) |) ]
@@ -9775,6 +9872,7 @@ Module serializer.
                                                                     M.call_closure (|
                                                                       M.get_function (|
                                                                         "anyhow::__private::format_err",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -9829,6 +9927,7 @@ Module serializer.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "move_binary_format::serializer::serialize_signature_token_single_node_impl",
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.read (| binary |); M.read (| token |) ]
@@ -9942,6 +10041,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::write_as_uleb128",
+                            [],
                             [ Ty.path "u8"; Ty.path "u8" ]
                           |),
                           [
@@ -10067,6 +10167,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_type_parameter_count",
+                            [],
                             []
                           |),
                           [
@@ -10219,6 +10320,7 @@ Module serializer.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "move_binary_format::serializer::serialize_ability_set",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -10334,6 +10436,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_signature_index",
+                            [],
                             []
                           |),
                           [
@@ -10401,7 +10504,7 @@ Module serializer.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "move_binary_format::serializer::serialize_code", [] |),
+                  M.get_function (| "move_binary_format::serializer::serialize_code", [], [] |),
                   [
                     M.read (| major_version |);
                     M.read (| binary |);
@@ -10795,6 +10898,7 @@ Module serializer.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::hint::must_use",
+                                                        [],
                                                         [ Ty.path "alloc::string::String" ]
                                                       |),
                                                       [
@@ -10804,6 +10908,7 @@ Module serializer.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "alloc::fmt::format",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -11047,6 +11152,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_bytecode_offset",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| M.read (| code_offset |) |) ]
@@ -11153,6 +11259,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_bytecode_offset",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| M.read (| code_offset |) |) ]
@@ -11259,6 +11366,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_bytecode_offset",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| M.read (| code_offset |) |) ]
@@ -11472,6 +11580,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::file_format_common::write_u64",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| M.read (| value |) |) ]
@@ -11578,6 +11687,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::file_format_common::write_u128",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| M.read (| M.read (| value |) |) |) ]
@@ -11765,6 +11875,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_constant_pool_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| const_idx |) ]
@@ -11925,6 +12036,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_local_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| M.read (| local_idx |) |) ]
@@ -12031,6 +12143,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_local_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| M.read (| local_idx |) |) ]
@@ -12137,6 +12250,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_local_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| M.read (| local_idx |) |) ]
@@ -12243,6 +12357,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_local_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| M.read (| local_idx |) |) ]
@@ -12349,6 +12464,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_local_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| M.read (| local_idx |) |) ]
@@ -12455,6 +12571,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_field_handle_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| field_idx |) ]
@@ -12561,6 +12678,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_field_inst_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| field_idx |) ]
@@ -12667,6 +12785,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_field_handle_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| field_idx |) ]
@@ -12773,6 +12892,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_field_inst_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| field_idx |) ]
@@ -12879,6 +12999,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_function_handle_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| method_idx |) ]
@@ -12985,6 +13106,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_struct_def_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| class_idx |) ]
@@ -13091,6 +13213,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_struct_def_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| class_idx |) ]
@@ -13197,6 +13320,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_function_inst_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| method_idx |) ]
@@ -13303,6 +13427,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_struct_def_inst_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| class_idx |) ]
@@ -13409,6 +13534,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_struct_def_inst_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| class_idx |) ]
@@ -14136,6 +14262,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_struct_def_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| class_idx |) ]
@@ -14242,6 +14369,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_struct_def_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| class_idx |) ]
@@ -14348,6 +14476,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_struct_def_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| class_idx |) ]
@@ -14454,6 +14583,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_struct_def_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| class_idx |) ]
@@ -14560,6 +14690,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_struct_def_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| class_idx |) ]
@@ -14666,6 +14797,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_struct_def_inst_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| class_idx |) ]
@@ -14772,6 +14904,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_struct_def_inst_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| class_idx |) ]
@@ -14878,6 +15011,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_struct_def_inst_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| class_idx |) ]
@@ -14984,6 +15118,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_struct_def_inst_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| class_idx |) ]
@@ -15090,6 +15225,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_struct_def_inst_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| class_idx |) ]
@@ -15217,6 +15353,7 @@ Module serializer.
                                     M.call_closure (|
                                       M.get_function (|
                                         "move_binary_format::serializer::serialize_signature_index",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| binary |); M.read (| sig_idx |) ]
@@ -15279,6 +15416,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::file_format_common::write_u64",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| M.read (| num |) |) ]
@@ -15385,6 +15523,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_signature_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| sig_idx |) ]
@@ -15491,6 +15630,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_signature_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| sig_idx |) ]
@@ -15597,6 +15737,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_signature_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| sig_idx |) ]
@@ -15703,6 +15844,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_signature_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| sig_idx |) ]
@@ -15809,6 +15951,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_signature_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| sig_idx |) ]
@@ -15936,6 +16079,7 @@ Module serializer.
                                     M.call_closure (|
                                       M.get_function (|
                                         "move_binary_format::serializer::serialize_signature_index",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| binary |); M.read (| sig_idx |) ]
@@ -15998,6 +16142,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::file_format_common::write_u64",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| M.read (| num |) |) ]
@@ -16104,6 +16249,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::serializer::serialize_signature_index",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| sig_idx |) ]
@@ -16210,6 +16356,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::file_format_common::write_u16",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| M.read (| value |) |) ]
@@ -16316,6 +16463,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::file_format_common::write_u32",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| M.read (| value |) |) ]
@@ -16422,6 +16570,7 @@ Module serializer.
                             M.call_closure (|
                               M.get_function (|
                                 "move_binary_format::file_format_common::write_u256",
+                                [],
                                 []
                               |),
                               [ M.read (| binary |); M.read (| M.read (| M.read (| value |) |) |) ]
@@ -16627,6 +16776,7 @@ Module serializer.
                         M.call_closure (|
                           M.get_function (|
                             "move_binary_format::serializer::serialize_bytecode_count",
+                            [],
                             []
                           |),
                           [
@@ -16779,6 +16929,7 @@ Module serializer.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "move_binary_format::serializer::serialize_instruction_inner",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -16900,6 +17051,7 @@ Module serializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::serializer::check_index_in_binary",
+                              [],
                               []
                             |),
                             [
@@ -16984,7 +17136,7 @@ Module serializer.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic_fmt", [] |),
+                              M.get_function (| "core::panicking::panic_fmt", [], [] |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -17110,6 +17262,7 @@ Module serializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::serializer::serialize_magic",
+                              [],
                               []
                             |),
                             [ M.read (| binary |) ]
@@ -17186,6 +17339,7 @@ Module serializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::file_format_common::write_u32",
+                              [],
                               []
                             |),
                             [
@@ -17353,6 +17507,7 @@ Module serializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::serializer::serialize_table_count",
+                              [],
                               []
                             |),
                             [
@@ -17438,6 +17593,7 @@ Module serializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::serializer::serialize_table_index",
+                              [],
                               []
                             |),
                             [
@@ -17539,6 +17695,7 @@ Module serializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::serializer::serialize_table_index",
+                              [],
                               []
                             |),
                             [
@@ -17640,6 +17797,7 @@ Module serializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::serializer::serialize_table_index",
+                              [],
                               []
                             |),
                             [
@@ -17741,6 +17899,7 @@ Module serializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::serializer::serialize_table_index",
+                              [],
                               []
                             |),
                             [
@@ -17842,6 +18001,7 @@ Module serializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::serializer::serialize_table_index",
+                              [],
                               []
                             |),
                             [
@@ -17943,6 +18103,7 @@ Module serializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::serializer::serialize_table_index",
+                              [],
                               []
                             |),
                             [
@@ -18044,6 +18205,7 @@ Module serializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::serializer::serialize_table_index",
+                              [],
                               []
                             |),
                             [
@@ -18145,6 +18307,7 @@ Module serializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::serializer::serialize_table_index",
+                              [],
                               []
                             |),
                             [
@@ -18272,6 +18435,7 @@ Module serializer.
                                     M.call_closure (|
                                       M.get_function (|
                                         "move_binary_format::serializer::serialize_table_index",
+                                        [],
                                         []
                                       |),
                                       [
@@ -18439,7 +18603,7 @@ Module serializer.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String "assertion failed: self.table_count == 0"
@@ -18764,7 +18928,7 @@ Module serializer.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String "assertion failed: self.table_count < 6"
@@ -19450,6 +19614,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::check_index_in_binary",
+                                            [],
                                             []
                                           |),
                                           [
@@ -19613,6 +19778,7 @@ Module serializer.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "move_binary_format::serializer::serialize_module_handle",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -19717,6 +19883,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::checked_calculate_table_size",
+                                            [],
                                             []
                                           |),
                                           [
@@ -19893,6 +20060,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::check_index_in_binary",
+                                            [],
                                             []
                                           |),
                                           [
@@ -20056,6 +20224,7 @@ Module serializer.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "move_binary_format::serializer::serialize_struct_handle",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -20160,6 +20329,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::checked_calculate_table_size",
+                                            [],
                                             []
                                           |),
                                           [
@@ -20342,6 +20512,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::check_index_in_binary",
+                                            [],
                                             []
                                           |),
                                           [
@@ -20505,6 +20676,7 @@ Module serializer.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "move_binary_format::serializer::serialize_function_handle",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -20609,6 +20781,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::checked_calculate_table_size",
+                                            [],
                                             []
                                           |),
                                           [
@@ -20793,6 +20966,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::check_index_in_binary",
+                                            [],
                                             []
                                           |),
                                           [
@@ -20957,6 +21131,7 @@ Module serializer.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "move_binary_format::serializer::serialize_function_instantiation",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -21063,6 +21238,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::checked_calculate_table_size",
+                                            [],
                                             []
                                           |),
                                           [
@@ -21243,6 +21419,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::check_index_in_binary",
+                                            [],
                                             []
                                           |),
                                           [
@@ -21403,6 +21580,7 @@ Module serializer.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "move_binary_format::serializer::serialize_identifier",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -21527,6 +21705,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::checked_calculate_table_size",
+                                            [],
                                             []
                                           |),
                                           [
@@ -21709,6 +21888,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::check_index_in_binary",
+                                            [],
                                             []
                                           |),
                                           [
@@ -21872,6 +22052,7 @@ Module serializer.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "move_binary_format::serializer::serialize_address",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -21976,6 +22157,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::checked_calculate_table_size",
+                                            [],
                                             []
                                           |),
                                           [
@@ -22152,6 +22334,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::check_index_in_binary",
+                                            [],
                                             []
                                           |),
                                           [
@@ -22312,6 +22495,7 @@ Module serializer.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "move_binary_format::serializer::serialize_constant",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -22416,6 +22600,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::checked_calculate_table_size",
+                                            [],
                                             []
                                           |),
                                           [
@@ -22588,6 +22773,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::check_index_in_binary",
+                                            [],
                                             []
                                           |),
                                           [
@@ -22748,6 +22934,7 @@ Module serializer.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "move_binary_format::serializer::serialize_metadata_entry",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -22852,6 +23039,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::checked_calculate_table_size",
+                                            [],
                                             []
                                           |),
                                           [
@@ -23028,6 +23216,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::check_index_in_binary",
+                                            [],
                                             []
                                           |),
                                           [
@@ -23188,6 +23377,7 @@ Module serializer.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "move_binary_format::serializer::serialize_signature",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -23292,6 +23482,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::checked_calculate_table_size",
+                                            [],
                                             []
                                           |),
                                           [
@@ -24265,6 +24456,7 @@ Module serializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::serializer::serialize_table_index",
+                              [],
                               []
                             |),
                             [
@@ -24366,6 +24558,7 @@ Module serializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::serializer::serialize_table_index",
+                              [],
                               []
                             |),
                             [
@@ -24467,6 +24660,7 @@ Module serializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::serializer::serialize_table_index",
+                              [],
                               []
                             |),
                             [
@@ -24568,6 +24762,7 @@ Module serializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::serializer::serialize_table_index",
+                              [],
                               []
                             |),
                             [
@@ -24669,6 +24864,7 @@ Module serializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::serializer::serialize_table_index",
+                              [],
                               []
                             |),
                             [
@@ -24770,6 +24966,7 @@ Module serializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::serializer::serialize_table_index",
+                              [],
                               []
                             |),
                             [
@@ -24978,6 +25175,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::check_index_in_binary",
+                                            [],
                                             []
                                           |),
                                           [
@@ -25141,6 +25339,7 @@ Module serializer.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "move_binary_format::serializer::serialize_struct_definition",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -25245,6 +25444,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::checked_calculate_table_size",
+                                            [],
                                             []
                                           |),
                                           [
@@ -25447,6 +25647,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::check_index_in_binary",
+                                            [],
                                             []
                                           |),
                                           [
@@ -25610,6 +25811,7 @@ Module serializer.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "move_binary_format::serializer::serialize_struct_def_instantiation",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -25714,6 +25916,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::checked_calculate_table_size",
+                                            [],
                                             []
                                           |),
                                           [
@@ -25897,6 +26100,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::check_index_in_binary",
+                                            [],
                                             []
                                           |),
                                           [
@@ -26058,6 +26262,7 @@ Module serializer.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "move_binary_format::serializer::serialize_field_handle",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -26162,6 +26367,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::checked_calculate_table_size",
+                                            [],
                                             []
                                           |),
                                           [
@@ -26350,6 +26556,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::check_index_in_binary",
+                                            [],
                                             []
                                           |),
                                           [
@@ -26513,6 +26720,7 @@ Module serializer.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "move_binary_format::serializer::serialize_field_instantiation",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -26617,6 +26825,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::checked_calculate_table_size",
+                                            [],
                                             []
                                           |),
                                           [
@@ -26818,6 +27027,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::check_index_in_binary",
+                                            [],
                                             []
                                           |),
                                           [
@@ -27088,6 +27298,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::checked_calculate_table_size",
+                                            [],
                                             []
                                           |),
                                           [
@@ -27241,6 +27452,7 @@ Module serializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::serializer::serialize_function_handle_index",
+                              [],
                               []
                             |),
                             [
@@ -27737,6 +27949,7 @@ Module serializer.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::serializer::serialize_acquires",
+                              [],
                               []
                             |),
                             [
@@ -27860,6 +28073,7 @@ Module serializer.
                                     M.call_closure (|
                                       M.get_function (|
                                         "move_binary_format::serializer::serialize_code_unit",
+                                        [],
                                         []
                                       |),
                                       [
@@ -28062,6 +28276,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::check_index_in_binary",
+                                            [],
                                             []
                                           |),
                                           [
@@ -28225,6 +28440,7 @@ Module serializer.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "move_binary_format::serializer::serialize_module_handle",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -28329,6 +28545,7 @@ Module serializer.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_binary_format::serializer::checked_calculate_table_size",
+                                            [],
                                             []
                                           |),
                                           [

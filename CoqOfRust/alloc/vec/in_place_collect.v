@@ -81,7 +81,7 @@ Module vec.
                           BinOp.ge (|
                             BinOp.Wrap.mul (|
                               M.call_closure (|
-                                M.get_function (| "core::mem::size_of", [ SRC ] |),
+                                M.get_function (| "core::mem::size_of", [], [ SRC ] |),
                                 []
                               |),
                               M.call_closure (|
@@ -98,7 +98,7 @@ Module vec.
                             |),
                             BinOp.Wrap.mul (|
                               M.call_closure (|
-                                M.get_function (| "core::mem::size_of", [ DEST ] |),
+                                M.get_function (| "core::mem::size_of", [], [ DEST ] |),
                                 []
                               |),
                               M.call_closure (|
@@ -174,7 +174,7 @@ Module vec.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic_fmt", [] |),
+                                M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -227,14 +227,14 @@ Module vec.
                         BinOp.Wrap.mul (|
                           M.read (| src_cap |),
                           M.call_closure (|
-                            M.get_function (| "core::mem::size_of", [ SRC ] |),
+                            M.get_function (| "core::mem::size_of", [], [ SRC ] |),
                             []
                           |)
                         |),
                         BinOp.Wrap.mul (|
                           M.read (| dst_cap |),
                           M.call_closure (|
-                            M.get_function (| "core::mem::size_of", [ DEST ] |),
+                            M.get_function (| "core::mem::size_of", [], [ DEST ] |),
                             []
                           |)
                         |)
@@ -492,12 +492,12 @@ Module vec.
                             |)
                           |);
                           M.call_closure (|
-                            M.get_function (| "core::mem::size_of", [ Ty.associated ] |),
+                            M.get_function (| "core::mem::size_of", [], [ Ty.associated ] |),
                             []
                           |)
                         ]
                       |),
-                      M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
+                      M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
                     |)
                   ]
               |),
@@ -649,6 +649,7 @@ Module vec.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::panicking::assert_failed",
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path
@@ -814,6 +815,7 @@ Module vec.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::panicking::panic_fmt",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -888,6 +890,7 @@ Module vec.
                                     M.call_closure (|
                                       M.get_function (|
                                         "alloc::vec::in_place_collect::needs_realloc",
+                                        [],
                                         [ Ty.associated; T ]
                                       |),
                                       [ M.read (| src_cap |); M.read (| dst_cap |) ]
@@ -965,6 +968,7 @@ Module vec.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::panicking::assert_failed",
+                                                                      [],
                                                                       [
                                                                         Ty.path "usize";
                                                                         Ty.path "usize"
@@ -1059,6 +1063,7 @@ Module vec.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::panicking::assert_failed",
+                                                                      [],
                                                                       [
                                                                         Ty.path "usize";
                                                                         Ty.path "usize"
@@ -1091,7 +1096,11 @@ Module vec.
                               let~ src_align :=
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::mem::align_of", [ Ty.associated ] |),
+                                    M.get_function (|
+                                      "core::mem::align_of",
+                                      [],
+                                      [ Ty.associated ]
+                                    |),
                                     []
                                   |)
                                 |) in
@@ -1107,6 +1116,7 @@ Module vec.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::mem::size_of",
+                                          [],
                                           [ Ty.associated ]
                                         |),
                                         []
@@ -1129,7 +1139,7 @@ Module vec.
                               let~ dst_align :=
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::mem::align_of", [ T ] |),
+                                    M.get_function (| "core::mem::align_of", [], [ T ] |),
                                     []
                                   |)
                                 |) in
@@ -1143,7 +1153,7 @@ Module vec.
                                     |),
                                     [
                                       M.call_closure (|
-                                        M.get_function (| "core::mem::size_of", [ T ] |),
+                                        M.get_function (| "core::mem::size_of", [], [ T ] |),
                                         []
                                       |);
                                       M.read (| dst_cap |)
@@ -1244,6 +1254,7 @@ Module vec.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::mem::size_of",
+                                                          [],
                                                           [ Ty.associated ]
                                                         |),
                                                         []
@@ -1256,6 +1267,7 @@ Module vec.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::mem::size_of",
+                                                          [],
                                                           [ T ]
                                                         |),
                                                         []
@@ -1310,6 +1322,7 @@ Module vec.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::panicking::assert_failed",
+                                                                      [],
                                                                       [
                                                                         Ty.path "usize";
                                                                         Ty.path "usize"
@@ -1347,6 +1360,7 @@ Module vec.
                         M.call_closure (|
                           M.get_function (|
                             "core::mem::forget",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::in_place_drop::InPlaceDstDataSrcBufDrop")
@@ -1472,6 +1486,7 @@ Module vec.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "core::panicking::panic_fmt",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -1511,7 +1526,7 @@ Module vec.
                                         let~ _ :=
                                           M.alloc (|
                                             M.call_closure (|
-                                              M.get_function (| "core::ptr::write", [ T ] |),
+                                              M.get_function (| "core::ptr::write", [], [ T ] |),
                                               [
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
@@ -1655,6 +1670,7 @@ Module vec.
                           M.call_closure (|
                             M.get_function (|
                               "alloc::vec::in_place_collect::write_in_place_with_drop",
+                              [],
                               [ T ]
                             |),
                             [ M.read (| end_ |) ]
@@ -1895,6 +1911,7 @@ Module vec.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "core::panicking::panic_fmt",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -1934,7 +1951,7 @@ Module vec.
                                         let~ _ :=
                                           M.alloc (|
                                             M.call_closure (|
-                                              M.get_function (| "core::ptr::write", [ T ] |),
+                                              M.get_function (| "core::ptr::write", [], [ T ] |),
                                               [
                                                 M.read (| dst |);
                                                 M.call_closure (|
@@ -1979,6 +1996,7 @@ Module vec.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::forget",
+                      [],
                       [ Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [] [ T ] ]
                     |),
                     [ M.read (| drop_guard |) ]

@@ -27,7 +27,10 @@ Module slice.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            M.call_closure (| M.get_function (| "core::mem::size_of", [ Ty.path "usize" ] |), [] |)
+            M.call_closure (|
+              M.get_function (| "core::mem::size_of", [], [ Ty.path "usize" ] |),
+              []
+            |)
           |))).
     
     (*
@@ -112,7 +115,11 @@ Module slice.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
-                                    M.get_function (| "core::slice::memchr::memchr_naive", [] |),
+                                    M.get_function (|
+                                      "core::slice::memchr::memchr_naive",
+                                      [],
+                                      []
+                                    |),
                                     [ M.read (| x |); M.read (| text |) ]
                                   |)
                                 |)
@@ -124,7 +131,7 @@ Module slice.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::slice::memchr::memchr_aligned", [] |),
+                    M.get_function (| "core::slice::memchr::memchr_aligned", [], [] |),
                     [ M.read (| x |); M.read (| text |) ]
                   |)
                 |)
@@ -404,6 +411,7 @@ Module slice.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::slice::raw::from_raw_parts",
+                                  [],
                                   [ Ty.path "u8" ]
                                 |),
                                 [
@@ -429,6 +437,7 @@ Module slice.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::slice::memchr::memchr_naive",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| x |); M.read (| slice |) ]
@@ -534,6 +543,7 @@ Module slice.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::slice::memchr::contains_zero_byte",
+                                        [],
                                         []
                                       |),
                                       [ BinOp.bit_xor (M.read (| u |)) (M.read (| repeated_x |)) ]
@@ -544,6 +554,7 @@ Module slice.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::slice::memchr::contains_zero_byte",
+                                        [],
                                         []
                                       |),
                                       [ BinOp.bit_xor (M.read (| v |)) (M.read (| repeated_x |)) ]
@@ -607,7 +618,7 @@ Module slice.
                 let~ slice :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
+                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -649,7 +660,7 @@ Module slice.
                         (let γ :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::slice::memchr::memchr_naive", [] |),
+                              M.get_function (| "core::slice::memchr::memchr_naive", [], [] |),
                               [ M.read (| x |); M.read (| slice |) ]
                             |)
                           |) in
@@ -933,7 +944,7 @@ Module slice.
                         let~ chunk_bytes :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::mem::size_of", [ Ty.path "usize" ] |),
+                              M.get_function (| "core::mem::size_of", [], [ Ty.path "usize" ] |),
                               []
                             |)
                           |) in
@@ -1003,6 +1014,7 @@ Module slice.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::slice::memchr::contains_zero_byte",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -1017,6 +1029,7 @@ Module slice.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::slice::memchr::contains_zero_byte",
+                                                [],
                                                 []
                                               |),
                                               [

@@ -4426,7 +4426,7 @@ Module collections.
                                   end))
                           ]
                         |);
-                        M.get_function (| "core::mem::drop", [ T ] |)
+                        M.get_function (| "core::mem::drop", [], [ T ] |)
                       ]
                     |)
                   |) in
@@ -10036,7 +10036,7 @@ Module collections.
                                 "core::option::Option::Some"
                                 [
                                   M.call_closure (|
-                                    M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                                    M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                                     [
                                       M.call_closure (|
                                         M.get_trait_method (|
@@ -10378,7 +10378,7 @@ Module collections.
                           Value.Tuple
                             [
                               M.call_closure (|
-                                M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
+                                M.get_function (| "core::cmp::max", [], [ Ty.path "usize" ] |),
                                 [ M.read (| a_len |); M.read (| b_len |) ]
                               |);
                               Value.StructTuple

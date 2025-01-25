@@ -41,7 +41,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ _ :=
           M.alloc (|
-            M.call_closure (| M.get_function (| "dead_code::used_function", [] |), [] |)
+            M.call_closure (| M.get_function (| "dead_code::used_function", [], [] |), [] |)
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

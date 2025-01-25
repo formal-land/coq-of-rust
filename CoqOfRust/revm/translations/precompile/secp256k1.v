@@ -10,12 +10,12 @@ Module secp256k1.
             "revm_precompile::PrecompileWithAddress"
             [
               M.call_closure (|
-                M.get_function (| "revm_precompile::u64_to_address", [] |),
+                M.get_function (| "revm_precompile::u64_to_address", [], [] |),
                 [ Value.Integer IntegerKind.U64 1 ]
               |);
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_precompile::secp256k1::ec_recover_run", [] |))
+                (M.get_function (| "revm_precompile::secp256k1::ec_recover_run", [], [] |))
             ]
         |))).
   
@@ -302,6 +302,7 @@ Module secp256k1.
                     M.call_closure (|
                       M.get_function (|
                         "alloy_primitives::utils::keccak256",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "&")
@@ -473,7 +474,11 @@ Module secp256k1.
               let~ input :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "revm_precompile::utilities::right_pad", [] |),
+                    M.get_function (|
+                      "revm_precompile::utilities::right_pad",
+                      [ Value.Integer IntegerKind.Usize 128 ],
+                      []
+                    |),
                     [
                       M.call_closure (|
                         M.get_trait_method (|
@@ -959,6 +964,7 @@ Module secp256k1.
                           M.call_closure (|
                             M.get_function (|
                               "revm_precompile::secp256k1::secp256k1::ecrecover",
+                              [],
                               []
                             |),
                             [ M.read (| sig |); M.read (| recid |); M.read (| msg |) ]

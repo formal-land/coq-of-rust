@@ -544,6 +544,7 @@ Module collections.
                                                                       M.call_closure (|
                                                                         M.get_function (|
                                                                           "core::panicking::panic",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -682,6 +683,7 @@ Module collections.
                                                                               M.call_closure (|
                                                                                 M.get_function (|
                                                                                   "core::panicking::panic",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -799,6 +801,7 @@ Module collections.
                                                                       M.call_closure (|
                                                                         M.get_function (|
                                                                           "core::panicking::panic",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -937,6 +940,7 @@ Module collections.
                                                                               M.call_closure (|
                                                                                 M.get_function (|
                                                                                   "core::panicking::panic",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [

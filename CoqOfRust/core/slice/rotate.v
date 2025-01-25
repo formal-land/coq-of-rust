@@ -269,6 +269,7 @@ Module slice.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::mem::size_of",
+                                                      [],
                                                       [ T ]
                                                     |),
                                                     []
@@ -276,6 +277,7 @@ Module slice.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::mem::size_of",
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "array")
@@ -773,6 +775,7 @@ Module slice.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::cmp::min",
+                                                          [],
                                                           [ Ty.path "usize" ]
                                                         |),
                                                         [ M.read (| left |); M.read (| right |) ]
@@ -781,6 +784,7 @@ Module slice.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::mem::size_of",
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "array")
@@ -794,6 +798,7 @@ Module slice.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::mem::size_of",
+                                                            [],
                                                             [ T ]
                                                           |),
                                                           []
@@ -926,6 +931,7 @@ Module slice.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::intrinsics::copy_nonoverlapping",
+                                                                  [],
                                                                   [ T ]
                                                                 |),
                                                                 [
@@ -955,6 +961,7 @@ Module slice.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::intrinsics::copy",
+                                                                  [],
                                                                   [ T ]
                                                                 |),
                                                                 [
@@ -984,6 +991,7 @@ Module slice.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::intrinsics::copy_nonoverlapping",
+                                                                  [],
                                                                   [ T ]
                                                                 |),
                                                                 [
@@ -1003,6 +1011,7 @@ Module slice.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::intrinsics::copy_nonoverlapping",
+                                                                  [],
                                                                   [ T ]
                                                                 |),
                                                                 [
@@ -1019,6 +1028,7 @@ Module slice.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::intrinsics::copy",
+                                                                  [],
                                                                   [ T ]
                                                                 |),
                                                                 [
@@ -1048,6 +1058,7 @@ Module slice.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::intrinsics::copy_nonoverlapping",
+                                                                  [],
                                                                   [ T ]
                                                                 |),
                                                                 [
@@ -1107,6 +1118,7 @@ Module slice.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::ptr::swap_nonoverlapping",
+                                                                [],
                                                                 [ T ]
                                                               |),
                                                               [
@@ -1191,6 +1203,7 @@ Module slice.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::ptr::swap_nonoverlapping",
+                                                                [],
                                                                 [ T ]
                                                               |),
                                                               [

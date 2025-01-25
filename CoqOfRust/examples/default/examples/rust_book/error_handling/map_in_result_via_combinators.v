@@ -129,7 +129,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
+                      M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -170,7 +170,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
+                      M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -231,28 +231,28 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ twenty :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "map_in_result_via_combinators::multiply", [] |),
+              M.get_function (| "map_in_result_via_combinators::multiply", [], [] |),
               [ M.read (| Value.String "10" |); M.read (| Value.String "2" |) ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "map_in_result_via_combinators::print", [] |),
+              M.get_function (| "map_in_result_via_combinators::print", [], [] |),
               [ M.read (| twenty |) ]
             |)
           |) in
         let~ tt_ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "map_in_result_via_combinators::multiply", [] |),
+              M.get_function (| "map_in_result_via_combinators::multiply", [], [] |),
               [ M.read (| Value.String "t" |); M.read (| Value.String "2" |) ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "map_in_result_via_combinators::print", [] |),
+              M.get_function (| "map_in_result_via_combinators::print", [], [] |),
               [ M.read (| tt_ |) ]
             |)
           |) in

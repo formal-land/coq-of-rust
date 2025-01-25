@@ -266,7 +266,7 @@ Module Primitive.
   | StateWrite (pointer : Pointer.t Value.t) (value : Value.t)
   | GetSubPointer (pointer : Pointer.t Value.t) (index : Pointer.Index.t)
   | AreEqual (value1 value2 : Value.t)
-  | GetFunction (path : string) (generic_tys : list Ty.t)
+  | GetFunction (path : string) (generic_consts : list Value.t) (generic_tys : list Ty.t)
   | GetAssociatedFunction (ty : Ty.t) (name : string) (generic_tys : list Ty.t)
   | GetTraitMethod
     (trait : string)
@@ -604,8 +604,9 @@ Definition are_equal (value1 value2 : Value.t) : M :=
 
 Parameter get_constant : string -> M.
 
-Definition get_function (path : string) (generic_tys : list Ty.t) : M :=
-  call_primitive (Primitive.GetFunction path generic_tys).
+Definition get_function (path : string) (generic_consts : list Value.t) (generic_tys : list Ty.t) :
+    M :=
+  call_primitive (Primitive.GetFunction path generic_consts generic_tys).
 
 Definition get_associated_function
   (ty : Ty.t)

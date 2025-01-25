@@ -217,6 +217,7 @@ Module task.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
                     [ M.read (| self |) ]
@@ -227,6 +228,7 @@ Module task.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
                     [ M.read (| other |) ]
@@ -308,6 +310,7 @@ Module task.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
                     [ M.read (| self |) ]
@@ -318,6 +321,7 @@ Module task.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
                     [ M.read (| other |) ]
@@ -404,6 +408,7 @@ Module task.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
                     [ M.read (| self |) ]
@@ -414,6 +419,7 @@ Module task.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
                     [ M.read (| other |) ]
@@ -500,6 +506,7 @@ Module task.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
                     [ M.read (| self |) ]

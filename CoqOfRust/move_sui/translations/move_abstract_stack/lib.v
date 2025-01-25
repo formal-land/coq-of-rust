@@ -229,7 +229,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic", [] |),
+                                    M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
                                         Value.String
@@ -362,7 +362,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic", [] |),
+                                    M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
                                         Value.String
@@ -485,7 +485,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic", [] |),
+                                    M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
                                         Value.String
@@ -633,7 +633,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic", [] |),
+                                    M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
                                         Value.String
@@ -885,6 +885,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::panicking::panic",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1181,7 +1182,11 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                           M.alloc (|
                                             M.never_to_any (|
                                               M.call_closure (|
-                                                M.get_function (| "core::panicking::panic", [] |),
+                                                M.get_function (|
+                                                  "core::panicking::panic",
+                                                  [],
+                                                  []
+                                                |),
                                                 [
                                                   M.read (|
                                                     Value.String "assertion failed: *count > 0"
@@ -1543,6 +1548,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::panicking::panic",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1794,6 +1800,7 @@ Module Impl_core_cmp_PartialEq_for_move_abstract_stack_AbsStackError.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_abstract_stack::AbsStackError" ]
                 |),
                 [ M.read (| self |) ]
@@ -1804,6 +1811,7 @@ Module Impl_core_cmp_PartialEq_for_move_abstract_stack_AbsStackError.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_abstract_stack::AbsStackError" ]
                 |),
                 [ M.read (| other |) ]
@@ -1838,6 +1846,7 @@ Module Impl_core_cmp_PartialOrd_for_move_abstract_stack_AbsStackError.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_abstract_stack::AbsStackError" ]
                 |),
                 [ M.read (| self |) ]
@@ -1848,6 +1857,7 @@ Module Impl_core_cmp_PartialOrd_for_move_abstract_stack_AbsStackError.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_abstract_stack::AbsStackError" ]
                 |),
                 [ M.read (| other |) ]
@@ -1893,6 +1903,7 @@ Module Impl_core_cmp_Ord_for_move_abstract_stack_AbsStackError.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_abstract_stack::AbsStackError" ]
                 |),
                 [ M.read (| self |) ]
@@ -1903,6 +1914,7 @@ Module Impl_core_cmp_Ord_for_move_abstract_stack_AbsStackError.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_abstract_stack::AbsStackError" ]
                 |),
                 [ M.read (| other |) ]

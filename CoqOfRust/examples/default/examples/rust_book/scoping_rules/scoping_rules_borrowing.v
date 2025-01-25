@@ -16,7 +16,7 @@ Definition eat_box_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -75,7 +75,7 @@ Definition borrow_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -164,14 +164,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "scoping_rules_borrowing::borrow_i32", [] |),
+              M.get_function (| "scoping_rules_borrowing::borrow_i32", [], [] |),
               [ M.read (| boxed_i32 |) ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "scoping_rules_borrowing::borrow_i32", [] |),
+              M.get_function (| "scoping_rules_borrowing::borrow_i32", [], [] |),
               [ stacked_i32 ]
             |)
           |) in
@@ -180,7 +180,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "scoping_rules_borrowing::borrow_i32", [] |),
+                M.get_function (| "scoping_rules_borrowing::borrow_i32", [], [] |),
                 [ M.read (| _ref_to_i32 |) ]
               |)
             |) in
@@ -188,7 +188,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "scoping_rules_borrowing::eat_box_i32", [] |),
+              M.get_function (| "scoping_rules_borrowing::eat_box_i32", [], [] |),
               [ M.read (| boxed_i32 |) ]
             |)
           |) in

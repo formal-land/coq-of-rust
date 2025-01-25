@@ -24,7 +24,7 @@ Module str.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::str::validations::run_utf8_validation", [] |),
+                  M.get_function (| "core::str::validations::run_utf8_validation", [], [] |),
                   [ M.read (| v |) ]
                 |)
               |),
@@ -38,7 +38,7 @@ Module str.
                         "core::result::Result::Ok"
                         [
                           M.call_closure (|
-                            M.get_function (| "core::str::converts::from_utf8_unchecked", [] |),
+                            M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
                             [ M.read (| v |) ]
                           |)
                         ]
@@ -80,7 +80,7 @@ Module str.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::str::validations::run_utf8_validation", [] |),
+                  M.get_function (| "core::str::validations::run_utf8_validation", [], [] |),
                   [ M.read (| v |) ]
                 |)
               |),
@@ -94,7 +94,11 @@ Module str.
                         "core::result::Result::Ok"
                         [
                           M.call_closure (|
-                            M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [] |),
+                            M.get_function (|
+                              "core::str::converts::from_utf8_unchecked_mut",
+                              [],
+                              []
+                            |),
                             [ M.read (| v |) ]
                           |)
                         ]
@@ -130,6 +134,7 @@ Module str.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                 Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
@@ -179,6 +184,7 @@ Module str.
           M.call_closure (|
             M.get_function (|
               "core::ptr::metadata::from_raw_parts",
+              [],
               [ Ty.path "str"; Ty.path "u8" ]
             |),
             [ M.read (| ptr |); M.read (| len |) ]
@@ -204,6 +210,7 @@ Module str.
           M.call_closure (|
             M.get_function (|
               "core::ptr::metadata::from_raw_parts_mut",
+              [],
               [ Ty.path "str"; Ty.path "u8" ]
             |),
             [ M.read (| ptr |); M.read (| len |) ]

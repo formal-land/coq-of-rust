@@ -199,6 +199,7 @@ Module reference_safety.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [
                         Ty.path
                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
@@ -212,6 +213,7 @@ Module reference_safety.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [
                         Ty.path
                           "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
@@ -695,6 +697,7 @@ Module reference_safety.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label" ]
                     |),
                     [ M.read (| self |) ]
@@ -705,6 +708,7 @@ Module reference_safety.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label" ]
                     |),
                     [ M.read (| other |) ]
@@ -826,7 +830,7 @@ Module reference_safety.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unreachable", [] |),
+                                    M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                     []
                                   |)
                                 |)
@@ -880,6 +884,7 @@ Module reference_safety.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label" ]
                     |),
                     [ M.read (| self |) ]
@@ -890,6 +895,7 @@ Module reference_safety.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label" ]
                     |),
                     [ M.read (| other |) ]
@@ -1030,7 +1036,7 @@ Module reference_safety.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unreachable", [] |),
+                                    M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                     []
                                   |)
                                 |)
@@ -1069,6 +1075,7 @@ Module reference_safety.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label" ]
                     |),
                     [ M.read (| self |) ]
@@ -1079,6 +1086,7 @@ Module reference_safety.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label" ]
                     |),
                     [ M.read (| other |) ]
@@ -1933,6 +1941,7 @@ Module reference_safety.
                         M.call_closure (|
                           M.get_function (|
                             "alloc::vec::from_elem",
+                            [],
                             [
                               Ty.path
                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
@@ -2262,7 +2271,7 @@ Module reference_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [ M.read (| Value.String "assertion failed: state.is_canonical()" |) ]
                             |)
                           |)
@@ -3703,7 +3712,7 @@ Module reference_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
                                   Value.String "assertion failed: self.borrow_graph.is_mutable(id)"
@@ -3791,7 +3800,7 @@ Module reference_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
                                   Value.String "assertion failed: self.borrow_graph.is_mutable(id)"
@@ -4295,6 +4304,7 @@ Module reference_safety.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::hint::must_use",
+                                        [],
                                         [ Ty.path "alloc::string::String" ]
                                       |),
                                       [
@@ -4302,7 +4312,7 @@ Module reference_safety.
                                           let~ res :=
                                             M.alloc (|
                                               M.call_closure (|
-                                                M.get_function (| "alloc::fmt::format", [] |),
+                                                M.get_function (| "alloc::fmt::format", [], [] |),
                                                 [
                                                   M.call_closure (|
                                                     M.get_associated_function (|
@@ -4356,7 +4366,7 @@ Module reference_safety.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                           [
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -4579,6 +4589,7 @@ Module reference_safety.
                       M.call_closure (|
                         M.get_function (|
                           "core::mem::replace",
+                          [],
                           [
                             Ty.path
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
@@ -4668,6 +4679,7 @@ Module reference_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -4677,6 +4689,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -4737,6 +4750,7 @@ Module reference_safety.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::panicking::panic_fmt",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -4925,6 +4939,7 @@ Module reference_safety.
                       M.call_closure (|
                         M.get_function (|
                           "core::mem::replace",
+                          [],
                           [
                             Ty.path
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
@@ -5014,6 +5029,7 @@ Module reference_safety.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -5023,6 +5039,7 @@ Module reference_safety.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -5083,6 +5100,7 @@ Module reference_safety.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::panicking::panic_fmt",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -5563,7 +5581,7 @@ Module reference_safety.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.call_closure (|
-                                            M.get_function (| "core::panicking::panic", [] |),
+                                            M.get_function (| "core::panicking::panic", [], [] |),
                                             [
                                               M.read (|
                                                 Value.String "assertion failed: v1.is_value()"
@@ -5604,7 +5622,7 @@ Module reference_safety.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.call_closure (|
-                                            M.get_function (| "core::panicking::panic", [] |),
+                                            M.get_function (| "core::panicking::panic", [], [] |),
                                             [
                                               M.read (|
                                                 Value.String "assertion failed: v2.is_value()"
@@ -6481,6 +6499,7 @@ Module reference_safety.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::hint::must_use",
+                                          [],
                                           [ Ty.path "alloc::string::String" ]
                                         |),
                                         [
@@ -6488,7 +6507,7 @@ Module reference_safety.
                                             let~ res :=
                                               M.alloc (|
                                                 M.call_closure (|
-                                                  M.get_function (| "alloc::fmt::format", [] |),
+                                                  M.get_function (| "alloc::fmt::format", [], [] |),
                                                   [
                                                     M.call_closure (|
                                                       M.get_associated_function (|
@@ -6542,7 +6561,11 @@ Module reference_safety.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.call_closure (|
-                                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                                            M.get_function (|
+                                              "core::panicking::panic_fmt",
+                                              [],
+                                              []
+                                            |),
                                             [
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -6756,6 +6779,7 @@ Module reference_safety.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::hint::must_use",
+                                          [],
                                           [ Ty.path "alloc::string::String" ]
                                         |),
                                         [
@@ -6763,7 +6787,7 @@ Module reference_safety.
                                             let~ res :=
                                               M.alloc (|
                                                 M.call_closure (|
-                                                  M.get_function (| "alloc::fmt::format", [] |),
+                                                  M.get_function (| "alloc::fmt::format", [], [] |),
                                                   [
                                                     M.call_closure (|
                                                       M.get_associated_function (|
@@ -6817,7 +6841,11 @@ Module reference_safety.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.call_closure (|
-                                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                                            M.get_function (|
+                                              "core::panicking::panic_fmt",
+                                              [],
+                                              []
+                                            |),
                                             [
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -9395,7 +9423,7 @@ Module reference_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
                                   Value.String "assertion failed: self.locals.len() == locals.len()"
@@ -9517,7 +9545,7 @@ Module reference_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
                                   Value.String "assertion failed: canonical_state.is_canonical()"
@@ -10002,7 +10030,7 @@ Module reference_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
                                   Value.String
@@ -10053,7 +10081,7 @@ Module reference_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
                                   Value.String
@@ -10099,7 +10127,7 @@ Module reference_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
                                   Value.String "assertion failed: self.next_id == other.next_id"
@@ -10172,7 +10200,7 @@ Module reference_safety.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [
                                 M.read (|
                                   Value.String
@@ -10605,6 +10633,7 @@ Module reference_safety.
                                                                     M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::panicking::panic",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -10767,7 +10796,7 @@ Module reference_safety.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::panicking::panic", [] |),
+                                  M.get_function (| "core::panicking::panic", [], [] |),
                                   [
                                     M.read (|
                                       Value.String "assertion failed: joined.is_canonical()"
@@ -10840,7 +10869,7 @@ Module reference_safety.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::panicking::panic", [] |),
+                                  M.get_function (| "core::panicking::panic", [], [] |),
                                   [
                                     M.read (|
                                       Value.String

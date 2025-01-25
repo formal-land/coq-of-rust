@@ -12,7 +12,7 @@ Module raw_vec.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
-          M.get_function (| "core::panicking::panic_fmt", [] |),
+          M.get_function (| "core::panicking::panic_fmt", [], [] |),
           [
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -292,7 +292,7 @@ Module raw_vec.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "alloc::raw_vec::handle_error", [] |),
+                          M.get_function (| "alloc::raw_vec::handle_error", [], [] |),
                           [ M.read (| err |) ]
                         |)
                       |)
@@ -377,8 +377,8 @@ Module raw_vec.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_function (| "alloc::raw_vec::min_non_zero_cap", [] |),
-              [ M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |) ]
+              M.get_function (| "alloc::raw_vec::min_non_zero_cap", [], [] |),
+              [ M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |) ]
             |)
           |))).
     
@@ -409,7 +409,7 @@ Module raw_vec.
                   |),
                   [
                     M.read (| alloc |);
-                    M.call_closure (| M.get_function (| "core::mem::align_of", [ T ] |), [] |)
+                    M.call_closure (| M.get_function (| "core::mem::align_of", [], [ T ] |), [] |)
                   ]
                 |));
               ("_marker", Value.StructTuple "core::marker::PhantomData" [])
@@ -646,7 +646,7 @@ Module raw_vec.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic_fmt", [] |),
+                                      M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -696,6 +696,7 @@ Module raw_vec.
                 M.call_closure (|
                   M.get_function (|
                     "core::ptr::slice_from_raw_parts_mut",
+                    [],
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                   |),
                   [
@@ -745,7 +746,7 @@ Module raw_vec.
                 [
                   M.read (| slice |);
                   M.call_closure (|
-                    M.get_function (| "core::ptr::read", [ A ] |),
+                    M.get_function (| "core::ptr::read", [], [ A ] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.SubPointer.get_struct_record_field (|
@@ -1003,7 +1004,7 @@ Module raw_vec.
                 "alloc::raw_vec::RawVec",
                 "inner"
               |);
-              M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
+              M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1346,6 +1347,7 @@ Module raw_vec.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::transmute",
+                    [],
                     [
                       Ty.path "usize";
                       Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ Ty.path "u8" ]
@@ -1425,7 +1427,7 @@ Module raw_vec.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            M.get_function (| "core::hint::assert_unchecked", [], [] |),
                             [
                               UnOp.not (|
                                 M.call_closure (|
@@ -1455,7 +1457,7 @@ Module raw_vec.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "alloc::raw_vec::handle_error", [] |),
+                          M.get_function (| "alloc::raw_vec::handle_error", [], [] |),
                           [ M.read (| err |) ]
                         |)
                       |)
@@ -1565,7 +1567,7 @@ Module raw_vec.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "alloc::raw_vec::handle_error", [] |),
+                          M.get_function (| "alloc::raw_vec::handle_error", [], [] |),
                           [ M.read (| err |) ]
                         |)
                       |)
@@ -1641,7 +1643,7 @@ Module raw_vec.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "alloc::raw_vec::layout_array", [] |),
+                          M.get_function (| "alloc::raw_vec::layout_array", [], [] |),
                           [ M.read (| capacity |); M.read (| elem_layout |) ]
                         |)
                       |),
@@ -1758,7 +1760,7 @@ Module raw_vec.
                           (let γ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "alloc::raw_vec::alloc_guard", [] |),
+                                M.get_function (| "alloc::raw_vec::alloc_guard", [], [] |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -2464,7 +2466,7 @@ Module raw_vec.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "alloc::raw_vec::handle_error", [] |),
+                          M.get_function (| "alloc::raw_vec::handle_error", [], [] |),
                           [ M.read (| err |) ]
                         |)
                       |)
@@ -2628,7 +2630,7 @@ Module raw_vec.
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::hint::assert_unchecked", [] |),
+                        M.get_function (| "core::hint::assert_unchecked", [], [] |),
                         [
                           UnOp.not (|
                             M.call_closure (|
@@ -2703,7 +2705,7 @@ Module raw_vec.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "alloc::raw_vec::handle_error", [] |),
+                          M.get_function (| "alloc::raw_vec::handle_error", [], [] |),
                           [ M.read (| err |) ]
                         |)
                       |)
@@ -2872,7 +2874,7 @@ Module raw_vec.
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::hint::assert_unchecked", [] |),
+                        M.get_function (| "core::hint::assert_unchecked", [], [] |),
                         [
                           UnOp.not (|
                             M.call_closure (|
@@ -2941,7 +2943,7 @@ Module raw_vec.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "alloc::raw_vec::handle_error", [] |),
+                          M.get_function (| "alloc::raw_vec::handle_error", [], [] |),
                           [ M.read (| err |) ]
                         |)
                       |)
@@ -3159,7 +3161,7 @@ Module raw_vec.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String "assertion failed: additional > 0"
@@ -3325,7 +3327,7 @@ Module raw_vec.
                 let~ cap :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
+                      M.get_function (| "core::cmp::max", [], [ Ty.path "usize" ] |),
                       [
                         BinOp.Wrap.mul (|
                           M.read (|
@@ -3348,10 +3350,10 @@ Module raw_vec.
                 let~ cap :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
+                      M.get_function (| "core::cmp::max", [], [ Ty.path "usize" ] |),
                       [
                         M.call_closure (|
-                          M.get_function (| "alloc::raw_vec::min_non_zero_cap", [] |),
+                          M.get_function (| "alloc::raw_vec::min_non_zero_cap", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -3387,7 +3389,7 @@ Module raw_vec.
                           |),
                           [
                             M.call_closure (|
-                              M.get_function (| "alloc::raw_vec::layout_array", [] |),
+                              M.get_function (| "alloc::raw_vec::layout_array", [], [] |),
                               [ M.read (| cap |); M.read (| elem_layout |) ]
                             |)
                           ]
@@ -3471,7 +3473,7 @@ Module raw_vec.
                           |),
                           [
                             M.call_closure (|
-                              M.get_function (| "alloc::raw_vec::finish_grow", [ A ] |),
+                              M.get_function (| "alloc::raw_vec::finish_grow", [], [ A ] |),
                               [
                                 M.read (| new_layout |);
                                 M.call_closure (|
@@ -3771,7 +3773,7 @@ Module raw_vec.
                           |),
                           [
                             M.call_closure (|
-                              M.get_function (| "alloc::raw_vec::layout_array", [] |),
+                              M.get_function (| "alloc::raw_vec::layout_array", [], [] |),
                               [ M.read (| cap |); M.read (| elem_layout |) ]
                             |)
                           ]
@@ -3855,7 +3857,7 @@ Module raw_vec.
                           |),
                           [
                             M.call_closure (|
-                              M.get_function (| "alloc::raw_vec::finish_grow", [ A ] |),
+                              M.get_function (| "alloc::raw_vec::finish_grow", [], [ A ] |),
                               [
                                 M.read (| new_layout |);
                                 M.call_closure (|
@@ -4007,7 +4009,7 @@ Module raw_vec.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -4207,6 +4209,7 @@ Module raw_vec.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::ptr::without_provenance_mut",
+                                              [],
                                               [ Ty.path "u8" ]
                                             |),
                                             [
@@ -4592,7 +4595,7 @@ Module raw_vec.
                       |),
                       [
                         M.call_closure (|
-                          M.get_function (| "alloc::raw_vec::alloc_guard", [] |),
+                          M.get_function (| "alloc::raw_vec::alloc_guard", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -4762,6 +4765,7 @@ Module raw_vec.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::panicking::assert_failed",
+                                                                  [],
                                                                   [ Ty.path "usize"; Ty.path "usize"
                                                                   ]
                                                                 |),
@@ -4791,7 +4795,7 @@ Module raw_vec.
                           let~ _ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::hint::assert_unchecked", [] |),
+                                M.get_function (| "core::hint::assert_unchecked", [], [] |),
                                 [
                                   BinOp.eq (|
                                     M.call_closure (|
@@ -4942,7 +4946,7 @@ Module raw_vec.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "alloc::raw_vec::capacity_overflow", [] |),
+                      M.get_function (| "alloc::raw_vec::capacity_overflow", [], [] |),
                       []
                     |)
                   |)));
@@ -4957,7 +4961,7 @@ Module raw_vec.
                   let layout := M.copy (| γ0_0 |) in
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "alloc::alloc::handle_alloc_error", [] |),
+                      M.get_function (| "alloc::alloc::handle_alloc_error", [], [] |),
                       [ M.read (| layout |) ]
                     |)
                   |)))

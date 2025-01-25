@@ -1621,6 +1621,7 @@ Module collections.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::mem::drop",
+                                                                      [],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
@@ -2235,7 +2236,7 @@ Module collections.
                 (let self := M.alloc (| self |) in
                 let value := M.alloc (| value |) in
                 M.call_closure (|
-                  M.get_function (| "core::mem::replace", [ V ] |),
+                  M.get_function (| "core::mem::replace", [], [ V ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|

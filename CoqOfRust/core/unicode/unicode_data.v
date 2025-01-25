@@ -500,7 +500,7 @@ Module unicode.
             let~ offset_idx :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::unicode::unicode_data::decode_length", [] |),
+                  M.get_function (| "core::unicode::unicode_data::decode_length", [], [] |),
                   [
                     M.read (|
                       M.SubPointer.get_array_field (| M.read (| short_offset_runs |), last_idx |)
@@ -542,7 +542,11 @@ Module unicode.
                         M.alloc (|
                           BinOp.Wrap.sub (|
                             M.call_closure (|
-                              M.get_function (| "core::unicode::unicode_data::decode_length", [] |),
+                              M.get_function (|
+                                "core::unicode::unicode_data::decode_length",
+                                [],
+                                []
+                              |),
                               [ M.read (| M.read (| next |) |) ]
                             |),
                             M.read (| offset_idx |)
@@ -604,6 +608,7 @@ Module unicode.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::unicode::unicode_data::decode_prefix_sum",
+                                              [],
                                               []
                                             |),
                                             [
@@ -2381,7 +2386,11 @@ Module unicode.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
-              M.get_function (| "core::unicode::unicode_data::skip_search", [] |),
+              M.get_function (|
+                "core::unicode::unicode_data::skip_search",
+                [ Value.Integer IntegerKind.Usize 53; Value.Integer IntegerKind.Usize 1515 ],
+                []
+              |),
               [
                 M.rust_cast (M.read (| c |));
                 M.read (|
@@ -3376,7 +3385,11 @@ Module unicode.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
-              M.get_function (| "core::unicode::unicode_data::skip_search", [] |),
+              M.get_function (|
+                "core::unicode::unicode_data::skip_search",
+                [ Value.Integer IntegerKind.Usize 37; Value.Integer IntegerKind.Usize 905 ],
+                []
+              |),
               [
                 M.rust_cast (M.read (| c |));
                 M.read (|
@@ -3775,7 +3788,11 @@ Module unicode.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
-              M.get_function (| "core::unicode::unicode_data::skip_search", [] |),
+              M.get_function (|
+                "core::unicode::unicode_data::skip_search",
+                [ Value.Integer IntegerKind.Usize 22; Value.Integer IntegerKind.Usize 319 ],
+                []
+              |),
               [
                 M.rust_cast (M.read (| c |));
                 M.read (|
@@ -3827,7 +3844,11 @@ Module unicode.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
-              M.get_function (| "core::unicode::unicode_data::skip_search", [] |),
+              M.get_function (|
+                "core::unicode::unicode_data::skip_search",
+                [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 5 ],
+                []
+              |),
               [
                 M.rust_cast (M.read (| c |));
                 M.read (|
@@ -4666,6 +4687,7 @@ Module unicode.
                 (M.call_closure (|
                   M.get_function (|
                     "core::unicode::unicode_data::grapheme_extend::lookup_slow",
+                    [],
                     []
                   |),
                   [ M.read (| c |) ]
@@ -4692,7 +4714,11 @@ Module unicode.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
-              M.get_function (| "core::unicode::unicode_data::skip_search", [] |),
+              M.get_function (|
+                "core::unicode::unicode_data::skip_search",
+                [ Value.Integer IntegerKind.Usize 34; Value.Integer IntegerKind.Usize 751 ],
+                []
+              |),
               [
                 M.rust_cast (M.read (| c |));
                 M.read (|
@@ -5367,7 +5393,17 @@ Module unicode.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
-              M.get_function (| "core::unicode::unicode_data::bitset_search", [] |),
+              M.get_function (|
+                "core::unicode::unicode_data::bitset_search",
+                [
+                  Value.Integer IntegerKind.Usize 123;
+                  Value.Integer IntegerKind.Usize 16;
+                  Value.Integer IntegerKind.Usize 20;
+                  Value.Integer IntegerKind.Usize 56;
+                  Value.Integer IntegerKind.Usize 22
+                ],
+                []
+              |),
               [
                 M.rust_cast (M.read (| c |));
                 M.read (|
@@ -5759,7 +5795,11 @@ Module unicode.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
-              M.get_function (| "core::unicode::unicode_data::skip_search", [] |),
+              M.get_function (|
+                "core::unicode::unicode_data::skip_search",
+                [ Value.Integer IntegerKind.Usize 42; Value.Integer IntegerKind.Usize 289 ],
+                []
+              |),
               [
                 M.rust_cast (M.read (| c |));
                 M.read (|
@@ -6372,7 +6412,17 @@ Module unicode.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
-              M.get_function (| "core::unicode::unicode_data::bitset_search", [] |),
+              M.get_function (|
+                "core::unicode::unicode_data::bitset_search",
+                [
+                  Value.Integer IntegerKind.Usize 125;
+                  Value.Integer IntegerKind.Usize 16;
+                  Value.Integer IntegerKind.Usize 17;
+                  Value.Integer IntegerKind.Usize 44;
+                  Value.Integer IntegerKind.Usize 25
+                ],
+                []
+              |),
               [
                 M.rust_cast (M.read (| c |));
                 M.read (|

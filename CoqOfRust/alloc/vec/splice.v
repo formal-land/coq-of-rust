@@ -290,7 +290,7 @@ Module vec.
                               |)
                             ]
                           |);
-                          M.get_function (| "core::mem::drop", [ Ty.associated ] |)
+                          M.get_function (| "core::mem::drop", [], [ Ty.associated ] |)
                         ]
                       |)
                     |) in
@@ -737,6 +737,7 @@ Module vec.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "core::panicking::panic",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -843,6 +844,7 @@ Module vec.
                                                                       M.call_closure (|
                                                                         M.get_function (|
                                                                           "core::panicking::assert_failed",
+                                                                          [],
                                                                           [
                                                                             Ty.path "usize";
                                                                             Ty.path "usize"
@@ -965,7 +967,7 @@ Module vec.
                   let~ range_slice :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::slice::raw::from_raw_parts_mut", [ T ] |),
+                        M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -1077,6 +1079,7 @@ Module vec.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::ptr::write",
+                                                            [],
                                                             [ T ]
                                                           |),
                                                           [
@@ -1269,7 +1272,7 @@ Module vec.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::copy", [ T ] |),
+                      M.get_function (| "core::intrinsics::copy", [], [ T ] |),
                       [
                         M.read (| src |);
                         M.read (| dst |);

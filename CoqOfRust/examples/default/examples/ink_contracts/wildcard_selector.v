@@ -71,6 +71,7 @@ Module Impl_wildcard_selector_WildcardSelector.
                   M.call_closure (|
                     M.get_function (|
                       "wildcard_selector::decode_input",
+                      [],
                       [
                         Ty.tuple
                           [
@@ -98,7 +99,7 @@ Module Impl_wildcard_selector_WildcardSelector.
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "std::io::stdio::_print", [] |),
+                          M.get_function (| "std::io::stdio::_print", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -173,7 +174,7 @@ Module Impl_wildcard_selector_WildcardSelector.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [] |),
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),

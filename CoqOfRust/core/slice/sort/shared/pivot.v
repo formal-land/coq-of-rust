@@ -72,7 +72,7 @@ Module slice.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::intrinsics::abort", [] |),
+                                M.get_function (| "core::intrinsics::abort", [], [] |),
                                 []
                               |)
                             |)
@@ -160,6 +160,7 @@ Module slice.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::slice::sort::shared::pivot::median3",
+                                  [],
                                   [ T; F ]
                                 |),
                                 [
@@ -186,6 +187,7 @@ Module slice.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::slice::sort::shared::pivot::median3_rec",
+                                  [],
                                   [ T; F ]
                                 |),
                                 [
@@ -273,6 +275,7 @@ Module slice.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::slice::sort::shared::pivot::median3_rec",
+                                  [],
                                   [ T; F ]
                                 |),
                                 [
@@ -316,6 +319,7 @@ Module slice.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::slice::sort::shared::pivot::median3_rec",
+                                  [],
                                   [ T; F ]
                                 |),
                                 [
@@ -359,6 +363,7 @@ Module slice.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::slice::sort::shared::pivot::median3_rec",
+                                  [],
                                   [ T; F ]
                                 |),
                                 [
@@ -402,7 +407,7 @@ Module slice.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::slice::sort::shared::pivot::median3", [ T; F ] |),
+                    M.get_function (| "core::slice::sort::shared::pivot::median3", [], [ T; F ] |),
                     [ M.read (| a |); M.read (| b |); M.read (| c |); M.read (| is_less |) ]
                   |)
                 |)

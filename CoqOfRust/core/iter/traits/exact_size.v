@@ -100,6 +100,7 @@ Module iter.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::panicking::assert_failed",
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")

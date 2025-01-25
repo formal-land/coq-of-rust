@@ -18,6 +18,7 @@ Module collections.
             M.call_closure (|
               M.get_function (|
                 "alloc::collections::btree::mem::replace",
+                [],
                 [ T; Ty.tuple []; Ty.function [ Ty.tuple [ T ] ] (Ty.tuple [ T; Ty.tuple [] ]) ]
               |),
               [
@@ -91,7 +92,7 @@ Module collections.
               let~ value :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::ptr::read", [ T ] |),
+                    M.get_function (| "core::ptr::read", [], [ T ] |),
                     [ M.read (| v |) ]
                   |)
                 |) in
@@ -119,7 +120,7 @@ Module collections.
                         let~ _ :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ptr::write", [ T ] |),
+                              M.get_function (| "core::ptr::write", [], [ T ] |),
                               [ M.read (| v |); M.read (| new_value |) ]
                             |)
                           |) in
@@ -129,6 +130,7 @@ Module collections.
                           M.call_closure (|
                             M.get_function (|
                               "core::mem::forget",
+                              [],
                               [ Ty.path "alloc::collections::btree::mem::replace::PanicGuard" ]
                             |),
                             [ M.read (| guard |) ]
@@ -166,7 +168,7 @@ Module collections.
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 M.never_to_any (|
-                  M.call_closure (| M.get_function (| "core::intrinsics::abort", [] |), [] |)
+                  M.call_closure (| M.get_function (| "core::intrinsics::abort", [], [] |), [] |)
                 |)))
             | _, _, _ => M.impossible "wrong number of arguments"
             end.

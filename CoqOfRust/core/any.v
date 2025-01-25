@@ -402,7 +402,7 @@ Module any.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [ M.read (| Value.String "assertion failed: self.is::<T>()" |)
                                       ]
                                     |)
@@ -472,7 +472,7 @@ Module any.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [ M.read (| Value.String "assertion failed: self.is::<T>()" |)
                                       ]
                                     |)
@@ -964,7 +964,7 @@ Module any.
           (M.read (|
             let~ t :=
               M.alloc (|
-                M.call_closure (| M.get_function (| "core::intrinsics::type_id", [ T ] |), [] |)
+                M.call_closure (| M.get_function (| "core::intrinsics::type_id", [], [ T ] |), [] |)
               |) in
             let~ t1 :=
               M.alloc (|
@@ -1196,7 +1196,7 @@ Module any.
     match ε, τ, α with
     | [], [ T ], [] =>
       ltac:(M.monadic
-        (M.call_closure (| M.get_function (| "core::intrinsics::type_name", [ T ] |), [] |)))
+        (M.call_closure (| M.get_function (| "core::intrinsics::type_name", [], [ T ] |), [] |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -1212,7 +1212,7 @@ Module any.
     | [], [ T ], [ _val ] =>
       ltac:(M.monadic
         (let _val := M.alloc (| _val |) in
-        M.call_closure (| M.get_function (| "core::any::type_name", [ T ] |), [] |)))
+        M.call_closure (| M.get_function (| "core::any::type_name", [], [ T ] |), [] |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   

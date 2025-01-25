@@ -67,7 +67,7 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
         M.match_operator (|
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "option::checked_division", [] |),
+              M.get_function (| "option::checked_division", [], [] |),
               [ M.read (| dividend |); M.read (| divisor |) ]
             |)
           |),
@@ -78,7 +78,7 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
+                      M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -131,7 +131,7 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
+                      M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -223,14 +223,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "option::try_division", [] |),
+              M.get_function (| "option::try_division", [], [] |),
               [ Value.Integer IntegerKind.I32 4; Value.Integer IntegerKind.I32 2 ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "option::try_division", [] |),
+              M.get_function (| "option::try_division", [], [] |),
               [ Value.Integer IntegerKind.I32 1; Value.Integer IntegerKind.I32 0 ]
             |)
           |) in
@@ -244,7 +244,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -303,7 +303,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),

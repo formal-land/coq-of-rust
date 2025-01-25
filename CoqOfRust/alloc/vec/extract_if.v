@@ -217,6 +217,7 @@ Module vec.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::slice::raw::from_raw_parts_mut",
+                                        [],
                                         [ T ]
                                       |),
                                       [
@@ -314,7 +315,11 @@ Module vec.
                                                   "core::option::Option::Some"
                                                   [
                                                     M.call_closure (|
-                                                      M.get_function (| "core::ptr::read", [ T ] |),
+                                                      M.get_function (|
+                                                        "core::ptr::read",
+                                                        [],
+                                                        [ T ]
+                                                      |),
                                                       [
                                                         M.SubPointer.get_array_field (|
                                                           M.read (| v |),
@@ -385,6 +390,7 @@ Module vec.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::intrinsics::copy_nonoverlapping",
+                                                        [],
                                                         [ T ]
                                                       |),
                                                       [

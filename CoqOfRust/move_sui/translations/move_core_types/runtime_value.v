@@ -556,6 +556,7 @@ Module runtime_value.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::runtime_value::MoveValue" ]
                   |),
                   [ M.read (| self |) ]
@@ -566,6 +567,7 @@ Module runtime_value.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::runtime_value::MoveValue" ]
                   |),
                   [ M.read (| other |) ]
@@ -992,7 +994,7 @@ Module runtime_value.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::intrinsics::unreachable", [] |),
+                                  M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                   []
                                 |)
                               |)
@@ -2502,6 +2504,7 @@ Module runtime_value.
                             M.call_closure (|
                               M.get_function (|
                                 "bcs::de::from_bytes_seed",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "&")
@@ -2606,6 +2609,7 @@ Module runtime_value.
               M.call_closure (|
                 M.get_function (|
                   "bcs::ser::to_bytes",
+                  [],
                   [ Ty.path "move_core_types::runtime_value::MoveValue" ]
                 |),
                 [ M.read (| self |) ]
@@ -2866,6 +2870,7 @@ Module runtime_value.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "anyhow::__private::must_use",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -3397,7 +3402,7 @@ Module runtime_value.
                     (M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -3627,6 +3632,7 @@ Module runtime_value.
                             M.call_closure (|
                               M.get_function (|
                                 "bcs::de::from_bytes_seed",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "&")
@@ -8162,6 +8168,7 @@ Module runtime_value.
                       M.call_closure (|
                         M.get_function (|
                           "move_core_types::fmt_list",
+                          [],
                           [
                             Ty.apply
                               (Ty.path "&")
@@ -8242,6 +8249,7 @@ Module runtime_value.
           M.call_closure (|
             M.get_function (|
               "move_core_types::fmt_list",
+              [],
               [
                 Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::runtime_value::MoveValue" ];
                 Ty.apply

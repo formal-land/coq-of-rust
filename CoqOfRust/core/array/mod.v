@@ -15,11 +15,12 @@ Module array.
         M.call_closure (|
           M.get_function (|
             "core::array::from_trusted_iterator",
+            [ N ],
             [ T; Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ T ] ]
           |),
           [
             M.call_closure (|
-              M.get_function (| "core::iter::sources::repeat_n::repeat_n", [ T ] |),
+              M.get_function (| "core::iter::sources::repeat_n::repeat_n", [], [ T ] |),
               [ M.read (| val |); M.read (| M.get_constant (| "core::array::repeat::N" |) |) ]
             |)
           ]
@@ -48,6 +49,7 @@ Module array.
               M.call_closure (|
                 M.get_function (|
                   "core::array::try_from_fn",
+                  [ N ],
                   [
                     Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ T ];
                     Ty.associated
@@ -107,7 +109,7 @@ Module array.
           M.match_operator (|
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::array::try_from_fn_erased", [ Ty.associated; R; F ] |),
+                M.get_function (| "core::array::try_from_fn_erased", [], [ Ty.associated; R; F ] |),
                 [ array; M.read (| cb |) ]
               |)
             |),
@@ -1627,6 +1629,7 @@ Module array.
           M.call_closure (|
             M.get_function (|
               "core::array::from_trusted_iterator",
+              [ N ],
               [
                 T;
                 Ty.apply
@@ -4693,6 +4696,7 @@ Module array.
           M.call_closure (|
             M.get_function (|
               "core::array::drain::drain_array_with",
+              [ N ],
               [
                 T;
                 Ty.associated;
@@ -4718,6 +4722,7 @@ Module array.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::array::try_from_trusted_iterator",
+                                    [ N ],
                                     [
                                       Ty.associated;
                                       R;
@@ -4826,6 +4831,7 @@ Module array.
           M.call_closure (|
             M.get_function (|
               "core::array::from_trusted_iterator",
+              [ N ],
               [
                 Ty.apply (Ty.path "&") [] [ T ];
                 Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]
@@ -4865,6 +4871,7 @@ Module array.
           M.call_closure (|
             M.get_function (|
               "core::array::from_trusted_iterator",
+              [ N ],
               [
                 Ty.apply (Ty.path "&mut") [] [ T ];
                 Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ]
@@ -5145,6 +5152,7 @@ Module array.
               M.call_closure (|
                 M.get_function (|
                   "core::array::try_from_trusted_iterator",
+                  [ N ],
                   [
                     T;
                     Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ T ];
@@ -5255,7 +5263,7 @@ Module array.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic", [] |),
+                          M.get_function (| "core::panicking::panic", [], [] |),
                           [ M.read (| Value.String "assertion failed: iter.size_hint().0 >= N" |) ]
                         |)
                       |)
@@ -5265,10 +5273,10 @@ Module array.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "core::array::try_from_fn", [ R; Ty.associated ] |),
+              M.get_function (| "core::array::try_from_fn", [ N ], [ R; Ty.associated ] |),
               [
                 M.call_closure (|
-                  M.get_function (| "core::array::try_from_trusted_iterator.next", [] |),
+                  M.get_function (| "core::array::try_from_trusted_iterator.next", [], [] |),
                   [ M.read (| iter |) ]
                 |)
               ]
@@ -5554,6 +5562,7 @@ Module array.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::forget",
+                      [],
                       [ Ty.apply (Ty.path "core::array::Guard") [] [ T ] ]
                     |),
                     [ M.read (| guard |) ]
@@ -5773,7 +5782,7 @@ Module array.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String
@@ -5795,6 +5804,7 @@ Module array.
                 M.call_closure (|
                   M.get_function (|
                     "core::ptr::drop_in_place",
+                    [],
                     [ Ty.apply (Ty.path "slice") [] [ T ] ]
                   |),
                   [
@@ -5893,6 +5903,7 @@ Module array.
               M.call_closure (|
                 M.get_function (|
                   "core::array::iter_next_chunk_erased",
+                  [],
                   [ T; impl_Iterator_Item___T_ ]
                 |),
                 [ array; M.read (| iter |) ]
@@ -6096,6 +6107,7 @@ Module array.
               M.call_closure (|
                 M.get_function (|
                   "core::mem::forget",
+                  [],
                   [ Ty.apply (Ty.path "core::array::Guard") [] [ T ] ]
                 |),
                 [ M.read (| guard |) ]

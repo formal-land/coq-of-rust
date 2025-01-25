@@ -212,7 +212,7 @@ Module Impl_contract_transfer_GiveMe.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [] |),
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -248,7 +248,7 @@ Module Impl_contract_transfer_GiveMe.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [] |),
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -342,6 +342,7 @@ Module Impl_contract_transfer_GiveMe.
                         M.call_closure (|
                           M.get_function (|
                             "std::panicking::begin_panic",
+                            [],
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           |),
                           [ M.read (| Value.String "insufficient funds!" |) ]
@@ -419,6 +420,7 @@ Module Impl_contract_transfer_GiveMe.
                       M.call_closure (|
                         M.get_function (|
                           "std::panicking::begin_panic",
+                          [],
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
                         [
@@ -455,7 +457,7 @@ Module Impl_contract_transfer_GiveMe.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [] |),
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -549,6 +551,7 @@ Module Impl_contract_transfer_GiveMe.
                         M.call_closure (|
                           M.get_function (|
                             "std::panicking::begin_panic",
+                            [],
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           |),
                           [ M.read (| Value.String "payment was not ten" |) ]

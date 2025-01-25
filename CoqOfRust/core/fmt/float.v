@@ -185,6 +185,7 @@ Module fmt.
                 M.call_closure (|
                   M.get_function (|
                     "core::num::flt2dec::to_exact_fixed_str",
+                    [],
                     [
                       T;
                       Ty.function
@@ -220,7 +221,11 @@ Module fmt.
                     ]
                   |),
                   [
-                    M.get_function (| "core::num::flt2dec::strategy::grisu::format_exact", [] |);
+                    M.get_function (|
+                      "core::num::flt2dec::strategy::grisu::format_exact",
+                      [],
+                      []
+                    |);
                     M.read (| M.read (| num |) |);
                     M.read (| sign |);
                     M.read (| precision |);
@@ -321,6 +326,7 @@ Module fmt.
                 M.call_closure (|
                   M.get_function (|
                     "core::num::flt2dec::to_shortest_str",
+                    [],
                     [
                       T;
                       Ty.function
@@ -355,7 +361,11 @@ Module fmt.
                     ]
                   |),
                   [
-                    M.get_function (| "core::num::flt2dec::strategy::grisu::format_shortest", [] |);
+                    M.get_function (|
+                      "core::num::flt2dec::strategy::grisu::format_shortest",
+                      [],
+                      []
+                    |);
                     M.read (| M.read (| num |) |);
                     M.read (| sign |);
                     M.read (| precision |);
@@ -456,6 +466,7 @@ Module fmt.
                       M.call_closure (|
                         M.get_function (|
                           "core::fmt::float::float_to_decimal_common_exact",
+                          [],
                           [ T ]
                         |),
                         [
@@ -473,6 +484,7 @@ Module fmt.
                       M.call_closure (|
                         M.get_function (|
                           "core::fmt::float::float_to_decimal_common_shortest",
+                          [],
                           [ T ]
                         |),
                         [
@@ -568,6 +580,7 @@ Module fmt.
                 M.call_closure (|
                   M.get_function (|
                     "core::num::flt2dec::to_exact_exp_str",
+                    [],
                     [
                       T;
                       Ty.function
@@ -603,7 +616,11 @@ Module fmt.
                     ]
                   |),
                   [
-                    M.get_function (| "core::num::flt2dec::strategy::grisu::format_exact", [] |);
+                    M.get_function (|
+                      "core::num::flt2dec::strategy::grisu::format_exact",
+                      [],
+                      []
+                    |);
                     M.read (| M.read (| num |) |);
                     M.read (| sign |);
                     M.read (| precision |);
@@ -708,6 +725,7 @@ Module fmt.
                 M.call_closure (|
                   M.get_function (|
                     "core::num::flt2dec::to_shortest_exp_str",
+                    [],
                     [
                       T;
                       Ty.function
@@ -742,7 +760,11 @@ Module fmt.
                     ]
                   |),
                   [
-                    M.get_function (| "core::num::flt2dec::strategy::grisu::format_shortest", [] |);
+                    M.get_function (|
+                      "core::num::flt2dec::strategy::grisu::format_shortest",
+                      [],
+                      []
+                    |);
                     M.read (| M.read (| num |) |);
                     M.read (| sign |);
                     Value.Tuple
@@ -850,6 +872,7 @@ Module fmt.
                       M.call_closure (|
                         M.get_function (|
                           "core::fmt::float::float_to_exponential_common_exact",
+                          [],
                           [ T ]
                         |),
                         [
@@ -870,6 +893,7 @@ Module fmt.
                       M.call_closure (|
                         M.get_function (|
                           "core::fmt::float::float_to_exponential_common_shortest",
+                          [],
                           [ T ]
                         |),
                         [ M.read (| fmt |); M.read (| num |); M.read (| sign |); M.read (| upper |)
@@ -965,6 +989,7 @@ Module fmt.
                       M.call_closure (|
                         M.get_function (|
                           "core::fmt::float::float_to_decimal_common_exact",
+                          [],
                           [ T ]
                         |),
                         [
@@ -1003,6 +1028,7 @@ Module fmt.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::fmt::float::float_to_exponential_common_shortest",
+                                  [],
                                   [ T ]
                                 |),
                                 [
@@ -1021,6 +1047,7 @@ Module fmt.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::fmt::float::float_to_decimal_common_shortest",
+                                  [],
                                   [ T ]
                                 |),
                                 [
@@ -1057,7 +1084,11 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
             M.call_closure (|
-              M.get_function (| "core::fmt::float::float_to_general_debug", [ Ty.path "f32" ] |),
+              M.get_function (|
+                "core::fmt::float::float_to_general_debug",
+                [],
+                [ Ty.path "f32" ]
+              |),
               [ M.read (| fmt |); M.read (| self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1086,7 +1117,11 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
             M.call_closure (|
-              M.get_function (| "core::fmt::float::float_to_decimal_display", [ Ty.path "f32" ] |),
+              M.get_function (|
+                "core::fmt::float::float_to_decimal_display",
+                [],
+                [ Ty.path "f32" ]
+              |),
               [ M.read (| fmt |); M.read (| self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1117,6 +1152,7 @@ Module fmt.
             M.call_closure (|
               M.get_function (|
                 "core::fmt::float::float_to_exponential_common",
+                [],
                 [ Ty.path "f32" ]
               |),
               [ M.read (| fmt |); M.read (| self |); Value.Bool false ]
@@ -1149,6 +1185,7 @@ Module fmt.
             M.call_closure (|
               M.get_function (|
                 "core::fmt::float::float_to_exponential_common",
+                [],
                 [ Ty.path "f32" ]
               |),
               [ M.read (| fmt |); M.read (| self |); Value.Bool true ]
@@ -1179,7 +1216,11 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
             M.call_closure (|
-              M.get_function (| "core::fmt::float::float_to_general_debug", [ Ty.path "f64" ] |),
+              M.get_function (|
+                "core::fmt::float::float_to_general_debug",
+                [],
+                [ Ty.path "f64" ]
+              |),
               [ M.read (| fmt |); M.read (| self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1208,7 +1249,11 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
             M.call_closure (|
-              M.get_function (| "core::fmt::float::float_to_decimal_display", [ Ty.path "f64" ] |),
+              M.get_function (|
+                "core::fmt::float::float_to_decimal_display",
+                [],
+                [ Ty.path "f64" ]
+              |),
               [ M.read (| fmt |); M.read (| self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1239,6 +1284,7 @@ Module fmt.
             M.call_closure (|
               M.get_function (|
                 "core::fmt::float::float_to_exponential_common",
+                [],
                 [ Ty.path "f64" ]
               |),
               [ M.read (| fmt |); M.read (| self |); Value.Bool false ]
@@ -1271,6 +1317,7 @@ Module fmt.
             M.call_closure (|
               M.get_function (|
                 "core::fmt::float::float_to_exponential_common",
+                [],
                 [ Ty.path "f64" ]
               |),
               [ M.read (| fmt |); M.read (| self |); Value.Bool true ]

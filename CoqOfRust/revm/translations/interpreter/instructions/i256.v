@@ -149,6 +149,7 @@ Module instructions.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "revm_interpreter::instructions::i256::Sign" ]
                     |),
                     [ M.read (| self |) ]
@@ -159,6 +160,7 @@ Module instructions.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "revm_interpreter::instructions::i256::Sign" ]
                     |),
                     [ M.read (| other |) ]
@@ -219,6 +221,7 @@ Module instructions.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "revm_interpreter::instructions::i256::Sign" ]
                     |),
                     [ M.read (| self |) ]
@@ -229,6 +232,7 @@ Module instructions.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "revm_interpreter::instructions::i256::Sign" ]
                     |),
                     [ M.read (| other |) ]
@@ -274,6 +278,7 @@ Module instructions.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "revm_interpreter::instructions::i256::Sign" ]
                     |),
                     [ M.read (| self |) ]
@@ -284,6 +289,7 @@ Module instructions.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "revm_interpreter::instructions::i256::Sign" ]
                     |),
                     [ M.read (| other |) ]
@@ -323,6 +329,7 @@ Module instructions.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "revm_interpreter::instructions::i256::Sign" ]
                     |),
                     [ M.read (| self |) ]
@@ -454,6 +461,7 @@ Module instructions.
                       M.call_closure (|
                         M.get_function (|
                           "core::intrinsics::transmute",
+                          [],
                           [ Ty.path "bool"; Ty.path "revm_interpreter::instructions::i256::Sign" ]
                         |),
                         [
@@ -503,7 +511,7 @@ Module instructions.
             let~ sign :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "revm_interpreter::instructions::i256::i256_sign", [] |),
+                  M.get_function (| "revm_interpreter::instructions::i256::i256_sign", [], [] |),
                   [ M.read (| val |) ]
                 |)
               |) in
@@ -540,6 +548,7 @@ Module instructions.
                           M.call_closure (|
                             M.get_function (|
                               "revm_interpreter::instructions::i256::two_compl_mut",
+                              [],
                               []
                             |),
                             [ M.read (| val |) ]
@@ -618,7 +627,7 @@ Module instructions.
               M.write (|
                 M.read (| op |),
                 M.call_closure (|
-                  M.get_function (| "revm_interpreter::instructions::i256::two_compl", [] |),
+                  M.get_function (| "revm_interpreter::instructions::i256::two_compl", [], [] |),
                   [ M.read (| M.read (| op |) |) ]
                 |)
               |) in
@@ -679,14 +688,14 @@ Module instructions.
             let~ first_sign :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "revm_interpreter::instructions::i256::i256_sign", [] |),
+                  M.get_function (| "revm_interpreter::instructions::i256::i256_sign", [], [] |),
                   [ M.read (| first |) ]
                 |)
               |) in
             let~ second_sign :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "revm_interpreter::instructions::i256::i256_sign", [] |),
+                  M.get_function (| "revm_interpreter::instructions::i256::i256_sign", [], [] |),
                   [ M.read (| second |) ]
                 |)
               |) in
@@ -779,6 +788,7 @@ Module instructions.
                     M.call_closure (|
                       M.get_function (|
                         "revm_interpreter::instructions::i256::i256_sign_compl",
+                        [],
                         []
                       |),
                       [ second ]
@@ -828,6 +838,7 @@ Module instructions.
                     M.call_closure (|
                       M.get_function (|
                         "revm_interpreter::instructions::i256::i256_sign_compl",
+                        [],
                         []
                       |),
                       [ first ]
@@ -926,6 +937,7 @@ Module instructions.
                                   M.call_closure (|
                                     M.get_function (|
                                       "revm_interpreter::instructions::i256::two_compl",
+                                      [],
                                       []
                                     |),
                                     [
@@ -970,6 +982,7 @@ Module instructions.
                     M.call_closure (|
                       M.get_function (|
                         "revm_interpreter::instructions::i256::u256_remove_sign",
+                        [],
                         []
                       |),
                       [ d ]
@@ -1067,6 +1080,7 @@ Module instructions.
                           M.call_closure (|
                             M.get_function (|
                               "revm_interpreter::instructions::i256::two_compl",
+                              [],
                               []
                             |),
                             [ M.read (| d |) ]
@@ -1121,6 +1135,7 @@ Module instructions.
                     M.call_closure (|
                       M.get_function (|
                         "revm_interpreter::instructions::i256::i256_sign_compl",
+                        [],
                         []
                       |),
                       [ first ]
@@ -1170,6 +1185,7 @@ Module instructions.
                     M.call_closure (|
                       M.get_function (|
                         "revm_interpreter::instructions::i256::i256_sign_compl",
+                        [],
                         []
                       |),
                       [ second ]
@@ -1241,6 +1257,7 @@ Module instructions.
                     M.call_closure (|
                       M.get_function (|
                         "revm_interpreter::instructions::i256::u256_remove_sign",
+                        [],
                         []
                       |),
                       [ r ]
@@ -1278,6 +1295,7 @@ Module instructions.
                           M.call_closure (|
                             M.get_function (|
                               "revm_interpreter::instructions::i256::two_compl",
+                              [],
                               []
                             |),
                             [ M.read (| r |) ]

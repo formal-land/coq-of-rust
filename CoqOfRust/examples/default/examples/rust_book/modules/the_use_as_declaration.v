@@ -15,7 +15,7 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -50,7 +50,7 @@ Module deeply.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "std::io::stdio::_print", [] |),
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -109,7 +109,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "the_use_as_declaration::deeply::nested::function", [] |),
+              M.get_function (| "the_use_as_declaration::deeply::nested::function", [], [] |),
               []
             |)
           |) in
@@ -117,7 +117,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -132,7 +132,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "the_use_as_declaration::deeply::nested::function", [] |),
+                M.get_function (| "the_use_as_declaration::deeply::nested::function", [], [] |),
                 []
               |)
             |) in
@@ -140,7 +140,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [] |),
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -158,7 +158,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         let~ _ :=
           M.alloc (|
-            M.call_closure (| M.get_function (| "the_use_as_declaration::function", [] |), [] |)
+            M.call_closure (| M.get_function (| "the_use_as_declaration::function", [], [] |), [] |)
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

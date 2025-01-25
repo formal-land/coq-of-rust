@@ -951,6 +951,7 @@ Module errmap.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::hint::must_use",
+                                                    [],
                                                     [ Ty.path "alloc::string::String" ]
                                                   |),
                                                   [
@@ -960,6 +961,7 @@ Module errmap.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "alloc::fmt::format",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -1278,6 +1280,7 @@ Module errmap.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::hint::must_use",
+                                                    [],
                                                     [ Ty.path "alloc::string::String" ]
                                                   |),
                                                   [
@@ -1287,6 +1290,7 @@ Module errmap.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "alloc::fmt::format",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -1595,6 +1599,7 @@ Module errmap.
                   M.call_closure (|
                     M.get_function (|
                       "bcs::de::from_bytes",
+                      [],
                       [ Ty.path "move_core_types::errmap::ErrorMapping" ]
                     |),
                     [
@@ -1657,6 +1662,7 @@ Module errmap.
                     M.call_closure (|
                       M.get_function (|
                         "bcs::ser::to_bytes",
+                        [],
                         [ Ty.path "move_core_types::errmap::ErrorMapping" ]
                       |),
                       [ M.read (| self |) ]

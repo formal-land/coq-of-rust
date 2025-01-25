@@ -1016,6 +1016,15 @@ pub(crate) fn compile_expr<'a>(
                             .alloc()
                         }
                         DefKind::Mod | DefKind::ForeignMod => {
+                            let generic_consts = generic_args
+                                .iter()
+                                .filter_map(|generic_arg| {
+                                    generic_arg
+                                        .as_const()
+                                        .as_ref()
+                                        .map(|ct| compile_const(env, &expr.span, ct))
+                                })
+                                .collect::<Vec<_>>();
                             let generic_tys = generic_args
                                 .iter()
                                 .filter_map(|generic_arg| {
@@ -1028,6 +1037,7 @@ pub(crate) fn compile_expr<'a>(
 
                             Rc::new(Expr::GetFunction {
                                 func: compile_def_id(env, *def_id),
+                                generic_consts,
                                 generic_tys,
                             })
                             .alloc()
@@ -1060,6 +1070,7 @@ pub(crate) fn compile_expr<'a>(
 
                             Rc::new(Expr::GetFunction {
                                 func: Rc::new(Path { segments }),
+                                generic_consts: vec![],
                                 generic_tys: vec![],
                             })
                             .alloc()
@@ -1232,18 +1243,32 @@ pub(crate) fn compile_const(env: &Env, span: &rustc_span::Span, const_: &Const) 
                 kind: CallKind::Pure,
             })
         }
-        ConstKind::Value(ty, value) => {
-            // @TODO: use the value of [ty] to make a translation
-            // according to the type of value, for booleans or negative integers.
-            match value {
-                rustc_middle::ty::ValTree::Leaf(leaf) => {
+        ConstKind::Value(ty, value) => match value {
+            rustc_middle::ty::ValTree::Leaf(leaf) => match ty.kind() {
+                TyKind::Bool => Rc::new(Expr::Literal(Rc::new(Literal::Bool(
+                    leaf.try_to_bool().unwrap(),
+                )))),
+                TyKind::Int(_) | TyKind::Uint(_) => {
                     Rc::new(Expr::Literal(Rc::new(Literal::Integer(
                         compile_literal_integer(env, span, ty, false, leaf.to_uint(leaf.size())),
                     ))))
                 }
-                rustc_middle::ty::ValTree::Branch(_) => Expr::local_var("ValueBranchConst"),
-            }
-        }
+                _ => {
+                    emit_warning_with_note(
+                        env,
+                        span,
+                        "We do not support this kind of constant",
+                        Some("Please report 🙏"),
+                    );
+
+                    Rc::new(Expr::Comment(
+                        "Unimplemented constant".to_string(),
+                        Expr::tt(),
+                    ))
+                }
+            },
+            rustc_middle::ty::ValTree::Branch(_) => Expr::local_var("ValueBranchConst"),
+        },
         ConstKind::Error(_) => Expr::local_var("ErrorConst"),
         ConstKind::Expr(_) => Expr::local_var("ExprConst"),
     }

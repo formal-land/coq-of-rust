@@ -395,6 +395,7 @@ Module gas.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "revm_interpreter::gas::calc::sload_cost",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -555,7 +556,7 @@ Module gas.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "revm_interpreter::gas::calc::cost_per_word", [] |),
+                          M.get_function (| "revm_interpreter::gas::calc::cost_per_word", [], [] |),
                           [
                             M.read (| len |);
                             M.read (|
@@ -1027,6 +1028,7 @@ Module gas.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "revm_interpreter::gas::calc::log2floor",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [ M.read (| power |) ]
@@ -1206,7 +1208,7 @@ Module gas.
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           M.call_closure (|
-            M.get_function (| "revm_interpreter::gas::calc::copy_cost", [] |),
+            M.get_function (| "revm_interpreter::gas::calc::copy_cost", [], [] |),
             [
               M.read (| M.get_constant (| "revm_interpreter::gas::constants::VERYLOW" |) |);
               M.read (| len |)
@@ -1272,6 +1274,7 @@ Module gas.
                           M.call_closure (|
                             M.get_function (|
                               "revm_interpreter::gas::calc::warm_cold_cost_with_delegation",
+                              [],
                               []
                             |),
                             [ M.read (| load |) ]
@@ -1316,7 +1319,7 @@ Module gas.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "revm_interpreter::gas::calc::copy_cost", [] |),
+                M.get_function (| "revm_interpreter::gas::calc::copy_cost", [], [] |),
                 [ M.read (| base_gas |); M.read (| len |) ]
               |)
             |)
@@ -1348,7 +1351,7 @@ Module gas.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "revm_interpreter::gas::calc::cost_per_word", [] |),
+                          M.get_function (| "revm_interpreter::gas::calc::cost_per_word", [], [] |),
                           [
                             M.read (| len |);
                             M.read (|
@@ -1519,7 +1522,7 @@ Module gas.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "revm_interpreter::gas::calc::cost_per_word", [] |),
+                          M.get_function (| "revm_interpreter::gas::calc::cost_per_word", [], [] |),
                           [
                             M.read (| len |);
                             M.read (|
@@ -1580,6 +1583,7 @@ Module gas.
                 (M.call_closure (|
                   M.get_function (|
                     "revm_interpreter::interpreter::shared_memory::num_words",
+                    [],
                     []
                   |),
                   [ M.read (| len |) ]
@@ -1609,7 +1613,7 @@ Module gas.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "revm_interpreter::gas::calc::cost_per_word", [] |),
+                  M.get_function (| "revm_interpreter::gas::calc::cost_per_word", [], [] |),
                   [
                     M.read (| len |);
                     M.read (|
@@ -1829,6 +1833,8 @@ Module gas.
                         M.call_closure (|
                           M.get_function (|
                             "revm_interpreter::gas::calc::istanbul_sstore_cost",
+                            [ Value.Integer IntegerKind.U64 100; Value.Integer IntegerKind.U64 2900
+                            ],
                             []
                           |),
                           [ M.read (| vals |) ]
@@ -1894,6 +1900,10 @@ Module gas.
                               M.call_closure (|
                                 M.get_function (|
                                   "revm_interpreter::gas::calc::istanbul_sstore_cost",
+                                  [
+                                    Value.Integer IntegerKind.U64 800;
+                                    Value.Integer IntegerKind.U64 5000
+                                  ],
                                   []
                                 |),
                                 [ M.read (| vals |) ]
@@ -1905,6 +1915,7 @@ Module gas.
                               M.call_closure (|
                                 M.get_function (|
                                   "revm_interpreter::gas::calc::frontier_sstore_cost",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| vals |) ]
@@ -2413,6 +2424,7 @@ Module gas.
                           M.call_closure (|
                             M.get_function (|
                               "revm_interpreter::gas::calc::warm_cold_cost_with_delegation",
+                              [],
                               []
                             |),
                             [
@@ -2644,7 +2656,7 @@ Module gas.
             let~ gas :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "revm_interpreter::gas::calc::warm_cold_cost", [] |),
+                  M.get_function (| "revm_interpreter::gas::calc::warm_cold_cost", [], [] |),
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
@@ -2688,6 +2700,7 @@ Module gas.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_interpreter::gas::calc::warm_cold_cost",
+                                [],
                                 []
                               |),
                               [ M.read (| is_cold |) ]
@@ -3131,7 +3144,11 @@ Module gas.
                         BinOp.Wrap.add (|
                           M.read (| β |),
                           M.call_closure (|
-                            M.get_function (| "revm_interpreter::gas::calc::initcode_cost", [] |),
+                            M.get_function (|
+                              "revm_interpreter::gas::calc::initcode_cost",
+                              [],
+                              []
+                            |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|

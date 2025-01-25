@@ -510,6 +510,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::inspect::inspect_try_fold",
+                      [],
                       [ Ty.associated; Acc; R; F; Fold ]
                     |),
                     [
@@ -562,6 +563,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::inspect::inspect_fold",
+                      [],
                       [ Ty.associated; Acc; F; Fold ]
                     |),
                     [
@@ -692,6 +694,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::inspect::inspect_try_fold",
+                      [],
                       [ Ty.associated; Acc; R; F; Fold ]
                     |),
                     [
@@ -744,6 +747,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::inspect::inspect_fold",
+                      [],
                       [ Ty.associated; Acc; F; Fold ]
                     |),
                     [

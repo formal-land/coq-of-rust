@@ -189,7 +189,7 @@ Definition return_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
       (let return_flags := M.alloc (| return_flags |) in
       let return_value := M.alloc (| return_value |) in
       M.call_closure (|
-        M.get_function (| "core::panicking::panic", [] |),
+        M.get_function (| "core::panicking::panic", [], [] |),
         [ M.read (| Value.String "not implemented" |) ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -286,6 +286,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
           M.call_closure (|
             M.get_function (|
               "constructors_return_value::return_value",
+              [],
               [
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -417,6 +418,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
               M.call_closure (|
                 M.get_function (|
                   "constructors_return_value::return_value",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "core::result::Result")

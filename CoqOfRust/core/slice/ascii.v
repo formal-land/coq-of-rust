@@ -17,7 +17,7 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::slice::ascii::is_ascii", [] |),
+              M.get_function (| "core::slice::ascii::is_ascii", [], [] |),
               [ M.read (| self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -171,6 +171,7 @@ Module slice.
                       M.call_closure (|
                         M.get_function (|
                           "core::iter::adapters::zip::zip",
+                          [],
                           [
                             Ty.apply
                               (Ty.path "&")
@@ -1488,6 +1489,7 @@ Module slice.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::str::converts::from_utf8_unchecked",
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.read (| prefix |) ]
@@ -1648,6 +1650,7 @@ Module slice.
                                                                             M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::ascii::escape_default",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [ M.read (| b |) ]
@@ -2283,6 +2286,7 @@ Module slice.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::mem::align_of",
+                                          [],
                                           [ Ty.path "usize" ]
                                         |),
                                         []
@@ -2297,7 +2301,11 @@ Module slice.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
-                                    M.get_function (| "core::slice::ascii::is_ascii_simple", [] |),
+                                    M.get_function (|
+                                      "core::slice::ascii::is_ascii_simple",
+                                      [],
+                                      []
+                                    |),
                                     [ M.read (| s |) ]
                                   |)
                                 |)
@@ -2361,7 +2369,11 @@ Module slice.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
-                                  M.get_function (| "core::slice::ascii::contains_nonascii", [] |),
+                                  M.get_function (|
+                                    "core::slice::ascii::contains_nonascii",
+                                    [],
+                                    []
+                                  |),
                                   [ M.read (| first_word |) ]
                                 |)
                               |)) in
@@ -2406,7 +2418,7 @@ Module slice.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String
@@ -2466,6 +2478,7 @@ Module slice.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::mem::align_of",
+                                                    [],
                                                     [ Ty.path "usize" ]
                                                   |),
                                                   []
@@ -2482,7 +2495,7 @@ Module slice.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String
@@ -2572,6 +2585,7 @@ Module slice.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::panicking::panic",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -2717,6 +2731,7 @@ Module slice.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::panicking::panic",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -2760,6 +2775,7 @@ Module slice.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::slice::ascii::contains_nonascii",
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| word |) ]
@@ -2867,7 +2883,7 @@ Module slice.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String
@@ -2916,7 +2932,7 @@ Module slice.
                 M.alloc (|
                   UnOp.not (|
                     M.call_closure (|
-                      M.get_function (| "core::slice::ascii::contains_nonascii", [] |),
+                      M.get_function (| "core::slice::ascii::contains_nonascii", [], [] |),
                       [ M.read (| last_word |) ]
                     |)
                   |)
@@ -2934,7 +2950,7 @@ Module slice.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::mem::size_of", [ Ty.path "usize" ] |),
+                M.get_function (| "core::mem::size_of", [], [ Ty.path "usize" ] |),
                 []
               |)
             |))).

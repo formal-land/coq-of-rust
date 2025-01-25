@@ -65,7 +65,7 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::slice::raw::from_raw_parts", [ T ] |),
+              M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
               [
                 (* MutToConstPointer *)
                 M.pointer_coercion
@@ -241,6 +241,7 @@ Module slice.
                             M.call_closure (|
                               M.get_function (|
                                 "core::intrinsics::unchecked_sub",
+                                [],
                                 [ Ty.path "usize" ]
                               |),
                               [ M.read (| M.read (| len |) |); M.read (| offset |) ]
@@ -363,6 +364,7 @@ Module slice.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_sub",
+                              [],
                               [ Ty.path "usize" ]
                             |),
                             [ M.read (| M.read (| len |) |); M.read (| offset |) ]
@@ -1210,7 +1212,7 @@ Module slice.
               let~ advance :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                     [
                       M.read (|
                         M.match_operator (|
@@ -2397,6 +2399,7 @@ Module slice.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::hint::assert_unchecked",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -2628,6 +2631,7 @@ Module slice.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::hint::assert_unchecked",
+                                                      [],
                                                       []
                                                     |),
                                                     [ BinOp.lt (| M.read (| i |), M.read (| n |) |)
@@ -3257,7 +3261,7 @@ Module slice.
               let~ advance :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                     [
                       M.read (|
                         M.match_operator (|
@@ -3591,7 +3595,7 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::slice::raw::from_raw_parts", [ T ] |),
+              M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
               [
                 (* MutToConstPointer *)
                 M.pointer_coercion
@@ -3767,6 +3771,7 @@ Module slice.
                             M.call_closure (|
                               M.get_function (|
                                 "core::intrinsics::unchecked_sub",
+                                [],
                                 [ Ty.path "usize" ]
                               |),
                               [ M.read (| M.read (| len |) |); M.read (| offset |) ]
@@ -3889,6 +3894,7 @@ Module slice.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_sub",
+                              [],
                               [ Ty.path "usize" ]
                             |),
                             [ M.read (| M.read (| len |) |); M.read (| offset |) ]
@@ -4727,7 +4733,7 @@ Module slice.
               let~ advance :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                     [
                       M.read (|
                         M.match_operator (|
@@ -5919,6 +5925,7 @@ Module slice.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::hint::assert_unchecked",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -6150,6 +6157,7 @@ Module slice.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::hint::assert_unchecked",
+                                                      [],
                                                       []
                                                     |),
                                                     [ BinOp.lt (| M.read (| i |), M.read (| n |) |)
@@ -6686,7 +6694,7 @@ Module slice.
               let~ advance :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                     [
                       M.read (|
                         M.match_operator (|

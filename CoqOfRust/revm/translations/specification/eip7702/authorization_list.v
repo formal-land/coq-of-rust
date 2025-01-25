@@ -275,6 +275,7 @@ Module eip7702.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "revm_specification::eip7702::authorization_list::AuthorizationList"
                       ]
                     |),
@@ -286,6 +287,7 @@ Module eip7702.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "revm_specification::eip7702::authorization_list::AuthorizationList"
                       ]
                     |),
@@ -420,7 +422,7 @@ Module eip7702.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unreachable", [] |),
+                                    M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                     []
                                   |)
                                 |)
@@ -1290,6 +1292,7 @@ Module eip7702.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [
                         Ty.path
                           "revm_specification::eip7702::authorization_list::InvalidAuthorization"
@@ -1303,6 +1306,7 @@ Module eip7702.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [
                         Ty.path
                           "revm_specification::eip7702::authorization_list::InvalidAuthorization"
@@ -1368,6 +1372,7 @@ Module eip7702.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [
                         Ty.path
                           "revm_specification::eip7702::authorization_list::InvalidAuthorization"

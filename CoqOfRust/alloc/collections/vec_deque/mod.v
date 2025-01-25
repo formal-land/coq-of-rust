@@ -272,6 +272,7 @@ Module collections.
                           M.call_closure (|
                             M.get_function (|
                               "core::ptr::drop_in_place",
+                              [],
                               [ Ty.apply (Ty.path "slice") [] [ T ] ]
                             |),
                             [ M.read (| front |) ]
@@ -460,7 +461,7 @@ Module collections.
             (let self := M.alloc (| self |) in
             let off := M.alloc (| off |) in
             M.call_closure (|
-              M.get_function (| "core::ptr::read", [ T ] |),
+              M.get_function (| "core::ptr::read", [], [ T ] |),
               [
                 (* MutToConstPointer *)
                 M.pointer_coercion
@@ -511,7 +512,7 @@ Module collections.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::ptr::write", [ T ] |),
+                    M.get_function (| "core::ptr::write", [], [ T ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -567,7 +568,7 @@ Module collections.
             (let self := M.alloc (| self |) in
             let range := M.alloc (| range |) in
             M.call_closure (|
-              M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
+              M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
@@ -663,7 +664,7 @@ Module collections.
             let idx := M.alloc (| idx |) in
             let addend := M.alloc (| addend |) in
             M.call_closure (|
-              M.get_function (| "alloc::collections::vec_deque::wrap_index", [] |),
+              M.get_function (| "alloc::collections::vec_deque::wrap_index", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "usize", "wrapping_add", [] |),
@@ -742,7 +743,7 @@ Module collections.
             let idx := M.alloc (| idx |) in
             let subtrahend := M.alloc (| subtrahend |) in
             M.call_closure (|
-              M.get_function (| "alloc::collections::vec_deque::wrap_index", [] |),
+              M.get_function (| "alloc::collections::vec_deque::wrap_index", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "usize", "wrapping_add", [] |),
@@ -855,7 +856,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -982,7 +983,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -1068,7 +1069,7 @@ Module collections.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::copy", [ T ] |),
+                    M.get_function (| "core::intrinsics::copy", [], [ T ] |),
                     [
                       (* MutToConstPointer *)
                       M.pointer_coercion
@@ -1209,7 +1210,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -1336,7 +1337,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -1422,7 +1423,7 @@ Module collections.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                    M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                     [
                       (* MutToConstPointer *)
                       M.pointer_coercion
@@ -1649,6 +1650,7 @@ Module collections.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::cmp::min",
+                                                      [],
                                                       [ Ty.path "usize" ]
                                                     |),
                                                     [
@@ -1709,7 +1711,11 @@ Module collections.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.call_closure (|
-                                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                                            M.get_function (|
+                                              "core::panicking::panic_fmt",
+                                              [],
+                                              []
+                                            |),
                                             [
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -2217,6 +2223,7 @@ Module collections.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::panicking::panic",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -2355,6 +2362,7 @@ Module collections.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::panicking::panic",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -2547,7 +2555,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String
@@ -2602,7 +2610,7 @@ Module collections.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                            M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -2670,6 +2678,7 @@ Module collections.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::copy_nonoverlapping",
+                                      [],
                                       [ T ]
                                     |),
                                     [
@@ -2718,6 +2727,7 @@ Module collections.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::copy_nonoverlapping",
+                                      [],
                                       [ T ]
                                     |),
                                     [
@@ -3206,7 +3216,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String
@@ -3446,7 +3456,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String
@@ -3624,7 +3634,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String
@@ -3680,7 +3690,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String
@@ -3984,7 +3994,7 @@ Module collections.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [ M.read (| Value.String "assertion failed: i < self.len()" |) ]
                             |)
                           |)
@@ -4023,7 +4033,7 @@ Module collections.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [ M.read (| Value.String "assertion failed: j < self.len()" |) ]
                             |)
                           |)
@@ -4055,7 +4065,7 @@ Module collections.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::ptr::swap", [ T ] |),
+                  M.get_function (| "core::ptr::swap", [], [ T ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
@@ -5559,6 +5569,7 @@ Module collections.
                       M.call_closure (|
                         M.get_function (|
                           "core::mem::forget",
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::collections::vec_deque::shrink_to::Guard")
@@ -5637,7 +5648,7 @@ Module collections.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.call_closure (|
-                                            M.get_function (| "core::panicking::panic", [] |),
+                                            M.get_function (| "core::panicking::panic", [], [] |),
                                             [
                                               M.read (|
                                                 Value.String
@@ -5704,7 +5715,7 @@ Module collections.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.call_closure (|
-                                            M.get_function (| "core::panicking::panic", [] |),
+                                            M.get_function (| "core::panicking::panic", [], [] |),
                                             [
                                               M.read (|
                                                 Value.String
@@ -5855,7 +5866,7 @@ Module collections.
                                 BinOp.le (|
                                   M.read (| tail_len |),
                                   M.call_closure (|
-                                    M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                                    M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                                     [
                                       M.read (| head_len |);
                                       BinOp.Wrap.sub (|
@@ -6124,6 +6135,7 @@ Module collections.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::ptr::drop_in_place",
+                                          [],
                                           [ Ty.apply (Ty.path "slice") [] [ T ] ]
                                         |),
                                         [ M.read (| drop_back |) ]
@@ -6178,6 +6190,7 @@ Module collections.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::ptr::drop_in_place",
+                                          [],
                                           [ Ty.apply (Ty.path "slice") [] [ T ] ]
                                         |),
                                         [ M.read (| drop_front |) ]
@@ -6635,7 +6648,7 @@ Module collections.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::slice::index::range", [ R ] |),
+                    M.get_function (| "core::slice::index::range", [], [ R ] |),
                     [
                       M.read (| range |);
                       Value.StructRecord "core::ops::range::RangeTo" [ ("end_", M.read (| len |)) ]
@@ -7104,7 +7117,7 @@ Module collections.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::slice::index::range", [ R ] |),
+                    M.get_function (| "core::slice::index::range", [], [ R ] |),
                     [
                       M.read (| range |);
                       Value.StructRecord
@@ -7495,7 +7508,7 @@ Module collections.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            M.get_function (| "core::hint::assert_unchecked", [], [] |),
                             [
                               BinOp.lt (|
                                 M.read (|
@@ -7605,7 +7618,7 @@ Module collections.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            M.get_function (| "core::hint::assert_unchecked", [], [] |),
                             [
                               BinOp.lt (|
                                 M.read (|
@@ -8298,7 +8311,7 @@ Module collections.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic_fmt", [] |),
+                              M.get_function (| "core::panicking::panic_fmt", [], [] |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -8915,7 +8928,7 @@ Module collections.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic_fmt", [] |),
+                              M.get_function (| "core::panicking::panic_fmt", [], [] |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -9032,6 +9045,7 @@ Module collections.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::intrinsics::copy_nonoverlapping",
+                                        [],
                                         [ T ]
                                       |),
                                       [
@@ -9073,6 +9087,7 @@ Module collections.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::intrinsics::copy_nonoverlapping",
+                                        [],
                                         [ T ]
                                       |),
                                       [
@@ -9129,6 +9144,7 @@ Module collections.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::intrinsics::copy_nonoverlapping",
+                                        [],
                                         [ T ]
                                       |),
                                       [
@@ -9949,7 +9965,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String "assertion failed: self.is_full()"
@@ -10049,7 +10065,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String "assertion failed: !self.is_full()"
@@ -10155,6 +10171,7 @@ Module collections.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::iter::sources::repeat_with::repeat_with",
+                                    [],
                                     [ T; impl_FnMut___arrow_T ]
                                   |),
                                   [ M.read (| generator |) ]
@@ -10387,6 +10404,7 @@ Module collections.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::slice::raw::from_raw_parts_mut",
+                                        [],
                                         [ T ]
                                       |),
                                       [
@@ -10882,7 +10900,11 @@ Module collections.
                             |) in
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::slice::raw::from_raw_parts_mut", [ T ] |),
+                              M.get_function (|
+                                "core::slice::raw::from_raw_parts_mut",
+                                [],
+                                [ T ]
+                              |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -10977,7 +10999,7 @@ Module collections.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [ M.read (| Value.String "assertion failed: n <= self.len()" |) ]
                             |)
                           |)
@@ -11099,7 +11121,7 @@ Module collections.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [ M.read (| Value.String "assertion failed: n <= self.len()" |) ]
                             |)
                           |)
@@ -11235,7 +11257,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String "assertion failed: mid * 2 <= self.len()"
@@ -11388,7 +11410,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String "assertion failed: k * 2 <= self.len()"
@@ -12128,7 +12150,11 @@ Module collections.
                           [
                             M.read (| self |);
                             M.call_closure (|
-                              M.get_function (| "core::iter::sources::repeat_n::repeat_n", [ T ] |),
+                              M.get_function (|
+                                "core::iter::sources::repeat_n::repeat_n",
+                                [],
+                                [ T ]
+                              |),
                               [ M.read (| value |); M.read (| extra |) ]
                             |)
                           ]
@@ -12449,7 +12475,7 @@ Module collections.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String
@@ -12939,6 +12965,7 @@ Module collections.
                                                                                                       M.call_closure (|
                                                                                                         M.get_function (|
                                                                                                           "core::panicking::assert_failed",
+                                                                                                          [],
                                                                                                           [
                                                                                                             Ty.path
                                                                                                               "usize";
@@ -13117,6 +13144,7 @@ Module collections.
                                                                                                       M.call_closure (|
                                                                                                         M.get_function (|
                                                                                                           "core::panicking::assert_failed",
+                                                                                                          [],
                                                                                                           [
                                                                                                             Ty.path
                                                                                                               "usize";
@@ -13295,6 +13323,7 @@ Module collections.
                                                                                                       M.call_closure (|
                                                                                                         M.get_function (|
                                                                                                           "core::panicking::assert_failed",
+                                                                                                          [],
                                                                                                           [
                                                                                                             Ty.path
                                                                                                               "usize";
@@ -13657,6 +13686,7 @@ Module collections.
                                                                                                       M.call_closure (|
                                                                                                         M.get_function (|
                                                                                                           "core::panicking::assert_failed",
+                                                                                                          [],
                                                                                                           [
                                                                                                             Ty.path
                                                                                                               "usize";
@@ -13835,6 +13865,7 @@ Module collections.
                                                                                                       M.call_closure (|
                                                                                                         M.get_function (|
                                                                                                           "core::panicking::assert_failed",
+                                                                                                          [],
                                                                                                           [
                                                                                                             Ty.path
                                                                                                               "usize";
@@ -14013,6 +14044,7 @@ Module collections.
                                                                                                       M.call_closure (|
                                                                                                         M.get_function (|
                                                                                                           "core::panicking::assert_failed",
+                                                                                                          [],
                                                                                                           [
                                                                                                             Ty.path
                                                                                                               "usize";
@@ -15356,7 +15388,7 @@ Module collections.
               let~ alloc :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::ptr::read", [ A ] |),
+                    M.get_function (| "core::ptr::read", [], [ A ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -15430,7 +15462,7 @@ Module collections.
                         let~ _ :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::intrinsics::copy", [ T ] |),
+                              M.get_function (| "core::intrinsics::copy", [], [ T ] |),
                               [
                                 (* MutToConstPointer *)
                                 M.pointer_coercion
@@ -15585,7 +15617,11 @@ Module collections.
                         let~ _ :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                              M.get_function (|
+                                "core::intrinsics::copy_nonoverlapping",
+                                [],
+                                [ T ]
+                              |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|

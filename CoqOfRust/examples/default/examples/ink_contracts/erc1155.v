@@ -387,6 +387,7 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "erc1155::Error" ]
                 |),
                 [ M.read (| self |) ]
@@ -397,6 +398,7 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "erc1155::Error" ]
                 |),
                 [ M.read (| other |) ]
@@ -1546,7 +1548,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     to;
                                     M.alloc (|
                                       M.call_closure (|
-                                        M.get_function (| "erc1155::zero_address", [] |),
+                                        M.get_function (| "erc1155::zero_address", [], [] |),
                                         []
                                       |)
                                     |)
@@ -1844,7 +1846,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     to;
                                     M.alloc (|
                                       M.call_closure (|
-                                        M.get_function (| "erc1155::zero_address", [] |),
+                                        M.get_function (| "erc1155::zero_address", [], [] |),
                                         []
                                       |)
                                     |)
@@ -2838,7 +2840,7 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
         let _data := M.alloc (| _data |) in
         M.never_to_any (|
           M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -2901,7 +2903,7 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
         let _data := M.alloc (| _data |) in
         M.never_to_any (|
           M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),

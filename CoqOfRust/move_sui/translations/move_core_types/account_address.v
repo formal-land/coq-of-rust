@@ -591,6 +591,7 @@ Module account_address.
                               M.call_closure (|
                                 M.get_function (|
                                   "hex::encode",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "array")
@@ -1018,13 +1019,13 @@ Module account_address.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::hint::must_use", [ Ty.path "alloc::string::String" ] |),
+            M.get_function (| "core::hint::must_use", [], [ Ty.path "alloc::string::String" ] |),
             [
               M.read (|
                 let~ res :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "alloc::fmt::format", [] |),
+                      M.get_function (| "alloc::fmt::format", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -1190,13 +1191,13 @@ Module account_address.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::hint::must_use", [ Ty.path "alloc::string::String" ] |),
+            M.get_function (| "core::hint::must_use", [], [ Ty.path "alloc::string::String" ] |),
             [
               M.read (|
                 let~ res :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "alloc::fmt::format", [] |),
+                      M.get_function (| "alloc::fmt::format", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -2656,6 +2657,7 @@ Module account_address.
           M.call_closure (|
             M.get_function (|
               "hex::encode",
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ]
             |),
             [

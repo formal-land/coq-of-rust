@@ -345,6 +345,7 @@ Module transaction_argument.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ]
                   |),
                   [ M.read (| self |) ]
@@ -695,6 +696,7 @@ Module transaction_argument.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ]
                   |),
                   [ M.read (| self |) ]
@@ -705,6 +707,7 @@ Module transaction_argument.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ]
                   |),
                   [ M.read (| other |) ]
@@ -1045,7 +1048,7 @@ Module transaction_argument.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::intrinsics::unreachable", [] |),
+                                  M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                   []
                                 |)
                               |)
@@ -1772,6 +1775,7 @@ Module transaction_argument.
                                           M.call_closure (|
                                             M.get_function (|
                                               "hex::encode",
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
@@ -2451,6 +2455,7 @@ Module transaction_argument.
                                                                                           M.call_closure (|
                                                                                             M.get_function (|
                                                                                               "core::hint::must_use",
+                                                                                              [],
                                                                                               [
                                                                                                 Ty.path
                                                                                                   "alloc::string::String"
@@ -2464,6 +2469,7 @@ Module transaction_argument.
                                                                                                     M.call_closure (|
                                                                                                       M.get_function (|
                                                                                                         "alloc::fmt::format",
+                                                                                                        [],
                                                                                                         []
                                                                                                       |),
                                                                                                       [
@@ -2636,6 +2642,7 @@ Module transaction_argument.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::hint::must_use",
+                                                            [],
                                                             [ Ty.path "alloc::string::String" ]
                                                           |),
                                                           [
@@ -2645,6 +2652,7 @@ Module transaction_argument.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "alloc::fmt::format",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [

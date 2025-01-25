@@ -160,6 +160,7 @@ Module Impl_updated_incrementer_Incrementer.
           M.call_closure (|
             M.get_function (|
               "core::panicking::unreachable_display",
+              [],
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
             |),
             [ Value.String "Constructors are not called when upgrading using `set_code_hash`." ]
@@ -197,7 +198,7 @@ Module Impl_updated_incrementer_Incrementer.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [] |),
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -336,6 +337,7 @@ Module Impl_updated_incrementer_Incrementer.
                                       M.call_closure (|
                                         M.get_function (|
                                           "std::panicking::begin_panic",
+                                          [],
                                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                         |),
                                         [
@@ -357,7 +359,7 @@ Module Impl_updated_incrementer_Incrementer.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [] |),
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),

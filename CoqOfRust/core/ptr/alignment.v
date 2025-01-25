@@ -208,7 +208,7 @@ Module ptr.
                 "new_unchecked",
                 []
               |),
-              [ M.call_closure (| M.get_function (| "core::mem::align_of", [ T ] |), [] |) ]
+              [ M.call_closure (| M.get_function (| "core::mem::align_of", [], [ T ] |), [] |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -303,7 +303,7 @@ Module ptr.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                                M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                                 []
                               |)
                             |)) in
@@ -328,6 +328,7 @@ Module ptr.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::transmute",
+                    [],
                     [ Ty.path "usize"; Ty.path "core::ptr::alignment::Alignment" ]
                   |),
                   [ M.read (| align |) ]
@@ -1328,6 +1329,7 @@ Module ptr.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::ptr::alignment::AlignmentEnum" ]
                     |),
                     [ M.read (| self |) ]
@@ -1338,6 +1340,7 @@ Module ptr.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::ptr::alignment::AlignmentEnum" ]
                     |),
                     [ M.read (| other |) ]

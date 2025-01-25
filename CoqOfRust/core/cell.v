@@ -594,6 +594,7 @@ Module cell.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::ptr::eq",
+                                    [],
                                     [ Ty.apply (Ty.path "core::cell::Cell") [] [ T ] ]
                                   |),
                                   [ M.read (| self |); M.read (| other |) ]
@@ -632,7 +633,7 @@ Module cell.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic_fmt", [] |),
+                                M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -662,7 +663,7 @@ Module cell.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::mem::swap", [ T ] |),
+                      M.get_function (| "core::mem::swap", [], [ T ] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -720,7 +721,7 @@ Module cell.
           (let self := M.alloc (| self |) in
           let val := M.alloc (| val |) in
           M.call_closure (|
-            M.get_function (| "core::mem::replace", [ T ] |),
+            M.get_function (| "core::mem::replace", [], [ T ] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
@@ -1278,7 +1279,7 @@ Module cell.
       ltac:(M.monadic
         (let err := M.alloc (| err |) in
         M.call_closure (|
-          M.get_function (| "core::panicking::panic_fmt", [] |),
+          M.get_function (| "core::panicking::panic_fmt", [], [] |),
           [
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -1322,7 +1323,7 @@ Module cell.
       ltac:(M.monadic
         (let err := M.alloc (| err |) in
         M.call_closure (|
-          M.get_function (| "core::panicking::panic_fmt", [] |),
+          M.get_function (| "core::panicking::panic_fmt", [], [] |),
           [
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -1481,7 +1482,7 @@ Module cell.
           (let self := M.alloc (| self |) in
           let t := M.alloc (| t |) in
           M.call_closure (|
-            M.get_function (| "core::mem::replace", [ T ] |),
+            M.get_function (| "core::mem::replace", [], [ T ] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
@@ -1568,7 +1569,7 @@ Module cell.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::mem::replace", [ T ] |),
+                M.get_function (| "core::mem::replace", [], [ T ] |),
                 [ M.read (| mut_borrow |); M.read (| replacement |) ]
               |)
             |)
@@ -1593,7 +1594,7 @@ Module cell.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_function (| "core::mem::swap", [ T ] |),
+            M.get_function (| "core::mem::swap", [], [ T ] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
@@ -1686,7 +1687,7 @@ Module cell.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::cell::panic_already_mutably_borrowed", [] |),
+                          M.get_function (| "core::cell::panic_already_mutably_borrowed", [], [] |),
                           [ M.read (| err |) ]
                         |)
                       |)
@@ -1851,7 +1852,7 @@ Module cell.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::cell::panic_already_borrowed", [] |),
+                          M.get_function (| "core::cell::panic_already_borrowed", [], [] |),
                           [ M.read (| err |) ]
                         |)
                       |)
@@ -2134,7 +2135,7 @@ Module cell.
                         (M.alloc (|
                           UnOp.not (|
                             M.call_closure (|
-                              M.get_function (| "core::cell::is_writing", [] |),
+                              M.get_function (| "core::cell::is_writing", [], [] |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -3007,7 +3008,7 @@ Module cell.
                         (M.alloc (|
                           UnOp.not (|
                             M.call_closure (|
-                              M.get_function (| "core::cell::is_reading", [] |),
+                              M.get_function (| "core::cell::is_reading", [], [] |),
                               [ M.read (| b |) ]
                             |)
                           |)
@@ -3099,7 +3100,7 @@ Module cell.
                                     (M.alloc (|
                                       UnOp.not (|
                                         M.call_closure (|
-                                          M.get_function (| "core::cell::is_reading", [] |),
+                                          M.get_function (| "core::cell::is_reading", [], [] |),
                                           [ M.read (| borrow |) ]
                                         |)
                                       |)
@@ -3112,7 +3113,7 @@ Module cell.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String "assertion failed: is_reading(borrow)"
@@ -3221,7 +3222,7 @@ Module cell.
                                     (M.alloc (|
                                       UnOp.not (|
                                         M.call_closure (|
-                                          M.get_function (| "core::cell::is_reading", [] |),
+                                          M.get_function (| "core::cell::is_reading", [], [] |),
                                           [ M.read (| borrow |) ]
                                         |)
                                       |)
@@ -3234,7 +3235,7 @@ Module cell.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String "assertion failed: is_reading(borrow)"
@@ -3270,7 +3271,7 @@ Module cell.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [
                               M.read (|
                                 Value.String "assertion failed: borrow != BorrowFlag::MAX"
@@ -3764,7 +3765,7 @@ Module cell.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::mem::forget", [ Ty.path "core::cell::BorrowRef" ] |),
+                  M.get_function (| "core::mem::forget", [], [ Ty.path "core::cell::BorrowRef" ] |),
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (| orig, "core::cell::Ref", "borrow" |)
@@ -4182,7 +4183,11 @@ Module cell.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::mem::forget", [ Ty.path "core::cell::BorrowRefMut" ] |),
+                  M.get_function (|
+                    "core::mem::forget",
+                    [],
+                    [ Ty.path "core::cell::BorrowRefMut" ]
+                  |),
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
@@ -4282,7 +4287,7 @@ Module cell.
                                     (M.alloc (|
                                       UnOp.not (|
                                         M.call_closure (|
-                                          M.get_function (| "core::cell::is_writing", [] |),
+                                          M.get_function (| "core::cell::is_writing", [], [] |),
                                           [ M.read (| borrow |) ]
                                         |)
                                       |)
@@ -4295,7 +4300,7 @@ Module cell.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String "assertion failed: is_writing(borrow)"
@@ -4477,7 +4482,7 @@ Module cell.
                                     (M.alloc (|
                                       UnOp.not (|
                                         M.call_closure (|
-                                          M.get_function (| "core::cell::is_writing", [] |),
+                                          M.get_function (| "core::cell::is_writing", [], [] |),
                                           [ M.read (| borrow |) ]
                                         |)
                                       |)
@@ -4490,7 +4495,7 @@ Module cell.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String "assertion failed: is_writing(borrow)"
@@ -4526,7 +4531,7 @@ Module cell.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [
                               M.read (|
                                 Value.String "assertion failed: borrow != BorrowFlag::MIN"

@@ -354,6 +354,7 @@ Module script_signature.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "move_bytecode_verifier::script_signature::verify_module_function_signature",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -829,6 +830,7 @@ Module script_signature.
                         M.call_closure (|
                           M.get_function (|
                             "move_bytecode_verifier::script_signature::verify_module_function_signature",
+                            [],
                             []
                           |),
                           [
@@ -954,6 +956,7 @@ Module script_signature.
                 M.call_closure (|
                   M.get_function (|
                     "move_bytecode_verifier::script_signature::verify_main_signature_impl",
+                    [],
                     []
                   |),
                   [
@@ -1117,6 +1120,7 @@ Module script_signature.
                                   M.call_closure (|
                                     M.get_function (|
                                       "move_bytecode_verifier::script_signature::legacy_script_signature_checks",
+                                      [],
                                       []
                                     |),
                                     [

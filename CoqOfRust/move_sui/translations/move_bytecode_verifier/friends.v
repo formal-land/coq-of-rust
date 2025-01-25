@@ -28,7 +28,7 @@ Module friends.
           |),
           [
             M.call_closure (|
-              M.get_function (| "move_bytecode_verifier::friends::verify_module_impl", [] |),
+              M.get_function (| "move_bytecode_verifier::friends::verify_module_impl", [], [] |),
               [ M.read (| module |) ]
             |);
             M.closure

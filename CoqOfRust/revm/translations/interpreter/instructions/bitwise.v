@@ -524,6 +524,7 @@ Module instructions.
                                       M.call_closure (|
                                         M.get_function (|
                                           "revm_interpreter::instructions::i256::i256_cmp",
+                                          [],
                                           []
                                         |),
                                         [ op1; M.read (| op2 |) ]
@@ -703,6 +704,7 @@ Module instructions.
                                       M.call_closure (|
                                         M.get_function (|
                                           "revm_interpreter::instructions::i256::i256_cmp",
+                                          [],
                                           []
                                         |),
                                         [ op1; M.read (| op2 |) ]

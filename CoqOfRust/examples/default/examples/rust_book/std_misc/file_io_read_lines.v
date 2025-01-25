@@ -94,7 +94,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ lines :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "file_io_read_lines::read_lines", [] |),
+              M.get_function (| "file_io_read_lines::read_lines", [], [] |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
@@ -177,7 +177,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   let~ _ :=
                                     M.alloc (|
                                       M.call_closure (|
-                                        M.get_function (| "std::io::stdio::_print", [] |),
+                                        M.get_function (| "std::io::stdio::_print", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|

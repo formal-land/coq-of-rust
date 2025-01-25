@@ -207,7 +207,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ point :=
           M.alloc (|
-            M.call_closure (| M.get_function (| "box_stack_heap::origin", [] |), [] |)
+            M.call_closure (| M.get_function (| "box_stack_heap::origin", [], [] |), [] |)
           |) in
         let~ rectangle :=
           M.alloc (|
@@ -215,7 +215,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               "box_stack_heap::Rectangle"
               [
                 ("top_left",
-                  M.call_closure (| M.get_function (| "box_stack_heap::origin", [] |), [] |));
+                  M.call_closure (| M.get_function (| "box_stack_heap::origin", [], [] |), [] |));
                 ("bottom_right",
                   Value.StructRecord
                     "box_stack_heap::Point"
@@ -239,7 +239,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   "box_stack_heap::Rectangle"
                   [
                     ("top_left",
-                      M.call_closure (| M.get_function (| "box_stack_heap::origin", [] |), [] |));
+                      M.call_closure (|
+                        M.get_function (| "box_stack_heap::origin", [], [] |),
+                        []
+                      |));
                     ("bottom_right",
                       Value.StructRecord
                         "box_stack_heap::Point"
@@ -262,7 +265,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "new",
                 []
               |),
-              [ M.call_closure (| M.get_function (| "box_stack_heap::origin", [] |), [] |) ]
+              [ M.call_closure (| M.get_function (| "box_stack_heap::origin", [], [] |), [] |) ]
             |)
           |) in
         let~ box_in_a_box :=
@@ -282,14 +285,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "new",
                 []
               |),
-              [ M.call_closure (| M.get_function (| "box_stack_heap::boxed_origin", [] |), [] |) ]
+              [ M.call_closure (| M.get_function (| "box_stack_heap::boxed_origin", [], [] |), [] |)
+              ]
             |)
           |) in
         let~ _ :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -316,6 +320,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::mem::size_of_val",
+                                      [],
                                       [ Ty.path "box_stack_heap::Point" ]
                                     |),
                                     [ point ]
@@ -335,7 +340,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -362,6 +367,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::mem::size_of_val",
+                                      [],
                                       [ Ty.path "box_stack_heap::Rectangle" ]
                                     |),
                                     [ rectangle ]
@@ -381,7 +387,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -408,6 +414,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::mem::size_of_val",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::boxed::Box")
@@ -435,7 +442,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -462,6 +469,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::mem::size_of_val",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::boxed::Box")
@@ -489,7 +497,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -516,6 +524,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::mem::size_of_val",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::boxed::Box")
@@ -550,7 +559,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -577,6 +586,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::mem::size_of_val",
+                                      [],
                                       [ Ty.path "box_stack_heap::Point" ]
                                     |),
                                     [ unboxed_point ]

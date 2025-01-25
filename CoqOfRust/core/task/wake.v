@@ -178,7 +178,10 @@ Module task.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [] |),
                 [
-                  M.call_closure (| M.get_function (| "core::ptr::null", [ Ty.tuple [] ] |), [] |);
+                  M.call_closure (|
+                    M.get_function (| "core::ptr::null", [], [ Ty.tuple [] ] |),
+                    []
+                  |);
                   M.get_constant (| "core::task::wake::NOOP::VTABLE" |)
                 ]
               |)
@@ -899,6 +902,7 @@ Module task.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::transmute",
+                      [],
                       [
                         Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ];
                         Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ]
@@ -1416,6 +1420,7 @@ Module task.
                                     (M.call_closure (|
                                       M.get_function (|
                                         "core::ptr::eq",
+                                        [],
                                         [ Ty.path "core::task::wake::RawWakerVTable" ]
                                       |),
                                       [ M.read (| a_vtable |); M.read (| b_vtable |) ]
@@ -2064,6 +2069,7 @@ Module task.
                                     (M.call_closure (|
                                       M.get_function (|
                                         "core::ptr::eq",
+                                        [],
                                         [ Ty.path "core::task::wake::RawWakerVTable" ]
                                       |),
                                       [ M.read (| a_vtable |); M.read (| b_vtable |) ]
@@ -2329,6 +2335,7 @@ Module task.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::transmute",
+                [],
                 [
                   Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ];
                   Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ]

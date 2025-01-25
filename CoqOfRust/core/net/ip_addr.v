@@ -133,6 +133,7 @@ Module net.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::net::ip_addr::IpAddr" ]
                     |),
                     [ M.read (| self |) ]
@@ -143,6 +144,7 @@ Module net.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::net::ip_addr::IpAddr" ]
                     |),
                     [ M.read (| other |) ]
@@ -241,7 +243,7 @@ Module net.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unreachable", [] |),
+                                    M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                     []
                                   |)
                                 |)
@@ -279,6 +281,7 @@ Module net.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::net::ip_addr::IpAddr" ]
                     |),
                     [ M.read (| self |) ]
@@ -374,6 +377,7 @@ Module net.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::net::ip_addr::IpAddr" ]
                     |),
                     [ M.read (| self |) ]
@@ -384,6 +388,7 @@ Module net.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::net::ip_addr::IpAddr" ]
                     |),
                     [ M.read (| other |) ]
@@ -500,6 +505,7 @@ Module net.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::net::ip_addr::IpAddr" ]
                     |),
                     [ M.read (| self |) ]
@@ -510,6 +516,7 @@ Module net.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::net::ip_addr::IpAddr" ]
                     |),
                     [ M.read (| other |) ]
@@ -598,7 +605,7 @@ Module net.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unreachable", [] |),
+                                    M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                     []
                                   |)
                                 |)
@@ -1083,6 +1090,7 @@ Module net.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv6MulticastScope" ]
                     |),
                     [ M.read (| self |) ]
@@ -1093,6 +1101,7 @@ Module net.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv6MulticastScope" ]
                     |),
                     [ M.read (| other |) ]
@@ -1174,6 +1183,7 @@ Module net.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::net::ip_addr::Ipv6MulticastScope" ]
                     |),
                     [ M.read (| self |) ]
@@ -4047,6 +4057,7 @@ Module net.
                       M.call_closure (|
                         M.get_function (|
                           "core::intrinsics::transmute",
+                          [],
                           [
                             Ty.apply
                               (Ty.path "array")
@@ -4203,6 +4214,7 @@ Module net.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::transmute",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "array")
@@ -7913,6 +7925,7 @@ Module net.
                         M.call_closure (|
                           M.get_function (|
                             "core::iter::adapters::zip::zip",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "&mut")
@@ -8306,6 +8319,7 @@ Module net.
                         M.call_closure (|
                           M.get_function (|
                             "core::iter::adapters::zip::zip",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "&mut")
@@ -8699,6 +8713,7 @@ Module net.
                         M.call_closure (|
                           M.get_function (|
                             "core::iter::adapters::zip::zip",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "&mut")
@@ -9092,6 +9107,7 @@ Module net.
                         M.call_closure (|
                           M.get_function (|
                             "core::iter::adapters::zip::zip",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "&mut")

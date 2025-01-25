@@ -262,6 +262,7 @@ Module collections.
                             M.call_closure (|
                               M.get_function (|
                                 "core::mem::swap",
+                                [],
                                 [ Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ] ]
                               |),
                               [
@@ -372,6 +373,7 @@ Module collections.
                             M.call_closure (|
                               M.get_function (|
                                 "core::mem::swap",
+                                [],
                                 [ Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ] ]
                               |),
                               [
@@ -869,6 +871,7 @@ Module collections.
                             M.call_closure (|
                               M.get_function (|
                                 "core::mem::swap",
+                                [],
                                 [ Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ] ]
                               |),
                               [
@@ -979,6 +982,7 @@ Module collections.
                             M.call_closure (|
                               M.get_function (|
                                 "core::mem::swap",
+                                [],
                                 [ Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ] ]
                               |),
                               [

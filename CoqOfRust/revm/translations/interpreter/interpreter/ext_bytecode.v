@@ -481,7 +481,7 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "revm_bytecode::utils::read_i16", [] |),
+              M.get_function (| "revm_bytecode::utils::read_i16", [], [] |),
               [
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
@@ -506,7 +506,7 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "revm_bytecode::utils::read_u16", [] |),
+              M.get_function (| "revm_bytecode::utils::read_u16", [], [] |),
               [
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
@@ -531,7 +531,11 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::transmute", [ Ty.path "u8"; Ty.path "i8" ] |),
+              M.get_function (|
+                "core::intrinsics::transmute",
+                [],
+                [ Ty.path "u8"; Ty.path "i8" ]
+              |),
               [
                 M.read (|
                   M.read (|
@@ -581,7 +585,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let len := M.alloc (| len |) in
             M.call_closure (|
-              M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
+              M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
               [
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
@@ -614,7 +618,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
             M.call_closure (|
-              M.get_function (| "revm_bytecode::utils::read_i16", [] |),
+              M.get_function (| "revm_bytecode::utils::read_i16", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -656,7 +660,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
             M.call_closure (|
-              M.get_function (| "revm_bytecode::utils::read_u16", [] |),
+              M.get_function (| "revm_bytecode::utils::read_u16", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -1444,7 +1448,11 @@ Module interpreter.
                                         M.alloc (|
                                           M.never_to_any (|
                                             M.call_closure (|
-                                              M.get_function (| "core::panicking::panic_fmt", [] |),
+                                              M.get_function (|
+                                                "core::panicking::panic_fmt",
+                                                [],
+                                                []
+                                              |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -1489,6 +1497,7 @@ Module interpreter.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::hint::unreachable_unchecked",
+                                                        [],
                                                         []
                                                       |),
                                                       []
@@ -1589,7 +1598,11 @@ Module interpreter.
                                         M.alloc (|
                                           M.never_to_any (|
                                             M.call_closure (|
-                                              M.get_function (| "core::panicking::panic_fmt", [] |),
+                                              M.get_function (|
+                                                "core::panicking::panic_fmt",
+                                                [],
+                                                []
+                                              |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -1634,6 +1647,7 @@ Module interpreter.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::hint::unreachable_unchecked",
+                                                        [],
                                                         []
                                                       |),
                                                       []

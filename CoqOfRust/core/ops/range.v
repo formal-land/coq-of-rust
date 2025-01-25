@@ -3188,6 +3188,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ] ]
                     |),
                     [ M.read (| self |) ]
@@ -3286,6 +3287,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ] ]
                     |),
                     [ M.read (| self |) ]
@@ -3296,6 +3298,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ] ]
                     |),
                     [ M.read (| other |) ]

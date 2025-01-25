@@ -16,7 +16,7 @@ Module my_mod.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [] |),
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -58,7 +58,7 @@ Module my_mod.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [] |),
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -99,7 +99,7 @@ Module my_mod.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [] |),
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -126,7 +126,7 @@ Module my_mod.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "visibility::my_mod::private_function", [] |),
+                M.get_function (| "visibility::my_mod::private_function", [], [] |),
                 []
               |)
             |) in
@@ -153,7 +153,7 @@ Module my_mod.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "std::io::stdio::_print", [] |),
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -194,7 +194,7 @@ Module my_mod.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "std::io::stdio::_print", [] |),
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -245,7 +245,7 @@ Module my_mod.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "std::io::stdio::_print", [] |),
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -273,7 +273,11 @@ Module my_mod.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "visibility::my_mod::nested::public_function_in_nested", [] |),
+                  M.get_function (|
+                    "visibility::my_mod::nested::public_function_in_nested",
+                    [],
+                    []
+                  |),
                   []
                 |)
               |) in
@@ -305,7 +309,7 @@ Module my_mod.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "std::io::stdio::_print", [] |),
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -358,7 +362,7 @@ Module my_mod.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "std::io::stdio::_print", [] |),
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -415,7 +419,7 @@ Module my_mod.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [] |),
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -443,7 +447,11 @@ Module my_mod.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "visibility::my_mod::nested::public_function_in_my_mod", [] |),
+                M.get_function (|
+                  "visibility::my_mod::nested::public_function_in_my_mod",
+                  [],
+                  []
+                |),
                 []
               |)
             |) in
@@ -451,7 +459,7 @@ Module my_mod.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [] |),
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -468,7 +476,11 @@ Module my_mod.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "visibility::my_mod::nested::public_function_in_super_mod", [] |),
+                M.get_function (|
+                  "visibility::my_mod::nested::public_function_in_super_mod",
+                  [],
+                  []
+                |),
                 []
               |)
             |) in
@@ -496,7 +508,7 @@ Module my_mod.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [] |),
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -543,7 +555,7 @@ Module my_mod.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "std::io::stdio::_print", [] |),
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -588,7 +600,7 @@ Module my_mod.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "std::io::stdio::_print", [] |),
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -637,7 +649,7 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -702,30 +714,38 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
-          M.alloc (| M.call_closure (| M.get_function (| "visibility::function", [] |), [] |) |) in
-        let~ _ :=
           M.alloc (|
-            M.call_closure (| M.get_function (| "visibility::my_mod::function", [] |), [] |)
+            M.call_closure (| M.get_function (| "visibility::function", [], [] |), [] |)
           |) in
         let~ _ :=
           M.alloc (|
-            M.call_closure (| M.get_function (| "visibility::my_mod::indirect_access", [] |), [] |)
-          |) in
-        let~ _ :=
-          M.alloc (|
-            M.call_closure (| M.get_function (| "visibility::my_mod::nested::function", [] |), [] |)
+            M.call_closure (| M.get_function (| "visibility::my_mod::function", [], [] |), [] |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "visibility::my_mod::call_public_function_in_my_mod", [] |),
+              M.get_function (| "visibility::my_mod::indirect_access", [], [] |),
               []
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "visibility::my_mod::public_function_in_crate", [] |),
+              M.get_function (| "visibility::my_mod::nested::function", [], [] |),
+              []
+            |)
+          |) in
+        let~ _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "visibility::my_mod::call_public_function_in_my_mod", [], [] |),
+              []
+            |)
+          |) in
+        let~ _ :=
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "visibility::my_mod::public_function_in_crate", [], [] |),
               []
             |)
           |) in

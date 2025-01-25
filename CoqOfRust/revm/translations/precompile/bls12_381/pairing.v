@@ -11,13 +11,13 @@ Module bls12_381.
               "revm_precompile::PrecompileWithAddress"
               [
                 M.call_closure (|
-                  M.get_function (| "revm_precompile::u64_to_address", [] |),
+                  M.get_function (| "revm_precompile::u64_to_address", [], [] |),
                   [ M.read (| M.get_constant (| "revm_precompile::bls12_381::pairing::ADDRESS" |) |)
                   ]
                 |);
                 (* ReifyFnPointer *)
                 M.pointer_coercion
-                  (M.get_function (| "revm_precompile::bls12_381::pairing::pairing", [] |))
+                  (M.get_function (| "revm_precompile::bls12_381::pairing::pairing", [], [] |))
               ]
           |))).
     
@@ -190,6 +190,7 @@ Module bls12_381.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::hint::must_use",
+                                                  [],
                                                   [ Ty.path "alloc::string::String" ]
                                                 |),
                                                 [
@@ -199,6 +200,7 @@ Module bls12_381.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "alloc::fmt::format",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -439,6 +441,7 @@ Module bls12_381.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "revm_precompile::bls12_381::g1::extract_g1_input",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -602,6 +605,7 @@ Module bls12_381.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "revm_precompile::bls12_381::g2::extract_g2_input",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -806,6 +810,7 @@ Module bls12_381.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "blst::blst_miller_loop",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -820,6 +825,7 @@ Module bls12_381.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "blst::blst_fp12_mul",
+                                                            [],
                                                             []
                                                           |),
                                                           [ res; acc; cur_ml ]
@@ -835,6 +841,7 @@ Module bls12_381.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "blst::blst_miller_loop",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -870,7 +877,7 @@ Module bls12_381.
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "blst::blst_final_exp", [] |),
+                        M.get_function (| "blst::blst_final_exp", [], [] |),
                         [ ret; acc ]
                       |)
                     |) in
@@ -886,7 +893,7 @@ Module bls12_381.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
-                                  M.get_function (| "blst::blst_fp12_is_one", [] |),
+                                  M.get_function (| "blst::blst_fp12_is_one", [], [] |),
                                   [ ret ]
                                 |)
                               |)) in

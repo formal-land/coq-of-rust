@@ -195,7 +195,7 @@ Module num.
                                         M.alloc (|
                                           M.never_to_any (|
                                             M.call_closure (|
-                                              M.get_function (| "core::panicking::panic", [] |),
+                                              M.get_function (| "core::panicking::panic", [], [] |),
                                               [
                                                 M.read (|
                                                   Value.String "assertion failed: n < 512"
@@ -986,7 +986,7 @@ Module num.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String "assertion failed: *x < *scale"
@@ -1204,7 +1204,7 @@ Module num.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [ M.read (| Value.String "assertion failed: d.mant > 0" |) ]
                               |)
                             |)
@@ -1239,7 +1239,7 @@ Module num.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [ M.read (| Value.String "assertion failed: d.minus > 0" |) ]
                               |)
                             |)
@@ -1274,7 +1274,7 @@ Module num.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [ M.read (| Value.String "assertion failed: d.plus > 0" |) ]
                               |)
                             |)
@@ -1336,7 +1336,7 @@ Module num.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [
                                   M.read (|
                                     Value.String
@@ -1403,7 +1403,7 @@ Module num.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [
                                   M.read (|
                                     Value.String
@@ -1454,7 +1454,7 @@ Module num.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [
                                   M.read (|
                                     Value.String "assertion failed: buf.len() >= MAX_SIG_DIGITS"
@@ -1494,6 +1494,7 @@ Module num.
                     M.call_closure (|
                       M.get_function (|
                         "core::num::flt2dec::estimator::estimate_scaling_factor",
+                        [],
                         []
                       |),
                       [
@@ -1723,6 +1724,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::num::flt2dec::strategy::dragon::mul_pow10",
+                                  [],
                                   []
                                 |),
                                 [ scale; M.rust_cast (M.read (| k |)) ]
@@ -1736,6 +1738,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::num::flt2dec::strategy::dragon::mul_pow10",
+                                  [],
                                   []
                                 |),
                                 [ mant; M.rust_cast (UnOp.neg (| M.read (| k |) |)) ]
@@ -1746,6 +1749,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::num::flt2dec::strategy::dragon::mul_pow10",
+                                  [],
                                   []
                                 |),
                                 [ minus; M.rust_cast (UnOp.neg (| M.read (| k |) |)) ]
@@ -1756,6 +1760,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::num::flt2dec::strategy::dragon::mul_pow10",
+                                  [],
                                   []
                                 |),
                                 [ plus; M.rust_cast (UnOp.neg (| M.read (| k |) |)) ]
@@ -1952,6 +1957,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::num::flt2dec::strategy::dragon::div_rem_upto_16",
+                              [],
                               []
                             |),
                             [ mant; scale; scale2; scale4; scale8 ]
@@ -2001,6 +2007,7 @@ Module num.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::panicking::panic",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -2238,7 +2245,7 @@ Module num.
                                   (let γ :=
                                     M.alloc (|
                                       M.call_closure (|
-                                        M.get_function (| "core::num::flt2dec::round_up", [] |),
+                                        M.get_function (| "core::num::flt2dec::round_up", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -2554,7 +2561,7 @@ Module num.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic", [] |),
+                                    M.get_function (| "core::panicking::panic", [], [] |),
                                     [ M.read (| Value.String "assertion failed: d.mant > 0" |) ]
                                   |)
                                 |)
@@ -2592,7 +2599,7 @@ Module num.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic", [] |),
+                                    M.get_function (| "core::panicking::panic", [], [] |),
                                     [ M.read (| Value.String "assertion failed: d.minus > 0" |) ]
                                   |)
                                 |)
@@ -2630,7 +2637,7 @@ Module num.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic", [] |),
+                                    M.get_function (| "core::panicking::panic", [], [] |),
                                     [ M.read (| Value.String "assertion failed: d.plus > 0" |) ]
                                   |)
                                 |)
@@ -2695,7 +2702,7 @@ Module num.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic", [] |),
+                                    M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
                                         Value.String
@@ -2765,7 +2772,7 @@ Module num.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic", [] |),
+                                    M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
                                         Value.String
@@ -2783,6 +2790,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::flt2dec::estimator::estimate_scaling_factor",
+                            [],
                             []
                           |),
                           [
@@ -2929,6 +2937,7 @@ Module num.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::num::flt2dec::strategy::dragon::mul_pow10",
+                                      [],
                                       []
                                     |),
                                     [ scale; M.rust_cast (M.read (| k |)) ]
@@ -2942,6 +2951,7 @@ Module num.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::num::flt2dec::strategy::dragon::mul_pow10",
+                                      [],
                                       []
                                     |),
                                     [ mant; M.rust_cast (UnOp.neg (| M.read (| k |) |)) ]
@@ -2978,6 +2988,7 @@ Module num.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::num::flt2dec::strategy::dragon::div_2pow10",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -3866,6 +3877,7 @@ Module num.
                                                                               M.call_closure (|
                                                                                 M.get_function (|
                                                                                   "core::panicking::panic",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -3934,6 +3946,7 @@ Module num.
                                                                               M.call_closure (|
                                                                                 M.get_function (|
                                                                                   "core::panicking::panic",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -4122,7 +4135,11 @@ Module num.
                                       (let γ :=
                                         M.alloc (|
                                           M.call_closure (|
-                                            M.get_function (| "core::num::flt2dec::round_up", [] |),
+                                            M.get_function (|
+                                              "core::num::flt2dec::round_up",
+                                              [],
+                                              []
+                                            |),
                                             [
                                               M.call_closure (|
                                                 M.get_associated_function (|

@@ -43,7 +43,7 @@ Module char.
       ltac:(M.monadic
         (let iter := M.alloc (| iter |) in
         M.call_closure (|
-          M.get_function (| "core::char::decode::decode_utf16", [ I ] |),
+          M.get_function (| "core::char::decode::decode_utf16", [], [ I ] |),
           [ M.read (| iter |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -62,7 +62,7 @@ Module char.
       ltac:(M.monadic
         (let i := M.alloc (| i |) in
         M.call_closure (|
-          M.get_function (| "core::char::convert::from_u32", [] |),
+          M.get_function (| "core::char::convert::from_u32", [], [] |),
           [ M.read (| i |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -82,7 +82,7 @@ Module char.
       ltac:(M.monadic
         (let i := M.alloc (| i |) in
         M.call_closure (|
-          M.get_function (| "core::char::convert::from_u32_unchecked", [] |),
+          M.get_function (| "core::char::convert::from_u32_unchecked", [], [] |),
           [ M.read (| i |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -103,7 +103,7 @@ Module char.
         (let num := M.alloc (| num |) in
         let radix := M.alloc (| radix |) in
         M.call_closure (|
-          M.get_function (| "core::char::convert::from_digit", [] |),
+          M.get_function (| "core::char::convert::from_digit", [], [] |),
           [ M.read (| num |); M.read (| radix |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

@@ -147,7 +147,7 @@ Module escape.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::escape::backslash", [] |),
+                      M.get_function (| "core::escape::backslash", [ N ], [] |),
                       [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallT" [] ]
                     |)
                   |)));
@@ -160,7 +160,7 @@ Module escape.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::escape::backslash", [] |),
+                      M.get_function (| "core::escape::backslash", [ N ], [] |),
                       [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallR" [] ]
                     |)
                   |)));
@@ -173,7 +173,7 @@ Module escape.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::escape::backslash", [] |),
+                      M.get_function (| "core::escape::backslash", [ N ], [] |),
                       [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallN" [] ]
                     |)
                   |)));
@@ -186,7 +186,7 @@ Module escape.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::escape::backslash", [] |),
+                      M.get_function (| "core::escape::backslash", [ N ], [] |),
                       [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::ReverseSolidus" [] ]
                     |)
                   |)));
@@ -199,7 +199,7 @@ Module escape.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::escape::backslash", [] |),
+                      M.get_function (| "core::escape::backslash", [ N ], [] |),
                       [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::Apostrophe" [] ]
                     |)
                   |)));
@@ -212,7 +212,7 @@ Module escape.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::escape::backslash", [] |),
+                      M.get_function (| "core::escape::backslash", [ N ], [] |),
                       [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::QuotationMark" [] ]
                     |)
                   |)));
@@ -727,7 +727,7 @@ Module escape.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::escape::backslash", [] |),
+                  M.get_function (| "core::escape::backslash", [ N ], [] |),
                   [ M.read (| c |) ]
                 |)
               |),
@@ -769,7 +769,7 @@ Module escape.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::escape::escape_ascii", [] |),
+                  M.get_function (| "core::escape::escape_ascii", [ N ], [] |),
                   [ M.read (| c |) ]
                 |)
               |),
@@ -811,7 +811,7 @@ Module escape.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::escape::escape_unicode", [] |),
+                  M.get_function (| "core::escape::escape_unicode", [ N ], [] |),
                   [ M.read (| c |) ]
                 |)
               |),

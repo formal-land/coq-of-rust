@@ -1320,6 +1320,7 @@ Module interpreter_action.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "revm_interpreter::interpreter_action::call_inputs::CallScheme" ]
                     |),
                     [ M.read (| self |) ]
@@ -1330,6 +1331,7 @@ Module interpreter_action.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "revm_interpreter::interpreter_action::call_inputs::CallScheme" ]
                     |),
                     [ M.read (| other |) ]
@@ -1392,6 +1394,7 @@ Module interpreter_action.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "revm_interpreter::interpreter_action::call_inputs::CallScheme" ]
                     |),
                     [ M.read (| self |) ]
@@ -1745,6 +1748,7 @@ Module interpreter_action.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue" ]
                     |),
                     [ M.read (| self |) ]
@@ -1755,6 +1759,7 @@ Module interpreter_action.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue" ]
                     |),
                     [ M.read (| other |) ]
@@ -1885,7 +1890,7 @@ Module interpreter_action.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unreachable", [] |),
+                                    M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                     []
                                   |)
                                 |)
@@ -1956,6 +1961,7 @@ Module interpreter_action.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue" ]
                     |),
                     [ M.read (| self |) ]

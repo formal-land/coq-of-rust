@@ -65,7 +65,7 @@ Module task.
             M.get_associated_function (| Ty.path "core::task::wake::Waker", "from_raw", [] |),
             [
               M.call_closure (|
-                M.get_function (| "alloc::task::raw_waker", [ W ] |),
+                M.get_function (| "alloc::task::raw_waker", [], [ W ] |),
                 [ M.read (| waker |) ]
               |)
             ]
@@ -98,7 +98,7 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.call_closure (|
-            M.get_function (| "alloc::task::raw_waker", [ W ] |),
+            M.get_function (| "alloc::task::raw_waker", [], [ W ] |),
             [ M.read (| waker |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -184,14 +184,15 @@ Module task.
                 [
                   (* ReifyFnPointer *)
                   M.pointer_coercion
-                    (M.get_function (| "alloc::task::raw_waker.clone_waker", [] |));
+                    (M.get_function (| "alloc::task::raw_waker.clone_waker", [], [] |));
                   (* ReifyFnPointer *)
-                  M.pointer_coercion (M.get_function (| "alloc::task::raw_waker.wake", [] |));
+                  M.pointer_coercion (M.get_function (| "alloc::task::raw_waker.wake", [], [] |));
                   (* ReifyFnPointer *)
                   M.pointer_coercion
-                    (M.get_function (| "alloc::task::raw_waker.wake_by_ref", [] |));
+                    (M.get_function (| "alloc::task::raw_waker.wake_by_ref", [], [] |));
                   (* ReifyFnPointer *)
-                  M.pointer_coercion (M.get_function (| "alloc::task::raw_waker.drop_waker", [] |))
+                  M.pointer_coercion
+                    (M.get_function (| "alloc::task::raw_waker.drop_waker", [], [] |))
                 ]
               |)
             |)
@@ -244,15 +245,16 @@ Module task.
                       [
                         (* ReifyFnPointer *)
                         M.pointer_coercion
-                          (M.get_function (| "alloc::task::raw_waker.clone_waker", [] |));
-                        (* ReifyFnPointer *)
-                        M.pointer_coercion (M.get_function (| "alloc::task::raw_waker.wake", [] |));
+                          (M.get_function (| "alloc::task::raw_waker.clone_waker", [], [] |));
                         (* ReifyFnPointer *)
                         M.pointer_coercion
-                          (M.get_function (| "alloc::task::raw_waker.wake_by_ref", [] |));
+                          (M.get_function (| "alloc::task::raw_waker.wake", [], [] |));
                         (* ReifyFnPointer *)
                         M.pointer_coercion
-                          (M.get_function (| "alloc::task::raw_waker.drop_waker", [] |))
+                          (M.get_function (| "alloc::task::raw_waker.wake_by_ref", [], [] |));
+                        (* ReifyFnPointer *)
+                        M.pointer_coercion
+                          (M.get_function (| "alloc::task::raw_waker.drop_waker", [], [] |))
                       ]
                     |)
                   |)
@@ -471,7 +473,7 @@ Module task.
             M.get_associated_function (| Ty.path "core::task::wake::LocalWaker", "from_raw", [] |),
             [
               M.call_closure (|
-                M.get_function (| "alloc::task::local_raw_waker", [ W ] |),
+                M.get_function (| "alloc::task::local_raw_waker", [], [ W ] |),
                 [ M.read (| waker |) ]
               |)
             ]
@@ -504,7 +506,7 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.call_closure (|
-            M.get_function (| "alloc::task::local_raw_waker", [ W ] |),
+            M.get_function (| "alloc::task::local_raw_waker", [], [ W ] |),
             [ M.read (| waker |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -585,15 +587,16 @@ Module task.
                 [
                   (* ReifyFnPointer *)
                   M.pointer_coercion
-                    (M.get_function (| "alloc::task::local_raw_waker.clone_waker", [] |));
-                  (* ReifyFnPointer *)
-                  M.pointer_coercion (M.get_function (| "alloc::task::local_raw_waker.wake", [] |));
+                    (M.get_function (| "alloc::task::local_raw_waker.clone_waker", [], [] |));
                   (* ReifyFnPointer *)
                   M.pointer_coercion
-                    (M.get_function (| "alloc::task::local_raw_waker.wake_by_ref", [] |));
+                    (M.get_function (| "alloc::task::local_raw_waker.wake", [], [] |));
                   (* ReifyFnPointer *)
                   M.pointer_coercion
-                    (M.get_function (| "alloc::task::local_raw_waker.drop_waker", [] |))
+                    (M.get_function (| "alloc::task::local_raw_waker.wake_by_ref", [], [] |));
+                  (* ReifyFnPointer *)
+                  M.pointer_coercion
+                    (M.get_function (| "alloc::task::local_raw_waker.drop_waker", [], [] |))
                 ]
               |)
             |)
@@ -646,16 +649,16 @@ Module task.
                       [
                         (* ReifyFnPointer *)
                         M.pointer_coercion
-                          (M.get_function (| "alloc::task::local_raw_waker.clone_waker", [] |));
+                          (M.get_function (| "alloc::task::local_raw_waker.clone_waker", [], [] |));
                         (* ReifyFnPointer *)
                         M.pointer_coercion
-                          (M.get_function (| "alloc::task::local_raw_waker.wake", [] |));
+                          (M.get_function (| "alloc::task::local_raw_waker.wake", [], [] |));
                         (* ReifyFnPointer *)
                         M.pointer_coercion
-                          (M.get_function (| "alloc::task::local_raw_waker.wake_by_ref", [] |));
+                          (M.get_function (| "alloc::task::local_raw_waker.wake_by_ref", [], [] |));
                         (* ReifyFnPointer *)
                         M.pointer_coercion
-                          (M.get_function (| "alloc::task::local_raw_waker.drop_waker", [] |))
+                          (M.get_function (| "alloc::task::local_raw_waker.drop_waker", [], [] |))
                       ]
                     |)
                   |)

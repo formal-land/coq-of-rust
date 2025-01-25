@@ -6018,6 +6018,7 @@ Module fmt.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::panicking::panic_fmt",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -6994,6 +6995,7 @@ Module fmt.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::panicking::panic_fmt",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -7635,6 +7637,7 @@ Module fmt.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::panicking::panic_fmt",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -8023,6 +8026,7 @@ Module fmt.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::panicking::panic_fmt",
+                                                            [],
                                                             []
                                                           |),
                                                           [

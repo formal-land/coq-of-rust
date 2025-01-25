@@ -477,7 +477,7 @@ Module iter.
                             let~ lower :=
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                                  M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                                   [
                                     M.read (| lower |);
                                     M.read (|

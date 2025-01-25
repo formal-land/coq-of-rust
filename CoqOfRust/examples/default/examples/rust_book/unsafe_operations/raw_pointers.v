@@ -36,7 +36,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (|
                     M.never_to_any (|
                       M.call_closure (|
-                        M.get_function (| "core::panicking::panic", [] |),
+                        M.get_function (| "core::panicking::panic", [], [] |),
                         [ M.read (| Value.String "assertion failed: *raw_p == 10" |) ]
                       |)
                     |)

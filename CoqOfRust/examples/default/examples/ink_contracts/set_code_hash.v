@@ -109,7 +109,7 @@ Module Impl_set_code_hash_Incrementer.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [] |),
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -208,6 +208,7 @@ Module Impl_set_code_hash_Incrementer.
                   M.call_closure (|
                     M.get_function (|
                       "set_code_hash::set_code_hash",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "array")
@@ -233,6 +234,7 @@ Module Impl_set_code_hash_Incrementer.
                                       M.call_closure (|
                                         M.get_function (|
                                           "std::panicking::begin_panic",
+                                          [],
                                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                         |),
                                         [
@@ -254,7 +256,7 @@ Module Impl_set_code_hash_Incrementer.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [] |),
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),

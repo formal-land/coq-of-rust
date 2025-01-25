@@ -1954,7 +1954,7 @@ Module collections.
               let~ len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::mem::replace", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::mem::replace", [], [ Ty.path "usize" ] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -2258,6 +2258,7 @@ Module collections.
                         M.call_closure (|
                           M.get_function (|
                             "core::mem::replace",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::linked_list::LinkedList")
@@ -2542,6 +2543,7 @@ Module collections.
                         M.call_closure (|
                           M.get_function (|
                             "core::mem::replace",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::linked_list::LinkedList")
@@ -2990,6 +2992,7 @@ Module collections.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::drop",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "alloc::collections::linked_list::LinkedList")
@@ -3059,7 +3062,7 @@ Module collections.
                             |));
                           ("len",
                             M.call_closure (|
-                              M.get_function (| "core::mem::take", [ Ty.path "usize" ] |),
+                              M.get_function (| "core::mem::take", [], [ Ty.path "usize" ] |),
                               [
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -4059,7 +4062,7 @@ Module collections.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::panicking::panic_fmt", [] |),
+                                  M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -4106,6 +4109,7 @@ Module collections.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::mem::replace",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::collections::linked_list::LinkedList")
@@ -4564,7 +4568,7 @@ Module collections.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic_fmt", [] |),
+                              M.get_function (| "core::panicking::panic_fmt", [], [] |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -5274,6 +5278,7 @@ Module collections.
                         M.call_closure (|
                           M.get_function (|
                             "core::mem::swap",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::linked_list::LinkedList")
@@ -5438,6 +5443,7 @@ Module collections.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::mem::replace",
+                                        [],
                                         [ Ty.path "usize" ]
                                       |),
                                       [
@@ -5581,6 +5587,7 @@ Module collections.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::forget",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "alloc::collections::linked_list::drop::DropGuard")

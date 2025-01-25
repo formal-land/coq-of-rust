@@ -304,7 +304,7 @@ Module slice.
                           (M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [
                                   M.read (|
                                     Value.String "internal error: entered unreachable code"
@@ -361,6 +361,7 @@ Module slice.
           M.call_closure (|
             M.get_function (|
               "core::ptr::metadata::metadata",
+              [],
               [ Ty.apply (Ty.path "slice") [] [ T ] ]
             |),
             [ M.read (| self |) ]
@@ -1900,7 +1901,7 @@ Module slice.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::ptr::swap", [ T ] |),
+                  M.get_function (| "core::ptr::swap", [], [ T ] |),
                   [ M.read (| pa |); M.read (| pb |) ]
                 |)
               |) in
@@ -1956,7 +1957,7 @@ Module slice.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::intrinsics::ub_checks", [] |),
+                              M.get_function (| "core::intrinsics::ub_checks", [], [] |),
                               []
                             |)
                           |)) in
@@ -2001,7 +2002,7 @@ Module slice.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::ptr::swap", [ T ] |),
+                  M.get_function (| "core::ptr::swap", [], [ T ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
@@ -2115,11 +2116,19 @@ Module slice.
                         Value.Tuple
                           [
                             M.call_closure (|
-                              M.get_function (| "core::slice::raw::from_raw_parts_mut", [ T ] |),
+                              M.get_function (|
+                                "core::slice::raw::from_raw_parts_mut",
+                                [],
+                                [ T ]
+                              |),
                               [ M.read (| start |); M.read (| half_len |) ]
                             |);
                             M.call_closure (|
-                              M.get_function (| "core::slice::raw::from_raw_parts_mut", [ T ] |),
+                              M.get_function (|
+                                "core::slice::raw::from_raw_parts_mut",
+                                [],
+                                [ T ]
+                              |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -2307,7 +2316,7 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -2381,7 +2390,7 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -2455,7 +2464,7 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -2534,7 +2543,7 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -2610,7 +2619,7 @@ Module slice.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -2645,7 +2654,7 @@ Module slice.
             let~ new_len :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::exact_div", [ Ty.path "usize" ] |),
+                  M.get_function (| "core::intrinsics::exact_div", [], [ Ty.path "usize" ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -2663,6 +2672,7 @@ Module slice.
               M.call_closure (|
                 M.get_function (|
                   "core::slice::raw::from_raw_parts",
+                  [],
                   [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
                 |),
                 [
@@ -2735,7 +2745,7 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -2852,7 +2862,7 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -2973,7 +2983,7 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -3049,7 +3059,7 @@ Module slice.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -3084,7 +3094,7 @@ Module slice.
             let~ new_len :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::exact_div", [ Ty.path "usize" ] |),
+                  M.get_function (| "core::intrinsics::exact_div", [], [ Ty.path "usize" ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -3102,6 +3112,7 @@ Module slice.
               M.call_closure (|
                 M.get_function (|
                   "core::slice::raw::from_raw_parts_mut",
+                  [],
                   [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
                 |),
                 [
@@ -3174,7 +3185,7 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -3296,7 +3307,7 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -3424,7 +3435,7 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -3497,7 +3508,7 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -3571,7 +3582,7 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -3645,7 +3656,7 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -3719,7 +3730,7 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -3798,7 +3809,7 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -3942,7 +3953,7 @@ Module slice.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -4011,7 +4022,7 @@ Module slice.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -4092,7 +4103,7 @@ Module slice.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::intrinsics::ub_checks", [] |),
+                              M.get_function (| "core::intrinsics::ub_checks", [], [] |),
                               []
                             |)
                           |)) in
@@ -4116,11 +4127,11 @@ Module slice.
               Value.Tuple
                 [
                   M.call_closure (|
-                    M.get_function (| "core::slice::raw::from_raw_parts", [ T ] |),
+                    M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
                     [ M.read (| ptr |); M.read (| mid |) ]
                   |);
                   M.call_closure (|
-                    M.get_function (| "core::slice::raw::from_raw_parts", [ T ] |),
+                    M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -4131,7 +4142,11 @@ Module slice.
                         [ M.read (| ptr |); M.read (| mid |) ]
                       |);
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
+                        M.get_function (|
+                          "core::intrinsics::unchecked_sub",
+                          [],
+                          [ Ty.path "usize" ]
+                        |),
                         [ M.read (| len |); M.read (| mid |) ]
                       |)
                     ]
@@ -4210,7 +4225,7 @@ Module slice.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::intrinsics::ub_checks", [] |),
+                              M.get_function (| "core::intrinsics::ub_checks", [], [] |),
                               []
                             |)
                           |)) in
@@ -4234,11 +4249,11 @@ Module slice.
               Value.Tuple
                 [
                   M.call_closure (|
-                    M.get_function (| "core::slice::raw::from_raw_parts_mut", [ T ] |),
+                    M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
                     [ M.read (| ptr |); M.read (| mid |) ]
                   |);
                   M.call_closure (|
-                    M.get_function (| "core::slice::raw::from_raw_parts_mut", [ T ] |),
+                    M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -4249,7 +4264,11 @@ Module slice.
                         [ M.read (| ptr |); M.read (| mid |) ]
                       |);
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
+                        M.get_function (|
+                          "core::intrinsics::unchecked_sub",
+                          [],
+                          [ Ty.path "usize" ]
+                        |),
                         [ M.read (| len |); M.read (| mid |) ]
                       |)
                     ]
@@ -5865,6 +5884,7 @@ Module slice.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::select_unpredictable",
+                                      [],
                                       [ Ty.path "usize" ]
                                     |),
                                     [
@@ -5964,7 +5984,7 @@ Module slice.
                         let~ _ :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::hint::assert_unchecked", [] |),
+                              M.get_function (| "core::hint::assert_unchecked", [], [] |),
                               [
                                 BinOp.lt (|
                                   M.read (| base |),
@@ -6008,7 +6028,7 @@ Module slice.
                         let~ _ :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::hint::assert_unchecked", [] |),
+                              M.get_function (| "core::hint::assert_unchecked", [], [] |),
                               [
                                 BinOp.le (|
                                   M.read (| result |),
@@ -6135,6 +6155,7 @@ Module slice.
                 M.call_closure (|
                   M.get_function (|
                     "core::slice::sort::unstable::sort",
+                    [],
                     [
                       T;
                       Ty.function
@@ -6185,6 +6206,7 @@ Module slice.
                 M.call_closure (|
                   M.get_function (|
                     "core::slice::sort::unstable::sort",
+                    [],
                     [
                       T;
                       Ty.function
@@ -6300,6 +6322,7 @@ Module slice.
                 M.call_closure (|
                   M.get_function (|
                     "core::slice::sort::unstable::sort",
+                    [],
                     [
                       T;
                       Ty.function
@@ -6414,6 +6437,7 @@ Module slice.
           M.call_closure (|
             M.get_function (|
               "core::slice::sort::select::partition_at_index",
+              [],
               [
                 T;
                 Ty.function
@@ -6462,6 +6486,7 @@ Module slice.
           M.call_closure (|
             M.get_function (|
               "core::slice::sort::select::partition_at_index",
+              [],
               [
                 T;
                 Ty.function
@@ -6569,6 +6594,7 @@ Module slice.
           M.call_closure (|
             M.get_function (|
               "core::slice::sort::select::partition_at_index",
+              [],
               [
                 T;
                 Ty.function
@@ -7017,6 +7043,7 @@ Module slice.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::mem::swap",
+                                                          [],
                                                           [ T ]
                                                         |),
                                                         [
@@ -7242,7 +7269,7 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [ M.read (| Value.String "assertion failed: mid <= self.len()" |) ]
                           |)
                         |)
@@ -7274,7 +7301,7 @@ Module slice.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::rotate::ptr_rotate", [ T ] |),
+                  M.get_function (| "core::slice::rotate::ptr_rotate", [], [ T ] |),
                   [
                     M.read (| mid |);
                     M.call_closure (|
@@ -7342,7 +7369,7 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [ M.read (| Value.String "assertion failed: k <= self.len()" |) ]
                           |)
                         |)
@@ -7374,7 +7401,7 @@ Module slice.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::rotate::ptr_rotate", [ T ] |),
+                  M.get_function (| "core::slice::rotate::ptr_rotate", [], [ T ] |),
                   [
                     M.read (| mid |);
                     M.call_closure (|
@@ -7677,7 +7704,7 @@ Module slice.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                  M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -7746,7 +7773,7 @@ Module slice.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::index::range", [ R ] |),
+                  M.get_function (| "core::slice::index::range", [], [ R ] |),
                   [
                     M.read (| src |);
                     Value.StructRecord
@@ -7820,7 +7847,7 @@ Module slice.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic_fmt", [] |),
+                                    M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                     [
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -7878,7 +7905,7 @@ Module slice.
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::intrinsics::copy", [ T ] |),
+                          M.get_function (| "core::intrinsics::copy", [], [ T ] |),
                           [
                             (* MutToConstPointer *) M.pointer_coercion (M.read (| src_ptr |));
                             M.read (| dest_ptr |);
@@ -7955,7 +7982,7 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -7985,7 +8012,7 @@ Module slice.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::ptr::swap_nonoverlapping", [ T ] |),
+                  M.get_function (| "core::ptr::swap_nonoverlapping", [], [ T ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -8077,14 +8104,14 @@ Module slice.
             let~ ts :=
               M.alloc (|
                 BinOp.Wrap.div (|
-                  M.call_closure (| M.get_function (| "core::mem::size_of", [ U ] |), [] |),
+                  M.call_closure (| M.get_function (| "core::mem::size_of", [], [ U ] |), [] |),
                   M.read (| gcd |)
                 |)
               |) in
             let~ us :=
               M.alloc (|
                 BinOp.Wrap.div (|
-                  M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |),
+                  M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |),
                   M.read (| gcd |)
                 |)
               |) in
@@ -8221,10 +8248,13 @@ Module slice.
                 let~ offset :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::ptr::align_offset", [ T ] |),
+                      M.get_function (| "core::ptr::align_offset", [], [ T ] |),
                       [
                         M.read (| ptr |);
-                        M.call_closure (| M.get_function (| "core::mem::align_of", [ U ] |), [] |)
+                        M.call_closure (|
+                          M.get_function (| "core::mem::align_of", [], [ U ] |),
+                          []
+                        |)
                       ]
                     |)
                   |) in
@@ -8303,6 +8333,7 @@ Module slice.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::slice::raw::from_raw_parts",
+                                                  [],
                                                   [ U ]
                                                 |),
                                                 [
@@ -8321,6 +8352,7 @@ Module slice.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::slice::raw::from_raw_parts",
+                                                  [],
                                                   [ T ]
                                                 |),
                                                 [
@@ -8477,10 +8509,13 @@ Module slice.
                 let~ offset :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::ptr::align_offset", [ T ] |),
+                      M.get_function (| "core::ptr::align_offset", [], [ T ] |),
                       [
                         M.read (| ptr |);
-                        M.call_closure (| M.get_function (| "core::mem::align_of", [ U ] |), [] |)
+                        M.call_closure (|
+                          M.get_function (| "core::mem::align_of", [], [ U ] |),
+                          []
+                        |)
                       ]
                     |)
                   |) in
@@ -8581,6 +8616,7 @@ Module slice.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::slice::raw::from_raw_parts_mut",
+                                                  [],
                                                   [ U ]
                                                 |),
                                                 [
@@ -8591,6 +8627,7 @@ Module slice.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::slice::raw::from_raw_parts_mut",
+                                                  [],
                                                   [ T ]
                                                 |),
                                                 [
@@ -8661,6 +8698,7 @@ Module slice.
                         M.call_closure (|
                           M.get_function (|
                             "core::mem::size_of",
+                            [],
                             [ Ty.apply (Ty.path "core::core_simd::vector::Simd") [ LANES ] [ T ] ]
                           |),
                           []
@@ -8670,6 +8708,7 @@ Module slice.
                         M.call_closure (|
                           M.get_function (|
                             "core::mem::size_of",
+                            [],
                             [ Ty.apply (Ty.path "array") [ LANES ] [ T ] ]
                           |),
                           []
@@ -8715,6 +8754,7 @@ Module slice.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::panicking::assert_failed",
+                                          [],
                                           [ Ty.path "usize"; Ty.path "usize" ]
                                         |),
                                         [
@@ -8784,6 +8824,7 @@ Module slice.
                         M.call_closure (|
                           M.get_function (|
                             "core::mem::size_of",
+                            [],
                             [ Ty.apply (Ty.path "core::core_simd::vector::Simd") [ LANES ] [ T ] ]
                           |),
                           []
@@ -8793,6 +8834,7 @@ Module slice.
                         M.call_closure (|
                           M.get_function (|
                             "core::mem::size_of",
+                            [],
                             [ Ty.apply (Ty.path "array") [ LANES ] [ T ] ]
                           |),
                           []
@@ -8838,6 +8880,7 @@ Module slice.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::panicking::assert_failed",
+                                          [],
                                           [ Ty.path "usize"; Ty.path "usize" ]
                                         |),
                                         [
@@ -9248,7 +9291,7 @@ Module slice.
                         |),
                         [
                           M.call_closure (|
-                            M.get_function (| "core::slice::split_point_of", [ R ] |),
+                            M.get_function (| "core::slice::split_point_of", [], [ R ] |),
                             [ M.read (| range |) ]
                           |)
                         ]
@@ -9464,7 +9507,7 @@ Module slice.
                         |),
                         [
                           M.call_closure (|
-                            M.get_function (| "core::slice::split_point_of", [ R ] |),
+                            M.get_function (| "core::slice::split_point_of", [], [ R ] |),
                             [ M.read (| range |) ]
                           |)
                         ]
@@ -9580,6 +9623,7 @@ Module slice.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::mem::take",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "&mut")
@@ -9819,6 +9863,7 @@ Module slice.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::mem::take",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&mut")
@@ -10071,6 +10116,7 @@ Module slice.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::mem::take",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "&mut")
@@ -10384,7 +10430,11 @@ Module slice.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
-                                    M.get_function (| "core::slice::get_many_check_valid", [] |),
+                                    M.get_function (|
+                                      "core::slice::get_many_check_valid",
+                                      [ N ],
+                                      []
+                                    |),
                                     [
                                       indices;
                                       M.call_closure (|
@@ -10485,7 +10535,7 @@ Module slice.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic_fmt", [] |),
+                                M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -10543,7 +10593,7 @@ Module slice.
                                   BinOp.Wrap.rem (|
                                     M.read (| byte_offset |),
                                     M.call_closure (|
-                                      M.get_function (| "core::mem::size_of", [ T ] |),
+                                      M.get_function (| "core::mem::size_of", [], [ T ] |),
                                       []
                                     |)
                                   |),
@@ -10566,7 +10616,7 @@ Module slice.
                   M.alloc (|
                     BinOp.Wrap.div (|
                       M.read (| byte_offset |),
-                      M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
+                      M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
                     |)
                   |) in
                 M.match_operator (|
@@ -10657,7 +10707,7 @@ Module slice.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic_fmt", [] |),
+                                M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -10723,7 +10773,7 @@ Module slice.
                                   BinOp.Wrap.rem (|
                                     M.read (| byte_start |),
                                     M.call_closure (|
-                                      M.get_function (| "core::mem::size_of", [ T ] |),
+                                      M.get_function (| "core::mem::size_of", [], [ T ] |),
                                       []
                                     |)
                                   |),
@@ -10746,7 +10796,7 @@ Module slice.
                   M.alloc (|
                     BinOp.Wrap.div (|
                       M.read (| byte_start |),
-                      M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
+                      M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
                     |)
                   |) in
                 let~ end_ :=
@@ -10922,7 +10972,7 @@ Module slice.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::slice::raw::from_raw_parts", [ T ] |),
+                M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
@@ -11045,7 +11095,7 @@ Module slice.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::slice::raw::from_raw_parts_mut", [ T ] |),
+                M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
@@ -11229,7 +11279,7 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|

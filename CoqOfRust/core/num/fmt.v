@@ -109,6 +109,7 @@ Module num.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::num::fmt::Part" ]
                     |),
                     [ M.read (| self |) ]
@@ -119,6 +120,7 @@ Module num.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::num::fmt::Part" ]
                     |),
                     [ M.read (| other |) ]
@@ -251,7 +253,7 @@ Module num.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unreachable", [] |),
+                                    M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                     []
                                   |)
                                 |)

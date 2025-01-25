@@ -84,7 +84,7 @@ Module sync.
                 "new",
                 []
               |),
-              [ M.call_closure (| M.get_function (| "core::ptr::null_mut", [ T ] |), [] |) ]
+              [ M.call_closure (| M.get_function (| "core::ptr::null_mut", [], [ T ] |), [] |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -309,6 +309,7 @@ Module sync.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::sync::atomic::Ordering" ]
                     |),
                     [ M.read (| self |) ]
@@ -319,6 +320,7 @@ Module sync.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::sync::atomic::Ordering" ]
                     |),
                     [ M.read (| other |) ]
@@ -353,6 +355,7 @@ Module sync.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::sync::atomic::Ordering" ]
                     |),
                     [ M.read (| self |) ]
@@ -576,7 +579,7 @@ Module sync.
             let order := M.alloc (| order |) in
             BinOp.ne (|
               M.call_closure (|
-                M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "u8" ] |),
+                M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "u8" ] |),
                 [
                   (* MutToConstPointer *)
                   M.pointer_coercion
@@ -624,7 +627,7 @@ Module sync.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "u8" ] |),
+                    M.get_function (| "core::sync::atomic::atomic_store", [], [ Ty.path "u8" ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -720,6 +723,7 @@ Module sync.
                           M.call_closure (|
                             M.get_function (|
                               "core::sync::atomic::atomic_swap",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [
@@ -783,7 +787,11 @@ Module sync.
                       M.read (| new |);
                       M.read (| order |);
                       M.call_closure (|
-                        M.get_function (| "core::sync::atomic::strongest_failure_ordering", [] |),
+                        M.get_function (|
+                          "core::sync::atomic::strongest_failure_ordering",
+                          [],
+                          []
+                        |),
                         [ M.read (| order |) ]
                       |)
                     ]
@@ -936,7 +944,7 @@ Module sync.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -1030,7 +1038,7 @@ Module sync.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -1148,6 +1156,7 @@ Module sync.
                           M.call_closure (|
                             M.get_function (|
                               "core::sync::atomic::atomic_compare_exchange",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [
@@ -1286,6 +1295,7 @@ Module sync.
                       M.call_closure (|
                         M.get_function (|
                           "core::sync::atomic::atomic_compare_exchange_weak",
+                          [],
                           [ Ty.path "u8" ]
                         |),
                         [
@@ -1364,7 +1374,7 @@ Module sync.
             let order := M.alloc (| order |) in
             BinOp.ne (|
               M.call_closure (|
-                M.get_function (| "core::sync::atomic::atomic_and", [ Ty.path "u8" ] |),
+                M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "u8" ] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1468,7 +1478,7 @@ Module sync.
             let order := M.alloc (| order |) in
             BinOp.ne (|
               M.call_closure (|
-                M.get_function (| "core::sync::atomic::atomic_or", [ Ty.path "u8" ] |),
+                M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "u8" ] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1510,7 +1520,7 @@ Module sync.
             let order := M.alloc (| order |) in
             BinOp.ne (|
               M.call_closure (|
-                M.get_function (| "core::sync::atomic::atomic_xor", [ Ty.path "u8" ] |),
+                M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "u8" ] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1980,6 +1990,7 @@ Module sync.
             M.call_closure (|
               M.get_function (|
                 "core::sync::atomic::atomic_load",
+                [],
                 [ Ty.apply (Ty.path "*mut") [] [ T ] ]
               |),
               [
@@ -2034,6 +2045,7 @@ Module sync.
                   M.call_closure (|
                     M.get_function (|
                       "core::sync::atomic::atomic_store",
+                      [],
                       [ Ty.apply (Ty.path "*mut") [] [ T ] ]
                     |),
                     [
@@ -2085,6 +2097,7 @@ Module sync.
             M.call_closure (|
               M.get_function (|
                 "core::sync::atomic::atomic_swap",
+                [],
                 [ Ty.apply (Ty.path "*mut") [] [ T ] ]
               |),
               [
@@ -2153,7 +2166,11 @@ Module sync.
                       M.read (| new |);
                       M.read (| order |);
                       M.call_closure (|
-                        M.get_function (| "core::sync::atomic::strongest_failure_ordering", [] |),
+                        M.get_function (|
+                          "core::sync::atomic::strongest_failure_ordering",
+                          [],
+                          []
+                        |),
                         [ M.read (| order |) ]
                       |)
                     ]
@@ -2220,6 +2237,7 @@ Module sync.
             M.call_closure (|
               M.get_function (|
                 "core::sync::atomic::atomic_compare_exchange",
+                [],
                 [ Ty.apply (Ty.path "*mut") [] [ T ] ]
               |),
               [
@@ -2286,6 +2304,7 @@ Module sync.
             M.call_closure (|
               M.get_function (|
                 "core::sync::atomic::atomic_compare_exchange_weak",
+                [],
                 [ Ty.apply (Ty.path "*mut") [] [ T ] ]
               |),
               [
@@ -2495,7 +2514,7 @@ Module sync.
                   M.get_associated_function (| Ty.path "usize", "wrapping_mul", [] |),
                   [
                     M.read (| val |);
-                    M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
+                    M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
                   ]
                 |);
                 M.read (| order |)
@@ -2538,7 +2557,7 @@ Module sync.
                   M.get_associated_function (| Ty.path "usize", "wrapping_mul", [] |),
                   [
                     M.read (| val |);
-                    M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
+                    M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
                   ]
                 |);
                 M.read (| order |)
@@ -2576,6 +2595,7 @@ Module sync.
                 M.call_closure (|
                   M.get_function (|
                     "core::sync::atomic::atomic_add",
+                    [],
                     [ Ty.apply (Ty.path "*mut") [] [ T ] ]
                   |),
                   [
@@ -2597,7 +2617,7 @@ Module sync.
                       ]
                     |);
                     M.call_closure (|
-                      M.get_function (| "core::ptr::without_provenance_mut", [ T ] |),
+                      M.get_function (| "core::ptr::without_provenance_mut", [], [ T ] |),
                       [ M.read (| val |) ]
                     |);
                     M.read (| order |)
@@ -2637,6 +2657,7 @@ Module sync.
                 M.call_closure (|
                   M.get_function (|
                     "core::sync::atomic::atomic_sub",
+                    [],
                     [ Ty.apply (Ty.path "*mut") [] [ T ] ]
                   |),
                   [
@@ -2658,7 +2679,7 @@ Module sync.
                       ]
                     |);
                     M.call_closure (|
-                      M.get_function (| "core::ptr::without_provenance_mut", [ T ] |),
+                      M.get_function (| "core::ptr::without_provenance_mut", [], [ T ] |),
                       [ M.read (| val |) ]
                     |);
                     M.read (| order |)
@@ -2693,6 +2714,7 @@ Module sync.
                 M.call_closure (|
                   M.get_function (|
                     "core::sync::atomic::atomic_or",
+                    [],
                     [ Ty.apply (Ty.path "*mut") [] [ T ] ]
                   |),
                   [
@@ -2714,7 +2736,7 @@ Module sync.
                       ]
                     |);
                     M.call_closure (|
-                      M.get_function (| "core::ptr::without_provenance_mut", [ T ] |),
+                      M.get_function (| "core::ptr::without_provenance_mut", [], [ T ] |),
                       [ M.read (| val |) ]
                     |);
                     M.read (| order |)
@@ -2749,6 +2771,7 @@ Module sync.
                 M.call_closure (|
                   M.get_function (|
                     "core::sync::atomic::atomic_and",
+                    [],
                     [ Ty.apply (Ty.path "*mut") [] [ T ] ]
                   |),
                   [
@@ -2770,7 +2793,7 @@ Module sync.
                       ]
                     |);
                     M.call_closure (|
-                      M.get_function (| "core::ptr::without_provenance_mut", [ T ] |),
+                      M.get_function (| "core::ptr::without_provenance_mut", [], [ T ] |),
                       [ M.read (| val |) ]
                     |);
                     M.read (| order |)
@@ -2805,6 +2828,7 @@ Module sync.
                 M.call_closure (|
                   M.get_function (|
                     "core::sync::atomic::atomic_xor",
+                    [],
                     [ Ty.apply (Ty.path "*mut") [] [ T ] ]
                   |),
                   [
@@ -2826,7 +2850,7 @@ Module sync.
                       ]
                     |);
                     M.call_closure (|
-                      M.get_function (| "core::ptr::without_provenance_mut", [ T ] |),
+                      M.get_function (| "core::ptr::without_provenance_mut", [], [ T ] |),
                       [ M.read (| val |) ]
                     |);
                     M.read (| order |)
@@ -3276,7 +3300,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "i8" ] |),
+              M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "i8" ] |),
               [
                 (* MutToConstPointer *)
                 M.pointer_coercion
@@ -3319,7 +3343,7 @@ Module sync.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "i8" ] |),
+                    M.get_function (| "core::sync::atomic::atomic_store", [], [ Ty.path "i8" ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -3361,7 +3385,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_swap", [ Ty.path "i8" ] |),
+              M.get_function (| "core::sync::atomic::atomic_swap", [], [ Ty.path "i8" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -3423,7 +3447,11 @@ Module sync.
                       M.read (| new |);
                       M.read (| order |);
                       M.call_closure (|
-                        M.get_function (| "core::sync::atomic::strongest_failure_ordering", [] |),
+                        M.get_function (|
+                          "core::sync::atomic::strongest_failure_ordering",
+                          [],
+                          []
+                        |),
                         [ M.read (| order |) ]
                       |)
                     ]
@@ -3479,7 +3507,11 @@ Module sync.
             let success := M.alloc (| success |) in
             let failure := M.alloc (| failure |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_compare_exchange", [ Ty.path "i8" ] |),
+              M.get_function (|
+                "core::sync::atomic::atomic_compare_exchange",
+                [],
+                [ Ty.path "i8" ]
+              |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -3531,6 +3563,7 @@ Module sync.
             M.call_closure (|
               M.get_function (|
                 "core::sync::atomic::atomic_compare_exchange_weak",
+                [],
                 [ Ty.path "i8" ]
               |),
               [
@@ -3574,7 +3607,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_add", [ Ty.path "i8" ] |),
+              M.get_function (| "core::sync::atomic::atomic_add", [], [ Ty.path "i8" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -3613,7 +3646,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_sub", [ Ty.path "i8" ] |),
+              M.get_function (| "core::sync::atomic::atomic_sub", [], [ Ty.path "i8" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -3652,7 +3685,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_and", [ Ty.path "i8" ] |),
+              M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "i8" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -3691,7 +3724,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_nand", [ Ty.path "i8" ] |),
+              M.get_function (| "core::sync::atomic::atomic_nand", [], [ Ty.path "i8" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -3730,7 +3763,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_or", [ Ty.path "i8" ] |),
+              M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "i8" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -3769,7 +3802,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_xor", [ Ty.path "i8" ] |),
+              M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "i8" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -3943,7 +3976,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_max", [ Ty.path "i8" ] |),
+              M.get_function (| "core::sync::atomic::atomic_max", [], [ Ty.path "i8" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -3982,7 +4015,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_min", [ Ty.path "i8" ] |),
+              M.get_function (| "core::sync::atomic::atomic_min", [], [ Ty.path "i8" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4373,7 +4406,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "u8" ] |),
+              M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "u8" ] |),
               [
                 (* MutToConstPointer *)
                 M.pointer_coercion
@@ -4416,7 +4449,7 @@ Module sync.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "u8" ] |),
+                    M.get_function (| "core::sync::atomic::atomic_store", [], [ Ty.path "u8" ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -4458,7 +4491,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_swap", [ Ty.path "u8" ] |),
+              M.get_function (| "core::sync::atomic::atomic_swap", [], [ Ty.path "u8" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4520,7 +4553,11 @@ Module sync.
                       M.read (| new |);
                       M.read (| order |);
                       M.call_closure (|
-                        M.get_function (| "core::sync::atomic::strongest_failure_ordering", [] |),
+                        M.get_function (|
+                          "core::sync::atomic::strongest_failure_ordering",
+                          [],
+                          []
+                        |),
                         [ M.read (| order |) ]
                       |)
                     ]
@@ -4576,7 +4613,11 @@ Module sync.
             let success := M.alloc (| success |) in
             let failure := M.alloc (| failure |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_compare_exchange", [ Ty.path "u8" ] |),
+              M.get_function (|
+                "core::sync::atomic::atomic_compare_exchange",
+                [],
+                [ Ty.path "u8" ]
+              |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4628,6 +4669,7 @@ Module sync.
             M.call_closure (|
               M.get_function (|
                 "core::sync::atomic::atomic_compare_exchange_weak",
+                [],
                 [ Ty.path "u8" ]
               |),
               [
@@ -4671,7 +4713,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_add", [ Ty.path "u8" ] |),
+              M.get_function (| "core::sync::atomic::atomic_add", [], [ Ty.path "u8" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4710,7 +4752,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_sub", [ Ty.path "u8" ] |),
+              M.get_function (| "core::sync::atomic::atomic_sub", [], [ Ty.path "u8" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4749,7 +4791,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_and", [ Ty.path "u8" ] |),
+              M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "u8" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4788,7 +4830,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_nand", [ Ty.path "u8" ] |),
+              M.get_function (| "core::sync::atomic::atomic_nand", [], [ Ty.path "u8" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4827,7 +4869,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_or", [ Ty.path "u8" ] |),
+              M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "u8" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4866,7 +4908,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_xor", [ Ty.path "u8" ] |),
+              M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "u8" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5040,7 +5082,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_umax", [ Ty.path "u8" ] |),
+              M.get_function (| "core::sync::atomic::atomic_umax", [], [ Ty.path "u8" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5079,7 +5121,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_umin", [ Ty.path "u8" ] |),
+              M.get_function (| "core::sync::atomic::atomic_umin", [], [ Ty.path "u8" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5470,7 +5512,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "i16" ] |),
+              M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "i16" ] |),
               [
                 (* MutToConstPointer *)
                 M.pointer_coercion
@@ -5513,7 +5555,7 @@ Module sync.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "i16" ] |),
+                    M.get_function (| "core::sync::atomic::atomic_store", [], [ Ty.path "i16" ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -5555,7 +5597,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_swap", [ Ty.path "i16" ] |),
+              M.get_function (| "core::sync::atomic::atomic_swap", [], [ Ty.path "i16" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5617,7 +5659,11 @@ Module sync.
                       M.read (| new |);
                       M.read (| order |);
                       M.call_closure (|
-                        M.get_function (| "core::sync::atomic::strongest_failure_ordering", [] |),
+                        M.get_function (|
+                          "core::sync::atomic::strongest_failure_ordering",
+                          [],
+                          []
+                        |),
                         [ M.read (| order |) ]
                       |)
                     ]
@@ -5673,7 +5719,11 @@ Module sync.
             let success := M.alloc (| success |) in
             let failure := M.alloc (| failure |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_compare_exchange", [ Ty.path "i16" ] |),
+              M.get_function (|
+                "core::sync::atomic::atomic_compare_exchange",
+                [],
+                [ Ty.path "i16" ]
+              |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5725,6 +5775,7 @@ Module sync.
             M.call_closure (|
               M.get_function (|
                 "core::sync::atomic::atomic_compare_exchange_weak",
+                [],
                 [ Ty.path "i16" ]
               |),
               [
@@ -5768,7 +5819,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_add", [ Ty.path "i16" ] |),
+              M.get_function (| "core::sync::atomic::atomic_add", [], [ Ty.path "i16" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5807,7 +5858,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_sub", [ Ty.path "i16" ] |),
+              M.get_function (| "core::sync::atomic::atomic_sub", [], [ Ty.path "i16" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5846,7 +5897,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_and", [ Ty.path "i16" ] |),
+              M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "i16" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5885,7 +5936,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_nand", [ Ty.path "i16" ] |),
+              M.get_function (| "core::sync::atomic::atomic_nand", [], [ Ty.path "i16" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5924,7 +5975,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_or", [ Ty.path "i16" ] |),
+              M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "i16" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5963,7 +6014,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_xor", [ Ty.path "i16" ] |),
+              M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "i16" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -6137,7 +6188,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_max", [ Ty.path "i16" ] |),
+              M.get_function (| "core::sync::atomic::atomic_max", [], [ Ty.path "i16" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -6176,7 +6227,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_min", [ Ty.path "i16" ] |),
+              M.get_function (| "core::sync::atomic::atomic_min", [], [ Ty.path "i16" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -6567,7 +6618,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "u16" ] |),
+              M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "u16" ] |),
               [
                 (* MutToConstPointer *)
                 M.pointer_coercion
@@ -6610,7 +6661,7 @@ Module sync.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "u16" ] |),
+                    M.get_function (| "core::sync::atomic::atomic_store", [], [ Ty.path "u16" ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -6652,7 +6703,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_swap", [ Ty.path "u16" ] |),
+              M.get_function (| "core::sync::atomic::atomic_swap", [], [ Ty.path "u16" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -6714,7 +6765,11 @@ Module sync.
                       M.read (| new |);
                       M.read (| order |);
                       M.call_closure (|
-                        M.get_function (| "core::sync::atomic::strongest_failure_ordering", [] |),
+                        M.get_function (|
+                          "core::sync::atomic::strongest_failure_ordering",
+                          [],
+                          []
+                        |),
                         [ M.read (| order |) ]
                       |)
                     ]
@@ -6770,7 +6825,11 @@ Module sync.
             let success := M.alloc (| success |) in
             let failure := M.alloc (| failure |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_compare_exchange", [ Ty.path "u16" ] |),
+              M.get_function (|
+                "core::sync::atomic::atomic_compare_exchange",
+                [],
+                [ Ty.path "u16" ]
+              |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -6822,6 +6881,7 @@ Module sync.
             M.call_closure (|
               M.get_function (|
                 "core::sync::atomic::atomic_compare_exchange_weak",
+                [],
                 [ Ty.path "u16" ]
               |),
               [
@@ -6865,7 +6925,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_add", [ Ty.path "u16" ] |),
+              M.get_function (| "core::sync::atomic::atomic_add", [], [ Ty.path "u16" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -6904,7 +6964,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_sub", [ Ty.path "u16" ] |),
+              M.get_function (| "core::sync::atomic::atomic_sub", [], [ Ty.path "u16" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -6943,7 +7003,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_and", [ Ty.path "u16" ] |),
+              M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "u16" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -6982,7 +7042,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_nand", [ Ty.path "u16" ] |),
+              M.get_function (| "core::sync::atomic::atomic_nand", [], [ Ty.path "u16" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -7021,7 +7081,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_or", [ Ty.path "u16" ] |),
+              M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "u16" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -7060,7 +7120,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_xor", [ Ty.path "u16" ] |),
+              M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "u16" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -7234,7 +7294,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_umax", [ Ty.path "u16" ] |),
+              M.get_function (| "core::sync::atomic::atomic_umax", [], [ Ty.path "u16" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -7273,7 +7333,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_umin", [ Ty.path "u16" ] |),
+              M.get_function (| "core::sync::atomic::atomic_umin", [], [ Ty.path "u16" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -7664,7 +7724,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "i32" ] |),
+              M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "i32" ] |),
               [
                 (* MutToConstPointer *)
                 M.pointer_coercion
@@ -7707,7 +7767,7 @@ Module sync.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "i32" ] |),
+                    M.get_function (| "core::sync::atomic::atomic_store", [], [ Ty.path "i32" ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -7749,7 +7809,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_swap", [ Ty.path "i32" ] |),
+              M.get_function (| "core::sync::atomic::atomic_swap", [], [ Ty.path "i32" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -7811,7 +7871,11 @@ Module sync.
                       M.read (| new |);
                       M.read (| order |);
                       M.call_closure (|
-                        M.get_function (| "core::sync::atomic::strongest_failure_ordering", [] |),
+                        M.get_function (|
+                          "core::sync::atomic::strongest_failure_ordering",
+                          [],
+                          []
+                        |),
                         [ M.read (| order |) ]
                       |)
                     ]
@@ -7867,7 +7931,11 @@ Module sync.
             let success := M.alloc (| success |) in
             let failure := M.alloc (| failure |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_compare_exchange", [ Ty.path "i32" ] |),
+              M.get_function (|
+                "core::sync::atomic::atomic_compare_exchange",
+                [],
+                [ Ty.path "i32" ]
+              |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -7919,6 +7987,7 @@ Module sync.
             M.call_closure (|
               M.get_function (|
                 "core::sync::atomic::atomic_compare_exchange_weak",
+                [],
                 [ Ty.path "i32" ]
               |),
               [
@@ -7962,7 +8031,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_add", [ Ty.path "i32" ] |),
+              M.get_function (| "core::sync::atomic::atomic_add", [], [ Ty.path "i32" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -8001,7 +8070,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_sub", [ Ty.path "i32" ] |),
+              M.get_function (| "core::sync::atomic::atomic_sub", [], [ Ty.path "i32" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -8040,7 +8109,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_and", [ Ty.path "i32" ] |),
+              M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "i32" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -8079,7 +8148,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_nand", [ Ty.path "i32" ] |),
+              M.get_function (| "core::sync::atomic::atomic_nand", [], [ Ty.path "i32" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -8118,7 +8187,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_or", [ Ty.path "i32" ] |),
+              M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "i32" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -8157,7 +8226,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_xor", [ Ty.path "i32" ] |),
+              M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "i32" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -8331,7 +8400,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_max", [ Ty.path "i32" ] |),
+              M.get_function (| "core::sync::atomic::atomic_max", [], [ Ty.path "i32" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -8370,7 +8439,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_min", [ Ty.path "i32" ] |),
+              M.get_function (| "core::sync::atomic::atomic_min", [], [ Ty.path "i32" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -8761,7 +8830,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "u32" ] |),
+              M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "u32" ] |),
               [
                 (* MutToConstPointer *)
                 M.pointer_coercion
@@ -8804,7 +8873,7 @@ Module sync.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "u32" ] |),
+                    M.get_function (| "core::sync::atomic::atomic_store", [], [ Ty.path "u32" ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -8846,7 +8915,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_swap", [ Ty.path "u32" ] |),
+              M.get_function (| "core::sync::atomic::atomic_swap", [], [ Ty.path "u32" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -8908,7 +8977,11 @@ Module sync.
                       M.read (| new |);
                       M.read (| order |);
                       M.call_closure (|
-                        M.get_function (| "core::sync::atomic::strongest_failure_ordering", [] |),
+                        M.get_function (|
+                          "core::sync::atomic::strongest_failure_ordering",
+                          [],
+                          []
+                        |),
                         [ M.read (| order |) ]
                       |)
                     ]
@@ -8964,7 +9037,11 @@ Module sync.
             let success := M.alloc (| success |) in
             let failure := M.alloc (| failure |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_compare_exchange", [ Ty.path "u32" ] |),
+              M.get_function (|
+                "core::sync::atomic::atomic_compare_exchange",
+                [],
+                [ Ty.path "u32" ]
+              |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -9016,6 +9093,7 @@ Module sync.
             M.call_closure (|
               M.get_function (|
                 "core::sync::atomic::atomic_compare_exchange_weak",
+                [],
                 [ Ty.path "u32" ]
               |),
               [
@@ -9059,7 +9137,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_add", [ Ty.path "u32" ] |),
+              M.get_function (| "core::sync::atomic::atomic_add", [], [ Ty.path "u32" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -9098,7 +9176,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_sub", [ Ty.path "u32" ] |),
+              M.get_function (| "core::sync::atomic::atomic_sub", [], [ Ty.path "u32" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -9137,7 +9215,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_and", [ Ty.path "u32" ] |),
+              M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "u32" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -9176,7 +9254,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_nand", [ Ty.path "u32" ] |),
+              M.get_function (| "core::sync::atomic::atomic_nand", [], [ Ty.path "u32" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -9215,7 +9293,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_or", [ Ty.path "u32" ] |),
+              M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "u32" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -9254,7 +9332,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_xor", [ Ty.path "u32" ] |),
+              M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "u32" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -9428,7 +9506,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_umax", [ Ty.path "u32" ] |),
+              M.get_function (| "core::sync::atomic::atomic_umax", [], [ Ty.path "u32" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -9467,7 +9545,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_umin", [ Ty.path "u32" ] |),
+              M.get_function (| "core::sync::atomic::atomic_umin", [], [ Ty.path "u32" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -9858,7 +9936,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "i64" ] |),
+              M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "i64" ] |),
               [
                 (* MutToConstPointer *)
                 M.pointer_coercion
@@ -9901,7 +9979,7 @@ Module sync.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "i64" ] |),
+                    M.get_function (| "core::sync::atomic::atomic_store", [], [ Ty.path "i64" ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -9943,7 +10021,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_swap", [ Ty.path "i64" ] |),
+              M.get_function (| "core::sync::atomic::atomic_swap", [], [ Ty.path "i64" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -10005,7 +10083,11 @@ Module sync.
                       M.read (| new |);
                       M.read (| order |);
                       M.call_closure (|
-                        M.get_function (| "core::sync::atomic::strongest_failure_ordering", [] |),
+                        M.get_function (|
+                          "core::sync::atomic::strongest_failure_ordering",
+                          [],
+                          []
+                        |),
                         [ M.read (| order |) ]
                       |)
                     ]
@@ -10061,7 +10143,11 @@ Module sync.
             let success := M.alloc (| success |) in
             let failure := M.alloc (| failure |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_compare_exchange", [ Ty.path "i64" ] |),
+              M.get_function (|
+                "core::sync::atomic::atomic_compare_exchange",
+                [],
+                [ Ty.path "i64" ]
+              |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -10113,6 +10199,7 @@ Module sync.
             M.call_closure (|
               M.get_function (|
                 "core::sync::atomic::atomic_compare_exchange_weak",
+                [],
                 [ Ty.path "i64" ]
               |),
               [
@@ -10156,7 +10243,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_add", [ Ty.path "i64" ] |),
+              M.get_function (| "core::sync::atomic::atomic_add", [], [ Ty.path "i64" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -10195,7 +10282,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_sub", [ Ty.path "i64" ] |),
+              M.get_function (| "core::sync::atomic::atomic_sub", [], [ Ty.path "i64" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -10234,7 +10321,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_and", [ Ty.path "i64" ] |),
+              M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "i64" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -10273,7 +10360,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_nand", [ Ty.path "i64" ] |),
+              M.get_function (| "core::sync::atomic::atomic_nand", [], [ Ty.path "i64" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -10312,7 +10399,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_or", [ Ty.path "i64" ] |),
+              M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "i64" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -10351,7 +10438,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_xor", [ Ty.path "i64" ] |),
+              M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "i64" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -10525,7 +10612,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_max", [ Ty.path "i64" ] |),
+              M.get_function (| "core::sync::atomic::atomic_max", [], [ Ty.path "i64" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -10564,7 +10651,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_min", [ Ty.path "i64" ] |),
+              M.get_function (| "core::sync::atomic::atomic_min", [], [ Ty.path "i64" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -10955,7 +11042,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "u64" ] |),
+              M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "u64" ] |),
               [
                 (* MutToConstPointer *)
                 M.pointer_coercion
@@ -10998,7 +11085,7 @@ Module sync.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "u64" ] |),
+                    M.get_function (| "core::sync::atomic::atomic_store", [], [ Ty.path "u64" ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -11040,7 +11127,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_swap", [ Ty.path "u64" ] |),
+              M.get_function (| "core::sync::atomic::atomic_swap", [], [ Ty.path "u64" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -11102,7 +11189,11 @@ Module sync.
                       M.read (| new |);
                       M.read (| order |);
                       M.call_closure (|
-                        M.get_function (| "core::sync::atomic::strongest_failure_ordering", [] |),
+                        M.get_function (|
+                          "core::sync::atomic::strongest_failure_ordering",
+                          [],
+                          []
+                        |),
                         [ M.read (| order |) ]
                       |)
                     ]
@@ -11158,7 +11249,11 @@ Module sync.
             let success := M.alloc (| success |) in
             let failure := M.alloc (| failure |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_compare_exchange", [ Ty.path "u64" ] |),
+              M.get_function (|
+                "core::sync::atomic::atomic_compare_exchange",
+                [],
+                [ Ty.path "u64" ]
+              |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -11210,6 +11305,7 @@ Module sync.
             M.call_closure (|
               M.get_function (|
                 "core::sync::atomic::atomic_compare_exchange_weak",
+                [],
                 [ Ty.path "u64" ]
               |),
               [
@@ -11253,7 +11349,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_add", [ Ty.path "u64" ] |),
+              M.get_function (| "core::sync::atomic::atomic_add", [], [ Ty.path "u64" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -11292,7 +11388,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_sub", [ Ty.path "u64" ] |),
+              M.get_function (| "core::sync::atomic::atomic_sub", [], [ Ty.path "u64" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -11331,7 +11427,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_and", [ Ty.path "u64" ] |),
+              M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "u64" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -11370,7 +11466,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_nand", [ Ty.path "u64" ] |),
+              M.get_function (| "core::sync::atomic::atomic_nand", [], [ Ty.path "u64" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -11409,7 +11505,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_or", [ Ty.path "u64" ] |),
+              M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "u64" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -11448,7 +11544,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_xor", [ Ty.path "u64" ] |),
+              M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "u64" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -11622,7 +11718,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_umax", [ Ty.path "u64" ] |),
+              M.get_function (| "core::sync::atomic::atomic_umax", [], [ Ty.path "u64" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -11661,7 +11757,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_umin", [ Ty.path "u64" ] |),
+              M.get_function (| "core::sync::atomic::atomic_umin", [], [ Ty.path "u64" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -12052,7 +12148,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "isize" ] |),
+              M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "isize" ] |),
               [
                 (* MutToConstPointer *)
                 M.pointer_coercion
@@ -12095,7 +12191,11 @@ Module sync.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "isize" ] |),
+                    M.get_function (|
+                      "core::sync::atomic::atomic_store",
+                      [],
+                      [ Ty.path "isize" ]
+                    |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -12137,7 +12237,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_swap", [ Ty.path "isize" ] |),
+              M.get_function (| "core::sync::atomic::atomic_swap", [], [ Ty.path "isize" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -12199,7 +12299,11 @@ Module sync.
                       M.read (| new |);
                       M.read (| order |);
                       M.call_closure (|
-                        M.get_function (| "core::sync::atomic::strongest_failure_ordering", [] |),
+                        M.get_function (|
+                          "core::sync::atomic::strongest_failure_ordering",
+                          [],
+                          []
+                        |),
                         [ M.read (| order |) ]
                       |)
                     ]
@@ -12257,6 +12361,7 @@ Module sync.
             M.call_closure (|
               M.get_function (|
                 "core::sync::atomic::atomic_compare_exchange",
+                [],
                 [ Ty.path "isize" ]
               |),
               [
@@ -12310,6 +12415,7 @@ Module sync.
             M.call_closure (|
               M.get_function (|
                 "core::sync::atomic::atomic_compare_exchange_weak",
+                [],
                 [ Ty.path "isize" ]
               |),
               [
@@ -12353,7 +12459,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_add", [ Ty.path "isize" ] |),
+              M.get_function (| "core::sync::atomic::atomic_add", [], [ Ty.path "isize" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -12392,7 +12498,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_sub", [ Ty.path "isize" ] |),
+              M.get_function (| "core::sync::atomic::atomic_sub", [], [ Ty.path "isize" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -12431,7 +12537,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_and", [ Ty.path "isize" ] |),
+              M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "isize" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -12470,7 +12576,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_nand", [ Ty.path "isize" ] |),
+              M.get_function (| "core::sync::atomic::atomic_nand", [], [ Ty.path "isize" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -12509,7 +12615,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_or", [ Ty.path "isize" ] |),
+              M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "isize" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -12548,7 +12654,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_xor", [ Ty.path "isize" ] |),
+              M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "isize" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -12722,7 +12828,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_max", [ Ty.path "isize" ] |),
+              M.get_function (| "core::sync::atomic::atomic_max", [], [ Ty.path "isize" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -12761,7 +12867,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_min", [ Ty.path "isize" ] |),
+              M.get_function (| "core::sync::atomic::atomic_min", [], [ Ty.path "isize" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -13152,7 +13258,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "usize" ] |),
+              M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "usize" ] |),
               [
                 (* MutToConstPointer *)
                 M.pointer_coercion
@@ -13195,7 +13301,11 @@ Module sync.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "usize" ] |),
+                    M.get_function (|
+                      "core::sync::atomic::atomic_store",
+                      [],
+                      [ Ty.path "usize" ]
+                    |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -13237,7 +13347,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_swap", [ Ty.path "usize" ] |),
+              M.get_function (| "core::sync::atomic::atomic_swap", [], [ Ty.path "usize" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -13299,7 +13409,11 @@ Module sync.
                       M.read (| new |);
                       M.read (| order |);
                       M.call_closure (|
-                        M.get_function (| "core::sync::atomic::strongest_failure_ordering", [] |),
+                        M.get_function (|
+                          "core::sync::atomic::strongest_failure_ordering",
+                          [],
+                          []
+                        |),
                         [ M.read (| order |) ]
                       |)
                     ]
@@ -13357,6 +13471,7 @@ Module sync.
             M.call_closure (|
               M.get_function (|
                 "core::sync::atomic::atomic_compare_exchange",
+                [],
                 [ Ty.path "usize" ]
               |),
               [
@@ -13410,6 +13525,7 @@ Module sync.
             M.call_closure (|
               M.get_function (|
                 "core::sync::atomic::atomic_compare_exchange_weak",
+                [],
                 [ Ty.path "usize" ]
               |),
               [
@@ -13453,7 +13569,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_add", [ Ty.path "usize" ] |),
+              M.get_function (| "core::sync::atomic::atomic_add", [], [ Ty.path "usize" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -13492,7 +13608,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_sub", [ Ty.path "usize" ] |),
+              M.get_function (| "core::sync::atomic::atomic_sub", [], [ Ty.path "usize" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -13531,7 +13647,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_and", [ Ty.path "usize" ] |),
+              M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "usize" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -13570,7 +13686,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_nand", [ Ty.path "usize" ] |),
+              M.get_function (| "core::sync::atomic::atomic_nand", [], [ Ty.path "usize" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -13609,7 +13725,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_or", [ Ty.path "usize" ] |),
+              M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "usize" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -13648,7 +13764,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_xor", [ Ty.path "usize" ] |),
+              M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "usize" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -13822,7 +13938,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_umax", [ Ty.path "usize" ] |),
+              M.get_function (| "core::sync::atomic::atomic_umax", [], [ Ty.path "usize" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -13861,7 +13977,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.call_closure (|
-              M.get_function (| "core::sync::atomic::atomic_umin", [ Ty.path "usize" ] |),
+              M.get_function (| "core::sync::atomic::atomic_umin", [], [ Ty.path "usize" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -14019,7 +14135,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_store_relaxed", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_store_relaxed", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -14028,7 +14144,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_store_release", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_store_release", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -14037,7 +14153,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_store_seqcst", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_store_seqcst", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -14047,7 +14163,7 @@ Module sync.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -14076,7 +14192,7 @@ Module sync.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -14137,7 +14253,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_load_relaxed", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_load_relaxed", [], [ T ] |),
                         [ M.read (| dst |) ]
                       |)
                     |)));
@@ -14146,7 +14262,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_load_acquire", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_load_acquire", [], [ T ] |),
                         [ M.read (| dst |) ]
                       |)
                     |)));
@@ -14155,7 +14271,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_load_seqcst", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_load_seqcst", [], [ T ] |),
                         [ M.read (| dst |) ]
                       |)
                     |)));
@@ -14165,7 +14281,7 @@ Module sync.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -14194,7 +14310,7 @@ Module sync.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -14256,7 +14372,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_xchg_relaxed", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_xchg_relaxed", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -14265,7 +14381,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_xchg_acquire", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_xchg_acquire", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -14274,7 +14390,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_xchg_release", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_xchg_release", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -14283,7 +14399,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_xchg_acqrel", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_xchg_acqrel", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -14292,7 +14408,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_xchg_seqcst", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_xchg_seqcst", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)))
@@ -14334,7 +14450,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_xadd_relaxed", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_xadd_relaxed", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -14343,7 +14459,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_xadd_acquire", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_xadd_acquire", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -14352,7 +14468,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_xadd_release", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_xadd_release", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -14361,7 +14477,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_xadd_acqrel", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_xadd_acqrel", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -14370,7 +14486,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_xadd_seqcst", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_xadd_seqcst", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)))
@@ -14412,7 +14528,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_xsub_relaxed", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_xsub_relaxed", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -14421,7 +14537,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_xsub_acquire", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_xsub_acquire", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -14430,7 +14546,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_xsub_release", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_xsub_release", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -14439,7 +14555,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_xsub_acqrel", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_xsub_acqrel", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -14448,7 +14564,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_xsub_seqcst", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_xsub_seqcst", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)))
@@ -14519,6 +14635,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchg_relaxed_relaxed",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -14536,6 +14653,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchg_relaxed_acquire",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -14553,6 +14671,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchg_relaxed_seqcst",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -14570,6 +14689,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchg_acquire_relaxed",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -14587,6 +14707,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchg_acquire_acquire",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -14604,6 +14725,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchg_acquire_seqcst",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -14621,6 +14743,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchg_release_relaxed",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -14638,6 +14761,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchg_release_acquire",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -14655,6 +14779,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchg_release_seqcst",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -14672,6 +14797,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchg_acqrel_relaxed",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -14689,6 +14815,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchg_acqrel_acquire",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -14706,6 +14833,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchg_acqrel_seqcst",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -14723,6 +14851,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchg_seqcst_relaxed",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -14740,6 +14869,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchg_seqcst_acquire",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -14757,6 +14887,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchg_seqcst_seqcst",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -14771,7 +14902,7 @@ Module sync.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -14804,7 +14935,7 @@ Module sync.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -14927,6 +15058,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchgweak_relaxed_relaxed",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -14944,6 +15076,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchgweak_relaxed_acquire",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -14961,6 +15094,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchgweak_relaxed_seqcst",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -14978,6 +15112,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchgweak_acquire_relaxed",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -14995,6 +15130,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchgweak_acquire_acquire",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -15012,6 +15148,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchgweak_acquire_seqcst",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -15029,6 +15166,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchgweak_release_relaxed",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -15046,6 +15184,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchgweak_release_acquire",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -15063,6 +15202,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchgweak_release_seqcst",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -15080,6 +15220,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchgweak_acqrel_relaxed",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -15097,6 +15238,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchgweak_acqrel_acquire",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -15114,6 +15256,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchgweak_acqrel_seqcst",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -15131,6 +15274,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchgweak_seqcst_relaxed",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -15148,6 +15292,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchgweak_seqcst_acquire",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -15165,6 +15310,7 @@ Module sync.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::atomic_cxchgweak_seqcst_seqcst",
+                            [],
                             [ T ]
                           |),
                           [ M.read (| dst |); M.read (| old |); M.read (| new |) ]
@@ -15179,7 +15325,7 @@ Module sync.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -15212,7 +15358,7 @@ Module sync.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -15302,7 +15448,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_and_relaxed", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_and_relaxed", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15311,7 +15457,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_and_acquire", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_and_acquire", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15320,7 +15466,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_and_release", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_and_release", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15329,7 +15475,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_and_acqrel", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_and_acqrel", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15338,7 +15484,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_and_seqcst", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_and_seqcst", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)))
@@ -15380,7 +15526,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_nand_relaxed", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_nand_relaxed", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15389,7 +15535,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_nand_acquire", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_nand_acquire", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15398,7 +15544,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_nand_release", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_nand_release", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15407,7 +15553,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_nand_acqrel", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_nand_acqrel", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15416,7 +15562,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_nand_seqcst", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_nand_seqcst", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)))
@@ -15458,7 +15604,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_or_seqcst", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_or_seqcst", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15467,7 +15613,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_or_acquire", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_or_acquire", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15476,7 +15622,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_or_release", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_or_release", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15485,7 +15631,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_or_acqrel", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_or_acqrel", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15494,7 +15640,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_or_relaxed", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_or_relaxed", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)))
@@ -15536,7 +15682,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_xor_seqcst", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_xor_seqcst", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15545,7 +15691,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_xor_acquire", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_xor_acquire", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15554,7 +15700,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_xor_release", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_xor_release", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15563,7 +15709,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_xor_acqrel", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_xor_acqrel", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15572,7 +15718,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_xor_relaxed", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_xor_relaxed", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)))
@@ -15614,7 +15760,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_max_relaxed", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_max_relaxed", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15623,7 +15769,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_max_acquire", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_max_acquire", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15632,7 +15778,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_max_release", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_max_release", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15641,7 +15787,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_max_acqrel", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_max_acqrel", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15650,7 +15796,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_max_seqcst", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_max_seqcst", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)))
@@ -15692,7 +15838,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_min_relaxed", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_min_relaxed", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15701,7 +15847,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_min_acquire", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_min_acquire", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15710,7 +15856,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_min_release", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_min_release", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15719,7 +15865,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_min_acqrel", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_min_acqrel", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15728,7 +15874,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_min_seqcst", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_min_seqcst", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)))
@@ -15770,7 +15916,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_umax_relaxed", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_umax_relaxed", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15779,7 +15925,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_umax_acquire", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_umax_acquire", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15788,7 +15934,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_umax_release", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_umax_release", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15797,7 +15943,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_umax_acqrel", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_umax_acqrel", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15806,7 +15952,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_umax_seqcst", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_umax_seqcst", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)))
@@ -15848,7 +15994,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_umin_relaxed", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_umin_relaxed", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15857,7 +16003,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_umin_acquire", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_umin_acquire", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15866,7 +16012,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_umin_release", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_umin_release", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15875,7 +16021,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_umin_acqrel", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_umin_acqrel", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)));
@@ -15884,7 +16030,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_umin_seqcst", [ T ] |),
+                        M.get_function (| "core::intrinsics::atomic_umin_seqcst", [], [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
                       |)
                     |)))
@@ -15924,7 +16070,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_fence_acquire", [] |),
+                        M.get_function (| "core::intrinsics::atomic_fence_acquire", [], [] |),
                         []
                       |)
                     |)));
@@ -15933,7 +16079,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_fence_release", [] |),
+                        M.get_function (| "core::intrinsics::atomic_fence_release", [], [] |),
                         []
                       |)
                     |)));
@@ -15942,7 +16088,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_fence_acqrel", [] |),
+                        M.get_function (| "core::intrinsics::atomic_fence_acqrel", [], [] |),
                         []
                       |)
                     |)));
@@ -15951,7 +16097,7 @@ Module sync.
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::atomic_fence_seqcst", [] |),
+                        M.get_function (| "core::intrinsics::atomic_fence_seqcst", [], [] |),
                         []
                       |)
                     |)));
@@ -15961,7 +16107,7 @@ Module sync.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -16022,6 +16168,7 @@ Module sync.
                       M.call_closure (|
                         M.get_function (|
                           "core::intrinsics::atomic_singlethreadfence_acquire",
+                          [],
                           []
                         |),
                         []
@@ -16034,6 +16181,7 @@ Module sync.
                       M.call_closure (|
                         M.get_function (|
                           "core::intrinsics::atomic_singlethreadfence_release",
+                          [],
                           []
                         |),
                         []
@@ -16046,6 +16194,7 @@ Module sync.
                       M.call_closure (|
                         M.get_function (|
                           "core::intrinsics::atomic_singlethreadfence_acqrel",
+                          [],
                           []
                         |),
                         []
@@ -16058,6 +16207,7 @@ Module sync.
                       M.call_closure (|
                         M.get_function (|
                           "core::intrinsics::atomic_singlethreadfence_seqcst",
+                          [],
                           []
                         |),
                         []
@@ -16069,7 +16219,7 @@ Module sync.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -16260,7 +16410,8 @@ Module sync.
     Definition spin_loop_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [] =>
-        ltac:(M.monadic (M.call_closure (| M.get_function (| "core::hint::spin_loop", [] |), [] |)))
+        ltac:(M.monadic
+          (M.call_closure (| M.get_function (| "core::hint::spin_loop", [], [] |), [] |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

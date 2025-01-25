@@ -175,7 +175,7 @@ Module iter.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::intrinsics::unlikely", [] |),
+                                M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                 [
                                   BinOp.gt (|
                                     M.read (|
@@ -208,7 +208,7 @@ Module iter.
                                 "iter"
                               |);
                               M.call_closure (|
-                                M.get_function (| "core::mem::take", [ Ty.path "usize" ] |),
+                                M.get_function (| "core::mem::take", [], [ Ty.path "usize" ] |),
                                 [
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
@@ -302,7 +302,7 @@ Module iter.
                             let~ skip :=
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_function (| "core::mem::take", [ Ty.path "usize" ] |),
+                                  M.get_function (| "core::mem::take", [], [ Ty.path "usize" ] |),
                                   [
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
@@ -1354,7 +1354,7 @@ Module iter.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
-                                  M.get_function (| "core::intrinsics::unlikely", [] |),
+                                  M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                   [
                                     LogicalOp.and (|
                                       BinOp.eq (|
@@ -1625,12 +1625,14 @@ Module iter.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::mem::drop",
+                                                          [],
                                                           [ Ty.associated ]
                                                         |),
                                                         [
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "core::iter::adapters::zip::try_get_unchecked",
+                                                              [],
                                                               [ I ]
                                                             |),
                                                             [
@@ -1657,7 +1659,7 @@ Module iter.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::iter::adapters::zip::try_get_unchecked", [ I ] |),
+                    M.get_function (| "core::iter::adapters::zip::try_get_unchecked", [], [ I ] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -2110,7 +2112,7 @@ Module iter.
                 let~ min :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                      M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                       [
                         M.call_closure (|
                           M.get_trait_method (|
@@ -2183,7 +2185,7 @@ Module iter.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic_fmt", [] |),
+                                M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|

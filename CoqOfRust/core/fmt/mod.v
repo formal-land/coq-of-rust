@@ -136,6 +136,7 @@ Module fmt.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "core::fmt::Alignment" ]
                   |),
                   [ M.read (| self |) ]
@@ -146,6 +147,7 @@ Module fmt.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "core::fmt::Alignment" ]
                   |),
                   [ M.read (| other |) ]
@@ -1134,7 +1136,7 @@ Module fmt.
                         let~ old_fill :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::mem::replace", [ Ty.path "char" ] |),
+                              M.get_function (| "core::mem::replace", [], [ Ty.path "char" ] |),
                               [
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -1150,6 +1152,7 @@ Module fmt.
                             M.call_closure (|
                               M.get_function (|
                                 "core::mem::replace",
+                                [],
                                 [ Ty.path "core::fmt::rt::Alignment" ]
                               |),
                               [
@@ -4356,7 +4359,7 @@ Module fmt.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::fmt::write", [] |),
+                        M.get_function (| "core::fmt::write", [], [] |),
                         [
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
@@ -4719,7 +4722,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let name := M.alloc (| name |) in
           M.call_closure (|
-            M.get_function (| "core::fmt::builders::debug_struct_new", [] |),
+            M.get_function (| "core::fmt::builders::debug_struct_new", [], [] |),
             [ M.read (| self |); M.read (| name |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4755,7 +4758,7 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::fmt::builders::debug_struct_new", [] |),
+                  M.get_function (| "core::fmt::builders::debug_struct_new", [], [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
@@ -4820,7 +4823,7 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::fmt::builders::debug_struct_new", [] |),
+                  M.get_function (| "core::fmt::builders::debug_struct_new", [], [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
@@ -4901,7 +4904,7 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::fmt::builders::debug_struct_new", [] |),
+                  M.get_function (| "core::fmt::builders::debug_struct_new", [], [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
@@ -4998,7 +5001,7 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::fmt::builders::debug_struct_new", [] |),
+                  M.get_function (| "core::fmt::builders::debug_struct_new", [], [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
@@ -5114,7 +5117,7 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::fmt::builders::debug_struct_new", [] |),
+                  M.get_function (| "core::fmt::builders::debug_struct_new", [], [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
@@ -5294,6 +5297,7 @@ Module fmt.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::panicking::assert_failed",
+                                          [],
                                           [ Ty.path "usize"; Ty.path "usize" ]
                                         |),
                                         [
@@ -5315,7 +5319,7 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::fmt::builders::debug_struct_new", [] |),
+                  M.get_function (| "core::fmt::builders::debug_struct_new", [], [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
@@ -5352,6 +5356,7 @@ Module fmt.
                         M.call_closure (|
                           M.get_function (|
                             "core::iter::adapters::zip::zip",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "&")
@@ -5491,7 +5496,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let name := M.alloc (| name |) in
           M.call_closure (|
-            M.get_function (| "core::fmt::builders::debug_tuple_new", [] |),
+            M.get_function (| "core::fmt::builders::debug_tuple_new", [], [] |),
             [ M.read (| self |); M.read (| name |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -5521,7 +5526,7 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::fmt::builders::debug_tuple_new", [] |),
+                  M.get_function (| "core::fmt::builders::debug_tuple_new", [], [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
@@ -5582,7 +5587,7 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::fmt::builders::debug_tuple_new", [] |),
+                  M.get_function (| "core::fmt::builders::debug_tuple_new", [], [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
@@ -5657,7 +5662,7 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::fmt::builders::debug_tuple_new", [] |),
+                  M.get_function (| "core::fmt::builders::debug_tuple_new", [], [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
@@ -5746,7 +5751,7 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::fmt::builders::debug_tuple_new", [] |),
+                  M.get_function (| "core::fmt::builders::debug_tuple_new", [], [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
@@ -5849,7 +5854,7 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::fmt::builders::debug_tuple_new", [] |),
+                  M.get_function (| "core::fmt::builders::debug_tuple_new", [], [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
@@ -5953,7 +5958,7 @@ Module fmt.
             let~ builder :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::fmt::builders::debug_tuple_new", [] |),
+                  M.get_function (| "core::fmt::builders::debug_tuple_new", [], [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
@@ -6076,7 +6081,7 @@ Module fmt.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::fmt::builders::debug_list_new", [] |),
+            M.get_function (| "core::fmt::builders::debug_list_new", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6095,7 +6100,7 @@ Module fmt.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::fmt::builders::debug_set_new", [] |),
+            M.get_function (| "core::fmt::builders::debug_set_new", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6114,7 +6119,7 @@ Module fmt.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::fmt::builders::debug_map_new", [] |),
+            M.get_function (| "core::fmt::builders::debug_map_new", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6650,6 +6655,7 @@ Module fmt.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::is_val_statically_known",
+                              [],
                               [ Ty.path "bool" ]
                             |),
                             [
@@ -6754,7 +6760,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let fmt := M.alloc (| fmt |) in
           M.call_closure (|
-            M.get_function (| "core::fmt::write", [] |),
+            M.get_function (| "core::fmt::write", [], [] |),
             [
               M.read (|
                 M.SubPointer.get_struct_record_field (|
@@ -7574,6 +7580,7 @@ Module fmt.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "core::fmt::run",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -7888,7 +7895,7 @@ Module fmt.
                   "width"
                 |),
                 M.call_closure (|
-                  M.get_function (| "core::fmt::getcount", [] |),
+                  M.get_function (| "core::fmt::getcount", [], [] |),
                   [
                     M.read (| args |);
                     M.SubPointer.get_struct_record_field (|
@@ -7907,7 +7914,7 @@ Module fmt.
                   "precision"
                 |),
                 M.call_closure (|
-                  M.get_function (| "core::fmt::getcount", [] |),
+                  M.get_function (| "core::fmt::getcount", [], [] |),
                   [
                     M.read (| args |);
                     M.SubPointer.get_struct_record_field (|
@@ -7967,7 +7974,7 @@ Module fmt.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic", [] |),
+                                    M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
                                         Value.String "assertion failed: arg.position < args.len()"
@@ -8097,7 +8104,7 @@ Module fmt.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.call_closure (|
-                                            M.get_function (| "core::panicking::panic", [] |),
+                                            M.get_function (| "core::panicking::panic", [], [] |),
                                             [
                                               M.read (|
                                                 Value.String "assertion failed: i < args.len()"
@@ -8506,7 +8513,7 @@ Module fmt.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::fmt::write", [] |),
+                        M.get_function (| "core::fmt::write", [], [] |),
                         [
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
@@ -10316,7 +10323,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_function (| "core::fmt::pointer_fmt_inner", [] |),
+            M.get_function (| "core::fmt::pointer_fmt_inner", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
@@ -12599,7 +12606,7 @@ Module fmt.
                           [
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::any::type_name", [ T ] |),
+                                M.get_function (| "core::any::type_name", [], [ T ] |),
                                 []
                               |)
                             |)

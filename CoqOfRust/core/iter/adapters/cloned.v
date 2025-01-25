@@ -311,6 +311,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::cloned::clone_try_fold",
+                      [],
                       [ T; B; R; F ]
                     |),
                     [ M.read (| f |) ]
@@ -400,7 +401,7 @@ Module iter.
                 M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
                 [
                   M.call_closure (|
-                    M.get_function (| "core::iter::adapters::zip::try_get_unchecked", [ I ] |),
+                    M.get_function (| "core::iter::adapters::zip::try_get_unchecked", [], [ I ] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -521,6 +522,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::cloned::clone_try_fold",
+                      [],
                       [ T; B; R; F ]
                     |),
                     [ M.read (| f |) ]

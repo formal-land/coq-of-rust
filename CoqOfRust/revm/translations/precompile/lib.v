@@ -1177,6 +1177,7 @@ Module Impl_revm_precompile_Precompiles.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "revm_precompile::bls12_381::precompiles",
+                                                [],
                                                 []
                                               |),
                                               []
@@ -2425,6 +2426,7 @@ Module Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileSpecId.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "revm_precompile::PrecompileSpecId" ]
                 |),
                 [ M.read (| self |) ]
@@ -2435,6 +2437,7 @@ Module Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileSpecId.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "revm_precompile::PrecompileSpecId" ]
                 |),
                 [ M.read (| other |) ]
@@ -2495,6 +2498,7 @@ Module Impl_core_hash_Hash_for_revm_precompile_PrecompileSpecId.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "revm_precompile::PrecompileSpecId" ]
                 |),
                 [ M.read (| self |) ]
@@ -2534,6 +2538,7 @@ Module Impl_core_cmp_Ord_for_revm_precompile_PrecompileSpecId.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "revm_precompile::PrecompileSpecId" ]
                 |),
                 [ M.read (| self |) ]
@@ -2544,6 +2549,7 @@ Module Impl_core_cmp_Ord_for_revm_precompile_PrecompileSpecId.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "revm_precompile::PrecompileSpecId" ]
                 |),
                 [ M.read (| other |) ]
@@ -2583,6 +2589,7 @@ Module Impl_core_cmp_PartialOrd_for_revm_precompile_PrecompileSpecId.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "revm_precompile::PrecompileSpecId" ]
                 |),
                 [ M.read (| self |) ]
@@ -2593,6 +2600,7 @@ Module Impl_core_cmp_PartialOrd_for_revm_precompile_PrecompileSpecId.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "revm_precompile::PrecompileSpecId" ]
                 |),
                 [ M.read (| other |) ]

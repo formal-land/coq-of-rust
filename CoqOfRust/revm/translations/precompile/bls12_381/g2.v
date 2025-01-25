@@ -37,7 +37,7 @@ Module bls12_381.
             let~ out :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "alloc::vec::from_elem", [ Ty.path "u8" ] |),
+                  M.get_function (| "alloc::vec::from_elem", [], [ Ty.path "u8" ] |),
                   [
                     Value.Integer IntegerKind.U8 0;
                     M.read (|
@@ -49,7 +49,7 @@ Module bls12_381.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "revm_precompile::bls12_381::utils::fp_to_bytes", [] |),
+                  M.get_function (| "revm_precompile::bls12_381::utils::fp_to_bytes", [], [] |),
                   [
                     M.call_closure (|
                       M.get_trait_method (|
@@ -94,7 +94,7 @@ Module bls12_381.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "revm_precompile::bls12_381::utils::fp_to_bytes", [] |),
+                  M.get_function (| "revm_precompile::bls12_381::utils::fp_to_bytes", [], [] |),
                   [
                     M.call_closure (|
                       M.get_trait_method (|
@@ -148,7 +148,7 @@ Module bls12_381.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "revm_precompile::bls12_381::utils::fp_to_bytes", [] |),
+                  M.get_function (| "revm_precompile::bls12_381::utils::fp_to_bytes", [], [] |),
                   [
                     M.call_closure (|
                       M.get_trait_method (|
@@ -205,7 +205,7 @@ Module bls12_381.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "revm_precompile::bls12_381::utils::fp_to_bytes", [] |),
+                  M.get_function (| "revm_precompile::bls12_381::utils::fp_to_bytes", [], [] |),
                   [
                     M.call_closure (|
                       M.get_trait_method (|
@@ -332,6 +332,7 @@ Module bls12_381.
                                   M.call_closure (|
                                     M.get_function (|
                                       "revm_precompile::bls12_381::g2::check_canonical_fp2",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| x1 |); M.read (| x2 |) ]
@@ -418,6 +419,7 @@ Module bls12_381.
                                   M.call_closure (|
                                     M.get_function (|
                                       "revm_precompile::bls12_381::g2::check_canonical_fp2",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| y1 |); M.read (| y2 |) ]
@@ -535,6 +537,7 @@ Module bls12_381.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_precompile::bls12_381::utils::fp_from_bendian",
+                                [],
                                 []
                               |),
                               [ M.read (| input_1 |) ]
@@ -619,6 +622,7 @@ Module bls12_381.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_precompile::bls12_381::utils::fp_from_bendian",
+                                [],
                                 []
                               |),
                               [ M.read (| input_2 |) ]
@@ -803,6 +807,7 @@ Module bls12_381.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -810,7 +815,11 @@ Module bls12_381.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -1027,6 +1036,7 @@ Module bls12_381.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "revm_precompile::bls12_381::utils::remove_padding",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -1174,6 +1184,7 @@ Module bls12_381.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_precompile::bls12_381::g2::decode_and_check_g2",
+                                [],
                                 []
                               |),
                               [
@@ -1280,7 +1291,11 @@ Module bls12_381.
                                       (M.alloc (|
                                         UnOp.not (|
                                           M.call_closure (|
-                                            M.get_function (| "blst::blst_p2_affine_in_g2", [] |),
+                                            M.get_function (|
+                                              "blst::blst_p2_affine_in_g2",
+                                              [],
+                                              []
+                                            |),
                                             [ out ]
                                           |)
                                         |)
@@ -1334,6 +1349,7 @@ Module bls12_381.
                                           M.call_closure (|
                                             M.get_function (|
                                               "blst::blst_p2_affine_on_curve",
+                                              [],
                                               []
                                             |),
                                             [ out ]

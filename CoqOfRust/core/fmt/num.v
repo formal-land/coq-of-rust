@@ -1373,10 +1373,14 @@ Module fmt.
               let~ buf :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::str::converts::from_utf8_unchecked", [] |),
+                    M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
                     [
                       M.call_closure (|
-                        M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
+                        M.get_function (|
+                          "core::slice::raw::from_raw_parts",
+                          [],
+                          [ Ty.path "u8" ]
+                        |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -1722,7 +1726,7 @@ Module fmt.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -1836,7 +1840,7 @@ Module fmt.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -1959,7 +1963,7 @@ Module fmt.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -2082,7 +2086,7 @@ Module fmt.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -5584,7 +5588,11 @@ Module fmt.
                                 UnOp.not (|
                                   BinOp.ge (|
                                     M.call_closure (|
-                                      M.get_function (| "core::mem::size_of", [ Ty.path "u64" ] |),
+                                      M.get_function (|
+                                        "core::mem::size_of",
+                                        [],
+                                        [ Ty.path "u64" ]
+                                      |),
                                       []
                                     |),
                                     Value.Integer IntegerKind.Usize 2
@@ -5596,7 +5604,7 @@ Module fmt.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [
                                   M.read (|
                                     Value.String
@@ -5681,6 +5689,7 @@ Module fmt.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::copy_nonoverlapping",
+                                      [],
                                       [ Ty.path "u8" ]
                                     |),
                                     [
@@ -5709,6 +5718,7 @@ Module fmt.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::copy_nonoverlapping",
+                                      [],
                                       [ Ty.path "u8" ]
                                     |),
                                     [
@@ -5799,6 +5809,7 @@ Module fmt.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::copy_nonoverlapping",
+                                  [],
                                   [ Ty.path "u8" ]
                                 |),
                                 [
@@ -5877,6 +5888,7 @@ Module fmt.
                             M.call_closure (|
                               M.get_function (|
                                 "core::intrinsics::copy_nonoverlapping",
+                                [],
                                 [ Ty.path "u8" ]
                               |),
                               [
@@ -5906,10 +5918,14 @@ Module fmt.
               let~ buf_slice :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::str::converts::from_utf8_unchecked", [] |),
+                    M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
                     [
                       M.call_closure (|
-                        M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
+                        M.get_function (|
+                          "core::slice::raw::from_raw_parts",
+                          [],
+                          [ Ty.path "u8" ]
+                        |),
                         [
                           (* MutToConstPointer *)
                           M.pointer_coercion
@@ -6041,7 +6057,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::fmt_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::fmt_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); M.read (| f |) ]
                   |)
                 |)
@@ -6132,7 +6148,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::fmt_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::fmt_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); M.read (| f |) ]
                   |)
                 |)
@@ -6223,7 +6239,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::fmt_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::fmt_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); M.read (| f |) ]
                   |)
                 |)
@@ -6314,7 +6330,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::fmt_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::fmt_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); M.read (| f |) ]
                   |)
                 |)
@@ -6405,7 +6421,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::fmt_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::fmt_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); M.read (| f |) ]
                   |)
                 |)
@@ -6496,7 +6512,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::fmt_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::fmt_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); M.read (| f |) ]
                   |)
                 |)
@@ -6587,7 +6603,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::fmt_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::fmt_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); M.read (| f |) ]
                   |)
                 |)
@@ -6678,7 +6694,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::fmt_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::fmt_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); M.read (| f |) ]
                   |)
                 |)
@@ -6769,7 +6785,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::fmt_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::fmt_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); M.read (| f |) ]
                   |)
                 |)
@@ -6860,7 +6876,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::fmt_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::fmt_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); M.read (| f |) ]
                   |)
                 |)
@@ -7593,6 +7609,7 @@ Module fmt.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::intrinsics::copy_nonoverlapping",
+                                              [],
                                               [ Ty.path "u8" ]
                                             |),
                                             [
@@ -7823,6 +7840,7 @@ Module fmt.
                             M.call_closure (|
                               M.get_function (|
                                 "core::slice::raw::from_raw_parts",
+                                [],
                                 [ Ty.path "u8" ]
                               |),
                               [
@@ -7955,6 +7973,7 @@ Module fmt.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::intrinsics::copy_nonoverlapping",
+                                              [],
                                               [ Ty.path "u8" ]
                                             |),
                                             [
@@ -7989,6 +8008,7 @@ Module fmt.
                             M.call_closure (|
                               M.get_function (|
                                 "core::slice::raw::from_raw_parts",
+                                [],
                                 [ Ty.path "u8" ]
                               |),
                               [
@@ -8167,7 +8187,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::exp_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |)
                     ]
                   |)
@@ -8259,7 +8279,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::exp_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |)
                     ]
                   |)
@@ -8351,7 +8371,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::exp_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |)
                     ]
                   |)
@@ -8443,7 +8463,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::exp_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |)
                     ]
                   |)
@@ -8535,7 +8555,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::exp_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |)
                     ]
                   |)
@@ -8627,7 +8647,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::exp_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |)
                     ]
                   |)
@@ -8719,7 +8739,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::exp_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |)
                     ]
                   |)
@@ -8811,7 +8831,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::exp_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |)
                     ]
                   |)
@@ -8903,7 +8923,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::exp_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |)
                     ]
                   |)
@@ -8995,7 +9015,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::exp_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |)
                     ]
                   |)
@@ -9087,7 +9107,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::exp_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
                   |)
                 |)
@@ -9178,7 +9198,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::exp_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
                   |)
                 |)
@@ -9269,7 +9289,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::exp_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
                   |)
                 |)
@@ -9360,7 +9380,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::exp_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
                   |)
                 |)
@@ -9451,7 +9471,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::exp_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
                   |)
                 |)
@@ -9542,7 +9562,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::exp_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
                   |)
                 |)
@@ -9633,7 +9653,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::exp_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
                   |)
                 |)
@@ -9724,7 +9744,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::exp_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
                   |)
                 |)
@@ -9815,7 +9835,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::exp_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
                   |)
                 |)
@@ -9906,7 +9926,7 @@ Module fmt.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::fmt::num::imp::exp_u64", [] |),
+                    M.get_function (| "core::fmt::num::imp::exp_u64", [], [] |),
                     [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
                   |)
                 |)
@@ -10633,6 +10653,7 @@ Module fmt.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::intrinsics::copy_nonoverlapping",
+                                            [],
                                             [ Ty.path "u8" ]
                                           |),
                                           [
@@ -10863,6 +10884,7 @@ Module fmt.
                           M.call_closure (|
                             M.get_function (|
                               "core::slice::raw::from_raw_parts",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [
@@ -10993,6 +11015,7 @@ Module fmt.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::intrinsics::copy_nonoverlapping",
+                                            [],
                                             [ Ty.path "u8" ]
                                           |),
                                           [
@@ -11027,6 +11050,7 @@ Module fmt.
                           M.call_closure (|
                             M.get_function (|
                               "core::slice::raw::from_raw_parts",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [
@@ -11205,7 +11229,7 @@ Module fmt.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::fmt::num::exp_u128", [] |),
+                  M.get_function (| "core::fmt::num::exp_u128", [], [] |),
                   [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |) ]
                 |)
               |)
@@ -11296,7 +11320,7 @@ Module fmt.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::fmt::num::exp_u128", [] |),
+                  M.get_function (| "core::fmt::num::exp_u128", [], [] |),
                   [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool false; M.read (| f |) ]
                 |)
               |)
@@ -11387,7 +11411,7 @@ Module fmt.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::fmt::num::exp_u128", [] |),
+                  M.get_function (| "core::fmt::num::exp_u128", [], [] |),
                   [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
                 |)
               |)
@@ -11478,7 +11502,7 @@ Module fmt.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::fmt::num::exp_u128", [] |),
+                  M.get_function (| "core::fmt::num::exp_u128", [], [] |),
                   [ M.read (| n |); M.read (| is_nonnegative |); Value.Bool true; M.read (| f |) ]
                 |)
               |)
@@ -11632,7 +11656,7 @@ Module fmt.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [ M.read (| Value.String "assertion failed: *curr > 19" |) ]
                           |)
                         |)
@@ -11786,6 +11810,7 @@ Module fmt.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::copy_nonoverlapping",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [
@@ -11820,6 +11845,7 @@ Module fmt.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::copy_nonoverlapping",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [
@@ -11854,6 +11880,7 @@ Module fmt.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::copy_nonoverlapping",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [
@@ -11888,6 +11915,7 @@ Module fmt.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::copy_nonoverlapping",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [
@@ -11922,6 +11950,7 @@ Module fmt.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::copy_nonoverlapping",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [
@@ -11956,6 +11985,7 @@ Module fmt.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::copy_nonoverlapping",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [
@@ -11990,6 +12020,7 @@ Module fmt.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::copy_nonoverlapping",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [
@@ -12024,6 +12055,7 @@ Module fmt.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::copy_nonoverlapping",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [
@@ -12151,6 +12183,7 @@ Module fmt.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::copy_nonoverlapping",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [
@@ -12185,6 +12218,7 @@ Module fmt.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::copy_nonoverlapping",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [
@@ -12219,6 +12253,7 @@ Module fmt.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::copy_nonoverlapping",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [
@@ -12253,6 +12288,7 @@ Module fmt.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::copy_nonoverlapping",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [
@@ -12349,6 +12385,7 @@ Module fmt.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::copy_nonoverlapping",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [
@@ -12383,6 +12420,7 @@ Module fmt.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::copy_nonoverlapping",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [
@@ -12453,6 +12491,7 @@ Module fmt.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::copy_nonoverlapping",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [
@@ -12530,6 +12569,7 @@ Module fmt.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::copy_nonoverlapping",
+                            [],
                             [ Ty.path "u8" ]
                           |),
                           [
@@ -12577,7 +12617,7 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
-              M.get_function (| "core::fmt::num::fmt_u128", [] |),
+              M.get_function (| "core::fmt::num::fmt_u128", [], [] |),
               [ M.read (| M.read (| self |) |); Value.Bool true; M.read (| f |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -12666,7 +12706,7 @@ Module fmt.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::fmt::num::fmt_u128", [] |),
+                  M.get_function (| "core::fmt::num::fmt_u128", [], [] |),
                   [ M.read (| n |); M.read (| is_nonnegative |); M.read (| f |) ]
                 |)
               |)
@@ -12778,7 +12818,7 @@ Module fmt.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::fmt::num::udiv_1e19", [] |),
+                  M.get_function (| "core::fmt::num::udiv_1e19", [], [] |),
                   [ M.read (| n |) ]
                 |)
               |),
@@ -12792,7 +12832,11 @@ Module fmt.
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::fmt::num::parse_u64_into", [] |),
+                          M.get_function (|
+                            "core::fmt::num::parse_u64_into",
+                            [ Value.Integer IntegerKind.Usize 39 ],
+                            []
+                          |),
                           [ M.read (| rem |); buf; curr ]
                         |)
                       |) in
@@ -12840,6 +12884,7 @@ Module fmt.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::intrinsics::write_bytes",
+                                        [],
                                         [ Ty.path "u8" ]
                                       |),
                                       [
@@ -12874,7 +12919,7 @@ Module fmt.
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::fmt::num::udiv_1e19", [] |),
+                                    M.get_function (| "core::fmt::num::udiv_1e19", [], [] |),
                                     [ M.read (| n |) ]
                                   |)
                                 |),
@@ -12890,6 +12935,7 @@ Module fmt.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::fmt::num::parse_u64_into",
+                                              [ Value.Integer IntegerKind.Usize 39 ],
                                               []
                                             |),
                                             [ M.read (| rem |); buf; curr ]
@@ -12956,6 +13002,7 @@ Module fmt.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::intrinsics::write_bytes",
+                                                      [],
                                                       [ Ty.path "u8" ]
                                                     |),
                                                     [
@@ -13014,11 +13061,12 @@ Module fmt.
                     let~ buf_slice :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::str::converts::from_utf8_unchecked", [] |),
+                          M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
                           [
                             M.call_closure (|
                               M.get_function (|
                                 "core::slice::raw::from_raw_parts",
+                                [],
                                 [ Ty.path "u8" ]
                               |),
                               [
@@ -13152,7 +13200,7 @@ Module fmt.
                         (M.alloc (|
                           BinOp.Wrap.shr (|
                             M.call_closure (|
-                              M.get_function (| "core::fmt::num::u128_mulhi", [] |),
+                              M.get_function (| "core::fmt::num::u128_mulhi", [], [] |),
                               [
                                 M.read (| n |);
                                 M.read (|

@@ -80,6 +80,7 @@ Module str.
                 M.call_closure (|
                   M.get_function (|
                     "core::str::validations::next_code_point",
+                    [],
                     [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ]
                   |),
                   [
@@ -130,7 +131,7 @@ Module str.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::str::count::count_chars", [] |),
+              M.get_function (| "core::str::count::count_chars", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::str::iter::Chars", "as_str", [] |),
@@ -399,6 +400,7 @@ Module str.
                                                                       M.call_closure (|
                                                                         M.get_function (|
                                                                           "core::str::validations::utf8_is_cont_byte",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -634,6 +636,7 @@ Module str.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::str::validations::utf8_is_cont_byte",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| b |) ]
@@ -792,6 +795,7 @@ Module str.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::str::validations::utf8_char_width",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| b |) ]
@@ -1327,6 +1331,7 @@ Module str.
                 M.call_closure (|
                   M.get_function (|
                     "core::str::validations::next_code_point_reverse",
+                    [],
                     [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ]
                   |),
                   [
@@ -1400,7 +1405,7 @@ Module str.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::str::converts::from_utf8_unchecked", [] |),
+              M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -8844,7 +8849,7 @@ Module str.
                       "core::option::Option::Some"
                       [
                         M.call_closure (|
-                          M.get_function (| "core::str::converts::from_utf8_unchecked", [] |),
+                          M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
                           [
                             M.read (|
                               M.SubPointer.get_struct_record_field (|

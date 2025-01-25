@@ -1008,6 +1008,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
+                      [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                     |),
                     [ M.read (| data |) ]
@@ -1031,7 +1032,7 @@ Module hash.
                   [
                     M.read (| state |);
                     M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
+                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
                       [ M.read (| ptr |); M.read (| newlen |) ]
                     |)
                   ]
@@ -1094,6 +1095,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
+                      [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
                     |),
                     [ M.read (| data |) ]
@@ -1117,7 +1119,7 @@ Module hash.
                   [
                     M.read (| state |);
                     M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
+                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
                       [ M.read (| ptr |); M.read (| newlen |) ]
                     |)
                   ]
@@ -1180,6 +1182,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
+                      [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ]
                     |),
                     [ M.read (| data |) ]
@@ -1203,7 +1206,7 @@ Module hash.
                   [
                     M.read (| state |);
                     M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
+                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
                       [ M.read (| ptr |); M.read (| newlen |) ]
                     |)
                   ]
@@ -1266,6 +1269,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
+                      [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]
                     |),
                     [ M.read (| data |) ]
@@ -1289,7 +1293,7 @@ Module hash.
                   [
                     M.read (| state |);
                     M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
+                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
                       [ M.read (| ptr |); M.read (| newlen |) ]
                     |)
                   ]
@@ -1352,6 +1356,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
+                      [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ] ]
                     |),
                     [ M.read (| data |) ]
@@ -1375,7 +1380,7 @@ Module hash.
                   [
                     M.read (| state |);
                     M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
+                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
                       [ M.read (| ptr |); M.read (| newlen |) ]
                     |)
                   ]
@@ -1438,6 +1443,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
+                      [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ] ]
                     |),
                     [ M.read (| data |) ]
@@ -1461,7 +1467,7 @@ Module hash.
                   [
                     M.read (| state |);
                     M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
+                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
                       [ M.read (| ptr |); M.read (| newlen |) ]
                     |)
                   ]
@@ -1524,6 +1530,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
+                      [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "i16" ] ]
                     |),
                     [ M.read (| data |) ]
@@ -1547,7 +1554,7 @@ Module hash.
                   [
                     M.read (| state |);
                     M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
+                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
                       [ M.read (| ptr |); M.read (| newlen |) ]
                     |)
                   ]
@@ -1610,6 +1617,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
+                      [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ] ]
                     |),
                     [ M.read (| data |) ]
@@ -1633,7 +1641,7 @@ Module hash.
                   [
                     M.read (| state |);
                     M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
+                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
                       [ M.read (| ptr |); M.read (| newlen |) ]
                     |)
                   ]
@@ -1696,6 +1704,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
+                      [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "i64" ] ]
                     |),
                     [ M.read (| data |) ]
@@ -1719,7 +1728,7 @@ Module hash.
                   [
                     M.read (| state |);
                     M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
+                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
                       [ M.read (| ptr |); M.read (| newlen |) ]
                     |)
                   ]
@@ -1782,6 +1791,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
+                      [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "isize" ] ]
                     |),
                     [ M.read (| data |) ]
@@ -1805,7 +1815,7 @@ Module hash.
                   [
                     M.read (| state |);
                     M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
+                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
                       [ M.read (| ptr |); M.read (| newlen |) ]
                     |)
                   ]
@@ -1868,6 +1878,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
+                      [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u128" ] ]
                     |),
                     [ M.read (| data |) ]
@@ -1891,7 +1902,7 @@ Module hash.
                   [
                     M.read (| state |);
                     M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
+                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
                       [ M.read (| ptr |); M.read (| newlen |) ]
                     |)
                   ]
@@ -1954,6 +1965,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
+                      [],
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "i128" ] ]
                     |),
                     [ M.read (| data |) ]
@@ -1977,7 +1989,7 @@ Module hash.
                   [
                     M.read (| state |);
                     M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
+                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
                       [ M.read (| ptr |); M.read (| newlen |) ]
                     |)
                   ]

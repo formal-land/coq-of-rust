@@ -160,6 +160,7 @@ Module slice.
                         M.call_closure (|
                           M.get_function (|
                             "core::slice::sort::stable::drift::merge_tree_scale_factor",
+                            [],
                             []
                           |),
                           [ M.read (| len |) ]
@@ -198,7 +199,7 @@ Module slice.
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                                    M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                                     [
                                       BinOp.Wrap.sub (|
                                         M.read (| len |),
@@ -221,6 +222,7 @@ Module slice.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::slice::sort::stable::drift::sqrt_approx",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| len |) ]
@@ -389,6 +391,7 @@ Module slice.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::slice::sort::stable::drift::create_run",
+                                                    [],
                                                     [ T; F ]
                                                   |),
                                                   [
@@ -425,6 +428,7 @@ Module slice.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::slice::sort::stable::drift::merge_tree_depth",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -614,6 +618,7 @@ Module slice.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::slice::sort::stable::drift::logical_merge",
+                                                          [],
                                                           [ T; F ]
                                                         |),
                                                         [
@@ -766,6 +771,7 @@ Module slice.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::slice::sort::stable::drift::stable_quicksort",
+                                    [],
                                     [ T; F ]
                                   |),
                                   [ M.read (| v |); M.read (| scratch |); M.read (| is_less |) ]
@@ -825,7 +831,7 @@ Module slice.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic_fmt", [] |),
+                                M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -1104,6 +1110,7 @@ Module slice.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::slice::sort::stable::drift::stable_quicksort",
+                                          [],
                                           [ T; F ]
                                         |),
                                         [
@@ -1178,6 +1185,7 @@ Module slice.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::slice::sort::stable::drift::stable_quicksort",
+                                          [],
                                           [ T; F ]
                                         |),
                                         [
@@ -1226,6 +1234,7 @@ Module slice.
                             M.call_closure (|
                               M.get_function (|
                                 "core::slice::sort::stable::merge::merge",
+                                [],
                                 [ T; F ]
                               |),
                               [
@@ -1355,6 +1364,7 @@ Module slice.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::slice::sort::shared::find_existing_run",
+                                      [],
                                       [ T; F ]
                                     |),
                                     [ M.read (| v |); M.read (| is_less |) ]
@@ -1370,7 +1380,7 @@ Module slice.
                                       let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
-                                            M.get_function (| "core::intrinsics::assume", [] |),
+                                            M.get_function (| "core::intrinsics::assume", [], [] |),
                                             [ BinOp.le (| M.read (| run_len |), M.read (| len |) |)
                                             ]
                                           |)
@@ -1491,7 +1501,7 @@ Module slice.
                             let~ eager_run_len :=
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                                  M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                                   [
                                     M.call_closure (|
                                       M.get_trait_method (|
@@ -1512,6 +1522,7 @@ Module slice.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::slice::sort::stable::quicksort::quicksort",
+                                    [],
                                     [ T; F ]
                                   |),
                                   [
@@ -1563,7 +1574,7 @@ Module slice.
                                 |),
                                 [
                                   M.call_closure (|
-                                    M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                                    M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                                     [ M.read (| min_good_run_len |); M.read (| len |) ]
                                   |)
                                 ]
@@ -1625,6 +1636,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::stable::quicksort::quicksort",
+                        [],
                         [ T; F ]
                       |),
                       [

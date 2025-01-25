@@ -3074,6 +3074,7 @@ Module vec.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::transmute",
+                      [],
                       [
                         Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "bool" ];
                         Ty.path "u8"
@@ -3123,6 +3124,7 @@ Module vec.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::transmute",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -3180,6 +3182,7 @@ Module vec.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::transmute",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "core::option::Option")

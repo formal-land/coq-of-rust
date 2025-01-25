@@ -125,7 +125,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic_fmt", [] |),
+                                M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -861,6 +861,7 @@ Module instructions.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::panicking::assert_failed",
+                                                        [],
                                                         [ Ty.path "usize"; Ty.path "usize" ]
                                                       |),
                                                       [

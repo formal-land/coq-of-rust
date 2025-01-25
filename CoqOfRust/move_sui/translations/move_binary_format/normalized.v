@@ -733,6 +733,7 @@ Module normalized.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::normalized::Type" ]
                   |),
                   [ M.read (| self |) ]
@@ -743,6 +744,7 @@ Module normalized.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::normalized::Type" ]
                   |),
                   [ M.read (| other |) ]
@@ -1110,6 +1112,7 @@ Module normalized.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::normalized::Type" ]
                   |),
                   [ M.read (| self |) ]
@@ -1120,6 +1123,7 @@ Module normalized.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::normalized::Type" ]
                   |),
                   [ M.read (| other |) ]
@@ -1612,6 +1616,7 @@ Module normalized.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::normalized::Type" ]
                   |),
                   [ M.read (| self |) ]
@@ -1622,6 +1627,7 @@ Module normalized.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::normalized::Type" ]
                   |),
                   [ M.read (| other |) ]
@@ -14700,6 +14706,7 @@ Module normalized.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::normalized::Bytecode" ]
                   |),
                   [ M.read (| self |) ]
@@ -14710,6 +14717,7 @@ Module normalized.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::normalized::Bytecode" ]
                   |),
                   [ M.read (| other |) ]
@@ -16320,6 +16328,7 @@ Module normalized.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::normalized::Bytecode" ]
                   |),
                   [ M.read (| self |) ]
@@ -16330,6 +16339,7 @@ Module normalized.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::normalized::Bytecode" ]
                   |),
                   [ M.read (| other |) ]
@@ -18304,6 +18314,7 @@ Module normalized.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::normalized::Bytecode" ]
                   |),
                   [ M.read (| self |) ]
@@ -18314,6 +18325,7 @@ Module normalized.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::normalized::Bytecode" ]
                   |),
                   [ M.read (| other |) ]
@@ -21684,7 +21696,7 @@ Module normalized.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic_fmt", [] |),
+                                    M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                     [
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -23091,7 +23103,7 @@ Module normalized.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String
@@ -26665,6 +26677,7 @@ Module normalized.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::normalized::struct_instantiation",
+                              [],
                               []
                             |),
                             [ M.read (| m |); M.read (| s_idx |) ]
@@ -26723,6 +26736,7 @@ Module normalized.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::normalized::struct_instantiation",
+                              [],
                               []
                             |),
                             [ M.read (| m |); M.read (| si_idx |) ]
@@ -26800,6 +26814,7 @@ Module normalized.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::normalized::field_instantiation",
+                              [],
                               []
                             |),
                             [ M.read (| m |); M.read (| fhi_idx |) ]
@@ -26847,6 +26862,7 @@ Module normalized.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::normalized::field_instantiation",
+                              [],
                               []
                             |),
                             [ M.read (| m |); M.read (| fhi_idx |) ]
@@ -26905,6 +26921,7 @@ Module normalized.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::normalized::struct_instantiation",
+                              [],
                               []
                             |),
                             [ M.read (| m |); M.read (| si_idx |) ]
@@ -26963,6 +26980,7 @@ Module normalized.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::normalized::struct_instantiation",
+                              [],
                               []
                             |),
                             [ M.read (| m |); M.read (| si_idx |) ]
@@ -27021,6 +27039,7 @@ Module normalized.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::normalized::struct_instantiation",
+                              [],
                               []
                             |),
                             [ M.read (| m |); M.read (| si_idx |) ]
@@ -27079,6 +27098,7 @@ Module normalized.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::normalized::struct_instantiation",
+                              [],
                               []
                             |),
                             [ M.read (| m |); M.read (| si_idx |) ]
@@ -27137,6 +27157,7 @@ Module normalized.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::normalized::struct_instantiation",
+                              [],
                               []
                             |),
                             [ M.read (| m |); M.read (| si_idx |) ]
@@ -27167,6 +27188,7 @@ Module normalized.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::normalized::signature_to_single_type",
+                              [],
                               []
                             |),
                             [ M.read (| m |); M.read (| sig_idx |) ]
@@ -27191,6 +27213,7 @@ Module normalized.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::normalized::signature_to_single_type",
+                              [],
                               []
                             |),
                             [ M.read (| m |); M.read (| sig_idx |) ]
@@ -27214,6 +27237,7 @@ Module normalized.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::normalized::signature_to_single_type",
+                              [],
                               []
                             |),
                             [ M.read (| m |); M.read (| sig_idx |) ]
@@ -27237,6 +27261,7 @@ Module normalized.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::normalized::signature_to_single_type",
+                              [],
                               []
                             |),
                             [ M.read (| m |); M.read (| sig_idx |) ]
@@ -27260,6 +27285,7 @@ Module normalized.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::normalized::signature_to_single_type",
+                              [],
                               []
                             |),
                             [ M.read (| m |); M.read (| sig_idx |) ]
@@ -27283,6 +27309,7 @@ Module normalized.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::normalized::signature_to_single_type",
+                              [],
                               []
                             |),
                             [ M.read (| m |); M.read (| sig_idx |) ]
@@ -27313,6 +27340,7 @@ Module normalized.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::normalized::signature_to_single_type",
+                              [],
                               []
                             |),
                             [ M.read (| m |); M.read (| sig_idx |) ]
@@ -27337,6 +27365,7 @@ Module normalized.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::normalized::signature_to_single_type",
+                              [],
                               []
                             |),
                             [ M.read (| m |); M.read (| sig_idx |) ]

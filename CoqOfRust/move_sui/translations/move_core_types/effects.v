@@ -249,6 +249,7 @@ Module effects.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ]
                   |),
                   [ M.read (| self |) ]
@@ -259,6 +260,7 @@ Module effects.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ]
                   |),
                   [ M.read (| other |) ]
@@ -372,6 +374,7 @@ Module effects.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ]
                   |),
                   [ M.read (| self |) ]
@@ -382,6 +385,7 @@ Module effects.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ]
                   |),
                   [ M.read (| other |) ]
@@ -494,6 +498,7 @@ Module effects.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ]
                   |),
                   [ M.read (| self |) ]
@@ -504,6 +509,7 @@ Module effects.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ]
                   |),
                   [ M.read (| other |) ]
@@ -1782,6 +1788,7 @@ Module effects.
                                                                                       M.call_closure (|
                                                                                         M.get_function (|
                                                                                           "anyhow::__private::format_err",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -2188,6 +2195,7 @@ Module effects.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -2195,7 +2203,11 @@ Module effects.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -2421,6 +2433,7 @@ Module effects.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -2428,7 +2441,11 @@ Module effects.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -2800,6 +2817,7 @@ Module effects.
                           M.call_closure (|
                             M.get_function (|
                               "move_core_types::effects::squash",
+                              [],
                               [
                                 Ty.path "move_core_types::identifier::Identifier";
                                 Ty.apply
@@ -2881,6 +2899,7 @@ Module effects.
                   M.call_closure (|
                     M.get_function (|
                       "move_core_types::effects::squash",
+                      [],
                       [
                         Ty.path "move_core_types::language_storage::StructTag";
                         Ty.apply
@@ -3378,6 +3397,7 @@ Module effects.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -3385,7 +3405,11 @@ Module effects.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
