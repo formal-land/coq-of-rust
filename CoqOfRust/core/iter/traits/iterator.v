@@ -30,7 +30,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                M.get_function (| "core::array::iter_next_chunk", [ Ty.associated; Self ] |),
+                M.get_function (| "core::array::iter_next_chunk", [ N ], [ Ty.associated; Self ] |),
                 [ M.read (| self |) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -1011,6 +1011,7 @@ Module iter.
               M.call_closure (|
                 M.get_function (|
                   "core::iter::adapters::try_process",
+                  [],
                   [
                     Ty.apply (Ty.path "core::iter::adapters::by_ref_sized::ByRefSized") [] [ Self ];
                     Ty.associated;
@@ -1262,7 +1263,11 @@ Module iter.
                                               let~ _ :=
                                                 M.alloc (|
                                                   M.call_closure (|
-                                                    M.get_function (| "core::mem::swap", [ T ] |),
+                                                    M.get_function (|
+                                                      "core::mem::swap",
+                                                      [],
+                                                      [ T ]
+                                                    |),
                                                     [ M.read (| head |); M.read (| tail |) ]
                                                   |)
                                                 |) in
@@ -2925,6 +2930,7 @@ Module iter.
                     M.call_closure (|
                       M.get_function (|
                         "core::iter::traits::iterator::iter_compare",
+                        [],
                         [ Self; Ty.associated; Ty.associated; Ty.path "core::cmp::Ordering" ]
                       |),
                       [
@@ -3064,6 +3070,7 @@ Module iter.
                     M.call_closure (|
                       M.get_function (|
                         "core::iter::traits::iterator::iter_compare",
+                        [],
                         [
                           Self;
                           Ty.associated;
@@ -3198,6 +3205,7 @@ Module iter.
                     M.call_closure (|
                       M.get_function (|
                         "core::iter::traits::iterator::iter_compare",
+                        [],
                         [ Self; Ty.associated; Ty.associated; Ty.tuple [] ]
                       |),
                       [
@@ -3676,7 +3684,7 @@ Module iter.
               let _idx := M.alloc (| _idx |) in
               M.never_to_any (|
                 M.call_closure (|
-                  M.get_function (| "core::panicking::panic_fmt", [] |),
+                  M.get_function (| "core::panicking::panic_fmt", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -3780,6 +3788,7 @@ Module iter.
                       M.call_closure (|
                         M.get_function (|
                           "core::iter::traits::iterator::iter_compare.compare",
+                          [],
                           []
                         |),
                         [ b; M.read (| f |) ]

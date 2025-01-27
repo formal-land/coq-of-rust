@@ -144,7 +144,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
+                      M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -185,7 +185,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
+                      M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -241,10 +241,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "early_returns::print", [] |),
+              M.get_function (| "early_returns::print", [], [] |),
               [
                 M.call_closure (|
-                  M.get_function (| "early_returns::multiply", [] |),
+                  M.get_function (| "early_returns::multiply", [], [] |),
                   [ M.read (| Value.String "10" |); M.read (| Value.String "2" |) ]
                 |)
               ]
@@ -253,10 +253,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "early_returns::print", [] |),
+              M.get_function (| "early_returns::print", [], [] |),
               [
                 M.call_closure (|
-                  M.get_function (| "early_returns::multiply", [] |),
+                  M.get_function (| "early_returns::multiply", [], [] |),
                   [ M.read (| Value.String "t" |); M.read (| Value.String "2" |) ]
                 |)
               ]

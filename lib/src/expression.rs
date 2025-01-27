@@ -65,6 +65,7 @@ pub(crate) enum Expr {
     GetConst(Rc<Path>),
     GetFunction {
         func: Rc<Path>,
+        generic_consts: Vec<Rc<Expr>>,
         generic_tys: Vec<Rc<CoqType>>,
     },
     GetTraitMethod {
@@ -213,6 +214,7 @@ impl Expr {
                 args: vec![Rc::new(Expr::Call {
                     func: Rc::new(Expr::GetFunction {
                         func: Path::new(&["core", "panicking", "panic"]),
+                        generic_consts: vec![],
                         generic_tys: vec![],
                     }),
                     kind: CallKind::Closure,
@@ -436,16 +438,25 @@ impl Expr {
             Expr::LocalVar(ref name) => coq::Expression::just_name(name),
             Expr::GetConst(path) => coq::Expression::just_name("M.get_constant")
                 .monadic_apply(&coq::Expression::String(path.to_string())),
-            Expr::GetFunction { func, generic_tys } => coq::Expression::just_name("M.get_function")
-                .monadic_apply_many(&[
-                    coq::Expression::String(func.to_string()),
-                    coq::Expression::List {
-                        exprs: generic_tys
-                            .iter()
-                            .map(|generic_ty| generic_ty.to_coq())
-                            .collect_vec(),
-                    },
-                ]),
+            Expr::GetFunction {
+                func,
+                generic_consts,
+                generic_tys,
+            } => coq::Expression::just_name("M.get_function").monadic_apply_many(&[
+                coq::Expression::String(func.to_string()),
+                coq::Expression::List {
+                    exprs: generic_consts
+                        .iter()
+                        .map(|generic_const| generic_const.to_coq())
+                        .collect_vec(),
+                },
+                coq::Expression::List {
+                    exprs: generic_tys
+                        .iter()
+                        .map(|generic_ty| generic_ty.to_coq())
+                        .collect_vec(),
+                },
+            ]),
             Expr::GetTraitMethod {
                 trait_name,
                 self_ty,

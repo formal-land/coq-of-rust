@@ -262,6 +262,7 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "payment_channel::Error" ]
                 |),
                 [ M.read (| self |) ]
@@ -272,6 +273,7 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "payment_channel::Error" ]
                 |),
                 [ M.read (| other |) ]
@@ -727,6 +729,7 @@ Module Impl_payment_channel_PaymentChannel.
               M.call_closure (|
                 M.get_function (|
                   "payment_channel::hash_encoded",
+                  [],
                   [
                     Ty.path "payment_channel::Sha2x256";
                     Ty.tuple [ Ty.path "payment_channel::AccountId"; Ty.path "u128" ]
@@ -752,7 +755,7 @@ Module Impl_payment_channel_PaymentChannel.
                 |),
                 [
                   M.call_closure (|
-                    M.get_function (| "payment_channel::ecdsa_recover", [] |),
+                    M.get_function (| "payment_channel::ecdsa_recover", [], [] |),
                     [ signature; message; pub_key ]
                   |);
                   M.closure
@@ -771,6 +774,7 @@ Module Impl_payment_channel_PaymentChannel.
                                       M.call_closure (|
                                         M.get_function (|
                                           "std::panicking::begin_panic",
+                                          [],
                                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                         |),
                                         [ M.read (| Value.String "recover failed: {err:?}" |) ]

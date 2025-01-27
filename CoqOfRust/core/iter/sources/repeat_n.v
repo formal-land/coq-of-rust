@@ -228,6 +228,7 @@ Module iter.
                             M.call_closure (|
                               M.get_function (|
                                 "core::mem::replace",
+                                [],
                                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ A ]
                                 ]
                               |),
@@ -1030,6 +1031,7 @@ Module iter.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::mem::replace",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::mem::maybe_uninit::MaybeUninit")

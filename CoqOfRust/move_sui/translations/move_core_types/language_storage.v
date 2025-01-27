@@ -1659,6 +1659,7 @@ Module language_storage.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::language_storage::TypeTag" ]
                   |),
                   [ M.read (| self |) ]
@@ -1669,6 +1670,7 @@ Module language_storage.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::language_storage::TypeTag" ]
                   |),
                   [ M.read (| other |) ]
@@ -1828,6 +1830,7 @@ Module language_storage.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::language_storage::TypeTag" ]
                   |),
                   [ M.read (| self |) ]
@@ -2155,6 +2158,7 @@ Module language_storage.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::language_storage::TypeTag" ]
                   |),
                   [ M.read (| self |) ]
@@ -2165,6 +2169,7 @@ Module language_storage.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::language_storage::TypeTag" ]
                   |),
                   [ M.read (| other |) ]
@@ -2309,6 +2314,7 @@ Module language_storage.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::language_storage::TypeTag" ]
                   |),
                   [ M.read (| self |) ]
@@ -2319,6 +2325,7 @@ Module language_storage.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::language_storage::TypeTag" ]
                   |),
                   [ M.read (| other |) ]
@@ -2781,7 +2788,7 @@ Module language_storage.
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
-            M.get_function (| "move_core_types::parser::parse_type_tag", [] |),
+            M.get_function (| "move_core_types::parser::parse_type_tag", [], [] |),
             [ M.read (| s |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3693,6 +3700,7 @@ Module language_storage.
                           M.call_closure (|
                             M.get_function (|
                               "bcs::ser::to_bytes",
+                              [],
                               [ Ty.path "move_core_types::language_storage::StructTag" ]
                             |),
                             [ M.read (| self |) ]
@@ -4385,7 +4393,7 @@ Module language_storage.
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
-            M.get_function (| "move_core_types::parser::parse_struct_tag", [] |),
+            M.get_function (| "move_core_types::parser::parse_struct_tag", [], [] |),
             [ M.read (| s |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -5593,6 +5601,7 @@ Module language_storage.
                           M.call_closure (|
                             M.get_function (|
                               "bcs::ser::to_bytes",
+                              [],
                               [ Ty.path "move_core_types::language_storage::ModuleId" ]
                             |),
                             [ M.read (| self |) ]
@@ -5692,13 +5701,13 @@ Module language_storage.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::hint::must_use", [ Ty.path "alloc::string::String" ] |),
+            M.get_function (| "core::hint::must_use", [], [ Ty.path "alloc::string::String" ] |),
             [
               M.read (|
                 let~ res :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "alloc::fmt::format", [] |),
+                      M.get_function (| "alloc::fmt::format", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|

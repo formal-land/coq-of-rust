@@ -355,6 +355,7 @@ Module Impl_core_hash_Hash_for_move_binary_format_IndexKind.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_binary_format::IndexKind" ]
                 |),
                 [ M.read (| self |) ]
@@ -394,6 +395,7 @@ Module Impl_core_cmp_Ord_for_move_binary_format_IndexKind.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_binary_format::IndexKind" ]
                 |),
                 [ M.read (| self |) ]
@@ -404,6 +406,7 @@ Module Impl_core_cmp_Ord_for_move_binary_format_IndexKind.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_binary_format::IndexKind" ]
                 |),
                 [ M.read (| other |) ]
@@ -454,6 +457,7 @@ Module Impl_core_cmp_PartialEq_for_move_binary_format_IndexKind.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_binary_format::IndexKind" ]
                 |),
                 [ M.read (| self |) ]
@@ -464,6 +468,7 @@ Module Impl_core_cmp_PartialEq_for_move_binary_format_IndexKind.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_binary_format::IndexKind" ]
                 |),
                 [ M.read (| other |) ]
@@ -498,6 +503,7 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_IndexKind.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_binary_format::IndexKind" ]
                 |),
                 [ M.read (| self |) ]
@@ -508,6 +514,7 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_IndexKind.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_binary_format::IndexKind" ]
                 |),
                 [ M.read (| other |) ]
@@ -966,6 +973,7 @@ Module Impl_core_cmp_Ord_for_move_binary_format_SignatureTokenKind.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_binary_format::SignatureTokenKind" ]
                 |),
                 [ M.read (| self |) ]
@@ -976,6 +984,7 @@ Module Impl_core_cmp_Ord_for_move_binary_format_SignatureTokenKind.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_binary_format::SignatureTokenKind" ]
                 |),
                 [ M.read (| other |) ]
@@ -1026,6 +1035,7 @@ Module Impl_core_cmp_PartialEq_for_move_binary_format_SignatureTokenKind.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_binary_format::SignatureTokenKind" ]
                 |),
                 [ M.read (| self |) ]
@@ -1036,6 +1046,7 @@ Module Impl_core_cmp_PartialEq_for_move_binary_format_SignatureTokenKind.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_binary_format::SignatureTokenKind" ]
                 |),
                 [ M.read (| other |) ]
@@ -1070,6 +1081,7 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_SignatureTokenKind.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_binary_format::SignatureTokenKind" ]
                 |),
                 [ M.read (| self |) ]
@@ -1080,6 +1092,7 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_SignatureTokenKind.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_binary_format::SignatureTokenKind" ]
                 |),
                 [ M.read (| other |) ]

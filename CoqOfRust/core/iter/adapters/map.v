@@ -456,6 +456,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::map::map_try_fold",
+                      [],
                       [ Ty.associated; B; Acc; R; F; G ]
                     |),
                     [
@@ -508,6 +509,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::map::map_fold",
+                      [],
                       [ Ty.associated; B; Acc; F; G ]
                     |),
                     [
@@ -565,7 +567,11 @@ Module iter.
                   Value.Tuple
                     [
                       M.call_closure (|
-                        M.get_function (| "core::iter::adapters::zip::try_get_unchecked", [ I ] |),
+                        M.get_function (|
+                          "core::iter::adapters::zip::try_get_unchecked",
+                          [],
+                          [ I ]
+                        |),
                         [
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -692,6 +698,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::map::map_try_fold",
+                      [],
                       [ Ty.associated; B; Acc; R; F; G ]
                     |),
                     [
@@ -744,6 +751,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::map::map_fold",
+                      [],
                       [ Ty.associated; B; Acc; F; G ]
                     |),
                     [

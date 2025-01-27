@@ -43,7 +43,7 @@ Module mem.
       ltac:(M.monadic
         (let t := M.alloc (| t |) in
         M.call_closure (|
-          M.get_function (| "core::intrinsics::forget", [ T ] |),
+          M.get_function (| "core::intrinsics::forget", [], [ T ] |),
           [ M.read (| t |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -60,7 +60,7 @@ Module mem.
     match ε, τ, α with
     | [], [ T ], [] =>
       ltac:(M.monadic
-        (M.call_closure (| M.get_function (| "core::intrinsics::size_of", [ T ] |), [] |)))
+        (M.call_closure (| M.get_function (| "core::intrinsics::size_of", [], [ T ] |), [] |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -78,7 +78,7 @@ Module mem.
       ltac:(M.monadic
         (let val := M.alloc (| val |) in
         M.call_closure (|
-          M.get_function (| "core::intrinsics::size_of_val", [ T ] |),
+          M.get_function (| "core::intrinsics::size_of_val", [], [ T ] |),
           [ M.read (| val |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -98,7 +98,7 @@ Module mem.
       ltac:(M.monadic
         (let val := M.alloc (| val |) in
         M.call_closure (|
-          M.get_function (| "core::intrinsics::size_of_val", [ T ] |),
+          M.get_function (| "core::intrinsics::size_of_val", [], [ T ] |),
           [ M.read (| val |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -115,7 +115,7 @@ Module mem.
     match ε, τ, α with
     | [], [ T ], [] =>
       ltac:(M.monadic
-        (M.call_closure (| M.get_function (| "core::intrinsics::min_align_of", [ T ] |), [] |)))
+        (M.call_closure (| M.get_function (| "core::intrinsics::min_align_of", [], [ T ] |), [] |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -133,7 +133,7 @@ Module mem.
       ltac:(M.monadic
         (let val := M.alloc (| val |) in
         M.call_closure (|
-          M.get_function (| "core::intrinsics::min_align_of_val", [ T ] |),
+          M.get_function (| "core::intrinsics::min_align_of_val", [], [ T ] |),
           [ M.read (| val |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -150,7 +150,7 @@ Module mem.
     match ε, τ, α with
     | [], [ T ], [] =>
       ltac:(M.monadic
-        (M.call_closure (| M.get_function (| "core::intrinsics::min_align_of", [ T ] |), [] |)))
+        (M.call_closure (| M.get_function (| "core::intrinsics::min_align_of", [], [ T ] |), [] |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -168,7 +168,7 @@ Module mem.
       ltac:(M.monadic
         (let val := M.alloc (| val |) in
         M.call_closure (|
-          M.get_function (| "core::intrinsics::min_align_of_val", [ T ] |),
+          M.get_function (| "core::intrinsics::min_align_of_val", [], [ T ] |),
           [ M.read (| val |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -188,7 +188,7 @@ Module mem.
       ltac:(M.monadic
         (let val := M.alloc (| val |) in
         M.call_closure (|
-          M.get_function (| "core::intrinsics::min_align_of_val", [ T ] |),
+          M.get_function (| "core::intrinsics::min_align_of_val", [], [ T ] |),
           [ M.read (| val |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -205,7 +205,7 @@ Module mem.
     match ε, τ, α with
     | [], [ T ], [] =>
       ltac:(M.monadic
-        (M.call_closure (| M.get_function (| "core::intrinsics::needs_drop", [ T ] |), [] |)))
+        (M.call_closure (| M.get_function (| "core::intrinsics::needs_drop", [], [ T ] |), [] |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -228,7 +228,7 @@ Module mem.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::assert_zero_valid", [ T ] |),
+                M.get_function (| "core::intrinsics::assert_zero_valid", [], [ T ] |),
                 []
               |)
             |) in
@@ -282,7 +282,7 @@ Module mem.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::assert_mem_uninitialized_valid", [ T ] |),
+                M.get_function (| "core::intrinsics::assert_mem_uninitialized_valid", [], [ T ] |),
                 []
               |)
             |) in
@@ -361,7 +361,7 @@ Module mem.
         (let x := M.alloc (| x |) in
         let y := M.alloc (| y |) in
         M.call_closure (|
-          M.get_function (| "core::intrinsics::typed_swap", [ T ] |),
+          M.get_function (| "core::intrinsics::typed_swap", [], [ T ] |),
           [ M.read (| x |); M.read (| y |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -380,7 +380,7 @@ Module mem.
       ltac:(M.monadic
         (let dest := M.alloc (| dest |) in
         M.call_closure (|
-          M.get_function (| "core::mem::replace", [ T ] |),
+          M.get_function (| "core::mem::replace", [], [ T ] |),
           [
             M.read (| dest |);
             M.call_closure (|
@@ -420,14 +420,14 @@ Module mem.
           let~ result :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::ptr::read", [ T ] |),
+                M.get_function (| "core::ptr::read", [], [ T ] |),
                 [ M.read (| dest |) ]
               |)
             |) in
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::ptr::write", [ T ] |),
+                M.get_function (| "core::ptr::write", [], [ T ] |),
                 [ M.read (| dest |); M.read (| src |) ]
               |)
             |) in
@@ -504,11 +504,11 @@ Module mem.
                           UnOp.not (|
                             BinOp.ge (|
                               M.call_closure (|
-                                M.get_function (| "core::mem::size_of", [ Src ] |),
+                                M.get_function (| "core::mem::size_of", [], [ Src ] |),
                                 []
                               |),
                               M.call_closure (|
-                                M.get_function (| "core::mem::size_of", [ Dst ] |),
+                                M.get_function (| "core::mem::size_of", [], [ Dst ] |),
                                 []
                               |)
                             |)
@@ -518,7 +518,7 @@ Module mem.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -555,11 +555,11 @@ Module mem.
                       (M.alloc (|
                         BinOp.gt (|
                           M.call_closure (|
-                            M.get_function (| "core::mem::align_of", [ Dst ] |),
+                            M.get_function (| "core::mem::align_of", [], [ Dst ] |),
                             []
                           |),
                           M.call_closure (|
-                            M.get_function (| "core::mem::align_of", [ Src ] |),
+                            M.get_function (| "core::mem::align_of", [], [ Src ] |),
                             []
                           |)
                         |)
@@ -567,7 +567,7 @@ Module mem.
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::ptr::read_unaligned", [ Dst ] |),
+                      M.get_function (| "core::ptr::read_unaligned", [], [ Dst ] |),
                       [ M.rust_cast (M.read (| M.use (M.alloc (| M.read (| src |) |)) |)) ]
                     |)
                   |)));
@@ -575,7 +575,7 @@ Module mem.
                 ltac:(M.monadic
                   (M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::ptr::read", [ Dst ] |),
+                      M.get_function (| "core::ptr::read", [], [ Dst ] |),
                       [ M.rust_cast (M.read (| M.use (M.alloc (| M.read (| src |) |)) |)) ]
                     |)
                   |)))
@@ -804,7 +804,7 @@ Module mem.
           "core::mem::Discriminant"
           [
             M.call_closure (|
-              M.get_function (| "core::intrinsics::discriminant_value", [ T ] |),
+              M.get_function (| "core::intrinsics::discriminant_value", [], [ T ] |),
               [ M.read (| v |) ]
             |)
           ]))
@@ -822,7 +822,10 @@ Module mem.
     match ε, τ, α with
     | [], [ T ], [] =>
       ltac:(M.monadic
-        (M.call_closure (| M.get_function (| "core::intrinsics::variant_count", [ T ] |), [] |)))
+        (M.call_closure (|
+          M.get_function (| "core::intrinsics::variant_count", [], [ T ] |),
+          []
+        |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   

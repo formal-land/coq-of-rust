@@ -15,7 +15,7 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -49,7 +49,7 @@ Module cool.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [] |),
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -91,7 +91,7 @@ Module my.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [] |),
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -132,7 +132,7 @@ Module my.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "std::io::stdio::_print", [] |),
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -194,7 +194,7 @@ Module my.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [] |),
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -216,23 +216,26 @@ Module my.
             M.alloc (| Value.Tuple [] |) in
           let~ _ :=
             M.alloc (|
-              M.call_closure (| M.get_function (| "super_and_self::my::function", [] |), [] |)
+              M.call_closure (| M.get_function (| "super_and_self::my::function", [], [] |), [] |)
             |) in
           let~ _ :=
             M.alloc (|
-              M.call_closure (| M.get_function (| "super_and_self::my::function", [] |), [] |)
+              M.call_closure (| M.get_function (| "super_and_self::my::function", [], [] |), [] |)
             |) in
           let~ _ :=
             M.alloc (|
-              M.call_closure (| M.get_function (| "super_and_self::my::cool::function", [] |), [] |)
+              M.call_closure (|
+                M.get_function (| "super_and_self::my::cool::function", [], [] |),
+                []
+              |)
             |) in
           let~ _ :=
             M.alloc (|
-              M.call_closure (| M.get_function (| "super_and_self::function", [] |), [] |)
+              M.call_closure (| M.get_function (| "super_and_self::function", [], [] |), [] |)
             |) in
           let~ _ :=
             M.alloc (|
-              M.call_closure (| M.get_function (| "super_and_self::cool::function", [] |), [] |)
+              M.call_closure (| M.get_function (| "super_and_self::cool::function", [], [] |), [] |)
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -254,7 +257,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ _ :=
           M.alloc (|
-            M.call_closure (| M.get_function (| "super_and_self::my::indirect_call", [] |), [] |)
+            M.call_closure (|
+              M.get_function (| "super_and_self::my::indirect_call", [], [] |),
+              []
+            |)
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

@@ -67,7 +67,7 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
+                      M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -100,7 +100,7 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
+                      M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -124,7 +124,7 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
+                      M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -168,7 +168,7 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
+                      M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -216,7 +216,7 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "std::io::stdio::_print", [] |),
+                        M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -320,23 +320,38 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ unload := M.alloc (| Value.StructTuple "enums::WebEvent::PageUnload" [] |) in
         let~ _ :=
           M.alloc (|
-            M.call_closure (| M.get_function (| "enums::inspect", [] |), [ M.read (| pressed |) ] |)
+            M.call_closure (|
+              M.get_function (| "enums::inspect", [], [] |),
+              [ M.read (| pressed |) ]
+            |)
           |) in
         let~ _ :=
           M.alloc (|
-            M.call_closure (| M.get_function (| "enums::inspect", [] |), [ M.read (| pasted |) ] |)
+            M.call_closure (|
+              M.get_function (| "enums::inspect", [], [] |),
+              [ M.read (| pasted |) ]
+            |)
           |) in
         let~ _ :=
           M.alloc (|
-            M.call_closure (| M.get_function (| "enums::inspect", [] |), [ M.read (| click |) ] |)
+            M.call_closure (|
+              M.get_function (| "enums::inspect", [], [] |),
+              [ M.read (| click |) ]
+            |)
           |) in
         let~ _ :=
           M.alloc (|
-            M.call_closure (| M.get_function (| "enums::inspect", [] |), [ M.read (| load |) ] |)
+            M.call_closure (|
+              M.get_function (| "enums::inspect", [], [] |),
+              [ M.read (| load |) ]
+            |)
           |) in
         let~ _ :=
           M.alloc (|
-            M.call_closure (| M.get_function (| "enums::inspect", [] |), [ M.read (| unload |) ] |)
+            M.call_closure (|
+              M.get_function (| "enums::inspect", [], [] |),
+              [ M.read (| unload |) ]
+            |)
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

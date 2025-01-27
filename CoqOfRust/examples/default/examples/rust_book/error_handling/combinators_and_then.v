@@ -241,7 +241,7 @@ Definition cookable_v1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
         M.match_operator (|
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "combinators_and_then::have_recipe", [] |),
+              M.get_function (| "combinators_and_then::have_recipe", [], [] |),
               [ M.read (| food |) ]
             |)
           |),
@@ -258,7 +258,7 @@ Definition cookable_v1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "combinators_and_then::have_ingredients", [] |),
+                      M.get_function (| "combinators_and_then::have_ingredients", [], [] |),
                       [ M.read (| food |) ]
                     |)
                   |),
@@ -315,10 +315,10 @@ Definition cookable_v2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
         |),
         [
           M.call_closure (|
-            M.get_function (| "combinators_and_then::have_recipe", [] |),
+            M.get_function (| "combinators_and_then::have_recipe", [], [] |),
             [ M.read (| food |) ]
           |);
-          M.get_function (| "combinators_and_then::have_ingredients", [] |)
+          M.get_function (| "combinators_and_then::have_ingredients", [], [] |)
         ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -344,7 +344,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         M.match_operator (|
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "combinators_and_then::cookable_v2", [] |),
+              M.get_function (| "combinators_and_then::cookable_v2", [], [] |),
               [ M.read (| food |) ]
             |)
           |),
@@ -357,7 +357,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
+                      M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -408,7 +408,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
+                      M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -487,7 +487,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "combinators_and_then::eat", [] |),
+                      M.get_function (| "combinators_and_then::eat", [], [] |),
                       [
                         M.read (| cordon_bleu |);
                         Value.StructTuple "combinators_and_then::Day::Monday" []
@@ -497,7 +497,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "combinators_and_then::eat", [] |),
+                      M.get_function (| "combinators_and_then::eat", [], [] |),
                       [
                         M.read (| steak |);
                         Value.StructTuple "combinators_and_then::Day::Tuesday" []
@@ -507,7 +507,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "combinators_and_then::eat", [] |),
+                      M.get_function (| "combinators_and_then::eat", [], [] |),
                       [
                         M.read (| sushi |);
                         Value.StructTuple "combinators_and_then::Day::Wednesday" []

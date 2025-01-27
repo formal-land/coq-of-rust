@@ -420,6 +420,7 @@ Module ffi.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::ffi::c_str::FromBytesWithNulErrorKind" ]
                     |),
                     [ M.read (| self |) ]
@@ -430,6 +431,7 @@ Module ffi.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::ffi::c_str::FromBytesWithNulErrorKind" ]
                     |),
                     [ M.read (| other |) ]
@@ -1295,7 +1297,7 @@ Module ffi.
               let~ len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::ffi::c_str::strlen", [] |),
+                    M.get_function (| "core::ffi::c_str::strlen", [], [] |),
                     [ M.read (| ptr |) ]
                   |)
                 |) in
@@ -1308,7 +1310,7 @@ Module ffi.
                   |),
                   [
                     M.call_closure (|
-                      M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
+                      M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -1355,7 +1357,7 @@ Module ffi.
               let~ nul_pos :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::slice::memchr::memchr", [] |),
+                    M.get_function (| "core::slice::memchr::memchr", [], [] |),
                     [ Value.Integer IntegerKind.U8 0; M.read (| bytes |) ]
                   |)
                 |) in
@@ -1376,6 +1378,7 @@ Module ffi.
                           M.call_closure (|
                             M.get_function (|
                               "core::slice::raw::from_raw_parts",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [
@@ -1452,7 +1455,7 @@ Module ffi.
               let~ nul_pos :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::slice::memchr::memchr", [] |),
+                    M.get_function (| "core::slice::memchr::memchr", [], [] |),
                     [ Value.Integer IntegerKind.U8 0; M.read (| bytes |) ]
                   |)
                 |) in
@@ -1596,6 +1599,7 @@ Module ffi.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::const_eval_select",
+                [],
                 [
                   Ty.tuple
                     [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
@@ -1804,7 +1808,7 @@ Module ffi.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
+                  M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -1892,7 +1896,7 @@ Module ffi.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::str::converts::from_utf8", [] |),
+              M.get_function (| "core::str::converts::from_utf8", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::ffi::c_str::CStr", "to_bytes", [] |),
@@ -2108,7 +2112,7 @@ Module ffi.
                       (M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -2246,6 +2250,7 @@ Module ffi.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::const_eval_select",
+              [],
               [
                 Ty.tuple [ Ty.apply (Ty.path "*const") [] [ Ty.path "i8" ] ];
                 Ty.function [ Ty.apply (Ty.path "*const") [] [ Ty.path "i8" ] ] (Ty.path "usize");
@@ -2255,8 +2260,8 @@ Module ffi.
             |),
             [
               Value.Tuple [ M.read (| ptr |) ];
-              M.get_function (| "core::ffi::c_str::strlen.strlen_ct", [] |);
-              M.get_function (| "core::ffi::c_str::strlen.strlen_rt", [] |)
+              M.get_function (| "core::ffi::c_str::strlen.strlen_ct", [], [] |);
+              M.get_function (| "core::ffi::c_str::strlen.strlen_rt", [], [] |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2359,7 +2364,7 @@ Module ffi.
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             M.call_closure (|
-              M.get_function (| "core::ffi::c_str::strlen::strlen_rt::strlen", [] |),
+              M.get_function (| "core::ffi::c_str::strlen::strlen_rt::strlen", [], [] |),
               [ M.read (| s |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2766,7 +2771,7 @@ Module ffi.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::ffi::c_str::strlen", [] |),
+              M.get_function (| "core::ffi::c_str::strlen", [], [] |),
               [
                 (* MutToConstPointer *)
                 M.pointer_coercion

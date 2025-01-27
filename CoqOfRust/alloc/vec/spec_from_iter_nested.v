@@ -118,6 +118,7 @@ Module vec.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::cmp::max",
+                                              [],
                                               [ Ty.path "usize" ]
                                             |),
                                             [
@@ -158,7 +159,7 @@ Module vec.
                                         let~ _ :=
                                           M.alloc (|
                                             M.call_closure (|
-                                              M.get_function (| "core::ptr::write", [ T ] |),
+                                              M.get_function (| "core::ptr::write", [], [ T ] |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -298,7 +299,7 @@ Module vec.
                           (M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic_fmt", [] |),
+                                M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|

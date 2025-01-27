@@ -95,6 +95,7 @@ Module net.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::net::socket_addr::SocketAddr" ]
                     |),
                     [ M.read (| self |) ]
@@ -105,6 +106,7 @@ Module net.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::net::socket_addr::SocketAddr" ]
                     |),
                     [ M.read (| other |) ]
@@ -203,7 +205,7 @@ Module net.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unreachable", [] |),
+                                    M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                     []
                                   |)
                                 |)
@@ -279,6 +281,7 @@ Module net.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::net::socket_addr::SocketAddr" ]
                     |),
                     [ M.read (| self |) ]
@@ -374,6 +377,7 @@ Module net.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::net::socket_addr::SocketAddr" ]
                     |),
                     [ M.read (| self |) ]
@@ -384,6 +388,7 @@ Module net.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::net::socket_addr::SocketAddr" ]
                     |),
                     [ M.read (| other |) ]
@@ -500,6 +505,7 @@ Module net.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::net::socket_addr::SocketAddr" ]
                     |),
                     [ M.read (| self |) ]
@@ -510,6 +516,7 @@ Module net.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::net::socket_addr::SocketAddr" ]
                     |),
                     [ M.read (| other |) ]
@@ -598,7 +605,7 @@ Module net.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unreachable", [] |),
+                                    M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                     []
                                   |)
                                 |)

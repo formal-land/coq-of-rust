@@ -134,7 +134,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   let~ _ :=
                                     M.alloc (|
                                       M.call_closure (|
-                                        M.get_function (| "std::io::stdio::_print", [] |),
+                                        M.get_function (| "std::io::stdio::_print", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -190,7 +190,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   let~ _ :=
                                     M.alloc (|
                                       M.call_closure (|
-                                        M.get_function (| "std::io::stdio::_print", [] |),
+                                        M.get_function (| "std::io::stdio::_print", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -230,7 +230,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   let~ _ :=
                                     M.alloc (|
                                       M.call_closure (|
-                                        M.get_function (| "std::io::stdio::_print", [] |),
+                                        M.get_function (| "std::io::stdio::_print", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -259,6 +259,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::mem::drop",
+                                        [],
                                         [ Ty.path "alloc::string::String" ]
                                       |),
                                       [ M.read (| farewell |) ]
@@ -276,6 +277,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.call_closure (|
               M.get_function (|
                 "functions_closures_as_input_parameters::apply",
+                [],
                 [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ]
               |),
               [ M.read (| diary |) ]
@@ -305,7 +307,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -329,6 +331,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.call_closure (|
                                     M.get_function (|
                                       "functions_closures_as_input_parameters::apply_to_3",
+                                      [],
                                       [ Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32") ]
                                     |),
                                     [ M.read (| double |) ]

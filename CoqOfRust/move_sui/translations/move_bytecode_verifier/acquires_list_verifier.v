@@ -484,6 +484,7 @@ Module acquires_list_verifier.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::hint::must_use",
+                                                                [],
                                                                 [ Ty.path "alloc::string::String" ]
                                                               |),
                                                               [
@@ -493,6 +494,7 @@ Module acquires_list_verifier.
                                                                       M.call_closure (|
                                                                         M.get_function (|
                                                                           "alloc::fmt::format",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -554,6 +556,7 @@ Module acquires_list_verifier.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "core::panicking::panic_fmt",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -1006,6 +1009,7 @@ Module acquires_list_verifier.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::hint::must_use",
+                                                                  [],
                                                                   [ Ty.path "alloc::string::String"
                                                                   ]
                                                                 |),
@@ -1016,6 +1020,7 @@ Module acquires_list_verifier.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "alloc::fmt::format",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -1077,6 +1082,7 @@ Module acquires_list_verifier.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::panicking::panic_fmt",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [

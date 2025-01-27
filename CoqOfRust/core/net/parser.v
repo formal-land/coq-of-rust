@@ -1615,6 +1615,7 @@ Module net.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "core::panicking::panic",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -5459,6 +5460,7 @@ Module net.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::net::parser::AddrKind" ]
                     |),
                     [ M.read (| self |) ]
@@ -5469,6 +5471,7 @@ Module net.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::net::parser::AddrKind" ]
                     |),
                     [ M.read (| other |) ]

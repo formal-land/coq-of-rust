@@ -150,6 +150,7 @@ Module option.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
                   |),
                   [ M.read (| self |) ]
@@ -654,6 +655,7 @@ Module option.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
                   |),
                   [ M.read (| self |) ]
@@ -693,7 +695,7 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::slice::raw::from_raw_parts", [ T ] |),
+            M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
@@ -769,7 +771,7 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::slice::raw::from_raw_parts_mut", [ T ] |),
+            M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
@@ -851,7 +853,7 @@ Module option.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::option::expect_failed", [] |),
+                          M.get_function (| "core::option::expect_failed", [], [] |),
                           [ M.read (| msg |) ]
                         |)
                       |)
@@ -900,7 +902,7 @@ Module option.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::option::unwrap_failed", [] |),
+                          M.get_function (| "core::option::unwrap_failed", [], [] |),
                           []
                         |)
                       |)
@@ -1115,7 +1117,7 @@ Module option.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::hint::unreachable_unchecked", [] |),
+                          M.get_function (| "core::hint::unreachable_unchecked", [], [] |),
                           []
                         |)
                       |)
@@ -2261,6 +2263,7 @@ Module option.
           M.call_closure (|
             M.get_function (|
               "core::mem::replace",
+              [],
               [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
             |),
             [ M.read (| self |); Value.StructTuple "core::option::Option::None" [] ]
@@ -2357,6 +2360,7 @@ Module option.
           M.call_closure (|
             M.get_function (|
               "core::mem::replace",
+              [],
               [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
             |),
             [
@@ -2864,7 +2868,7 @@ Module option.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
-          M.get_function (| "core::panicking::panic", [] |),
+          M.get_function (| "core::panicking::panic", [], [] |),
           [ M.read (| Value.String "called `Option::unwrap()` on a `None` value" |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2885,6 +2889,7 @@ Module option.
         M.call_closure (|
           M.get_function (|
             "core::panicking::panic_display",
+            [],
             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
           |),
           [ msg ]
@@ -4647,6 +4652,7 @@ Module option.
           M.call_closure (|
             M.get_function (|
               "core::iter::adapters::try_process",
+              [],
               [
                 Ty.associated;
                 A;

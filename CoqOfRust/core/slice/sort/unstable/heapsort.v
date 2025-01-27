@@ -188,6 +188,7 @@ Module slice.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::slice::sort::unstable::heapsort::sift_down",
+                                                [],
                                                 [ T; F ]
                                               |),
                                               [
@@ -213,6 +214,7 @@ Module slice.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "core::cmp::min",
+                                                              [],
                                                               [ Ty.path "usize" ]
                                                             |),
                                                             [ M.read (| i |); M.read (| len |) ]
@@ -294,7 +296,7 @@ Module slice.
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::assume", [] |),
+                        M.get_function (| "core::intrinsics::assume", [], [] |),
                         [
                           BinOp.le (|
                             M.read (| node |),
@@ -502,7 +504,7 @@ Module slice.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::ptr::swap_nonoverlapping", [ T ] |),
+                            M.get_function (| "core::ptr::swap_nonoverlapping", [], [ T ] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|

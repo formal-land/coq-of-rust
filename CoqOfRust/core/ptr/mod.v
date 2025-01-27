@@ -17,7 +17,7 @@ Module ptr.
       ltac:(M.monadic
         (let to_drop := M.alloc (| to_drop |) in
         M.call_closure (|
-          M.get_function (| "core::ptr::drop_in_place", [ T ] |),
+          M.get_function (| "core::ptr::drop_in_place", [], [ T ] |),
           [ M.read (| to_drop |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -35,10 +35,10 @@ Module ptr.
     | [], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (|
-          M.get_function (| "core::ptr::metadata::from_raw_parts", [ T; Ty.tuple [] ] |),
+          M.get_function (| "core::ptr::metadata::from_raw_parts", [], [ T; Ty.tuple [] ] |),
           [
             M.call_closure (|
-              M.get_function (| "core::ptr::without_provenance", [ Ty.tuple [] ] |),
+              M.get_function (| "core::ptr::without_provenance", [], [ Ty.tuple [] ] |),
               [ Value.Integer IntegerKind.Usize 0 ]
             |);
             Value.Tuple []
@@ -59,10 +59,10 @@ Module ptr.
     | [], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (|
-          M.get_function (| "core::ptr::metadata::from_raw_parts_mut", [ T; Ty.tuple [] ] |),
+          M.get_function (| "core::ptr::metadata::from_raw_parts_mut", [], [ T; Ty.tuple [] ] |),
           [
             M.call_closure (|
-              M.get_function (| "core::ptr::without_provenance_mut", [ Ty.tuple [] ] |),
+              M.get_function (| "core::ptr::without_provenance_mut", [], [ Ty.tuple [] ] |),
               [ Value.Integer IntegerKind.Usize 0 ]
             |);
             Value.Tuple []
@@ -91,6 +91,7 @@ Module ptr.
         M.call_closure (|
           M.get_function (|
             "core::intrinsics::transmute",
+            [],
             [ Ty.path "usize"; Ty.apply (Ty.path "*const") [] [ T ] ]
           |),
           [ M.read (| addr |) ]
@@ -111,8 +112,8 @@ Module ptr.
     | [], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (|
-          M.get_function (| "core::ptr::without_provenance", [ T ] |),
-          [ M.call_closure (| M.get_function (| "core::mem::align_of", [ T ] |), [] |) ]
+          M.get_function (| "core::ptr::without_provenance", [], [ T ] |),
+          [ M.call_closure (| M.get_function (| "core::mem::align_of", [], [ T ] |), [] |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -137,6 +138,7 @@ Module ptr.
         M.call_closure (|
           M.get_function (|
             "core::intrinsics::transmute",
+            [],
             [ Ty.path "usize"; Ty.apply (Ty.path "*mut") [] [ T ] ]
           |),
           [ M.read (| addr |) ]
@@ -157,8 +159,8 @@ Module ptr.
     | [], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (|
-          M.get_function (| "core::ptr::without_provenance_mut", [ T ] |),
-          [ M.call_closure (| M.get_function (| "core::mem::align_of", [ T ] |), [] |) ]
+          M.get_function (| "core::ptr::without_provenance_mut", [], [ T ] |),
+          [ M.call_closure (| M.get_function (| "core::mem::align_of", [], [ T ] |), [] |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -257,6 +259,7 @@ Module ptr.
         M.call_closure (|
           M.get_function (|
             "core::ptr::metadata::from_raw_parts",
+            [],
             [ Ty.apply (Ty.path "slice") [] [ T ]; T ]
           |),
           [ M.read (| data |); M.read (| len |) ]
@@ -281,6 +284,7 @@ Module ptr.
         M.call_closure (|
           M.get_function (|
             "core::ptr::metadata::from_raw_parts_mut",
+            [],
             [ Ty.apply (Ty.path "slice") [] [ T ]; T ]
           |),
           [ M.read (| data |); M.read (| len |) ]
@@ -330,7 +334,7 @@ Module ptr.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                 [
                   (* MutToConstPointer *) M.pointer_coercion (M.read (| x |));
                   M.call_closure (|
@@ -348,7 +352,7 @@ Module ptr.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::copy", [ T ] |),
+                M.get_function (| "core::intrinsics::copy", [], [ T ] |),
                 [
                   (* MutToConstPointer *) M.pointer_coercion (M.read (| y |));
                   M.read (| x |);
@@ -359,7 +363,7 @@ Module ptr.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
@@ -453,7 +457,7 @@ Module ptr.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                                M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                                 []
                               |)
                             |)) in
@@ -464,17 +468,18 @@ Module ptr.
                             M.call_closure (|
                               M.get_function (|
                                 "core::ptr::swap_nonoverlapping.precondition_check",
+                                [],
                                 []
                               |),
                               [
                                 M.rust_cast (M.read (| x |));
                                 M.rust_cast (M.read (| y |));
                                 M.call_closure (|
-                                  M.get_function (| "core::mem::size_of", [ T ] |),
+                                  M.get_function (| "core::mem::size_of", [], [ T ] |),
                                   []
                                 |);
                                 M.call_closure (|
-                                  M.get_function (| "core::mem::align_of", [ T ] |),
+                                  M.get_function (| "core::mem::align_of", [], [ T ] |),
                                   []
                                 |);
                                 M.read (| count |)
@@ -497,11 +502,15 @@ Module ptr.
                               LogicalOp.and (|
                                 BinOp.le (|
                                   M.call_closure (|
-                                    M.get_function (| "core::mem::align_of", [ T ] |),
+                                    M.get_function (| "core::mem::align_of", [], [ T ] |),
                                     []
                                   |),
                                   M.call_closure (|
-                                    M.get_function (| "core::mem::size_of", [ Ty.path "usize" ] |),
+                                    M.get_function (|
+                                      "core::mem::size_of",
+                                      [],
+                                      [ Ty.path "usize" ]
+                                    |),
                                     []
                                   |)
                                 |),
@@ -516,7 +525,7 @@ Module ptr.
                                         |),
                                         [
                                           M.call_closure (|
-                                            M.get_function (| "core::mem::size_of", [ T ] |),
+                                            M.get_function (| "core::mem::size_of", [], [ T ] |),
                                             []
                                           |)
                                         ]
@@ -525,13 +534,14 @@ Module ptr.
                                     ltac:(M.monadic
                                       (BinOp.gt (|
                                         M.call_closure (|
-                                          M.get_function (| "core::mem::size_of", [ T ] |),
+                                          M.get_function (| "core::mem::size_of", [], [ T ] |),
                                           []
                                         |),
                                         BinOp.Wrap.mul (|
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::mem::size_of",
+                                              [],
                                               [ Ty.path "usize" ]
                                             |),
                                             []
@@ -556,12 +566,13 @@ Module ptr.
                                         LogicalOp.and (|
                                           BinOp.ge (|
                                             M.call_closure (|
-                                              M.get_function (| "core::mem::align_of", [ T ] |),
+                                              M.get_function (| "core::mem::align_of", [], [ T ] |),
                                               []
                                             |),
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::mem::align_of",
+                                                [],
                                                 [ Ty.path "usize" ]
                                               |),
                                               []
@@ -571,12 +582,17 @@ Module ptr.
                                             (BinOp.eq (|
                                               BinOp.Wrap.rem (|
                                                 M.call_closure (|
-                                                  M.get_function (| "core::mem::size_of", [ T ] |),
+                                                  M.get_function (|
+                                                    "core::mem::size_of",
+                                                    [],
+                                                    [ T ]
+                                                  |),
                                                   []
                                                 |),
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::mem::size_of",
+                                                    [],
                                                     [ Ty.path "usize" ]
                                                   |),
                                                   []
@@ -622,12 +638,17 @@ Module ptr.
                                               M.read (| count |),
                                               BinOp.Wrap.div (|
                                                 M.call_closure (|
-                                                  M.get_function (| "core::mem::size_of", [ T ] |),
+                                                  M.get_function (|
+                                                    "core::mem::size_of",
+                                                    [],
+                                                    [ T ]
+                                                  |),
                                                   []
                                                 |),
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::mem::size_of",
+                                                    [],
                                                     [ Ty.path "usize" ]
                                                   |),
                                                   []
@@ -639,6 +660,7 @@ Module ptr.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::ptr::swap_nonoverlapping_simple_untyped",
+                                              [],
                                               [ Ty.path "usize" ]
                                             |),
                                             [ M.read (| x |); M.read (| y |); M.read (| count |) ]
@@ -662,12 +684,13 @@ Module ptr.
                                         LogicalOp.and (|
                                           BinOp.ge (|
                                             M.call_closure (|
-                                              M.get_function (| "core::mem::align_of", [ T ] |),
+                                              M.get_function (| "core::mem::align_of", [], [ T ] |),
                                               []
                                             |),
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::mem::align_of",
+                                                [],
                                                 [ Ty.path "u8" ]
                                               |),
                                               []
@@ -677,12 +700,17 @@ Module ptr.
                                             (BinOp.eq (|
                                               BinOp.Wrap.rem (|
                                                 M.call_closure (|
-                                                  M.get_function (| "core::mem::size_of", [ T ] |),
+                                                  M.get_function (|
+                                                    "core::mem::size_of",
+                                                    [],
+                                                    [ T ]
+                                                  |),
                                                   []
                                                 |),
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::mem::size_of",
+                                                    [],
                                                     [ Ty.path "u8" ]
                                                   |),
                                                   []
@@ -728,12 +756,17 @@ Module ptr.
                                               M.read (| count |),
                                               BinOp.Wrap.div (|
                                                 M.call_closure (|
-                                                  M.get_function (| "core::mem::size_of", [ T ] |),
+                                                  M.get_function (|
+                                                    "core::mem::size_of",
+                                                    [],
+                                                    [ T ]
+                                                  |),
                                                   []
                                                 |),
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::mem::size_of",
+                                                    [],
                                                     [ Ty.path "u8" ]
                                                   |),
                                                   []
@@ -745,6 +778,7 @@ Module ptr.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::ptr::swap_nonoverlapping_simple_untyped",
+                                              [],
                                               [ Ty.path "u8" ]
                                             |),
                                             [ M.read (| x |); M.read (| y |); M.read (| count |) ]
@@ -762,7 +796,7 @@ Module ptr.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::ptr::swap_nonoverlapping_simple_untyped", [ T ] |),
+                  M.get_function (| "core::ptr::swap_nonoverlapping_simple_untyped", [], [ T ] |),
                   [ M.read (| x |); M.read (| y |); M.read (| count |) ]
                 |)
               |)
@@ -887,6 +921,7 @@ Module ptr.
                             M.call_closure (|
                               M.get_function (|
                                 "core::ptr::read",
+                                [],
                                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                                 ]
                               |),
@@ -898,6 +933,7 @@ Module ptr.
                             M.call_closure (|
                               M.get_function (|
                                 "core::ptr::read",
+                                [],
                                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                                 ]
                               |),
@@ -909,6 +945,7 @@ Module ptr.
                             M.call_closure (|
                               M.get_function (|
                                 "core::ptr::write",
+                                [],
                                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                                 ]
                               |),
@@ -920,6 +957,7 @@ Module ptr.
                             M.call_closure (|
                               M.get_function (|
                                 "core::ptr::write",
+                                [],
                                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                                 ]
                               |),
@@ -991,7 +1029,7 @@ Module ptr.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                            M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                             []
                           |)
                         |)) in
@@ -999,11 +1037,11 @@ Module ptr.
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::ptr::replace.precondition_check", [] |),
+                          M.get_function (| "core::ptr::replace.precondition_check", [], [] |),
                           [
                             M.rust_cast (M.read (| dst |));
                             M.call_closure (|
-                              M.get_function (| "core::mem::align_of", [ T ] |),
+                              M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
                             |)
                           ]
@@ -1015,7 +1053,7 @@ Module ptr.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "core::mem::replace", [ T ] |),
+              M.get_function (| "core::mem::replace", [], [ T ] |),
               [ M.read (| dst |); M.read (| src |) ]
             |)
           |)
@@ -1084,7 +1122,7 @@ Module ptr.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                            M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                             []
                           |)
                         |)) in
@@ -1092,11 +1130,11 @@ Module ptr.
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::ptr::read.precondition_check", [] |),
+                          M.get_function (| "core::ptr::read.precondition_check", [], [] |),
                           [
                             M.rust_cast (M.read (| src |));
                             M.call_closure (|
-                              M.get_function (| "core::mem::align_of", [ T ] |),
+                              M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
                             |)
                           ]
@@ -1108,7 +1146,7 @@ Module ptr.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "core::intrinsics::read_via_copy", [ T ] |),
+              M.get_function (| "core::intrinsics::read_via_copy", [], [ T ] |),
               [ M.read (| src |) ]
             |)
           |)
@@ -1153,7 +1191,7 @@ Module ptr.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::copy_nonoverlapping", [ Ty.path "u8" ] |),
+                M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ Ty.path "u8" ] |),
                 [
                   M.rust_cast (M.read (| src |));
                   M.rust_cast
@@ -1165,7 +1203,7 @@ Module ptr.
                       |),
                       [ tmp ]
                     |));
-                  M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
+                  M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
                 ]
               |)
             |) in
@@ -1229,7 +1267,7 @@ Module ptr.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                            M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                             []
                           |)
                         |)) in
@@ -1237,11 +1275,11 @@ Module ptr.
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::ptr::write.precondition_check", [] |),
+                          M.get_function (| "core::ptr::write.precondition_check", [], [] |),
                           [
                             M.rust_cast (M.read (| dst |));
                             M.call_closure (|
-                              M.get_function (| "core::mem::align_of", [ T ] |),
+                              M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
                             |)
                           ]
@@ -1253,7 +1291,7 @@ Module ptr.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "core::intrinsics::write_via_move", [ T ] |),
+              M.get_function (| "core::intrinsics::write_via_move", [], [ T ] |),
               [ M.read (| dst |); M.read (| src |) ]
             |)
           |)
@@ -1285,18 +1323,18 @@ Module ptr.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::copy_nonoverlapping", [ Ty.path "u8" ] |),
+                M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ Ty.path "u8" ] |),
                 [
                   M.rust_cast src;
                   M.rust_cast (M.read (| dst |));
-                  M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
+                  M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
                 ]
               |)
             |) in
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::forget", [ T ] |),
+                M.get_function (| "core::intrinsics::forget", [], [ T ] |),
                 [ M.read (| src |) ]
               |)
             |) in
@@ -1339,7 +1377,7 @@ Module ptr.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                            M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                             []
                           |)
                         |)) in
@@ -1347,11 +1385,15 @@ Module ptr.
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::ptr::read_volatile.precondition_check", [] |),
+                          M.get_function (|
+                            "core::ptr::read_volatile.precondition_check",
+                            [],
+                            []
+                          |),
                           [
                             M.rust_cast (M.read (| src |));
                             M.call_closure (|
-                              M.get_function (| "core::mem::align_of", [ T ] |),
+                              M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
                             |)
                           ]
@@ -1363,7 +1405,7 @@ Module ptr.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "core::intrinsics::volatile_load", [ T ] |),
+              M.get_function (| "core::intrinsics::volatile_load", [], [ T ] |),
               [ M.read (| src |) ]
             |)
           |)
@@ -1406,7 +1448,7 @@ Module ptr.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                            M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                             []
                           |)
                         |)) in
@@ -1414,11 +1456,15 @@ Module ptr.
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::ptr::write_volatile.precondition_check", [] |),
+                          M.get_function (|
+                            "core::ptr::write_volatile.precondition_check",
+                            [],
+                            []
+                          |),
                           [
                             M.rust_cast (M.read (| dst |));
                             M.call_closure (|
-                              M.get_function (| "core::mem::align_of", [ T ] |),
+                              M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
                             |)
                           ]
@@ -1431,7 +1477,7 @@ Module ptr.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::volatile_store", [ T ] |),
+                M.get_function (| "core::intrinsics::volatile_store", [], [ T ] |),
                 [ M.read (| dst |); M.read (| src |) ]
               |)
             |) in
@@ -1630,13 +1676,14 @@ Module ptr.
             (M.read (|
               let~ stride :=
                 M.alloc (|
-                  M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
+                  M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
                 |) in
               let~ addr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::transmute",
+                      [],
                       [ Ty.apply (Ty.path "*const") [] [ T ]; Ty.path "usize" ]
                     |),
                     [ M.read (| p |) ]
@@ -1645,7 +1692,7 @@ Module ptr.
               let~ a_minus_one :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "usize" ] |),
                     [ M.read (| a |); Value.Integer IntegerKind.Usize 1 ]
                   |)
                 |) in
@@ -1705,7 +1752,7 @@ Module ptr.
               let~ a_mod_stride :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::unchecked_rem", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::intrinsics::unchecked_rem", [], [ Ty.path "usize" ] |),
                     [ M.read (| a |); M.read (| stride |) ]
                   |)
                 |) in
@@ -1734,6 +1781,7 @@ Module ptr.
                                     (M.call_closure (|
                                       M.get_function (|
                                         "core::intrinsics::wrapping_add",
+                                        [],
                                         [ Ty.path "usize" ]
                                       |),
                                       [ M.read (| addr |); M.read (| a_minus_one |) ]
@@ -1741,6 +1789,7 @@ Module ptr.
                                     (M.call_closure (|
                                       M.get_function (|
                                         "core::intrinsics::wrapping_sub",
+                                        [],
                                         [ Ty.path "usize" ]
                                       |),
                                       [ Value.Integer IntegerKind.Usize 0; M.read (| a |) ]
@@ -1751,6 +1800,7 @@ Module ptr.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::wrapping_sub",
+                                      [],
                                       [ Ty.path "usize" ]
                                     |),
                                     [ M.read (| aligned_address |); M.read (| addr |) ]
@@ -1759,7 +1809,7 @@ Module ptr.
                               let~ _ :=
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::assume", [] |),
+                                    M.get_function (| "core::intrinsics::assume", [], [] |),
                                     [ BinOp.lt (| M.read (| byte_offset |), M.read (| a |) |) ]
                                   |)
                                 |) in
@@ -1768,6 +1818,7 @@ Module ptr.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::unchecked_rem",
+                                      [],
                                       [ Ty.path "usize" ]
                                     |),
                                     [ M.read (| addr |); M.read (| stride |) ]
@@ -1797,6 +1848,7 @@ Module ptr.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::intrinsics::exact_div",
+                                                [],
                                                 [ Ty.path "usize" ]
                                               |),
                                               [ M.read (| byte_offset |); M.read (| stride |) ]
@@ -1819,14 +1871,22 @@ Module ptr.
                   let~ x :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "usize" ] |),
+                        M.get_function (|
+                          "core::intrinsics::cttz_nonzero",
+                          [],
+                          [ Ty.path "usize" ]
+                        |),
                         [ M.read (| stride |) ]
                       |)
                     |) in
                   let~ y :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "usize" ] |),
+                        M.get_function (|
+                          "core::intrinsics::cttz_nonzero",
+                          [],
+                          [ Ty.path "usize" ]
+                        |),
                         [ M.read (| a |) ]
                       |)
                     |) in
@@ -1849,6 +1909,7 @@ Module ptr.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::unchecked_shl",
+                      [],
                       [ Ty.path "usize"; Ty.path "u32" ]
                     |),
                     [ Value.Integer IntegerKind.Usize 1; M.read (| gcdpow |) ]
@@ -1869,6 +1930,7 @@ Module ptr.
                                   (M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::unchecked_sub",
+                                      [],
                                       [ Ty.path "usize" ]
                                     |),
                                     [ M.read (| gcd |); Value.Integer IntegerKind.Usize 1 ]
@@ -1886,6 +1948,7 @@ Module ptr.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::unchecked_shr",
+                                      [],
                                       [ Ty.path "usize"; Ty.path "u32" ]
                                     |),
                                     [ M.read (| a |); M.read (| gcdpow |) ]
@@ -1896,6 +1959,7 @@ Module ptr.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::unchecked_sub",
+                                      [],
                                       [ Ty.path "usize" ]
                                     |),
                                     [ M.read (| a2 |); Value.Integer IntegerKind.Usize 1 ]
@@ -1906,6 +1970,7 @@ Module ptr.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::unchecked_shr",
+                                      [],
                                       [ Ty.path "usize"; Ty.path "u32" ]
                                     |),
                                     [
@@ -1921,6 +1986,7 @@ Module ptr.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::unchecked_sub",
+                                      [],
                                       [ Ty.path "usize" ]
                                     |),
                                     [
@@ -1928,6 +1994,7 @@ Module ptr.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::intrinsics::unchecked_shr",
+                                          [],
                                           [ Ty.path "usize"; Ty.path "u32" ]
                                         |),
                                         [
@@ -1945,12 +2012,17 @@ Module ptr.
                                   (M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::wrapping_mul",
+                                      [],
                                       [ Ty.path "usize" ]
                                     |),
                                     [
                                       M.read (| minusp2 |);
                                       M.call_closure (|
-                                        M.get_function (| "core::ptr::align_offset.mod_inv", [] |),
+                                        M.get_function (|
+                                          "core::ptr::align_offset.mod_inv",
+                                          [],
+                                          []
+                                        |),
                                         [ M.read (| s2 |); M.read (| a2 |) ]
                                       |)
                                     ]
@@ -2025,7 +2097,7 @@ Module ptr.
             let~ m_minus_one :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
+                  M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "usize" ] |),
                   [ M.read (| m |); Value.Integer IntegerKind.Usize 1 ]
                 |)
               |) in
@@ -2079,12 +2151,17 @@ Module ptr.
                     M.write (|
                       inverse,
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::wrapping_mul", [ Ty.path "usize" ] |),
+                        M.get_function (|
+                          "core::intrinsics::wrapping_mul",
+                          [],
+                          [ Ty.path "usize" ]
+                        |),
                         [
                           M.read (| inverse |);
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::wrapping_sub",
+                              [],
                               [ Ty.path "usize" ]
                             |),
                             [
@@ -2092,6 +2169,7 @@ Module ptr.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::wrapping_mul",
+                                  [],
                                   [ Ty.path "usize" ]
                                 |),
                                 [ M.read (| x |); M.read (| inverse |) ]
@@ -2106,6 +2184,7 @@ Module ptr.
                       M.call_closure (|
                         M.get_function (|
                           "core::intrinsics::mul_with_overflow",
+                          [],
                           [ Ty.path "usize" ]
                         |),
                         [ M.read (| mod_gate |); M.read (| mod_gate |) ]
@@ -2461,7 +2540,7 @@ Module ptr.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_function (| "core::fmt::pointer_fmt_inner", [] |),
+            M.get_function (| "core::fmt::pointer_fmt_inner", [], [] |),
             [
               M.rust_cast
                 (M.call_closure (|
@@ -2499,7 +2578,7 @@ Module ptr.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            M.get_function (| "core::fmt::pointer_fmt_inner", [] |),
+            M.get_function (| "core::fmt::pointer_fmt_inner", [], [] |),
             [
               M.rust_cast
                 (M.call_closure (|

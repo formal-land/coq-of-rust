@@ -405,6 +405,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::panicking::assert_failed",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")

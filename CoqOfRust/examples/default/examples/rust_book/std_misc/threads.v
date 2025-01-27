@@ -123,6 +123,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.call_closure (|
                                             M.get_function (|
                                               "std::thread::spawn",
+                                              [],
                                               [
                                                 Ty.function [ Ty.tuple [] ] (Ty.tuple []);
                                                 Ty.tuple []
@@ -147,6 +148,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "std::io::stdio::_print",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [

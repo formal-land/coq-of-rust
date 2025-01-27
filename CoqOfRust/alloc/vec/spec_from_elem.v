@@ -254,7 +254,11 @@ Module vec.
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::intrinsics::write_bytes", [ Ty.path "i8" ] |),
+                          M.get_function (|
+                            "core::intrinsics::write_bytes",
+                            [],
+                            [ Ty.path "i8" ]
+                          |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -377,7 +381,11 @@ Module vec.
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::intrinsics::write_bytes", [ Ty.path "u8" ] |),
+                          M.get_function (|
+                            "core::intrinsics::write_bytes",
+                            [],
+                            [ Ty.path "u8" ]
+                          |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|

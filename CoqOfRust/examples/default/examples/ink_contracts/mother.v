@@ -525,6 +525,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "mother::Outline" ]
                 |),
                 [ M.read (| self |) ]
@@ -535,6 +536,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "mother::Outline" ]
                 |),
                 [ M.read (| other |) ]
@@ -684,6 +686,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "mother::Status" ]
                 |),
                 [ M.read (| self |) ]
@@ -694,6 +697,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "mother::Status" ]
                 |),
                 [ M.read (| other |) ]
@@ -1574,6 +1578,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "mother::Failure" ]
                 |),
                 [ M.read (| self |) ]
@@ -1584,6 +1589,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "mother::Failure" ]
                 |),
                 [ M.read (| other |) ]
@@ -2068,6 +2074,7 @@ Module Impl_mother_Mother.
                       M.call_closure (|
                         M.get_function (|
                           "std::panicking::begin_panic",
+                          [],
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
                         [ M.read (| Value.String "Trapping on user demand!" |) ]
@@ -2103,7 +2110,7 @@ Module Impl_mother_Mother.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "std::io::stdio::_print", [] |),
+                  M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),

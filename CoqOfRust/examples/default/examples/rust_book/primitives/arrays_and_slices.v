@@ -17,7 +17,7 @@ Definition analyze_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -58,7 +58,7 @@ Definition analyze_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -181,7 +181,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -222,7 +222,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -263,7 +263,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -310,7 +310,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -337,6 +337,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::mem::size_of_val",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "array")
@@ -361,7 +362,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -379,13 +380,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         let~ _ :=
           M.alloc (|
-            M.call_closure (| M.get_function (| "arrays_and_slices::analyze_slice", [] |), [ xs ] |)
+            M.call_closure (|
+              M.get_function (| "arrays_and_slices::analyze_slice", [], [] |),
+              [ xs ]
+            |)
           |) in
         let~ _ :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -404,7 +408,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "arrays_and_slices::analyze_slice", [] |),
+              M.get_function (| "arrays_and_slices::analyze_slice", [], [] |),
               [
                 M.call_closure (|
                   M.get_trait_method (|
@@ -495,6 +499,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::panicking::assert_failed",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "&")
@@ -612,6 +617,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::panicking::assert_failed",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "&")
@@ -734,7 +740,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         let~ _ :=
                                           M.alloc (|
                                             M.call_closure (|
-                                              M.get_function (| "std::io::stdio::_print", [] |),
+                                              M.get_function (| "std::io::stdio::_print", [], [] |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -791,7 +797,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         let~ _ :=
                                           M.alloc (|
                                             M.call_closure (|
-                                              M.get_function (| "std::io::stdio::_print", [] |),
+                                              M.get_function (| "std::io::stdio::_print", [], [] |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|

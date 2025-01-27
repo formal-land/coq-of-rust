@@ -87,6 +87,7 @@ Module slice.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::slice::sort::shared::smallsort::insertion_sort_shift_left",
+                                  [],
                                   [ T; F ]
                                 |),
                                 [
@@ -171,6 +172,7 @@ Module slice.
                       M.call_closure (|
                         M.get_function (|
                           "core::slice::sort::shared::smallsort::small_sort_general_with_scratch",
+                          [],
                           [ T; F ]
                         |),
                         [ M.read (| v |); M.read (| scratch |); M.read (| is_less |) ]
@@ -249,6 +251,7 @@ Module slice.
                       M.call_closure (|
                         M.get_function (|
                           "core::slice::sort::shared::smallsort::small_sort_fallback",
+                          [],
                           [ T; F ]
                         |),
                         [ M.read (| v |); M.read (| is_less |) ]
@@ -392,7 +395,7 @@ Module slice.
                                 BinOp.le (|
                                   BinOp.Wrap.mul (|
                                     M.call_closure (|
-                                      M.get_function (| "core::mem::size_of", [ T ] |),
+                                      M.get_function (| "core::mem::size_of", [], [ T ] |),
                                       []
                                     |),
                                     M.read (|
@@ -460,7 +463,7 @@ Module slice.
                                 BinOp.le (|
                                   BinOp.Wrap.mul (|
                                     M.call_closure (|
-                                      M.get_function (| "core::mem::size_of", [ T ] |),
+                                      M.get_function (| "core::mem::size_of", [], [ T ] |),
                                       []
                                     |),
                                     M.read (|
@@ -483,6 +486,7 @@ Module slice.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::slice::sort::shared::smallsort::small_sort_general",
+                                  [],
                                   [ T; F ]
                                 |),
                                 [ M.read (| v |); M.read (| is_less |) ]
@@ -496,6 +500,7 @@ Module slice.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::slice::sort::shared::smallsort::small_sort_fallback",
+                                  [],
                                   [ T; F ]
                                 |),
                                 [ M.read (| v |); M.read (| is_less |) ]
@@ -575,6 +580,7 @@ Module slice.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::slice::sort::shared::smallsort::has_efficient_in_place_swap",
+                                      [],
                                       [ T ]
                                     |),
                                     []
@@ -583,7 +589,7 @@ Module slice.
                                     (BinOp.le (|
                                       BinOp.Wrap.mul (|
                                         M.call_closure (|
-                                          M.get_function (| "core::mem::size_of", [ T ] |),
+                                          M.get_function (| "core::mem::size_of", [], [ T ] |),
                                           []
                                         |),
                                         M.read (|
@@ -618,7 +624,7 @@ Module slice.
                                         BinOp.le (|
                                           BinOp.Wrap.mul (|
                                             M.call_closure (|
-                                              M.get_function (| "core::mem::size_of", [ T ] |),
+                                              M.get_function (| "core::mem::size_of", [], [ T ] |),
                                               []
                                             |),
                                             M.read (|
@@ -696,6 +702,7 @@ Module slice.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::slice::sort::shared::smallsort::has_efficient_in_place_swap",
+                                      [],
                                       [ T ]
                                     |),
                                     []
@@ -704,7 +711,7 @@ Module slice.
                                     (BinOp.le (|
                                       BinOp.Wrap.mul (|
                                         M.call_closure (|
-                                          M.get_function (| "core::mem::size_of", [ T ] |),
+                                          M.get_function (| "core::mem::size_of", [], [ T ] |),
                                           []
                                         |),
                                         M.read (|
@@ -728,6 +735,7 @@ Module slice.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::slice::sort::shared::smallsort::small_sort_network",
+                                  [],
                                   [ T; F ]
                                 |),
                                 [ M.read (| v |); M.read (| is_less |) ]
@@ -747,7 +755,7 @@ Module slice.
                                         BinOp.le (|
                                           BinOp.Wrap.mul (|
                                             M.call_closure (|
-                                              M.get_function (| "core::mem::size_of", [ T ] |),
+                                              M.get_function (| "core::mem::size_of", [], [ T ] |),
                                               []
                                             |),
                                             M.read (|
@@ -773,6 +781,7 @@ Module slice.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::slice::sort::shared::smallsort::small_sort_general",
+                                          [],
                                           [ T; F ]
                                         |),
                                         [ M.read (| v |); M.read (| is_less |) ]
@@ -786,6 +795,7 @@ Module slice.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::slice::sort::shared::smallsort::small_sort_fallback",
+                                          [],
                                           [ T; F ]
                                         |),
                                         [ M.read (| v |); M.read (| is_less |) ]
@@ -887,6 +897,7 @@ Module slice.
                             M.call_closure (|
                               M.get_function (|
                                 "core::slice::sort::shared::smallsort::insertion_sort_shift_left",
+                                [],
                                 [ T; F ]
                               |),
                               [
@@ -952,6 +963,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::raw::from_raw_parts_mut",
+                        [],
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                       |),
                       [
@@ -985,6 +997,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::small_sort_general_with_scratch",
+                        [],
                         [ T; F ]
                       |),
                       [ M.read (| v |); M.read (| scratch |); M.read (| is_less |) ]
@@ -1166,7 +1179,7 @@ Module slice.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::abort", [] |),
+                                    M.get_function (| "core::intrinsics::abort", [], [] |),
                                     []
                                   |)
                                 |)
@@ -1238,6 +1251,7 @@ Module slice.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::slice::sort::shared::smallsort::sort8_stable",
+                                        [],
                                         [ T; F ]
                                       |),
                                       [
@@ -1260,6 +1274,7 @@ Module slice.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::slice::sort::shared::smallsort::sort8_stable",
+                                        [],
                                         [ T; F ]
                                       |),
                                       [
@@ -1323,6 +1338,7 @@ Module slice.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::slice::sort::shared::smallsort::sort4_stable",
+                                                [],
                                                 [ T; F ]
                                               |),
                                               [
@@ -1338,6 +1354,7 @@ Module slice.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::slice::sort::shared::smallsort::sort4_stable",
+                                                [],
                                                 [ T; F ]
                                               |),
                                               [
@@ -1374,6 +1391,7 @@ Module slice.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::intrinsics::copy_nonoverlapping",
+                                                [],
                                                 [ T ]
                                               |),
                                               [
@@ -1389,6 +1407,7 @@ Module slice.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::intrinsics::copy_nonoverlapping",
+                                                [],
                                                 [ T ]
                                               |),
                                               [
@@ -1617,6 +1636,7 @@ Module slice.
                                                                           M.call_closure (|
                                                                             M.get_function (|
                                                                               "core::intrinsics::copy_nonoverlapping",
+                                                                              [],
                                                                               [ T ]
                                                                             |),
                                                                             [
@@ -1664,6 +1684,7 @@ Module slice.
                                                                           M.call_closure (|
                                                                             M.get_function (|
                                                                               "core::slice::sort::shared::smallsort::insert_tail",
+                                                                              [],
                                                                               [ T; F ]
                                                                             |),
                                                                             [
@@ -1716,11 +1737,12 @@ Module slice.
                         M.call_closure (|
                           M.get_function (|
                             "core::slice::sort::shared::smallsort::bidirectional_merge",
+                            [],
                             [ T; F ]
                           |),
                           [
                             M.call_closure (|
-                              M.get_function (| "core::ptr::slice_from_raw_parts", [ T ] |),
+                              M.get_function (| "core::ptr::slice_from_raw_parts", [], [ T ] |),
                               [
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
@@ -1754,6 +1776,7 @@ Module slice.
                         M.call_closure (|
                           M.get_function (|
                             "core::mem::forget",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "core::slice::sort::shared::smallsort::CopyOnDrop")
@@ -1811,7 +1834,7 @@ Module slice.
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                         [
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
@@ -1991,7 +2014,7 @@ Module slice.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::abort", [] |),
+                                    M.get_function (| "core::intrinsics::abort", [], [] |),
                                     []
                                   |)
                                 |)
@@ -2058,7 +2081,7 @@ Module slice.
                     let~ region :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
+                          M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
                           [ M.read (| v_base |); M.read (| initial_region_len |) ]
                         |)
                       |) in
@@ -2097,6 +2120,7 @@ Module slice.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::slice::sort::shared::smallsort::sort13_optimal",
+                                              [],
                                               [ T; F ]
                                             |),
                                             [ M.read (| region |); M.read (| is_less |) ]
@@ -2135,6 +2159,7 @@ Module slice.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::slice::sort::shared::smallsort::sort9_optimal",
+                                                      [],
                                                       [ T; F ]
                                                     |),
                                                     [ M.read (| region |); M.read (| is_less |) ]
@@ -2154,6 +2179,7 @@ Module slice.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::slice::sort::shared::smallsort::insertion_sort_shift_left",
+                                  [],
                                   [ T; F ]
                                 |),
                                 [
@@ -2218,7 +2244,11 @@ Module slice.
                             M.write (|
                               region,
                               M.call_closure (|
-                                M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
+                                M.get_function (|
+                                  "core::ptr::slice_from_raw_parts_mut",
+                                  [],
+                                  [ T ]
+                                |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -2259,11 +2289,12 @@ Module slice.
                         M.call_closure (|
                           M.get_function (|
                             "core::slice::sort::shared::smallsort::bidirectional_merge",
+                            [],
                             [ T; F ]
                           |),
                           [
                             M.call_closure (|
-                              M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
+                              M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
                               [ M.read (| v_base |); M.read (| len |) ]
                             |);
                             M.read (| scratch_base |);
@@ -2274,7 +2305,7 @@ Module slice.
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                          M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                           [
                             (* MutToConstPointer *) M.pointer_coercion (M.read (| scratch_base |));
                             M.read (| v_base |);
@@ -2407,7 +2438,7 @@ Module slice.
                       |),
                       [
                         M.call_closure (|
-                          M.get_function (| "core::ptr::read", [ T ] |),
+                          M.get_function (| "core::ptr::read", [], [ T ] |),
                           [ (* MutToConstPointer *) M.pointer_coercion (M.read (| right_swap |)) ]
                         |)
                       ]
@@ -2416,7 +2447,7 @@ Module slice.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::copy", [ T ] |),
+                      M.get_function (| "core::intrinsics::copy", [], [ T ] |),
                       [
                         (* MutToConstPointer *) M.pointer_coercion (M.read (| left_swap |));
                         M.read (| v_a |);
@@ -2427,7 +2458,7 @@ Module slice.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                      M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                       [
                         M.call_closure (|
                           M.get_trait_method (|
@@ -2529,7 +2560,7 @@ Module slice.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::intrinsics::abort", [] |),
+                                M.get_function (| "core::intrinsics::abort", [], [] |),
                                 []
                               |)
                             |)
@@ -2553,6 +2584,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2568,6 +2600,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2583,6 +2616,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2598,6 +2632,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2613,6 +2648,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2628,6 +2664,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2643,6 +2680,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2658,6 +2696,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2673,6 +2712,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2688,6 +2728,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2703,6 +2744,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2718,6 +2760,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2733,6 +2776,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2748,6 +2792,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2763,6 +2808,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2778,6 +2824,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2793,6 +2840,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2808,6 +2856,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2823,6 +2872,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2838,6 +2888,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2853,6 +2904,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2868,6 +2920,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2883,6 +2936,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2898,6 +2952,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -2913,6 +2968,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3028,7 +3084,7 @@ Module slice.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::intrinsics::abort", [] |),
+                                M.get_function (| "core::intrinsics::abort", [], [] |),
                                 []
                               |)
                             |)
@@ -3052,6 +3108,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3067,6 +3124,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3082,6 +3140,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3097,6 +3156,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3112,6 +3172,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3127,6 +3188,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3142,6 +3204,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3157,6 +3220,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3172,6 +3236,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3187,6 +3252,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3202,6 +3268,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3217,6 +3284,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3232,6 +3300,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3247,6 +3316,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3262,6 +3332,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3277,6 +3348,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3292,6 +3364,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3307,6 +3380,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3322,6 +3396,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3337,6 +3412,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3352,6 +3428,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3367,6 +3444,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3382,6 +3460,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3397,6 +3476,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3412,6 +3492,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3427,6 +3508,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3442,6 +3524,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3457,6 +3540,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3472,6 +3556,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3487,6 +3572,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3502,6 +3588,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3517,6 +3604,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3532,6 +3620,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3547,6 +3636,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3562,6 +3652,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3577,6 +3668,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3592,6 +3684,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3607,6 +3700,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3622,6 +3716,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3637,6 +3732,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3652,6 +3748,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3667,6 +3764,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3682,6 +3780,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3697,6 +3796,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3712,6 +3812,7 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::swap_if_less",
+                        [],
                         [ T; F ]
                       |),
                       [
@@ -3879,7 +3980,11 @@ Module slice.
                         (let~ _ :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                              M.get_function (|
+                                "core::intrinsics::copy_nonoverlapping",
+                                [],
+                                [ T ]
+                              |),
                               [
                                 (* MutToConstPointer *) M.pointer_coercion (M.read (| sift |));
                                 M.read (|
@@ -4076,7 +4181,7 @@ Module slice.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::intrinsics::abort", [] |),
+                                M.get_function (| "core::intrinsics::abort", [], [] |),
                                 []
                               |)
                             |)
@@ -4128,6 +4233,7 @@ Module slice.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::slice::sort::shared::smallsort::insert_tail",
+                                    [],
                                     [ T; F ]
                                   |),
                                   [ M.read (| v_base |); M.read (| tail |); M.read (| is_less |) ]
@@ -4392,6 +4498,7 @@ Module slice.
                       M.call_closure (|
                         M.get_function (|
                           "core::slice::sort::shared::smallsort::sort4_stable.select",
+                          [],
                           []
                         |),
                         [ M.read (| c3 |); M.read (| c |); M.read (| a |) ]
@@ -4402,6 +4509,7 @@ Module slice.
                       M.call_closure (|
                         M.get_function (|
                           "core::slice::sort::shared::smallsort::sort4_stable.select",
+                          [],
                           []
                         |),
                         [ M.read (| c4 |); M.read (| b |); M.read (| d |) ]
@@ -4412,6 +4520,7 @@ Module slice.
                       M.call_closure (|
                         M.get_function (|
                           "core::slice::sort::shared::smallsort::sort4_stable.select",
+                          [],
                           []
                         |),
                         [
@@ -4420,6 +4529,7 @@ Module slice.
                           M.call_closure (|
                             M.get_function (|
                               "core::slice::sort::shared::smallsort::sort4_stable.select",
+                              [],
                               []
                             |),
                             [ M.read (| c4 |); M.read (| c |); M.read (| b |) ]
@@ -4432,6 +4542,7 @@ Module slice.
                       M.call_closure (|
                         M.get_function (|
                           "core::slice::sort::shared::smallsort::sort4_stable.select",
+                          [],
                           []
                         |),
                         [
@@ -4440,6 +4551,7 @@ Module slice.
                           M.call_closure (|
                             M.get_function (|
                               "core::slice::sort::shared::smallsort::sort4_stable.select",
+                              [],
                               []
                             |),
                             [ M.read (| c3 |); M.read (| b |); M.read (| c |) ]
@@ -4471,6 +4583,7 @@ Module slice.
                       M.call_closure (|
                         M.get_function (|
                           "core::slice::sort::shared::smallsort::sort4_stable.select",
+                          [],
                           []
                         |),
                         [ M.read (| c5 |); M.read (| unknown_right |); M.read (| unknown_left |) ]
@@ -4481,6 +4594,7 @@ Module slice.
                       M.call_closure (|
                         M.get_function (|
                           "core::slice::sort::shared::smallsort::sort4_stable.select",
+                          [],
                           []
                         |),
                         [ M.read (| c5 |); M.read (| unknown_left |); M.read (| unknown_right |) ]
@@ -4489,14 +4603,14 @@ Module slice.
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                         [ M.read (| min |); M.read (| dst |); Value.Integer IntegerKind.Usize 1 ]
                       |)
                     |) in
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                         [
                           M.read (| lo |);
                           M.call_closure (|
@@ -4514,7 +4628,7 @@ Module slice.
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                         [
                           M.read (| hi |);
                           M.call_closure (|
@@ -4532,7 +4646,7 @@ Module slice.
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                         [
                           M.read (| max |);
                           M.call_closure (|
@@ -4625,6 +4739,7 @@ Module slice.
                       M.call_closure (|
                         M.get_function (|
                           "core::slice::sort::shared::smallsort::sort4_stable",
+                          [],
                           [ T; F ]
                         |),
                         [
@@ -4639,6 +4754,7 @@ Module slice.
                       M.call_closure (|
                         M.get_function (|
                           "core::slice::sort::shared::smallsort::sort4_stable",
+                          [],
                           [ T; F ]
                         |),
                         [
@@ -4670,11 +4786,12 @@ Module slice.
                     M.call_closure (|
                       M.get_function (|
                         "core::slice::sort::shared::smallsort::bidirectional_merge",
+                        [],
                         [ T; F ]
                       |),
                       [
                         M.call_closure (|
-                          M.get_function (| "core::ptr::slice_from_raw_parts", [ T ] |),
+                          M.get_function (| "core::ptr::slice_from_raw_parts", [], [ T ] |),
                           [
                             (* MutToConstPointer *) M.pointer_coercion (M.read (| scratch_base |));
                             Value.Integer IntegerKind.Usize 8
@@ -4778,7 +4895,7 @@ Module slice.
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                         [ M.read (| src |); M.read (| dst |); Value.Integer IntegerKind.Usize 1 ]
                       |)
                     |) in
@@ -4914,7 +5031,7 @@ Module slice.
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                         [ M.read (| src |); M.read (| dst |); Value.Integer IntegerKind.Usize 1 ]
                       |)
                     |) in
@@ -5087,7 +5204,7 @@ Module slice.
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::assume", [] |),
+                        M.get_function (| "core::intrinsics::assume", [], [] |),
                         [ BinOp.ne (| M.read (| len_div_2 |), Value.Integer IntegerKind.Usize 0 |) ]
                       |)
                     |) in
@@ -5216,6 +5333,7 @@ Module slice.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::slice::sort::shared::smallsort::merge_up",
+                                                    [],
                                                     [ T; F ]
                                                   |),
                                                   [
@@ -5252,6 +5370,7 @@ Module slice.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::slice::sort::shared::smallsort::merge_down",
+                                                    [],
                                                     [ T; F ]
                                                   |),
                                                   [
@@ -5354,7 +5473,11 @@ Module slice.
                           let~ _ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                                M.get_function (|
+                                  "core::intrinsics::copy_nonoverlapping",
+                                  [],
+                                  [ T ]
+                                |),
                                 [
                                   M.read (| last_src |);
                                   M.read (| dst |);
@@ -5414,6 +5537,7 @@ Module slice.
                             M.call_closure (|
                               M.get_function (|
                                 "core::slice::sort::shared::smallsort::panic_on_ord_violation",
+                                [],
                                 []
                               |),
                               []
@@ -5460,7 +5584,7 @@ Module slice.
           | [], [], [] =>
             ltac:(M.monadic
               (M.call_closure (|
-                M.get_function (| "core::panicking::panic_fmt", [] |),
+                M.get_function (| "core::panicking::panic_fmt", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -5501,7 +5625,7 @@ Module slice.
           | [], [ T ], [] =>
             ltac:(M.monadic
               (BinOp.le (|
-                M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |),
+                M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |),
                 Value.Integer IntegerKind.Usize 8
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"

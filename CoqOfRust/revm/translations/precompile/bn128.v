@@ -8,7 +8,7 @@ Module bn128.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_function (| "revm_precompile::u64_to_address", [] |),
+              M.get_function (| "revm_precompile::u64_to_address", [], [] |),
               [ Value.Integer IntegerKind.U64 6 ]
             |)
           |))).
@@ -47,6 +47,7 @@ Module bn128.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "revm_precompile::bn128::run_add",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -122,6 +123,7 @@ Module bn128.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "revm_precompile::bn128::run_add",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -170,7 +172,7 @@ Module bn128.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_function (| "revm_precompile::u64_to_address", [] |),
+              M.get_function (| "revm_precompile::u64_to_address", [], [] |),
               [ Value.Integer IntegerKind.U64 7 ]
             |)
           |))).
@@ -209,6 +211,7 @@ Module bn128.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "revm_precompile::bn128::run_mul",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -284,6 +287,7 @@ Module bn128.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "revm_precompile::bn128::run_mul",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -332,7 +336,7 @@ Module bn128.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_function (| "revm_precompile::u64_to_address", [] |),
+              M.get_function (| "revm_precompile::u64_to_address", [], [] |),
               [ Value.Integer IntegerKind.U64 8 ]
             |)
           |))).
@@ -374,6 +378,7 @@ Module bn128.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "revm_precompile::bn128::run_pair",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -457,6 +462,7 @@ Module bn128.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "revm_precompile::bn128::run_pair",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -639,7 +645,7 @@ Module bn128.
                         |),
                         [
                           M.call_closure (|
-                            M.get_function (| "revm_precompile::bn128::read_fq", [] |),
+                            M.get_function (| "revm_precompile::bn128::read_fq", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_trait_method (|
@@ -744,7 +750,7 @@ Module bn128.
                         |),
                         [
                           M.call_closure (|
-                            M.get_function (| "revm_precompile::bn128::read_fq", [] |),
+                            M.get_function (| "revm_precompile::bn128::read_fq", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_trait_method (|
@@ -831,7 +837,7 @@ Module bn128.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "revm_precompile::bn128::new_g1_point", [] |),
+                  M.get_function (| "revm_precompile::bn128::new_g1_point", [], [] |),
                   [ M.read (| px |); M.read (| py |) ]
                 |)
               |)
@@ -1089,7 +1095,11 @@ Module bn128.
               let~ input :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "revm_precompile::utilities::right_pad", [] |),
+                    M.get_function (|
+                      "revm_precompile::utilities::right_pad",
+                      [ Value.Integer IntegerKind.Usize 128 ],
+                      []
+                    |),
                     [ M.read (| input |) ]
                   |)
                 |) in
@@ -1113,7 +1123,7 @@ Module bn128.
                         |),
                         [
                           M.call_closure (|
-                            M.get_function (| "revm_precompile::bn128::read_point", [] |),
+                            M.get_function (| "revm_precompile::bn128::read_point", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_trait_method (|
@@ -1235,7 +1245,7 @@ Module bn128.
                         |),
                         [
                           M.call_closure (|
-                            M.get_function (| "revm_precompile::bn128::read_point", [] |),
+                            M.get_function (| "revm_precompile::bn128::read_point", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_trait_method (|
@@ -1606,7 +1616,11 @@ Module bn128.
               let~ input :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "revm_precompile::utilities::right_pad", [] |),
+                    M.get_function (|
+                      "revm_precompile::utilities::right_pad",
+                      [ Value.Integer IntegerKind.Usize 96 ],
+                      []
+                    |),
                     [ M.read (| input |) ]
                   |)
                 |) in
@@ -1630,7 +1644,7 @@ Module bn128.
                         |),
                         [
                           M.call_closure (|
-                            M.get_function (| "revm_precompile::bn128::read_point", [] |),
+                            M.get_function (| "revm_precompile::bn128::read_point", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_trait_method (|
@@ -2395,6 +2409,7 @@ Module bn128.
                                                                                                     M.call_closure (|
                                                                                                       M.get_function (|
                                                                                                         "core::panicking::panic",
+                                                                                                        [],
                                                                                                         []
                                                                                                       |),
                                                                                                       [
@@ -3283,6 +3298,7 @@ Module bn128.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "revm_precompile::bn128::new_g1_point",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| ax |); M.read (| ay |)
@@ -3646,7 +3662,7 @@ Module bn128.
                           let~ mul :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "substrate_bn::pairing_batch", [] |),
+                                M.get_function (| "substrate_bn::pairing_batch", [], [] |),
                                 [
                                   M.call_closure (|
                                     M.get_trait_method (|
@@ -3709,7 +3725,11 @@ Module bn128.
                       [
                         M.read (| gas_used |);
                         M.call_closure (|
-                          M.get_function (| "revm_precompile::utilities::bool_to_bytes32", [] |),
+                          M.get_function (|
+                            "revm_precompile::utilities::bool_to_bytes32",
+                            [],
+                            []
+                          |),
                           [ M.read (| success |) ]
                         |)
                       ]

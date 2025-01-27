@@ -10,12 +10,12 @@ Module identity.
             "revm_precompile::PrecompileWithAddress"
             [
               M.call_closure (|
-                M.get_function (| "revm_precompile::u64_to_address", [] |),
+                M.get_function (| "revm_precompile::u64_to_address", [], [] |),
                 [ Value.Integer IntegerKind.U64 4 ]
               |);
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_precompile::identity::identity_run", [] |))
+                (M.get_function (| "revm_precompile::identity::identity_run", [], [] |))
             ]
         |))).
   
@@ -46,7 +46,7 @@ Module identity.
               let~ gas_used :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "revm_precompile::calc_linear_cost_u32", [] |),
+                    M.get_function (| "revm_precompile::calc_linear_cost_u32", [], [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "bytes::bytes::Bytes", "len", [] |),

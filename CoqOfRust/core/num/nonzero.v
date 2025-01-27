@@ -3223,6 +3223,7 @@ Module num.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::transmute_unchecked",
+                [],
                 [
                   T;
                   Ty.apply
@@ -3307,6 +3308,7 @@ Module num.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::ub_checks::check_language_ub",
+                                          [],
                                           []
                                         |),
                                         []
@@ -3335,7 +3337,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unreachable", [] |),
+                            M.get_function (| "core::intrinsics::unreachable", [], [] |),
                             []
                           |)
                         |)
@@ -3381,7 +3383,7 @@ Module num.
                     |),
                     [
                       M.call_closure (|
-                        M.get_function (| "core::ptr::from_mut", [ T ] |),
+                        M.get_function (| "core::ptr::from_mut", [], [ T ] |),
                         [ M.read (| n |) ]
                       |)
                     ]
@@ -3475,7 +3477,11 @@ Module num.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
-                                            M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                            M.get_function (|
+                                              "core::intrinsics::ub_checks",
+                                              [],
+                                              []
+                                            |),
                                             []
                                           |)
                                         |)) in
@@ -3502,7 +3508,7 @@ Module num.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::intrinsics::unreachable", [] |),
+                                M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                 []
                               |)
                             |)
@@ -3545,6 +3551,7 @@ Module num.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::transmute_unchecked",
+                [],
                 [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ]; T ]
               |),
               [ M.read (| self |) ]
@@ -3586,7 +3593,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u8" ] |),
+              M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u8" ] |),
               [
                 M.read (|
                   M.use
@@ -3623,7 +3630,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "u8" ] |),
+              M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u8" ] |),
               [
                 M.read (|
                   M.use
@@ -4408,7 +4415,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::num::int_log10::u8", [] |),
+              M.get_function (| "core::num::int_log10::u8", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4492,7 +4499,7 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.lt (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::ctpop", [ Ty.path "u8" ] |),
+                M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u8" ] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
@@ -5053,7 +5060,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::unchecked_div", [ Ty.path "u8" ] |),
+              M.get_function (| "core::intrinsics::unchecked_div", [], [ Ty.path "u8" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
@@ -5142,7 +5149,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::unchecked_rem", [ Ty.path "u8" ] |),
+              M.get_function (| "core::intrinsics::unchecked_rem", [], [ Ty.path "u8" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
@@ -5240,7 +5247,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u16" ] |),
+              M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u16" ] |),
               [
                 M.read (|
                   M.use
@@ -5277,7 +5284,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "u16" ] |),
+              M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u16" ] |),
               [
                 M.read (|
                   M.use
@@ -6062,7 +6069,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::num::int_log10::u16", [] |),
+              M.get_function (| "core::num::int_log10::u16", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -6146,7 +6153,7 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.lt (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::ctpop", [ Ty.path "u16" ] |),
+                M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u16" ] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
@@ -6707,7 +6714,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::unchecked_div", [ Ty.path "u16" ] |),
+              M.get_function (| "core::intrinsics::unchecked_div", [], [ Ty.path "u16" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
@@ -6796,7 +6803,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::unchecked_rem", [ Ty.path "u16" ] |),
+              M.get_function (| "core::intrinsics::unchecked_rem", [], [ Ty.path "u16" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
@@ -6894,7 +6901,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u32" ] |),
+              M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u32" ] |),
               [
                 M.read (|
                   M.use
@@ -6931,7 +6938,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "u32" ] |),
+              M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u32" ] |),
               [
                 M.read (|
                   M.use
@@ -7716,7 +7723,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::num::int_log10::u32", [] |),
+              M.get_function (| "core::num::int_log10::u32", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -7800,7 +7807,7 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.lt (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::ctpop", [ Ty.path "u32" ] |),
+                M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u32" ] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
@@ -8361,7 +8368,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::unchecked_div", [ Ty.path "u32" ] |),
+              M.get_function (| "core::intrinsics::unchecked_div", [], [ Ty.path "u32" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
@@ -8450,7 +8457,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::unchecked_rem", [ Ty.path "u32" ] |),
+              M.get_function (| "core::intrinsics::unchecked_rem", [], [ Ty.path "u32" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
@@ -8548,7 +8555,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u64" ] |),
+              M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u64" ] |),
               [
                 M.read (|
                   M.use
@@ -8585,7 +8592,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "u64" ] |),
+              M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u64" ] |),
               [
                 M.read (|
                   M.use
@@ -9370,7 +9377,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::num::int_log10::u64", [] |),
+              M.get_function (| "core::num::int_log10::u64", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -9454,7 +9461,7 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.lt (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::ctpop", [ Ty.path "u64" ] |),
+                M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u64" ] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
@@ -10015,7 +10022,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::unchecked_div", [ Ty.path "u64" ] |),
+              M.get_function (| "core::intrinsics::unchecked_div", [], [ Ty.path "u64" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
@@ -10104,7 +10111,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::unchecked_rem", [ Ty.path "u64" ] |),
+              M.get_function (| "core::intrinsics::unchecked_rem", [], [ Ty.path "u64" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
@@ -10202,7 +10209,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u128" ] |),
+              M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u128" ] |),
               [
                 M.read (|
                   M.use
@@ -10239,7 +10246,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "u128" ] |),
+              M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u128" ] |),
               [
                 M.read (|
                   M.use
@@ -11024,7 +11031,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::num::int_log10::u128", [] |),
+              M.get_function (| "core::num::int_log10::u128", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -11108,7 +11115,7 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.lt (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::ctpop", [ Ty.path "u128" ] |),
+                M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u128" ] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
@@ -11669,7 +11676,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::unchecked_div", [ Ty.path "u128" ] |),
+              M.get_function (| "core::intrinsics::unchecked_div", [], [ Ty.path "u128" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
@@ -11758,7 +11765,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::unchecked_rem", [ Ty.path "u128" ] |),
+              M.get_function (| "core::intrinsics::unchecked_rem", [], [ Ty.path "u128" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
@@ -11856,7 +11863,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "usize" ] |),
+              M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "usize" ] |),
               [
                 M.read (|
                   M.use
@@ -11893,7 +11900,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "usize" ] |),
+              M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "usize" ] |),
               [
                 M.read (|
                   M.use
@@ -12678,7 +12685,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::num::int_log10::usize", [] |),
+              M.get_function (| "core::num::int_log10::usize", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -12762,7 +12769,7 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.lt (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::ctpop", [ Ty.path "usize" ] |),
+                M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "usize" ] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
@@ -13323,7 +13330,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::unchecked_div", [ Ty.path "usize" ] |),
+              M.get_function (| "core::intrinsics::unchecked_div", [], [ Ty.path "usize" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
@@ -13412,7 +13419,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::unchecked_rem", [ Ty.path "usize" ] |),
+              M.get_function (| "core::intrinsics::unchecked_rem", [], [ Ty.path "usize" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
@@ -13510,7 +13517,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u8" ] |),
+              M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u8" ] |),
               [
                 M.rust_cast
                   (M.call_closure (|
@@ -13543,7 +13550,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "u8" ] |),
+              M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u8" ] |),
               [
                 M.rust_cast
                   (M.call_closure (|
@@ -15181,7 +15188,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u16" ] |),
+              M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u16" ] |),
               [
                 M.rust_cast
                   (M.call_closure (|
@@ -15214,7 +15221,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "u16" ] |),
+              M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u16" ] |),
               [
                 M.rust_cast
                   (M.call_closure (|
@@ -16852,7 +16859,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u32" ] |),
+              M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u32" ] |),
               [
                 M.rust_cast
                   (M.call_closure (|
@@ -16885,7 +16892,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "u32" ] |),
+              M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u32" ] |),
               [
                 M.rust_cast
                   (M.call_closure (|
@@ -18523,7 +18530,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u64" ] |),
+              M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u64" ] |),
               [
                 M.rust_cast
                   (M.call_closure (|
@@ -18556,7 +18563,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "u64" ] |),
+              M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u64" ] |),
               [
                 M.rust_cast
                   (M.call_closure (|
@@ -20194,7 +20201,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u128" ] |),
+              M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u128" ] |),
               [
                 M.rust_cast
                   (M.call_closure (|
@@ -20227,7 +20234,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "u128" ] |),
+              M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u128" ] |),
               [
                 M.rust_cast
                   (M.call_closure (|
@@ -21865,7 +21872,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "usize" ] |),
+              M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "usize" ] |),
               [
                 M.rust_cast
                   (M.call_closure (|
@@ -21898,7 +21905,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::cttz_nonzero", [ Ty.path "usize" ] |),
+              M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "usize" ] |),
               [
                 M.rust_cast
                   (M.call_closure (|

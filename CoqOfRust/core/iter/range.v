@@ -7086,7 +7086,7 @@ Module iter.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
-                              M.get_function (| "core::mem::replace", [ A ] |),
+                              M.get_function (| "core::mem::replace", [], [ A ] |),
                               [
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -9881,7 +9881,7 @@ Module iter.
                   "core::option::Option::Some"
                   [
                     M.call_closure (|
-                      M.get_function (| "core::mem::replace", [ A ] |),
+                      M.get_function (| "core::mem::replace", [], [ A ] |),
                       [
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -10159,7 +10159,7 @@ Module iter.
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
-                                      M.get_function (| "core::mem::replace", [ A ] |),
+                                      M.get_function (| "core::mem::replace", [], [ A ] |),
                                       [
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
@@ -10381,7 +10381,7 @@ Module iter.
                                 let~ n :=
                                   M.alloc (|
                                     M.call_closure (|
-                                      M.get_function (| "core::mem::replace", [ A ] |),
+                                      M.get_function (| "core::mem::replace", [], [ A ] |),
                                       [
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
@@ -10777,7 +10777,7 @@ Module iter.
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
-                                      M.get_function (| "core::mem::replace", [ A ] |),
+                                      M.get_function (| "core::mem::replace", [], [ A ] |),
                                       [
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
@@ -10999,7 +10999,7 @@ Module iter.
                                 let~ n :=
                                   M.alloc (|
                                     M.call_closure (|
-                                      M.get_function (| "core::mem::replace", [ A ] |),
+                                      M.get_function (| "core::mem::replace", [], [ A ] |),
                                       [
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
@@ -11391,7 +11391,7 @@ Module iter.
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
-                                      M.get_function (| "core::mem::replace", [ T ] |),
+                                      M.get_function (| "core::mem::replace", [], [ T ] |),
                                       [
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
@@ -11581,7 +11581,7 @@ Module iter.
                                 let~ n :=
                                   M.alloc (|
                                     M.call_closure (|
-                                      M.get_function (| "core::mem::replace", [ T ] |),
+                                      M.get_function (| "core::mem::replace", [], [ T ] |),
                                       [
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
@@ -11949,7 +11949,7 @@ Module iter.
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
-                                      M.get_function (| "core::mem::replace", [ T ] |),
+                                      M.get_function (| "core::mem::replace", [], [ T ] |),
                                       [
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
@@ -12139,7 +12139,7 @@ Module iter.
                                 let~ n :=
                                   M.alloc (|
                                     M.call_closure (|
-                                      M.get_function (| "core::mem::replace", [ T ] |),
+                                      M.get_function (| "core::mem::replace", [], [ T ] |),
                                       [
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),

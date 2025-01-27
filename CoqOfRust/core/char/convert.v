@@ -21,7 +21,7 @@ Module char.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::char::convert::char_try_from_u32", [] |),
+                  M.get_function (| "core::char::convert::char_try_from_u32", [], [] |),
                   [ M.read (| i |) ]
                 |)
               |),
@@ -76,7 +76,7 @@ Module char.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -86,6 +86,7 @@ Module char.
                           M.call_closure (|
                             M.get_function (|
                               "core::char::convert::from_u32_unchecked.precondition_check",
+                              [],
                               []
                             |),
                             [ M.read (| i |) ]
@@ -99,6 +100,7 @@ Module char.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::transmute",
+                  [],
                   [ Ty.path "u32"; Ty.path "char" ]
                 |),
                 [ M.read (| i |) ]
@@ -688,6 +690,7 @@ Module char.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::char::convert::CharErrorKind" ]
                     |),
                     [ M.read (| self |) ]
@@ -698,6 +701,7 @@ Module char.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::char::convert::CharErrorKind" ]
                     |),
                     [ M.read (| other |) ]
@@ -1033,6 +1037,7 @@ Module char.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::transmute",
+                              [],
                               [ Ty.path "u32"; Ty.path "char" ]
                             |),
                             [ M.read (| i |) ]
@@ -1065,7 +1070,7 @@ Module char.
           ltac:(M.monadic
             (let i := M.alloc (| i |) in
             M.call_closure (|
-              M.get_function (| "core::char::convert::char_try_from_u32", [] |),
+              M.get_function (| "core::char::convert::char_try_from_u32", [], [] |),
               [ M.read (| i |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1315,7 +1320,7 @@ Module char.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|

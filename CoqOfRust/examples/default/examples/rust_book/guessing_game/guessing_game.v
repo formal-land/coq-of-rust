@@ -12,7 +12,7 @@ Definition gen_range (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
     ltac:(M.monadic
       (M.never_to_any (|
         M.call_closure (|
-          M.get_function (| "core::panicking::panic", [] |),
+          M.get_function (| "core::panicking::panic", [], [] |),
           [ M.read (| Value.String "not yet implemented" |) ]
         |)
       |)))
@@ -64,7 +64,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -77,7 +77,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         let~ secret_number :=
           M.alloc (|
-            M.call_closure (| M.get_function (| "guessing_game::gen_range", [] |), [] |)
+            M.call_closure (| M.get_function (| "guessing_game::gen_range", [], [] |), [] |)
           |) in
         M.loop (|
           ltac:(M.monadic
@@ -85,7 +85,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "std::io::stdio::_print", [] |),
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -131,7 +131,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.alloc (|
-                          M.call_closure (| M.get_function (| "std::io::stdio::stdin", [] |), [] |)
+                          M.call_closure (|
+                            M.get_function (| "std::io::stdio::stdin", [], [] |),
+                            []
+                          |)
                         |);
                         guess
                       ]
@@ -192,7 +195,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "std::io::stdio::_print", [] |),
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -242,7 +245,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "std::io::stdio::_print", [] |),
+                          M.get_function (| "std::io::stdio::_print", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -267,7 +270,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "std::io::stdio::_print", [] |),
+                          M.get_function (| "std::io::stdio::_print", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -293,7 +296,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_function (| "std::io::stdio::_print", [] |),
+                                  M.get_function (| "std::io::stdio::_print", [], [] |),
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|

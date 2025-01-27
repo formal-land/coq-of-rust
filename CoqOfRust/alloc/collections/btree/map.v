@@ -59,6 +59,7 @@ Module collections.
               M.call_closure (|
                 M.get_function (|
                   "core::mem::drop",
+                  [],
                   [ Ty.apply (Ty.path "alloc::collections::btree::map::IntoIter") [] [ K; V; A ] ]
                 |),
                 [
@@ -74,6 +75,7 @@ Module collections.
                       M.call_closure (|
                         M.get_function (|
                           "core::ptr::read",
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -1183,7 +1185,7 @@ Module collections.
                                     "core::option::Option::Some"
                                     [
                                       M.call_closure (|
-                                        M.get_function (| "core::mem::replace", [ K ] |),
+                                        M.get_function (| "core::mem::replace", [], [ K ] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -2965,6 +2967,7 @@ Module collections.
                     M.call_closure (|
                       M.get_function (|
                         "core::mem::drop",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -2980,6 +2983,7 @@ Module collections.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::mem::replace",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -3010,7 +3014,7 @@ Module collections.
                               |));
                             ("length",
                               M.call_closure (|
-                                M.get_function (| "core::mem::replace", [ Ty.path "usize" ] |),
+                                M.get_function (| "core::mem::replace", [], [ Ty.path "usize" ] |),
                                 [
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
@@ -6352,7 +6356,7 @@ Module collections.
                                   end))
                           ]
                         |);
-                        M.get_function (| "core::mem::drop", [ Ty.tuple [ K; V ] ] |)
+                        M.get_function (| "core::mem::drop", [], [ Ty.tuple [ K; V ] ] |)
                       ]
                     |)
                   |) in
@@ -6474,6 +6478,7 @@ Module collections.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::mem::swap",
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -6508,6 +6513,7 @@ Module collections.
                             M.call_closure (|
                               M.get_function (|
                                 "core::mem::replace",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -6581,6 +6587,7 @@ Module collections.
                             M.call_closure (|
                               M.get_function (|
                                 "core::mem::replace",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -11005,6 +11012,7 @@ Module collections.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::mem::forget",
+                                    [],
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::map::drop::DropGuard")
@@ -20195,6 +20203,7 @@ Module collections.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::panicking::panic",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -20473,6 +20482,7 @@ Module collections.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::mem::drop",
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path
@@ -21204,6 +21214,7 @@ Module collections.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::mem::drop",
+                                                        [],
                                                         [
                                                           Ty.apply
                                                             (Ty.path

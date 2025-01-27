@@ -650,7 +650,11 @@ Module num.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.call_closure (|
-                                                  M.get_function (| "core::panicking::panic", [] |),
+                                                  M.get_function (|
+                                                    "core::panicking::panic",
+                                                    [],
+                                                    []
+                                                  |),
                                                   [
                                                     M.read (|
                                                       Value.String
@@ -759,7 +763,7 @@ Module num.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [ M.read (| Value.String "assertion failed: x > 0" |) ]
                                         |)
                                       |)
@@ -1473,7 +1477,7 @@ Module num.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [ M.read (| Value.String "assertion failed: d.mant > 0" |) ]
                                     |)
                                   |)
@@ -1511,7 +1515,7 @@ Module num.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [ M.read (| Value.String "assertion failed: d.minus > 0" |) ]
                                     |)
                                   |)
@@ -1549,7 +1553,7 @@ Module num.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [ M.read (| Value.String "assertion failed: d.plus > 0" |) ]
                                     |)
                                   |)
@@ -1614,7 +1618,7 @@ Module num.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String
@@ -1684,7 +1688,7 @@ Module num.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String
@@ -1740,7 +1744,7 @@ Module num.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String
@@ -1795,7 +1799,7 @@ Module num.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String
@@ -1947,6 +1951,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::num::flt2dec::strategy::grisu::cached_power",
+                              [],
                               []
                             |),
                             [
@@ -2102,6 +2107,7 @@ Module num.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::panicking::assert_failed",
+                                                                      [],
                                                                       [ Ty.path "i16"; Ty.path "i16"
                                                                       ]
                                                                     |),
@@ -2204,6 +2210,7 @@ Module num.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::panicking::assert_failed",
+                                                                      [],
                                                                       [ Ty.path "i16"; Ty.path "i16"
                                                                       ]
                                                                     |),
@@ -2292,6 +2299,7 @@ Module num.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| plus1int |) ]
@@ -2394,6 +2402,7 @@ Module num.
                                                                     M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::panicking::panic",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -2492,6 +2501,7 @@ Module num.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::num::flt2dec::strategy::grisu::format_shortest_opt.round_and_weed",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -2685,6 +2695,7 @@ Module num.
                                                                                                 M.call_closure (|
                                                                                                   M.get_function (|
                                                                                                     "core::panicking::assert_failed",
+                                                                                                    [],
                                                                                                     [
                                                                                                       Ty.path
                                                                                                         "u32";
@@ -2848,6 +2859,7 @@ Module num.
                                                                           M.call_closure (|
                                                                             M.get_function (|
                                                                               "core::panicking::panic",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -2940,6 +2952,7 @@ Module num.
                                                                     M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::num::flt2dec::strategy::grisu::format_shortest_opt.round_and_weed",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -3186,7 +3199,7 @@ Module num.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String "assertion failed: !buf.is_empty()"
@@ -3330,6 +3343,7 @@ Module num.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::panicking::panic",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -3522,6 +3536,7 @@ Module num.
                     M.call_closure (|
                       M.get_function (|
                         "core::num::flt2dec::strategy::grisu::format_shortest_opt",
+                        [],
                         []
                       |),
                       [ M.read (| d |); M.read (| M.use (M.alloc (| M.read (| buf |) |)) |) ]
@@ -3545,6 +3560,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::num::flt2dec::strategy::dragon::format_shortest",
+                              [],
                               []
                             |),
                             [ M.read (| d |); M.read (| buf |) ]
@@ -3890,7 +3906,7 @@ Module num.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [ M.read (| Value.String "assertion failed: d.mant > 0" |) ]
                                     |)
                                   |)
@@ -3931,7 +3947,7 @@ Module num.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String "assertion failed: d.mant < (1 << 61)"
@@ -3981,7 +3997,7 @@ Module num.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String "assertion failed: !buf.is_empty()"
@@ -4032,6 +4048,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::num::flt2dec::strategy::grisu::cached_power",
+                              [],
                               []
                             |),
                             [
@@ -4217,6 +4234,7 @@ Module num.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| vint |) ]
@@ -4267,6 +4285,7 @@ Module num.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "core::num::flt2dec::strategy::grisu::format_exact_opt.possibly_round",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -4414,6 +4433,7 @@ Module num.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::panicking::panic",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -4496,6 +4516,7 @@ Module num.
                                                                     M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::panicking::panic",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -4586,6 +4607,7 @@ Module num.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::num::flt2dec::strategy::grisu::format_exact_opt.possibly_round",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -4732,6 +4754,7 @@ Module num.
                                                                                                 M.call_closure (|
                                                                                                   M.get_function (|
                                                                                                     "core::panicking::assert_failed",
+                                                                                                    [],
                                                                                                     [
                                                                                                       Ty.path
                                                                                                         "u32";
@@ -4875,6 +4898,7 @@ Module num.
                                                                                                 M.call_closure (|
                                                                                                   M.get_function (|
                                                                                                     "core::panicking::assert_failed",
+                                                                                                    [],
                                                                                                     [
                                                                                                       Ty.path
                                                                                                         "i16";
@@ -5061,6 +5085,7 @@ Module num.
                                                                             M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::panicking::panic",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [
@@ -5144,6 +5169,7 @@ Module num.
                                                                       M.call_closure (|
                                                                         M.get_function (|
                                                                           "core::num::flt2dec::strategy::grisu::format_exact_opt.possibly_round",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -5389,7 +5415,11 @@ Module num.
                                           M.alloc (|
                                             M.never_to_any (|
                                               M.call_closure (|
-                                                M.get_function (| "core::panicking::panic", [] |),
+                                                M.get_function (|
+                                                  "core::panicking::panic",
+                                                  [],
+                                                  []
+                                                |),
                                                 [
                                                   M.read (|
                                                     Value.String
@@ -5613,6 +5643,7 @@ Module num.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::num::flt2dec::round_up",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -5855,6 +5886,7 @@ Module num.
                     M.call_closure (|
                       M.get_function (|
                         "core::num::flt2dec::strategy::grisu::format_exact_opt",
+                        [],
                         []
                       |),
                       [
@@ -5882,6 +5914,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::num::flt2dec::strategy::dragon::format_exact",
+                              [],
                               []
                             |),
                             [ M.read (| d |); M.read (| buf |); M.read (| limit |) ]

@@ -722,7 +722,11 @@ Module iter.
                 let~ value :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::iter::adapters::zip::try_get_unchecked", [ I ] |),
+                      M.get_function (|
+                        "core::iter::adapters::zip::try_get_unchecked",
+                        [],
+                        [ I ]
+                      |),
                       [
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),

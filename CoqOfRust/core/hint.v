@@ -29,7 +29,7 @@ Module hint.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                            M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                             []
                           |)
                         |)) in
@@ -39,6 +39,7 @@ Module hint.
                         M.call_closure (|
                           M.get_function (|
                             "core::hint::unreachable_unchecked.precondition_check",
+                            [],
                             []
                           |),
                           []
@@ -49,7 +50,7 @@ Module hint.
               ]
             |) in
           M.alloc (|
-            M.call_closure (| M.get_function (| "core::intrinsics::unreachable", [] |), [] |)
+            M.call_closure (| M.get_function (| "core::intrinsics::unreachable", [], [] |), [] |)
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -87,7 +88,7 @@ Module hint.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                            M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                             []
                           |)
                         |)) in
@@ -97,6 +98,7 @@ Module hint.
                         M.call_closure (|
                           M.get_function (|
                             "core::hint::assert_unchecked.precondition_check",
+                            [],
                             []
                           |),
                           [ M.read (| cond |) ]
@@ -109,7 +111,7 @@ Module hint.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::assume", [] |),
+                M.get_function (| "core::intrinsics::assume", [], [] |),
                 [ M.read (| cond |) ]
               |)
             |) in
@@ -166,7 +168,7 @@ Module hint.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::core_arch::x86::sse2::_mm_pause", [] |),
+                M.get_function (| "core::core_arch::x86::sse2::_mm_pause", [], [] |),
                 []
               |)
             |) in
@@ -188,7 +190,7 @@ Module hint.
       ltac:(M.monadic
         (let dummy := M.alloc (| dummy |) in
         M.call_closure (|
-          M.get_function (| "core::intrinsics::black_box", [ T ] |),
+          M.get_function (| "core::intrinsics::black_box", [], [ T ] |),
           [ M.read (| dummy |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

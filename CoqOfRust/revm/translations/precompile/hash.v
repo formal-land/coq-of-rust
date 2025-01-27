@@ -10,11 +10,11 @@ Module hash.
             "revm_precompile::PrecompileWithAddress"
             [
               M.call_closure (|
-                M.get_function (| "revm_precompile::u64_to_address", [] |),
+                M.get_function (| "revm_precompile::u64_to_address", [], [] |),
                 [ Value.Integer IntegerKind.U64 2 ]
               |);
               (* ReifyFnPointer *)
-              M.pointer_coercion (M.get_function (| "revm_precompile::hash::sha256_run", [] |))
+              M.pointer_coercion (M.get_function (| "revm_precompile::hash::sha256_run", [], [] |))
             ]
         |))).
   
@@ -26,11 +26,12 @@ Module hash.
             "revm_precompile::PrecompileWithAddress"
             [
               M.call_closure (|
-                M.get_function (| "revm_precompile::u64_to_address", [] |),
+                M.get_function (| "revm_precompile::u64_to_address", [], [] |),
                 [ Value.Integer IntegerKind.U64 3 ]
               |);
               (* ReifyFnPointer *)
-              M.pointer_coercion (M.get_function (| "revm_precompile::hash::ripemd160_run", [] |))
+              M.pointer_coercion
+                (M.get_function (| "revm_precompile::hash::ripemd160_run", [], [] |))
             ]
         |))).
   
@@ -55,7 +56,7 @@ Module hash.
           let~ cost :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "revm_precompile::calc_linear_cost_u32", [] |),
+                M.get_function (| "revm_precompile::calc_linear_cost_u32", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "bytes::bytes::Bytes", "len", [] |),
@@ -294,7 +295,7 @@ Module hash.
           let~ gas_used :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "revm_precompile::calc_linear_cost_u32", [] |),
+                M.get_function (| "revm_precompile::calc_linear_cost_u32", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "bytes::bytes::Bytes", "len", [] |),

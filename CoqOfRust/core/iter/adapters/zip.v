@@ -1176,7 +1176,7 @@ Module iter.
                         (M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [ M.read (| Value.String "internal error: entered unreachable code" |)
                               ]
                             |)
@@ -1272,7 +1272,11 @@ Module iter.
                                 let~ lower :=
                                   M.alloc (|
                                     M.call_closure (|
-                                      M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                                      M.get_function (|
+                                        "core::cmp::min",
+                                        [],
+                                        [ Ty.path "usize" ]
+                                      |),
                                       [ M.read (| a_lower |); M.read (| b_lower |) ]
                                     |)
                                   |) in
@@ -1308,6 +1312,7 @@ Module iter.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::cmp::min",
+                                                      [],
                                                       [ Ty.path "usize" ]
                                                     |),
                                                     [ M.read (| x |); M.read (| y |) ]
@@ -1409,7 +1414,7 @@ Module iter.
               let _idx := M.alloc (| _idx |) in
               M.never_to_any (|
                 M.call_closure (|
-                  M.get_function (| "core::panicking::panic_fmt", [] |),
+                  M.get_function (| "core::panicking::panic_fmt", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -2118,7 +2123,7 @@ Module iter.
                         (M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [ M.read (| Value.String "internal error: entered unreachable code" |)
                               ]
                             |)
@@ -2151,7 +2156,7 @@ Module iter.
                 let~ size :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                      M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                       [
                         M.call_closure (|
                           M.get_trait_method (|
@@ -2492,7 +2497,7 @@ Module iter.
                 let~ len :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                      M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                       [
                         M.read (| a_len |);
                         M.call_closure (|
@@ -2843,7 +2848,7 @@ Module iter.
                 let~ delta :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                      M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                       [
                         M.read (| n |);
                         BinOp.Wrap.sub (|
@@ -3435,6 +3440,7 @@ Module iter.
                                                                                 M.call_closure (|
                                                                                   M.get_function (|
                                                                                     "core::panicking::assert_failed",
+                                                                                    [],
                                                                                     [
                                                                                       Ty.path
                                                                                         "usize";
@@ -4239,7 +4245,7 @@ Module iter.
                     ltac:(M.monadic
                       (M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|

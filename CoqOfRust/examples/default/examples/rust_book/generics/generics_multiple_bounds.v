@@ -17,7 +17,7 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -50,7 +50,7 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -104,7 +104,7 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -137,7 +137,7 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -246,6 +246,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.call_closure (|
               M.get_function (|
                 "generics_multiple_bounds::compare_prints",
+                [],
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
               |),
               [ string ]
@@ -256,6 +257,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.call_closure (|
               M.get_function (|
                 "generics_multiple_bounds::compare_types",
+                [],
                 [
                   Ty.apply
                     (Ty.path "array")

@@ -13,7 +13,7 @@ Module num.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -40,7 +40,7 @@ Module num.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -67,7 +67,7 @@ Module num.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -94,7 +94,7 @@ Module num.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -121,7 +121,7 @@ Module num.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -150,7 +150,7 @@ Module num.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -177,7 +177,7 @@ Module num.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -204,7 +204,7 @@ Module num.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),

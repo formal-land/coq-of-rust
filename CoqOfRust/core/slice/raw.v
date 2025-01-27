@@ -40,7 +40,7 @@ Module slice.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -50,16 +50,17 @@ Module slice.
                           M.call_closure (|
                             M.get_function (|
                               "core::slice::raw::from_raw_parts.precondition_check",
+                              [],
                               []
                             |),
                             [
                               M.rust_cast (M.read (| data |));
                               M.call_closure (|
-                                M.get_function (| "core::mem::size_of", [ T ] |),
+                                M.get_function (| "core::mem::size_of", [], [ T ] |),
                                 []
                               |);
                               M.call_closure (|
-                                M.get_function (| "core::mem::align_of", [ T ] |),
+                                M.get_function (| "core::mem::align_of", [], [ T ] |),
                                 []
                               |);
                               M.read (| len |)
@@ -72,7 +73,7 @@ Module slice.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::ptr::slice_from_raw_parts", [ T ] |),
+                M.get_function (| "core::ptr::slice_from_raw_parts", [], [ T ] |),
                 [ M.read (| data |); M.read (| len |) ]
               |)
             |)
@@ -119,7 +120,7 @@ Module slice.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -129,16 +130,17 @@ Module slice.
                           M.call_closure (|
                             M.get_function (|
                               "core::slice::raw::from_raw_parts_mut.precondition_check",
+                              [],
                               []
                             |),
                             [
                               M.rust_cast (M.read (| data |));
                               M.call_closure (|
-                                M.get_function (| "core::mem::size_of", [ T ] |),
+                                M.get_function (| "core::mem::size_of", [], [ T ] |),
                                 []
                               |);
                               M.call_closure (|
-                                M.get_function (| "core::mem::align_of", [ T ] |),
+                                M.get_function (| "core::mem::align_of", [], [ T ] |),
                                 []
                               |);
                               M.read (| len |)
@@ -151,7 +153,7 @@ Module slice.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
+                M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
                 [ M.read (| data |); M.read (| len |) ]
               |)
             |)
@@ -173,7 +175,7 @@ Module slice.
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
-            M.get_function (| "core::array::from_ref", [ T ] |),
+            M.get_function (| "core::array::from_ref", [], [ T ] |),
             [ M.read (| s |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -192,7 +194,7 @@ Module slice.
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
-            M.get_function (| "core::array::from_mut", [ T ] |),
+            M.get_function (| "core::array::from_mut", [], [ T ] |),
             [ M.read (| s |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -212,7 +214,7 @@ Module slice.
         ltac:(M.monadic
           (let range := M.alloc (| range |) in
           M.call_closure (|
-            M.get_function (| "core::slice::raw::from_raw_parts", [ T ] |),
+            M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
             [
               M.read (|
                 M.SubPointer.get_struct_record_field (| range, "core::ops::range::Range", "start" |)
@@ -255,7 +257,7 @@ Module slice.
         ltac:(M.monadic
           (let range := M.alloc (| range |) in
           M.call_closure (|
-            M.get_function (| "core::slice::raw::from_raw_parts_mut", [ T ] |),
+            M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
             [
               M.read (|
                 M.SubPointer.get_struct_record_field (| range, "core::ops::range::Range", "start" |)

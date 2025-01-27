@@ -101,6 +101,7 @@ Module control_flow.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::control_flow_v5::verify",
+                                    [],
                                     []
                                   |),
                                   [
@@ -212,6 +213,7 @@ Module control_flow.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::control_flow::verify_fallthrough",
+                                    [],
                                     []
                                   |),
                                   [
@@ -317,6 +319,7 @@ Module control_flow.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_bytecode_verifier::control_flow::verify_reducibility",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| verifier_config |); function_context ]

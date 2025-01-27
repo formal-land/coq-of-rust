@@ -4538,6 +4538,7 @@ Module signature.
                                                                                             M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "core::hint::must_use",
+                                                                                                [],
                                                                                                 [
                                                                                                   Ty.path
                                                                                                     "alloc::string::String"
@@ -4551,6 +4552,7 @@ Module signature.
                                                                                                       M.call_closure (|
                                                                                                         M.get_function (|
                                                                                                           "alloc::fmt::format",
+                                                                                                          [],
                                                                                                           []
                                                                                                         |),
                                                                                                         [
@@ -5329,6 +5331,7 @@ Module signature.
                                                                             M.call_closure (|
                                                                               M.get_function (|
                                                                                 "core::hint::must_use",
+                                                                                [],
                                                                                 [
                                                                                   Ty.path
                                                                                     "alloc::string::String"
@@ -5341,6 +5344,7 @@ Module signature.
                                                                                       M.call_closure (|
                                                                                         M.get_function (|
                                                                                           "alloc::fmt::format",
+                                                                                          [],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -8135,6 +8139,7 @@ Module signature.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -8142,7 +8147,11 @@ Module signature.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -8513,6 +8522,7 @@ Module signature.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::hint::must_use",
+                                                                      [],
                                                                       [
                                                                         Ty.path
                                                                           "alloc::string::String"
@@ -8525,6 +8535,7 @@ Module signature.
                                                                             M.call_closure (|
                                                                               M.get_function (|
                                                                                 "alloc::fmt::format",
+                                                                                [],
                                                                                 []
                                                                               |),
                                                                               [

@@ -77,11 +77,15 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let meta := M.alloc (| meta |) in
             M.call_closure (|
-              M.get_function (| "core::ptr::metadata::from_raw_parts_mut", [ U; Ty.tuple [] ] |),
+              M.get_function (|
+                "core::ptr::metadata::from_raw_parts_mut",
+                [],
+                [ U; Ty.tuple [] ]
+              |),
               [
                 M.rust_cast (M.read (| self |));
                 M.call_closure (|
-                  M.get_function (| "core::ptr::metadata::metadata", [ U ] |),
+                  M.get_function (| "core::ptr::metadata::metadata", [], [ U ] |),
                   [ M.read (| meta |) ]
                 |)
               ]
@@ -129,6 +133,7 @@ Module ptr.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::transmute",
+                [],
                 [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ]; Ty.path "usize" ]
               |),
               [
@@ -318,7 +323,7 @@ Module ptr.
                   [ M.read (| self |) ]
                 |);
                 M.call_closure (|
-                  M.get_function (| "core::ptr::metadata::metadata", [ T ] |),
+                  M.get_function (| "core::ptr::metadata::metadata", [], [ T ] |),
                   [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)) ]
                 |)
               ]))
@@ -481,6 +486,7 @@ Module ptr.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::offset",
+                [],
                 [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.path "isize" ]
               |),
               [ M.read (| self |); M.read (| count |) ]
@@ -563,7 +569,7 @@ Module ptr.
             let count := M.alloc (| count |) in
             M.rust_cast
               (M.call_closure (|
-                M.get_function (| "core::intrinsics::arith_offset", [ T ] |),
+                M.get_function (| "core::intrinsics::arith_offset", [], [ T ] |),
                 [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)); M.read (| count |)
                 ]
               |))))
@@ -653,7 +659,7 @@ Module ptr.
                   |),
                   [
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::ptr_mask", [ Ty.tuple [] ] |),
+                      M.get_function (| "core::intrinsics::ptr_mask", [], [ Ty.tuple [] ] |),
                       [
                         (* MutToConstPointer *)
                         M.pointer_coercion
@@ -1020,6 +1026,7 @@ Module ptr.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::offset",
+                [],
                 [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.path "usize" ]
               |),
               [ M.read (| self |); M.read (| count |) ]
@@ -1384,7 +1391,7 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::ptr::read", [ T ] |),
+              M.get_function (| "core::ptr::read", [], [ T ] |),
               [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1415,7 +1422,7 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::ptr::read_volatile", [ T ] |),
+              M.get_function (| "core::ptr::read_volatile", [], [ T ] |),
               [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1446,7 +1453,7 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::ptr::read_unaligned", [ T ] |),
+              M.get_function (| "core::ptr::read_unaligned", [], [ T ] |),
               [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1474,7 +1481,7 @@ Module ptr.
             let dest := M.alloc (| dest |) in
             let count := M.alloc (| count |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::copy", [ T ] |),
+              M.get_function (| "core::intrinsics::copy", [], [ T ] |),
               [
                 (* MutToConstPointer *) M.pointer_coercion (M.read (| self |));
                 M.read (| dest |);
@@ -1511,7 +1518,7 @@ Module ptr.
             let dest := M.alloc (| dest |) in
             let count := M.alloc (| count |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+              M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
               [
                 (* MutToConstPointer *) M.pointer_coercion (M.read (| self |));
                 M.read (| dest |);
@@ -1543,7 +1550,7 @@ Module ptr.
             let src := M.alloc (| src |) in
             let count := M.alloc (| count |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::copy", [ T ] |),
+              M.get_function (| "core::intrinsics::copy", [], [ T ] |),
               [ M.read (| src |); M.read (| self |); M.read (| count |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1576,7 +1583,7 @@ Module ptr.
             let src := M.alloc (| src |) in
             let count := M.alloc (| count |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+              M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
               [ M.read (| src |); M.read (| self |); M.read (| count |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1604,7 +1611,7 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::ptr::drop_in_place", [ T ] |),
+              M.get_function (| "core::ptr::drop_in_place", [], [ T ] |),
               [ M.read (| self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1631,7 +1638,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             M.call_closure (|
-              M.get_function (| "core::ptr::write", [ T ] |),
+              M.get_function (| "core::ptr::write", [], [ T ] |),
               [ M.read (| self |); M.read (| val |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1659,7 +1666,7 @@ Module ptr.
             let val := M.alloc (| val |) in
             let count := M.alloc (| count |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::write_bytes", [ T ] |),
+              M.get_function (| "core::intrinsics::write_bytes", [], [ T ] |),
               [ M.read (| self |); M.read (| val |); M.read (| count |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1691,7 +1698,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             M.call_closure (|
-              M.get_function (| "core::ptr::write_volatile", [ T ] |),
+              M.get_function (| "core::ptr::write_volatile", [], [ T ] |),
               [ M.read (| self |); M.read (| val |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1723,7 +1730,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             M.call_closure (|
-              M.get_function (| "core::ptr::write_unaligned", [ T ] |),
+              M.get_function (| "core::ptr::write_unaligned", [], [ T ] |),
               [ M.read (| self |); M.read (| val |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1750,7 +1757,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let src := M.alloc (| src |) in
             M.call_closure (|
-              M.get_function (| "core::ptr::replace", [ T ] |),
+              M.get_function (| "core::ptr::replace", [], [ T ] |),
               [ M.read (| self |); M.read (| src |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1777,7 +1784,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let with_ := M.alloc (| with_ |) in
             M.call_closure (|
-              M.get_function (| "core::ptr::swap", [ T ] |),
+              M.get_function (| "core::ptr::swap", [], [ T ] |),
               [ M.read (| self |); M.read (| with_ |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1849,7 +1856,7 @@ Module ptr.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic_fmt", [] |),
+                              M.get_function (| "core::panicking::panic_fmt", [], [] |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -1878,7 +1885,7 @@ Module ptr.
               let~ ret :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::ptr::align_offset", [ T ] |),
+                    M.get_function (| "core::ptr::align_offset", [], [ T ] |),
                     [
                       (* MutToConstPointer *) M.pointer_coercion (M.read (| self |));
                       M.read (| align |)
@@ -1916,7 +1923,7 @@ Module ptr.
               |),
               [
                 M.read (| self |);
-                M.call_closure (| M.get_function (| "core::mem::align_of", [ T ] |), [] |)
+                M.call_closure (| M.get_function (| "core::mem::align_of", [], [ T ] |), [] |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1987,7 +1994,7 @@ Module ptr.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic_fmt", [] |),
+                              M.get_function (| "core::panicking::panic_fmt", [], [] |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -2018,6 +2025,7 @@ Module ptr.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::const_eval_select",
+                    [],
                     [
                       Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ]; Ty.path "usize" ];
                       Ty.function
@@ -2074,6 +2082,7 @@ Module ptr.
             M.call_closure (|
               M.get_function (|
                 "core::ptr::metadata::metadata",
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ]
               |),
               [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)) ]
@@ -2166,7 +2175,7 @@ Module ptr.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [ M.read (| Value.String "assertion failed: mid <= self.len()" |) ]
                             |)
                           |)
@@ -2251,11 +2260,11 @@ Module ptr.
                 Value.Tuple
                   [
                     M.call_closure (|
-                      M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
+                      M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
                       [ M.read (| ptr |); M.read (| mid |) ]
                     |);
                     M.call_closure (|
-                      M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
+                      M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
                       [ M.read (| tail |); BinOp.Wrap.sub (| M.read (| len |), M.read (| mid |) |) ]
                     |)
                   ]
@@ -2378,6 +2387,7 @@ Module ptr.
                             M.call_closure (|
                               M.get_function (|
                                 "core::slice::raw::from_raw_parts",
+                                [],
                                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                                 ]
                               |),
@@ -2461,6 +2471,7 @@ Module ptr.
                             M.call_closure (|
                               M.get_function (|
                                 "core::slice::raw::from_raw_parts_mut",
+                                [],
                                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                                 ]
                               |),

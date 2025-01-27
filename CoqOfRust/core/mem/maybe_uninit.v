@@ -70,6 +70,7 @@ Module mem.
                 M.call_closure (|
                   M.get_function (|
                     "core::any::type_name",
+                    [],
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                   |),
                   []
@@ -332,7 +333,7 @@ Module mem.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::assert_inhabited", [ T ] |),
+                    M.get_function (| "core::intrinsics::assert_inhabited", [], [ T ] |),
                     []
                   |)
                 |) in
@@ -387,7 +388,7 @@ Module mem.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::assert_inhabited", [ T ] |),
+                    M.get_function (| "core::intrinsics::assert_inhabited", [], [ T ] |),
                     []
                   |)
                 |) in
@@ -434,7 +435,7 @@ Module mem.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::ptr::drop_in_place", [ T ] |),
+              M.get_function (| "core::ptr::drop_in_place", [], [ T ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -478,7 +479,7 @@ Module mem.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::assert_inhabited", [ T ] |),
+                    M.get_function (| "core::intrinsics::assert_inhabited", [], [ T ] |),
                     []
                   |)
                 |) in
@@ -525,7 +526,7 @@ Module mem.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::assert_inhabited", [ T ] |),
+                    M.get_function (| "core::intrinsics::assert_inhabited", [], [ T ] |),
                     []
                   |)
                 |) in
@@ -577,6 +578,7 @@ Module mem.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::assert_inhabited",
+                      [],
                       [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
                     |),
                     []
@@ -586,6 +588,7 @@ Module mem.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::transmute_unchecked",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "array")
@@ -761,6 +764,7 @@ Module mem.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::transmute",
+                      [],
                       [
                         Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
                         Ty.apply
@@ -920,6 +924,7 @@ Module mem.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::panicking::assert_failed",
+                                            [],
                                             [ Ty.path "usize"; Ty.path "usize" ]
                                           |),
                                           [
@@ -1126,6 +1131,7 @@ Module mem.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::forget",
+                      [],
                       [ Ty.apply (Ty.path "core::mem::maybe_uninit::Guard") [] [ T ] ]
                     |),
                     [ M.read (| guard |) ]
@@ -1372,6 +1378,7 @@ Module mem.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::forget",
+                      [],
                       [ Ty.apply (Ty.path "core::mem::maybe_uninit::Guard") [] [ T ] ]
                     |),
                     [ M.read (| guard |) ]
@@ -1620,6 +1627,7 @@ Module mem.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::forget",
+                      [],
                       [ Ty.apply (Ty.path "core::mem::maybe_uninit::Guard") [] [ T ] ]
                     |),
                     [ M.read (| guard |) ]
@@ -1687,6 +1695,7 @@ Module mem.
             M.call_closure (|
               M.get_function (|
                 "core::slice::raw::from_raw_parts",
+                [],
                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ] ]
               |),
               [
@@ -1699,7 +1708,7 @@ Module mem.
                     |),
                     [ M.read (| self |) ]
                   |));
-                M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
+                M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1734,6 +1743,7 @@ Module mem.
             M.call_closure (|
               M.get_function (|
                 "core::slice::raw::from_raw_parts_mut",
+                [],
                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ] ]
               |),
               [
@@ -1746,7 +1756,7 @@ Module mem.
                     |),
                     [ M.read (| self |) ]
                   |));
-                M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
+                M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1780,6 +1790,7 @@ Module mem.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "slice")
@@ -1794,6 +1805,7 @@ Module mem.
                 M.call_closure (|
                   M.get_function (|
                     "core::slice::raw::from_raw_parts",
+                    [],
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
                     ]
                   |),
@@ -1846,6 +1858,7 @@ Module mem.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
+                      [],
                       [
                         Ty.apply
                           (Ty.path "slice")
@@ -1860,6 +1873,7 @@ Module mem.
                 M.call_closure (|
                   M.get_function (|
                     "core::slice::raw::from_raw_parts_mut",
+                    [],
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
                     ]
                   |),
@@ -1917,6 +1931,7 @@ Module mem.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::transmute_unchecked",
+                [],
                 [
                   Ty.apply
                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -1966,6 +1981,7 @@ Module mem.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::transmute_unchecked",
+                [],
                 [
                   Ty.apply
                     (Ty.path "array")
@@ -2069,6 +2085,7 @@ Module mem.
                   M.call_closure (|
                     M.get_function (|
                       "core::ptr::drop_in_place",
+                      [],
                       [ Ty.apply (Ty.path "slice") [] [ T ] ]
                     |),
                     [
@@ -2327,6 +2344,7 @@ Module mem.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::forget",
+                      [],
                       [ Ty.apply (Ty.path "core::mem::maybe_uninit::Guard") [] [ T ] ]
                     |),
                     [ M.read (| guard |) ]

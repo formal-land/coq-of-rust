@@ -572,6 +572,7 @@ Module iter.
                           M.call_closure (|
                             M.get_function (|
                               "core::iter::adapters::zip::try_get_unchecked",
+                              [],
                               [ I ]
                             |),
                             [ M.read (| iter |); M.read (| idx |) ]
@@ -583,7 +584,7 @@ Module iter.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::intrinsics::unreachable", [] |),
+                              M.get_function (| "core::intrinsics::unreachable", [], [] |),
                               []
                             |)
                           |)
@@ -1042,6 +1043,7 @@ Module iter.
               M.call_closure (|
                 M.get_function (|
                   "core::iter::adapters::fuse::and_then_or_clear",
+                  [],
                   [
                     I;
                     Ty.associated;
@@ -1083,6 +1085,7 @@ Module iter.
               M.call_closure (|
                 M.get_function (|
                   "core::iter::adapters::fuse::and_then_or_clear",
+                  [],
                   [
                     I;
                     Ty.associated;
@@ -1294,6 +1297,7 @@ Module iter.
               M.call_closure (|
                 M.get_function (|
                   "core::iter::adapters::fuse::and_then_or_clear",
+                  [],
                   [
                     I;
                     Ty.associated;
@@ -1356,6 +1360,7 @@ Module iter.
               M.call_closure (|
                 M.get_function (|
                   "core::iter::adapters::fuse::and_then_or_clear",
+                  [],
                   [
                     I;
                     Ty.associated;
@@ -1419,6 +1424,7 @@ Module iter.
               M.call_closure (|
                 M.get_function (|
                   "core::iter::adapters::fuse::and_then_or_clear",
+                  [],
                   [
                     I;
                     Ty.associated;
@@ -1632,6 +1638,7 @@ Module iter.
               M.call_closure (|
                 M.get_function (|
                   "core::iter::adapters::fuse::and_then_or_clear",
+                  [],
                   [
                     I;
                     Ty.associated;

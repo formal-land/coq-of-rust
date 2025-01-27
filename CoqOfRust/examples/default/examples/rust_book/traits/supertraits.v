@@ -30,13 +30,13 @@ Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : 
     ltac:(M.monadic
       (let student := M.alloc (| student |) in
       M.call_closure (|
-        M.get_function (| "core::hint::must_use", [ Ty.path "alloc::string::String" ] |),
+        M.get_function (| "core::hint::must_use", [], [ Ty.path "alloc::string::String" ] |),
         [
           M.read (|
             let~ res :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "alloc::fmt::format", [] |),
+                  M.get_function (| "alloc::fmt::format", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),

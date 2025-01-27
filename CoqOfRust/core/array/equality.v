@@ -870,6 +870,7 @@ Module array.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::raw_eq",
+                [],
                 [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
               |),
               [
@@ -877,6 +878,7 @@ Module array.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::transmute",
+                    [],
                     [
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ];
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ]

@@ -156,7 +156,7 @@ Module cell.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::cell::lazy::panic_poisoned", [] |),
+                            M.get_function (| "core::cell::lazy::panic_poisoned", [], [] |),
                             []
                           |)
                         |)
@@ -254,7 +254,7 @@ Module cell.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::cell::lazy::panic_poisoned", [] |),
+                            M.get_function (| "core::cell::lazy::panic_poisoned", [], [] |),
                             []
                           |)
                         |)
@@ -382,7 +382,7 @@ Module cell.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::cell::lazy::panic_poisoned", [] |),
+                                M.get_function (| "core::cell::lazy::panic_poisoned", [], [] |),
                                 []
                               |)
                             |)
@@ -466,6 +466,7 @@ Module cell.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::replace",
+                      [],
                       [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ]
                     |),
                     [ M.read (| state |); Value.StructTuple "core::cell::lazy::State::Poisoned" [] ]
@@ -917,7 +918,7 @@ Module cell.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),

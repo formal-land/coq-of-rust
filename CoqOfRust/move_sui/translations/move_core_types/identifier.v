@@ -112,6 +112,7 @@ Module identifier.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "move_core_types::identifier::is_valid_identifier_char",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -270,6 +271,7 @@ Module identifier.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_core_types::identifier::all_bytes_valid",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| b |); Value.Integer IntegerKind.Usize 1 ]
@@ -305,7 +307,7 @@ Module identifier.
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "move_core_types::identifier::all_bytes_valid", [] |),
+                      M.get_function (| "move_core_types::identifier::all_bytes_valid", [], [] |),
                       [ M.read (| b |); Value.Integer IntegerKind.Usize 1 ]
                     |)
                   |)));
@@ -823,6 +825,7 @@ Module identifier.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::hint::must_use",
+                                            [],
                                             [ Ty.path "alloc::string::String" ]
                                           |),
                                           [
@@ -830,7 +833,11 @@ Module identifier.
                                               let~ res :=
                                                 M.alloc (|
                                                   M.call_closure (|
-                                                    M.get_function (| "alloc::fmt::format", [] |),
+                                                    M.get_function (|
+                                                      "alloc::fmt::format",
+                                                      [],
+                                                      []
+                                                    |),
                                                     [
                                                       M.call_closure (|
                                                         M.get_associated_function (|
@@ -909,7 +916,7 @@ Module identifier.
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
-            M.get_function (| "move_core_types::identifier::is_valid", [] |),
+            M.get_function (| "move_core_types::identifier::is_valid", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
@@ -1651,6 +1658,7 @@ Module identifier.
                   M.call_closure (|
                     M.get_function (|
                       "ref_cast::layout::assert_layout",
+                      [],
                       [ Ty.path "move_core_types::identifier::IdentStr"; Ty.path "str" ]
                     |),
                     [
@@ -1681,6 +1689,7 @@ Module identifier.
                   M.call_closure (|
                     M.get_function (|
                       "ref_cast::layout::assert_layout",
+                      [],
                       [ Ty.path "move_core_types::identifier::IdentStr"; Ty.path "str" ]
                     |),
                     [
@@ -1785,6 +1794,7 @@ Module identifier.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::hint::must_use",
+                                            [],
                                             [ Ty.path "alloc::string::String" ]
                                           |),
                                           [
@@ -1792,7 +1802,11 @@ Module identifier.
                                               let~ res :=
                                                 M.alloc (|
                                                   M.call_closure (|
-                                                    M.get_function (| "alloc::fmt::format", [] |),
+                                                    M.get_function (|
+                                                      "alloc::fmt::format",
+                                                      [],
+                                                      []
+                                                    |),
                                                     [
                                                       M.call_closure (|
                                                         M.get_associated_function (|
@@ -1866,7 +1880,7 @@ Module identifier.
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
-            M.get_function (| "move_core_types::identifier::is_valid", [] |),
+            M.get_function (| "move_core_types::identifier::is_valid", [], [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|

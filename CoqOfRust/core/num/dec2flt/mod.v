@@ -20,7 +20,7 @@ Module num.
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
             M.call_closure (|
-              M.get_function (| "core::num::dec2flt::dec2flt", [ Ty.path "f32" ] |),
+              M.get_function (| "core::num::dec2flt::dec2flt", [], [ Ty.path "f32" ] |),
               [ M.read (| src |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -52,7 +52,7 @@ Module num.
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
             M.call_closure (|
-              M.get_function (| "core::num::dec2flt::dec2flt", [ Ty.path "f64" ] |),
+              M.get_function (| "core::num::dec2flt::dec2flt", [], [ Ty.path "f64" ] |),
               [ M.read (| src |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -383,6 +383,7 @@ Module num.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::num::dec2flt::FloatErrorKind" ]
                     |),
                     [ M.read (| self |) ]
@@ -393,6 +394,7 @@ Module num.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::num::dec2flt::FloatErrorKind" ]
                     |),
                     [ M.read (| other |) ]
@@ -726,7 +728,11 @@ Module num.
                                       "core::result::Result::Err"
                                       [
                                         M.call_closure (|
-                                          M.get_function (| "core::num::dec2flt::pfe_empty", [] |),
+                                          M.get_function (|
+                                            "core::num::dec2flt::pfe_empty",
+                                            [],
+                                            []
+                                          |),
                                           []
                                         |)
                                       ]
@@ -815,7 +821,11 @@ Module num.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
-                                        M.get_function (| "core::num::dec2flt::pfe_invalid", [] |),
+                                        M.get_function (|
+                                          "core::num::dec2flt::pfe_invalid",
+                                          [],
+                                          []
+                                        |),
                                         []
                                       |)
                                     ]
@@ -831,7 +841,7 @@ Module num.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::num::dec2flt::parse::parse_number", [] |),
+                          M.get_function (| "core::num::dec2flt::parse::parse_number", [], [] |),
                           [ M.read (| s |) ]
                         |)
                       |),
@@ -854,6 +864,7 @@ Module num.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::num::dec2flt::parse::parse_inf_nan",
+                                    [],
                                     [ F ]
                                   |),
                                   [ M.read (| s |); M.read (| negative |) ]
@@ -890,6 +901,7 @@ Module num.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::num::dec2flt::pfe_invalid",
+                                            [],
                                             []
                                           |),
                                           []
@@ -963,7 +975,7 @@ Module num.
                 let~ fp :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::num::dec2flt::lemire::compute_float", [ F ] |),
+                      M.get_function (| "core::num::dec2flt::lemire::compute_float", [], [ F ] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -1027,6 +1039,7 @@ Module num.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::num::dec2flt::lemire::compute_float",
+                                              [],
                                               [ F ]
                                             |),
                                             [
@@ -1097,6 +1110,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::num::dec2flt::slow::parse_long_mantissa",
+                                  [],
                                   [ F ]
                                 |),
                                 [ M.read (| s |) ]
@@ -1109,7 +1123,7 @@ Module num.
                 let~ float :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::num::dec2flt::biased_fp_to_float", [ F ] |),
+                      M.get_function (| "core::num::dec2flt::biased_fp_to_float", [], [ F ] |),
                       [ M.read (| fp |) ]
                     |)
                   |) in

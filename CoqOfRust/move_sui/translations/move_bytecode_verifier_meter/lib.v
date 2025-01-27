@@ -151,6 +151,7 @@ Module Impl_core_cmp_PartialEq_for_move_bytecode_verifier_meter_Scope.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_bytecode_verifier_meter::Scope" ]
                 |),
                 [ M.read (| self |) ]
@@ -161,6 +162,7 @@ Module Impl_core_cmp_PartialEq_for_move_bytecode_verifier_meter_Scope.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_bytecode_verifier_meter::Scope" ]
                 |),
                 [ M.read (| other |) ]
@@ -221,6 +223,7 @@ Module Impl_core_cmp_PartialOrd_for_move_bytecode_verifier_meter_Scope.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_bytecode_verifier_meter::Scope" ]
                 |),
                 [ M.read (| self |) ]
@@ -231,6 +234,7 @@ Module Impl_core_cmp_PartialOrd_for_move_bytecode_verifier_meter_Scope.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_bytecode_verifier_meter::Scope" ]
                 |),
                 [ M.read (| other |) ]
@@ -276,6 +280,7 @@ Module Impl_core_cmp_Ord_for_move_bytecode_verifier_meter_Scope.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_bytecode_verifier_meter::Scope" ]
                 |),
                 [ M.read (| self |) ]
@@ -286,6 +291,7 @@ Module Impl_core_cmp_Ord_for_move_bytecode_verifier_meter_Scope.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "move_bytecode_verifier_meter::Scope" ]
                 |),
                 [ M.read (| other |) ]

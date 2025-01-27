@@ -14,7 +14,7 @@ Module utilities.
         (let data := M.alloc (| data |) in
         let offset := M.alloc (| offset |) in
         M.call_closure (|
-          M.get_function (| "revm_precompile::utilities::right_pad", [] |),
+          M.get_function (| "revm_precompile::utilities::right_pad", [ LEN ], [] |),
           [
             M.call_closure (|
               M.get_associated_function (|
@@ -62,7 +62,7 @@ Module utilities.
         let offset := M.alloc (| offset |) in
         let len := M.alloc (| len |) in
         M.call_closure (|
-          M.get_function (| "revm_precompile::utilities::right_pad_vec", [] |),
+          M.get_function (| "revm_precompile::utilities::right_pad_vec", [], [] |),
           [
             M.call_closure (|
               M.get_associated_function (|
@@ -293,7 +293,7 @@ Module utilities.
                   (let~ padded :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "alloc::vec::from_elem", [ Ty.path "u8" ] |),
+                        M.get_function (| "alloc::vec::from_elem", [], [ Ty.path "u8" ] |),
                         [ Value.Integer IntegerKind.U8 0; M.read (| len |) ]
                       |)
                     |) in
@@ -557,7 +557,7 @@ Module utilities.
                   (let~ padded :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "alloc::vec::from_elem", [ Ty.path "u8" ] |),
+                        M.get_function (| "alloc::vec::from_elem", [], [ Ty.path "u8" ] |),
                         [ Value.Integer IntegerKind.U8 0; M.read (| len |) ]
                       |)
                     |) in
@@ -641,7 +641,7 @@ Module utilities.
           [
             M.SubPointer.get_struct_tuple_field (|
               M.call_closure (|
-                M.get_function (| "revm_precompile::utilities::bool_to_b256", [] |),
+                M.get_function (| "revm_precompile::utilities::bool_to_b256", [], [] |),
                 [ M.read (| value |) ]
               |),
               "alloy_primitives::bits::fixed::FixedBytes",

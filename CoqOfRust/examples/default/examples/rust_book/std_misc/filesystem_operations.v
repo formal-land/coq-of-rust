@@ -404,7 +404,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -421,6 +421,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.call_closure (|
                 M.get_function (|
                   "std::fs::create_dir",
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                 |),
                 [ M.read (| Value.String "a" |) ]
@@ -435,7 +436,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "std::io::stdio::_print", [] |),
+                        M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -490,7 +491,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -518,7 +519,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 M.call_closure (|
-                  M.get_function (| "filesystem_operations::echo", [] |),
+                  M.get_function (| "filesystem_operations::echo", [], [] |),
                   [
                     M.read (| Value.String "hello" |);
                     M.call_closure (|
@@ -548,7 +549,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
-                                            M.get_function (| "std::io::stdio::_print", [] |),
+                                            M.get_function (| "std::io::stdio::_print", [], [] |),
                                             [
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -608,7 +609,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -634,6 +635,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.call_closure (|
                   M.get_function (|
                     "std::fs::create_dir_all",
+                    [],
                     [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                   |),
                   [ M.read (| Value.String "a/c/d" |) ]
@@ -655,7 +657,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
-                                            M.get_function (| "std::io::stdio::_print", [] |),
+                                            M.get_function (| "std::io::stdio::_print", [], [] |),
                                             [
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -715,7 +717,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -739,7 +741,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 M.call_closure (|
-                  M.get_function (| "filesystem_operations::touch", [] |),
+                  M.get_function (| "filesystem_operations::touch", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -768,7 +770,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
-                                            M.get_function (| "std::io::stdio::_print", [] |),
+                                            M.get_function (| "std::io::stdio::_print", [], [] |),
                                             [
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -828,7 +830,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -870,6 +872,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.call_closure (|
                             M.get_function (|
                               "std::os::unix::fs::symlink",
+                              [],
                               [
                                 Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                                 Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
@@ -899,6 +902,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "std::io::stdio::_print",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -969,7 +973,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -984,7 +988,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.match_operator (|
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "filesystem_operations::cat", [] |),
+                M.get_function (| "filesystem_operations::cat", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1006,7 +1010,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "std::io::stdio::_print", [] |),
+                        M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -1058,7 +1062,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "std::io::stdio::_print", [] |),
+                        M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -1097,7 +1101,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -1114,6 +1118,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.call_closure (|
                 M.get_function (|
                   "std::fs::read_dir",
+                  [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                 |),
                 [ M.read (| Value.String "a" |) ]
@@ -1128,7 +1133,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "std::io::stdio::_print", [] |),
+                        M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -1235,7 +1240,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             let~ _ :=
                                               M.alloc (|
                                                 M.call_closure (|
-                                                  M.get_function (| "std::io::stdio::_print", [] |),
+                                                  M.get_function (|
+                                                    "std::io::stdio::_print",
+                                                    [],
+                                                    []
+                                                  |),
                                                   [
                                                     M.call_closure (|
                                                       M.get_associated_function (|
@@ -1315,7 +1324,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -1341,6 +1350,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.call_closure (|
                   M.get_function (|
                     "std::fs::remove_file",
+                    [],
                     [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                   |),
                   [ M.read (| Value.String "a/c/e.txt" |) ]
@@ -1362,7 +1372,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
-                                            M.get_function (| "std::io::stdio::_print", [] |),
+                                            M.get_function (| "std::io::stdio::_print", [], [] |),
                                             [
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -1422,7 +1432,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -1448,6 +1458,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.call_closure (|
                   M.get_function (|
                     "std::fs::remove_dir",
+                    [],
                     [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                   |),
                   [ M.read (| Value.String "a/c/d" |) ]
@@ -1469,7 +1480,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
-                                            M.get_function (| "std::io::stdio::_print", [] |),
+                                            M.get_function (| "std::io::stdio::_print", [], [] |),
                                             [
                                               M.call_closure (|
                                                 M.get_associated_function (|

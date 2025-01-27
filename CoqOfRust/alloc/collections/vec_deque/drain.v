@@ -62,7 +62,7 @@ Module collections.
                 let~ orig_len :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::mem::replace", [ Ty.path "usize" ] |),
+                      M.get_function (| "core::mem::replace", [], [ Ty.path "usize" ] |),
                       [
                         M.SubPointer.get_struct_record_field (|
                           M.read (| deque |),
@@ -587,7 +587,7 @@ Module collections.
                               (M.alloc (|
                                 LogicalOp.and (|
                                   M.call_closure (|
-                                    M.get_function (| "core::mem::needs_drop", [ T ] |),
+                                    M.get_function (| "core::mem::needs_drop", [], [ T ] |),
                                     []
                                   |),
                                   ltac:(M.monadic
@@ -705,6 +705,7 @@ Module collections.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::ptr::drop_in_place",
+                                          [],
                                           [ Ty.apply (Ty.path "slice") [] [ T ] ]
                                         |),
                                         [ M.read (| front |) ]
@@ -730,6 +731,7 @@ Module collections.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::ptr::drop_in_place",
+                                          [],
                                           [ Ty.apply (Ty.path "slice") [] [ T ] ]
                                         |),
                                         [ M.read (| back |) ]

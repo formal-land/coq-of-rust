@@ -29,7 +29,7 @@ Definition give_adult (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
+                      M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -56,7 +56,7 @@ Definition give_adult (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
+                      M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -98,7 +98,7 @@ Definition give_adult (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
+                      M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -182,6 +182,7 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.call_closure (|
                         M.get_function (|
                           "std::panicking::begin_panic",
+                          [],
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
                         [ M.read (| Value.String "AAAaaaaa!!!!" |) ]
@@ -195,7 +196,7 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -266,21 +267,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "option_and_unwrap::give_adult", [] |),
+              M.get_function (| "option_and_unwrap::give_adult", [], [] |),
               [ M.read (| water |) ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "option_and_unwrap::give_adult", [] |),
+              M.get_function (| "option_and_unwrap::give_adult", [], [] |),
               [ M.read (| lemonade |) ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "option_and_unwrap::give_adult", [] |),
+              M.get_function (| "option_and_unwrap::give_adult", [], [] |),
               [ M.read (| void |) ]
             |)
           |) in
@@ -292,14 +293,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "option_and_unwrap::drink", [] |),
+              M.get_function (| "option_and_unwrap::drink", [], [] |),
               [ M.read (| coffee |) ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "option_and_unwrap::drink", [] |),
+              M.get_function (| "option_and_unwrap::drink", [], [] |),
               [ M.read (| nothing |) ]
             |)
           |) in

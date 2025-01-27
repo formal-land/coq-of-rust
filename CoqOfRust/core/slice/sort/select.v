@@ -77,7 +77,7 @@ Module slice.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic_fmt", [] |),
+                              M.get_function (| "core::panicking::panic_fmt", [], [] |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -172,6 +172,7 @@ Module slice.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::slice::sort::select::max_index",
+                                            [],
                                             [ T; F ]
                                           |),
                                           [ M.read (| v |); is_less ]
@@ -226,6 +227,7 @@ Module slice.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::slice::sort::select::min_index",
+                                                    [],
                                                     [ T; F ]
                                                   |),
                                                   [ M.read (| v |); is_less ]
@@ -256,6 +258,7 @@ Module slice.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::slice::sort::select::partition_at_index_loop",
+                                                [],
                                                 [ T; F ]
                                               |),
                                               [
@@ -504,6 +507,7 @@ Module slice.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "core::slice::sort::shared::smallsort::insertion_sort_shift_left",
+                                                              [],
                                                               [ T; F ]
                                                             |),
                                                             [
@@ -552,6 +556,7 @@ Module slice.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::slice::sort::select::median_of_medians",
+                                                    [],
                                                     [ T; F ]
                                                   |),
                                                   [
@@ -579,6 +584,7 @@ Module slice.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::slice::sort::shared::pivot::choose_pivot",
+                                    [],
                                     [ T; F ]
                                   |),
                                   [ M.read (| v |); M.read (| is_less |) ]
@@ -653,6 +659,7 @@ Module slice.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::slice::sort::unstable::quicksort::partition",
+                                                            [],
                                                             [
                                                               T;
                                                               Ty.function
@@ -846,6 +853,7 @@ Module slice.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::slice::sort::unstable::quicksort::partition",
+                                    [],
                                     [ T; F ]
                                   |),
                                   [ M.read (| v |); M.read (| pivot_pos |); M.read (| is_less |) ]
@@ -1447,7 +1455,7 @@ Module slice.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.call_closure (|
-                                            M.get_function (| "core::panicking::panic", [] |),
+                                            M.get_function (| "core::panicking::panic", [], [] |),
                                             [
                                               M.read (|
                                                 Value.String "assertion failed: k < v.len()"
@@ -1499,7 +1507,7 @@ Module slice.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.call_closure (|
-                                            M.get_function (| "core::panicking::panic", [] |),
+                                            M.get_function (| "core::panicking::panic", [], [] |),
                                             [
                                               M.read (|
                                                 Value.String "assertion failed: !T::IS_ZST"
@@ -1587,6 +1595,7 @@ Module slice.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "core::slice::sort::shared::smallsort::insertion_sort_shift_left",
+                                                              [],
                                                               [ T; F ]
                                                             |),
                                                             [
@@ -1655,6 +1664,7 @@ Module slice.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::slice::sort::select::max_index",
+                                                        [],
                                                         [ T; F ]
                                                       |),
                                                       [ M.read (| v |); M.read (| is_less |) ]
@@ -1719,6 +1729,7 @@ Module slice.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::slice::sort::select::min_index",
+                                                                [],
                                                                 [ T; F ]
                                                               |),
                                                               [ M.read (| v |); M.read (| is_less |)
@@ -1756,6 +1767,7 @@ Module slice.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::slice::sort::select::median_of_ninthers",
+                                    [],
                                     [ T; F ]
                                   |),
                                   [ M.read (| v |); M.read (| is_less |) ]
@@ -2140,6 +2152,7 @@ Module slice.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::slice::sort::select::ninther",
+                                                [],
                                                 [ T; F ]
                                               |),
                                               [
@@ -2203,7 +2216,11 @@ Module slice.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::slice::sort::select::median_of_medians", [ T; F ] |),
+                    M.get_function (|
+                      "core::slice::sort::select::median_of_medians",
+                      [],
+                      [ T; F ]
+                    |),
                     [
                       M.call_closure (|
                         M.get_trait_method (|
@@ -2232,6 +2249,7 @@ Module slice.
                 M.call_closure (|
                   M.get_function (|
                     "core::slice::sort::unstable::quicksort::partition",
+                    [],
                     [ T; F ]
                   |),
                   [
@@ -2313,7 +2331,7 @@ Module slice.
                     M.write (|
                       b,
                       M.call_closure (|
-                        M.get_function (| "core::slice::sort::select::median_idx", [ T; F ] |),
+                        M.get_function (| "core::slice::sort::select::median_idx", [], [ T; F ] |),
                         [
                           M.read (| v |);
                           M.read (| is_less |);
@@ -2327,7 +2345,7 @@ Module slice.
                     M.write (|
                       h,
                       M.call_closure (|
-                        M.get_function (| "core::slice::sort::select::median_idx", [ T; F ] |),
+                        M.get_function (| "core::slice::sort::select::median_idx", [], [ T; F ] |),
                         [
                           M.read (| v |);
                           M.read (| is_less |);
@@ -2375,7 +2393,7 @@ Module slice.
                             let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_function (| "core::mem::swap", [ Ty.path "usize" ] |),
+                                  M.get_function (| "core::mem::swap", [], [ Ty.path "usize" ] |),
                                   [ b; h ]
                                 |)
                               |) in
@@ -2421,7 +2439,7 @@ Module slice.
                             let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_function (| "core::mem::swap", [ Ty.path "usize" ] |),
+                                  M.get_function (| "core::mem::swap", [], [ Ty.path "usize" ] |),
                                   [ d; f ]
                                 |)
                               |) in
@@ -2840,7 +2858,7 @@ Module slice.
                             let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
-                                  M.get_function (| "core::mem::swap", [ Ty.path "usize" ] |),
+                                  M.get_function (| "core::mem::swap", [], [ Ty.path "usize" ] |),
                                   [ a; c ]
                                 |)
                               |) in

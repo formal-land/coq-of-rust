@@ -382,7 +382,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -442,7 +442,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -492,7 +492,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -514,7 +514,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_add", [ Ty.path "i8" ] |),
+                M.get_function (| "core::intrinsics::unchecked_add", [], [ Ty.path "i8" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -561,7 +561,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -622,7 +622,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -675,7 +675,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -735,7 +735,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::sub", [] |),
+                                  M.get_function (| "core::num::overflow_panic::sub", [], [] |),
                                   []
                                 |)
                               |)
@@ -785,7 +785,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -807,7 +807,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "i8" ] |),
+                M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "i8" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -854,7 +854,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -915,7 +915,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::sub", [] |),
+                                  M.get_function (| "core::num::overflow_panic::sub", [], [] |),
                                   []
                                 |)
                               |)
@@ -968,7 +968,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -1028,7 +1028,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::mul", [] |),
+                                  M.get_function (| "core::num::overflow_panic::mul", [], [] |),
                                   []
                                 |)
                               |)
@@ -1078,7 +1078,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -1100,7 +1100,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_mul", [ Ty.path "i8" ] |),
+                M.get_function (| "core::intrinsics::unchecked_mul", [], [ Ty.path "i8" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -1137,7 +1137,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I8 0 |),
@@ -1168,6 +1168,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_div",
+                              [],
                               [ Ty.path "i8" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -1220,7 +1221,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::div", [] |),
+                                  M.get_function (| "core::num::overflow_panic::div", [], [] |),
                                   []
                                 |)
                               |)
@@ -1262,7 +1263,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I8 0 |),
@@ -1341,7 +1342,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::div", [] |),
+                                  M.get_function (| "core::num::overflow_panic::div", [], [] |),
                                   []
                                 |)
                               |)
@@ -1384,7 +1385,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I8 0 |),
@@ -1415,6 +1416,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_rem",
+                              [],
                               [ Ty.path "i8" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -1467,7 +1469,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::rem", [] |),
+                                  M.get_function (| "core::num::overflow_panic::rem", [], [] |),
                                   []
                                 |)
                               |)
@@ -1509,7 +1511,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I8 0 |),
@@ -1588,7 +1590,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::rem", [] |),
+                                  M.get_function (| "core::num::overflow_panic::rem", [], [] |),
                                   []
                                 |)
                               |)
@@ -1640,7 +1642,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -1694,7 +1696,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -1716,7 +1718,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "i8" ] |),
+                M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "i8" ] |),
                 [ Value.Integer IntegerKind.I8 0; M.read (| self |) ]
               |)
             |)
@@ -1764,7 +1766,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::neg", [] |),
+                                  M.get_function (| "core::num::overflow_panic::neg", [], [] |),
                                   []
                                 |)
                               |)
@@ -1870,7 +1872,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shl", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shl", [], [] |),
                                   []
                                 |)
                               |)
@@ -1919,7 +1921,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -1943,6 +1945,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shl",
+                  [],
                   [ Ty.path "i8"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -2093,7 +2096,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shr", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shr", [], [] |),
                                   []
                                 |)
                               |)
@@ -2142,7 +2145,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -2166,6 +2169,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shr",
+                  [],
                   [ Ty.path "i8"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -2770,7 +2774,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::num::int_sqrt::i8", [] |),
+                              M.get_function (| "core::num::int_sqrt::i8", [], [] |),
                               [ M.read (| M.use self |) ]
                             |)
                           |))
@@ -2779,14 +2783,14 @@ Module num.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            M.get_function (| "core::hint::assert_unchecked", [], [] |),
                             [ BinOp.ge (| M.read (| result |), Value.Integer IntegerKind.I8 0 |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            M.get_function (| "core::hint::assert_unchecked", [], [] |),
                             [
                               BinOp.le (|
                                 M.read (| result |),
@@ -2822,7 +2826,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_add", [ Ty.path "i8" ] |),
+            M.get_function (| "core::intrinsics::saturating_add", [], [ Ty.path "i8" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2891,7 +2895,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_sub", [ Ty.path "i8" ] |),
+            M.get_function (| "core::intrinsics::saturating_sub", [], [ Ty.path "i8" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2959,7 +2963,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_sub", [ Ty.path "i8" ] |),
+            M.get_function (| "core::intrinsics::saturating_sub", [], [ Ty.path "i8" ] |),
             [ Value.Integer IntegerKind.I8 0; M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3208,7 +3212,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_add", [ Ty.path "i8" ] |),
+            M.get_function (| "core::intrinsics::wrapping_add", [], [ Ty.path "i8" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3249,7 +3253,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_sub", [ Ty.path "i8" ] |),
+            M.get_function (| "core::intrinsics::wrapping_sub", [], [ Ty.path "i8" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3290,7 +3294,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_mul", [ Ty.path "i8" ] |),
+            M.get_function (| "core::intrinsics::wrapping_mul", [], [ Ty.path "i8" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3638,6 +3642,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -3870,7 +3875,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::add_with_overflow", [ Ty.path "i8" ] |),
+                  M.get_function (| "core::intrinsics::add_with_overflow", [], [ Ty.path "i8" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -4013,7 +4018,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::sub_with_overflow", [ Ty.path "i8" ] |),
+                  M.get_function (| "core::intrinsics::sub_with_overflow", [], [ Ty.path "i8" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -4157,7 +4162,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::mul_with_overflow", [ Ty.path "i8" ] |),
+                  M.get_function (| "core::intrinsics::mul_with_overflow", [], [ Ty.path "i8" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -4204,7 +4209,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               BinOp.bit_and
                                 (BinOp.eq (|
@@ -4259,7 +4264,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               BinOp.bit_and
                                 (BinOp.eq (|
@@ -4318,7 +4323,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I8 (-1) |) ]
                           |)
                         |)) in
@@ -4374,7 +4379,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I8 (-1) |) ]
                           |)
                         |)) in
@@ -4434,7 +4439,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               BinOp.eq (|
                                 M.read (| self |),
@@ -4820,6 +4825,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -5049,6 +5055,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_sqrt::panic_for_negative_argument",
+                            [],
                             []
                           |),
                           []
@@ -5699,7 +5706,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -5753,6 +5760,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -5809,6 +5817,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -5865,6 +5874,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -5973,6 +5983,7 @@ Module num.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::intrinsics::ctlz_nonzero",
+                                    [],
                                     [ Ty.path "i8" ]
                                   |),
                                   [ M.read (| self |) ]
@@ -6024,7 +6035,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_function (| "core::num::int_log10::i8", [] |),
+                            M.get_function (| "core::num::int_log10::i8", [], [] |),
                             [ M.read (| M.use self |) ]
                           |)
                         ]
@@ -6285,6 +6296,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.path "i8";
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u8" ]
@@ -6361,6 +6373,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u8" ];
                 Ty.path "i8"
@@ -6531,7 +6544,7 @@ Module num.
                           let~ _ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::num::from_str_radix_panic", [] |),
+                                M.get_function (| "core::num::from_str_radix_panic", [], [] |),
                                 [ M.read (| radix |) ]
                               |)
                             |) in
@@ -6701,6 +6714,7 @@ Module num.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::num::can_not_overflow",
+                                            [],
                                             [ Ty.path "i8" ]
                                           |),
                                           [
@@ -7833,7 +7847,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -7893,7 +7907,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -7943,7 +7957,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -7965,7 +7979,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_add", [ Ty.path "i16" ] |),
+                M.get_function (| "core::intrinsics::unchecked_add", [], [ Ty.path "i16" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -8012,7 +8026,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -8073,7 +8087,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -8126,7 +8140,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -8186,7 +8200,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::sub", [] |),
+                                  M.get_function (| "core::num::overflow_panic::sub", [], [] |),
                                   []
                                 |)
                               |)
@@ -8236,7 +8250,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -8258,7 +8272,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "i16" ] |),
+                M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "i16" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -8305,7 +8319,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -8366,7 +8380,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::sub", [] |),
+                                  M.get_function (| "core::num::overflow_panic::sub", [], [] |),
                                   []
                                 |)
                               |)
@@ -8419,7 +8433,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -8479,7 +8493,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::mul", [] |),
+                                  M.get_function (| "core::num::overflow_panic::mul", [], [] |),
                                   []
                                 |)
                               |)
@@ -8529,7 +8543,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -8551,7 +8565,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_mul", [ Ty.path "i16" ] |),
+                M.get_function (| "core::intrinsics::unchecked_mul", [], [ Ty.path "i16" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -8588,7 +8602,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I16 0 |),
@@ -8619,6 +8633,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_div",
+                              [],
                               [ Ty.path "i16" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -8671,7 +8686,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::div", [] |),
+                                  M.get_function (| "core::num::overflow_panic::div", [], [] |),
                                   []
                                 |)
                               |)
@@ -8713,7 +8728,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I16 0 |),
@@ -8792,7 +8807,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::div", [] |),
+                                  M.get_function (| "core::num::overflow_panic::div", [], [] |),
                                   []
                                 |)
                               |)
@@ -8835,7 +8850,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I16 0 |),
@@ -8866,6 +8881,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_rem",
+                              [],
                               [ Ty.path "i16" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -8918,7 +8934,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::rem", [] |),
+                                  M.get_function (| "core::num::overflow_panic::rem", [], [] |),
                                   []
                                 |)
                               |)
@@ -8960,7 +8976,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I16 0 |),
@@ -9039,7 +9055,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::rem", [] |),
+                                  M.get_function (| "core::num::overflow_panic::rem", [], [] |),
                                   []
                                 |)
                               |)
@@ -9091,7 +9107,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -9145,7 +9161,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -9167,7 +9183,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "i16" ] |),
+                M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "i16" ] |),
                 [ Value.Integer IntegerKind.I16 0; M.read (| self |) ]
               |)
             |)
@@ -9215,7 +9231,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::neg", [] |),
+                                  M.get_function (| "core::num::overflow_panic::neg", [], [] |),
                                   []
                                 |)
                               |)
@@ -9321,7 +9337,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shl", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shl", [], [] |),
                                   []
                                 |)
                               |)
@@ -9370,7 +9386,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -9394,6 +9410,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shl",
+                  [],
                   [ Ty.path "i16"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -9544,7 +9561,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shr", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shr", [], [] |),
                                   []
                                 |)
                               |)
@@ -9593,7 +9610,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -9617,6 +9634,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shr",
+                  [],
                   [ Ty.path "i16"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -10221,7 +10239,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::num::int_sqrt::i16", [] |),
+                              M.get_function (| "core::num::int_sqrt::i16", [], [] |),
                               [ M.read (| M.use self |) ]
                             |)
                           |))
@@ -10230,14 +10248,14 @@ Module num.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            M.get_function (| "core::hint::assert_unchecked", [], [] |),
                             [ BinOp.ge (| M.read (| result |), Value.Integer IntegerKind.I16 0 |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            M.get_function (| "core::hint::assert_unchecked", [], [] |),
                             [
                               BinOp.le (|
                                 M.read (| result |),
@@ -10273,7 +10291,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_add", [ Ty.path "i16" ] |),
+            M.get_function (| "core::intrinsics::saturating_add", [], [ Ty.path "i16" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -10342,7 +10360,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_sub", [ Ty.path "i16" ] |),
+            M.get_function (| "core::intrinsics::saturating_sub", [], [ Ty.path "i16" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -10410,7 +10428,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_sub", [ Ty.path "i16" ] |),
+            M.get_function (| "core::intrinsics::saturating_sub", [], [ Ty.path "i16" ] |),
             [ Value.Integer IntegerKind.I16 0; M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -10659,7 +10677,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_add", [ Ty.path "i16" ] |),
+            M.get_function (| "core::intrinsics::wrapping_add", [], [ Ty.path "i16" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -10700,7 +10718,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_sub", [ Ty.path "i16" ] |),
+            M.get_function (| "core::intrinsics::wrapping_sub", [], [ Ty.path "i16" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -10741,7 +10759,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_mul", [ Ty.path "i16" ] |),
+            M.get_function (| "core::intrinsics::wrapping_mul", [], [ Ty.path "i16" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -11090,6 +11108,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -11322,7 +11341,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::add_with_overflow", [ Ty.path "i16" ] |),
+                  M.get_function (| "core::intrinsics::add_with_overflow", [], [ Ty.path "i16" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -11465,7 +11484,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::sub_with_overflow", [ Ty.path "i16" ] |),
+                  M.get_function (| "core::intrinsics::sub_with_overflow", [], [ Ty.path "i16" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -11609,7 +11628,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::mul_with_overflow", [ Ty.path "i16" ] |),
+                  M.get_function (| "core::intrinsics::mul_with_overflow", [], [ Ty.path "i16" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -11656,7 +11675,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               BinOp.bit_and
                                 (BinOp.eq (|
@@ -11714,7 +11733,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               BinOp.bit_and
                                 (BinOp.eq (|
@@ -11776,7 +11795,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I16 (-1) |) ]
                           |)
                         |)) in
@@ -11832,7 +11851,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I16 (-1) |) ]
                           |)
                         |)) in
@@ -11892,7 +11911,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               BinOp.eq (|
                                 M.read (| self |),
@@ -12282,6 +12301,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -12511,6 +12531,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_sqrt::panic_for_negative_argument",
+                            [],
                             []
                           |),
                           []
@@ -13167,7 +13188,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -13221,6 +13242,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -13277,6 +13299,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -13333,6 +13356,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -13441,6 +13465,7 @@ Module num.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::intrinsics::ctlz_nonzero",
+                                    [],
                                     [ Ty.path "i16" ]
                                   |),
                                   [ M.read (| self |) ]
@@ -13492,7 +13517,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_function (| "core::num::int_log10::i16", [] |),
+                            M.get_function (| "core::num::int_log10::i16", [], [] |),
                             [ M.read (| M.use self |) ]
                           |)
                         ]
@@ -13753,6 +13778,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.path "i16";
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u8" ]
@@ -13829,6 +13855,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u8" ];
                 Ty.path "i16"
@@ -13999,7 +14026,7 @@ Module num.
                           let~ _ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::num::from_str_radix_panic", [] |),
+                                M.get_function (| "core::num::from_str_radix_panic", [], [] |),
                                 [ M.read (| radix |) ]
                               |)
                             |) in
@@ -14169,6 +14196,7 @@ Module num.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::num::can_not_overflow",
+                                            [],
                                             [ Ty.path "i16" ]
                                           |),
                                           [
@@ -15301,7 +15329,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -15361,7 +15389,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -15411,7 +15439,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -15433,7 +15461,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_add", [ Ty.path "i32" ] |),
+                M.get_function (| "core::intrinsics::unchecked_add", [], [ Ty.path "i32" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -15480,7 +15508,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -15541,7 +15569,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -15594,7 +15622,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -15654,7 +15682,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::sub", [] |),
+                                  M.get_function (| "core::num::overflow_panic::sub", [], [] |),
                                   []
                                 |)
                               |)
@@ -15704,7 +15732,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -15726,7 +15754,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "i32" ] |),
+                M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "i32" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -15773,7 +15801,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -15834,7 +15862,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::sub", [] |),
+                                  M.get_function (| "core::num::overflow_panic::sub", [], [] |),
                                   []
                                 |)
                               |)
@@ -15887,7 +15915,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -15947,7 +15975,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::mul", [] |),
+                                  M.get_function (| "core::num::overflow_panic::mul", [], [] |),
                                   []
                                 |)
                               |)
@@ -15997,7 +16025,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -16019,7 +16047,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_mul", [ Ty.path "i32" ] |),
+                M.get_function (| "core::intrinsics::unchecked_mul", [], [ Ty.path "i32" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -16056,7 +16084,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I32 0 |),
@@ -16087,6 +16115,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_div",
+                              [],
                               [ Ty.path "i32" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -16139,7 +16168,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::div", [] |),
+                                  M.get_function (| "core::num::overflow_panic::div", [], [] |),
                                   []
                                 |)
                               |)
@@ -16181,7 +16210,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I32 0 |),
@@ -16260,7 +16289,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::div", [] |),
+                                  M.get_function (| "core::num::overflow_panic::div", [], [] |),
                                   []
                                 |)
                               |)
@@ -16303,7 +16332,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I32 0 |),
@@ -16334,6 +16363,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_rem",
+                              [],
                               [ Ty.path "i32" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -16386,7 +16416,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::rem", [] |),
+                                  M.get_function (| "core::num::overflow_panic::rem", [], [] |),
                                   []
                                 |)
                               |)
@@ -16428,7 +16458,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I32 0 |),
@@ -16507,7 +16537,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::rem", [] |),
+                                  M.get_function (| "core::num::overflow_panic::rem", [], [] |),
                                   []
                                 |)
                               |)
@@ -16559,7 +16589,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -16613,7 +16643,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -16635,7 +16665,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "i32" ] |),
+                M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "i32" ] |),
                 [ Value.Integer IntegerKind.I32 0; M.read (| self |) ]
               |)
             |)
@@ -16683,7 +16713,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::neg", [] |),
+                                  M.get_function (| "core::num::overflow_panic::neg", [], [] |),
                                   []
                                 |)
                               |)
@@ -16789,7 +16819,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shl", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shl", [], [] |),
                                   []
                                 |)
                               |)
@@ -16838,7 +16868,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -16862,6 +16892,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shl",
+                  [],
                   [ Ty.path "i32"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -17012,7 +17043,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shr", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shr", [], [] |),
                                   []
                                 |)
                               |)
@@ -17061,7 +17092,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -17085,6 +17116,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shr",
+                  [],
                   [ Ty.path "i32"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -17689,7 +17721,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::num::int_sqrt::i32", [] |),
+                              M.get_function (| "core::num::int_sqrt::i32", [], [] |),
                               [ M.read (| M.use self |) ]
                             |)
                           |))
@@ -17698,14 +17730,14 @@ Module num.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            M.get_function (| "core::hint::assert_unchecked", [], [] |),
                             [ BinOp.ge (| M.read (| result |), Value.Integer IntegerKind.I32 0 |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            M.get_function (| "core::hint::assert_unchecked", [], [] |),
                             [
                               BinOp.le (|
                                 M.read (| result |),
@@ -17741,7 +17773,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_add", [ Ty.path "i32" ] |),
+            M.get_function (| "core::intrinsics::saturating_add", [], [ Ty.path "i32" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -17810,7 +17842,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_sub", [ Ty.path "i32" ] |),
+            M.get_function (| "core::intrinsics::saturating_sub", [], [ Ty.path "i32" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -17878,7 +17910,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_sub", [ Ty.path "i32" ] |),
+            M.get_function (| "core::intrinsics::saturating_sub", [], [ Ty.path "i32" ] |),
             [ Value.Integer IntegerKind.I32 0; M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -18127,7 +18159,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_add", [ Ty.path "i32" ] |),
+            M.get_function (| "core::intrinsics::wrapping_add", [], [ Ty.path "i32" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -18168,7 +18200,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_sub", [ Ty.path "i32" ] |),
+            M.get_function (| "core::intrinsics::wrapping_sub", [], [ Ty.path "i32" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -18209,7 +18241,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_mul", [ Ty.path "i32" ] |),
+            M.get_function (| "core::intrinsics::wrapping_mul", [], [ Ty.path "i32" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -18558,6 +18590,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -18790,7 +18823,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::add_with_overflow", [ Ty.path "i32" ] |),
+                  M.get_function (| "core::intrinsics::add_with_overflow", [], [ Ty.path "i32" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -18933,7 +18966,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::sub_with_overflow", [ Ty.path "i32" ] |),
+                  M.get_function (| "core::intrinsics::sub_with_overflow", [], [ Ty.path "i32" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -19077,7 +19110,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::mul_with_overflow", [ Ty.path "i32" ] |),
+                  M.get_function (| "core::intrinsics::mul_with_overflow", [], [ Ty.path "i32" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -19124,7 +19157,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               BinOp.bit_and
                                 (BinOp.eq (|
@@ -19182,7 +19215,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               BinOp.bit_and
                                 (BinOp.eq (|
@@ -19244,7 +19277,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I32 (-1) |) ]
                           |)
                         |)) in
@@ -19300,7 +19333,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I32 (-1) |) ]
                           |)
                         |)) in
@@ -19360,7 +19393,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               BinOp.eq (|
                                 M.read (| self |),
@@ -19750,6 +19783,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -19979,6 +20013,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_sqrt::panic_for_negative_argument",
+                            [],
                             []
                           |),
                           []
@@ -20635,7 +20670,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -20689,6 +20724,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -20745,6 +20781,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -20801,6 +20838,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -20909,6 +20947,7 @@ Module num.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::intrinsics::ctlz_nonzero",
+                                    [],
                                     [ Ty.path "i32" ]
                                   |),
                                   [ M.read (| self |) ]
@@ -20960,7 +20999,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_function (| "core::num::int_log10::i32", [] |),
+                            M.get_function (| "core::num::int_log10::i32", [], [] |),
                             [ M.read (| M.use self |) ]
                           |)
                         ]
@@ -21221,6 +21260,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.path "i32";
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ]
@@ -21297,6 +21337,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ];
                 Ty.path "i32"
@@ -21467,7 +21508,7 @@ Module num.
                           let~ _ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::num::from_str_radix_panic", [] |),
+                                M.get_function (| "core::num::from_str_radix_panic", [], [] |),
                                 [ M.read (| radix |) ]
                               |)
                             |) in
@@ -21637,6 +21678,7 @@ Module num.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::num::can_not_overflow",
+                                            [],
                                             [ Ty.path "i32" ]
                                           |),
                                           [
@@ -22769,7 +22811,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -22829,7 +22871,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -22879,7 +22921,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -22901,7 +22943,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_add", [ Ty.path "i64" ] |),
+                M.get_function (| "core::intrinsics::unchecked_add", [], [ Ty.path "i64" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -22948,7 +22990,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -23009,7 +23051,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -23062,7 +23104,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -23122,7 +23164,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::sub", [] |),
+                                  M.get_function (| "core::num::overflow_panic::sub", [], [] |),
                                   []
                                 |)
                               |)
@@ -23172,7 +23214,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -23194,7 +23236,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "i64" ] |),
+                M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "i64" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -23241,7 +23283,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -23302,7 +23344,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::sub", [] |),
+                                  M.get_function (| "core::num::overflow_panic::sub", [], [] |),
                                   []
                                 |)
                               |)
@@ -23355,7 +23397,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -23415,7 +23457,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::mul", [] |),
+                                  M.get_function (| "core::num::overflow_panic::mul", [], [] |),
                                   []
                                 |)
                               |)
@@ -23465,7 +23507,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -23487,7 +23529,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_mul", [ Ty.path "i64" ] |),
+                M.get_function (| "core::intrinsics::unchecked_mul", [], [ Ty.path "i64" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -23524,7 +23566,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I64 0 |),
@@ -23555,6 +23597,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_div",
+                              [],
                               [ Ty.path "i64" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -23607,7 +23650,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::div", [] |),
+                                  M.get_function (| "core::num::overflow_panic::div", [], [] |),
                                   []
                                 |)
                               |)
@@ -23649,7 +23692,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I64 0 |),
@@ -23728,7 +23771,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::div", [] |),
+                                  M.get_function (| "core::num::overflow_panic::div", [], [] |),
                                   []
                                 |)
                               |)
@@ -23771,7 +23814,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I64 0 |),
@@ -23802,6 +23845,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_rem",
+                              [],
                               [ Ty.path "i64" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -23854,7 +23898,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::rem", [] |),
+                                  M.get_function (| "core::num::overflow_panic::rem", [], [] |),
                                   []
                                 |)
                               |)
@@ -23896,7 +23940,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I64 0 |),
@@ -23975,7 +24019,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::rem", [] |),
+                                  M.get_function (| "core::num::overflow_panic::rem", [], [] |),
                                   []
                                 |)
                               |)
@@ -24027,7 +24071,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -24081,7 +24125,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -24103,7 +24147,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "i64" ] |),
+                M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "i64" ] |),
                 [ Value.Integer IntegerKind.I64 0; M.read (| self |) ]
               |)
             |)
@@ -24151,7 +24195,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::neg", [] |),
+                                  M.get_function (| "core::num::overflow_panic::neg", [], [] |),
                                   []
                                 |)
                               |)
@@ -24257,7 +24301,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shl", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shl", [], [] |),
                                   []
                                 |)
                               |)
@@ -24306,7 +24350,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -24330,6 +24374,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shl",
+                  [],
                   [ Ty.path "i64"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -24480,7 +24525,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shr", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shr", [], [] |),
                                   []
                                 |)
                               |)
@@ -24529,7 +24574,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -24553,6 +24598,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shr",
+                  [],
                   [ Ty.path "i64"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -25157,7 +25203,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::num::int_sqrt::i64", [] |),
+                              M.get_function (| "core::num::int_sqrt::i64", [], [] |),
                               [ M.read (| M.use self |) ]
                             |)
                           |))
@@ -25166,14 +25212,14 @@ Module num.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            M.get_function (| "core::hint::assert_unchecked", [], [] |),
                             [ BinOp.ge (| M.read (| result |), Value.Integer IntegerKind.I64 0 |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            M.get_function (| "core::hint::assert_unchecked", [], [] |),
                             [
                               BinOp.le (|
                                 M.read (| result |),
@@ -25209,7 +25255,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_add", [ Ty.path "i64" ] |),
+            M.get_function (| "core::intrinsics::saturating_add", [], [ Ty.path "i64" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -25278,7 +25324,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_sub", [ Ty.path "i64" ] |),
+            M.get_function (| "core::intrinsics::saturating_sub", [], [ Ty.path "i64" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -25346,7 +25392,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_sub", [ Ty.path "i64" ] |),
+            M.get_function (| "core::intrinsics::saturating_sub", [], [ Ty.path "i64" ] |),
             [ Value.Integer IntegerKind.I64 0; M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -25595,7 +25641,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_add", [ Ty.path "i64" ] |),
+            M.get_function (| "core::intrinsics::wrapping_add", [], [ Ty.path "i64" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -25636,7 +25682,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_sub", [ Ty.path "i64" ] |),
+            M.get_function (| "core::intrinsics::wrapping_sub", [], [ Ty.path "i64" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -25677,7 +25723,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_mul", [ Ty.path "i64" ] |),
+            M.get_function (| "core::intrinsics::wrapping_mul", [], [ Ty.path "i64" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -26026,6 +26072,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -26258,7 +26305,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::add_with_overflow", [ Ty.path "i64" ] |),
+                  M.get_function (| "core::intrinsics::add_with_overflow", [], [ Ty.path "i64" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -26401,7 +26448,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::sub_with_overflow", [ Ty.path "i64" ] |),
+                  M.get_function (| "core::intrinsics::sub_with_overflow", [], [ Ty.path "i64" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -26545,7 +26592,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::mul_with_overflow", [ Ty.path "i64" ] |),
+                  M.get_function (| "core::intrinsics::mul_with_overflow", [], [ Ty.path "i64" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -26592,7 +26639,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               BinOp.bit_and
                                 (BinOp.eq (|
@@ -26650,7 +26697,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               BinOp.bit_and
                                 (BinOp.eq (|
@@ -26712,7 +26759,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I64 (-1) |) ]
                           |)
                         |)) in
@@ -26768,7 +26815,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I64 (-1) |) ]
                           |)
                         |)) in
@@ -26828,7 +26875,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               BinOp.eq (|
                                 M.read (| self |),
@@ -27218,6 +27265,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -27447,6 +27495,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_sqrt::panic_for_negative_argument",
+                            [],
                             []
                           |),
                           []
@@ -28103,7 +28152,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -28157,6 +28206,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -28213,6 +28263,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -28269,6 +28320,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -28377,6 +28429,7 @@ Module num.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::intrinsics::ctlz_nonzero",
+                                    [],
                                     [ Ty.path "i64" ]
                                   |),
                                   [ M.read (| self |) ]
@@ -28428,7 +28481,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_function (| "core::num::int_log10::i64", [] |),
+                            M.get_function (| "core::num::int_log10::i64", [], [] |),
                             [ M.read (| M.use self |) ]
                           |)
                         ]
@@ -28689,6 +28742,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.path "i64";
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ]
@@ -28765,6 +28819,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ];
                 Ty.path "i64"
@@ -28935,7 +28990,7 @@ Module num.
                           let~ _ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::num::from_str_radix_panic", [] |),
+                                M.get_function (| "core::num::from_str_radix_panic", [], [] |),
                                 [ M.read (| radix |) ]
                               |)
                             |) in
@@ -29105,6 +29160,7 @@ Module num.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::num::can_not_overflow",
+                                            [],
                                             [ Ty.path "i64" ]
                                           |),
                                           [
@@ -30237,7 +30293,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -30297,7 +30353,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -30347,7 +30403,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -30369,7 +30425,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_add", [ Ty.path "i128" ] |),
+                M.get_function (| "core::intrinsics::unchecked_add", [], [ Ty.path "i128" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -30416,7 +30472,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -30477,7 +30533,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -30530,7 +30586,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -30590,7 +30646,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::sub", [] |),
+                                  M.get_function (| "core::num::overflow_panic::sub", [], [] |),
                                   []
                                 |)
                               |)
@@ -30640,7 +30696,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -30662,7 +30718,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "i128" ] |),
+                M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "i128" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -30709,7 +30765,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -30770,7 +30826,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::sub", [] |),
+                                  M.get_function (| "core::num::overflow_panic::sub", [], [] |),
                                   []
                                 |)
                               |)
@@ -30823,7 +30879,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -30883,7 +30939,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::mul", [] |),
+                                  M.get_function (| "core::num::overflow_panic::mul", [], [] |),
                                   []
                                 |)
                               |)
@@ -30933,7 +30989,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -30955,7 +31011,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_mul", [ Ty.path "i128" ] |),
+                M.get_function (| "core::intrinsics::unchecked_mul", [], [ Ty.path "i128" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -30992,7 +31048,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I128 0 |),
@@ -31023,6 +31079,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_div",
+                              [],
                               [ Ty.path "i128" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -31075,7 +31132,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::div", [] |),
+                                  M.get_function (| "core::num::overflow_panic::div", [], [] |),
                                   []
                                 |)
                               |)
@@ -31117,7 +31174,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I128 0 |),
@@ -31196,7 +31253,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::div", [] |),
+                                  M.get_function (| "core::num::overflow_panic::div", [], [] |),
                                   []
                                 |)
                               |)
@@ -31239,7 +31296,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I128 0 |),
@@ -31270,6 +31327,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_rem",
+                              [],
                               [ Ty.path "i128" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -31322,7 +31380,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::rem", [] |),
+                                  M.get_function (| "core::num::overflow_panic::rem", [], [] |),
                                   []
                                 |)
                               |)
@@ -31364,7 +31422,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I128 0 |),
@@ -31443,7 +31501,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::rem", [] |),
+                                  M.get_function (| "core::num::overflow_panic::rem", [], [] |),
                                   []
                                 |)
                               |)
@@ -31495,7 +31553,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -31549,7 +31607,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -31571,7 +31629,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "i128" ] |),
+                M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "i128" ] |),
                 [ Value.Integer IntegerKind.I128 0; M.read (| self |) ]
               |)
             |)
@@ -31619,7 +31677,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::neg", [] |),
+                                  M.get_function (| "core::num::overflow_panic::neg", [], [] |),
                                   []
                                 |)
                               |)
@@ -31725,7 +31783,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shl", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shl", [], [] |),
                                   []
                                 |)
                               |)
@@ -31774,7 +31832,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -31798,6 +31856,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shl",
+                  [],
                   [ Ty.path "i128"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -31948,7 +32007,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shr", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shr", [], [] |),
                                   []
                                 |)
                               |)
@@ -31997,7 +32056,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -32021,6 +32080,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shr",
+                  [],
                   [ Ty.path "i128"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -32625,7 +32685,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::num::int_sqrt::i128", [] |),
+                              M.get_function (| "core::num::int_sqrt::i128", [], [] |),
                               [ M.read (| M.use self |) ]
                             |)
                           |))
@@ -32634,14 +32694,14 @@ Module num.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            M.get_function (| "core::hint::assert_unchecked", [], [] |),
                             [ BinOp.ge (| M.read (| result |), Value.Integer IntegerKind.I128 0 |) ]
                           |)
                         |) in
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            M.get_function (| "core::hint::assert_unchecked", [], [] |),
                             [
                               BinOp.le (|
                                 M.read (| result |),
@@ -32677,7 +32737,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_add", [ Ty.path "i128" ] |),
+            M.get_function (| "core::intrinsics::saturating_add", [], [ Ty.path "i128" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -32746,7 +32806,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_sub", [ Ty.path "i128" ] |),
+            M.get_function (| "core::intrinsics::saturating_sub", [], [ Ty.path "i128" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -32814,7 +32874,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_sub", [ Ty.path "i128" ] |),
+            M.get_function (| "core::intrinsics::saturating_sub", [], [ Ty.path "i128" ] |),
             [ Value.Integer IntegerKind.I128 0; M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -33066,7 +33126,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_add", [ Ty.path "i128" ] |),
+            M.get_function (| "core::intrinsics::wrapping_add", [], [ Ty.path "i128" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -33107,7 +33167,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_sub", [ Ty.path "i128" ] |),
+            M.get_function (| "core::intrinsics::wrapping_sub", [], [ Ty.path "i128" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -33148,7 +33208,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_mul", [ Ty.path "i128" ] |),
+            M.get_function (| "core::intrinsics::wrapping_mul", [], [ Ty.path "i128" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -33497,6 +33557,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -33729,7 +33790,11 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::add_with_overflow", [ Ty.path "i128" ] |),
+                  M.get_function (|
+                    "core::intrinsics::add_with_overflow",
+                    [],
+                    [ Ty.path "i128" ]
+                  |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -33872,7 +33937,11 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::sub_with_overflow", [ Ty.path "i128" ] |),
+                  M.get_function (|
+                    "core::intrinsics::sub_with_overflow",
+                    [],
+                    [ Ty.path "i128" ]
+                  |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -34016,7 +34085,11 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::mul_with_overflow", [ Ty.path "i128" ] |),
+                  M.get_function (|
+                    "core::intrinsics::mul_with_overflow",
+                    [],
+                    [ Ty.path "i128" ]
+                  |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -34063,7 +34136,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               BinOp.bit_and
                                 (BinOp.eq (|
@@ -34121,7 +34194,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               BinOp.bit_and
                                 (BinOp.eq (|
@@ -34183,7 +34256,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I128 (-1) |) ]
                           |)
                         |)) in
@@ -34239,7 +34312,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.I128 (-1) |) ]
                           |)
                         |)) in
@@ -34299,7 +34372,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               BinOp.eq (|
                                 M.read (| self |),
@@ -34689,6 +34762,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -34918,6 +34992,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_sqrt::panic_for_negative_argument",
+                            [],
                             []
                           |),
                           []
@@ -35574,7 +35649,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -35628,6 +35703,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -35684,6 +35760,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -35740,6 +35817,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -35848,6 +35926,7 @@ Module num.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::intrinsics::ctlz_nonzero",
+                                    [],
                                     [ Ty.path "i128" ]
                                   |),
                                   [ M.read (| self |) ]
@@ -35899,7 +35978,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_function (| "core::num::int_log10::i128", [] |),
+                            M.get_function (| "core::num::int_log10::i128", [], [] |),
                             [ M.read (| M.use self |) ]
                           |)
                         ]
@@ -36160,6 +36239,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.path "i128";
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ]
@@ -36236,6 +36316,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ];
                 Ty.path "i128"
@@ -36406,7 +36487,7 @@ Module num.
                           let~ _ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::num::from_str_radix_panic", [] |),
+                                M.get_function (| "core::num::from_str_radix_panic", [], [] |),
                                 [ M.read (| radix |) ]
                               |)
                             |) in
@@ -36576,6 +36657,7 @@ Module num.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::num::can_not_overflow",
+                                            [],
                                             [ Ty.path "i128" ]
                                           |),
                                           [
@@ -37708,7 +37790,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -37768,7 +37850,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -37818,7 +37900,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -37840,7 +37922,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_add", [ Ty.path "isize" ] |),
+                M.get_function (| "core::intrinsics::unchecked_add", [], [ Ty.path "isize" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -37887,7 +37969,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -37948,7 +38030,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -38001,7 +38083,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -38061,7 +38143,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::sub", [] |),
+                                  M.get_function (| "core::num::overflow_panic::sub", [], [] |),
                                   []
                                 |)
                               |)
@@ -38111,7 +38193,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -38133,7 +38215,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "isize" ] |),
+                M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "isize" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -38180,7 +38262,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -38241,7 +38323,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::sub", [] |),
+                                  M.get_function (| "core::num::overflow_panic::sub", [], [] |),
                                   []
                                 |)
                               |)
@@ -38294,7 +38376,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -38354,7 +38436,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::mul", [] |),
+                                  M.get_function (| "core::num::overflow_panic::mul", [], [] |),
                                   []
                                 |)
                               |)
@@ -38404,7 +38486,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -38426,7 +38508,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_mul", [ Ty.path "isize" ] |),
+                M.get_function (| "core::intrinsics::unchecked_mul", [], [ Ty.path "isize" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -38463,7 +38545,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.Isize 0 |),
@@ -38494,6 +38576,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_div",
+                              [],
                               [ Ty.path "isize" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -38546,7 +38629,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::div", [] |),
+                                  M.get_function (| "core::num::overflow_panic::div", [], [] |),
                                   []
                                 |)
                               |)
@@ -38588,7 +38671,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.Isize 0 |),
@@ -38667,7 +38750,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::div", [] |),
+                                  M.get_function (| "core::num::overflow_panic::div", [], [] |),
                                   []
                                 |)
                               |)
@@ -38710,7 +38793,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.Isize 0 |),
@@ -38741,6 +38824,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_rem",
+                              [],
                               [ Ty.path "isize" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -38793,7 +38877,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::rem", [] |),
+                                  M.get_function (| "core::num::overflow_panic::rem", [], [] |),
                                   []
                                 |)
                               |)
@@ -38835,7 +38919,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               LogicalOp.or (|
                                 BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.Isize 0 |),
@@ -38914,7 +38998,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::rem", [] |),
+                                  M.get_function (| "core::num::overflow_panic::rem", [], [] |),
                                   []
                                 |)
                               |)
@@ -38966,7 +39050,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -39020,7 +39104,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -39042,7 +39126,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "isize" ] |),
+                M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "isize" ] |),
                 [ Value.Integer IntegerKind.Isize 0; M.read (| self |) ]
               |)
             |)
@@ -39090,7 +39174,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::neg", [] |),
+                                  M.get_function (| "core::num::overflow_panic::neg", [], [] |),
                                   []
                                 |)
                               |)
@@ -39196,7 +39280,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shl", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shl", [], [] |),
                                   []
                                 |)
                               |)
@@ -39245,7 +39329,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -39269,6 +39353,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shl",
+                  [],
                   [ Ty.path "isize"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -39419,7 +39504,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shr", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shr", [], [] |),
                                   []
                                 |)
                               |)
@@ -39468,7 +39553,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -39492,6 +39577,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shr",
+                  [],
                   [ Ty.path "isize"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -40095,7 +40181,7 @@ Module num.
                       M.alloc (|
                         M.rust_cast
                           (M.call_closure (|
-                            M.get_function (| "core::num::int_sqrt::i64", [] |),
+                            M.get_function (| "core::num::int_sqrt::i64", [], [] |),
                             [ M.rust_cast (M.read (| self |)) ]
                           |))
                       |) in
@@ -40103,7 +40189,7 @@ Module num.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            M.get_function (| "core::hint::assert_unchecked", [], [] |),
                             [ BinOp.ge (| M.read (| result |), Value.Integer IntegerKind.Isize 0 |)
                             ]
                           |)
@@ -40111,7 +40197,7 @@ Module num.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            M.get_function (| "core::hint::assert_unchecked", [], [] |),
                             [
                               BinOp.le (|
                                 M.read (| result |),
@@ -40147,7 +40233,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_add", [ Ty.path "isize" ] |),
+            M.get_function (| "core::intrinsics::saturating_add", [], [ Ty.path "isize" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -40216,7 +40302,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_sub", [ Ty.path "isize" ] |),
+            M.get_function (| "core::intrinsics::saturating_sub", [], [ Ty.path "isize" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -40284,7 +40370,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_sub", [ Ty.path "isize" ] |),
+            M.get_function (| "core::intrinsics::saturating_sub", [], [ Ty.path "isize" ] |),
             [ Value.Integer IntegerKind.Isize 0; M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -40536,7 +40622,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_add", [ Ty.path "isize" ] |),
+            M.get_function (| "core::intrinsics::wrapping_add", [], [ Ty.path "isize" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -40577,7 +40663,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_sub", [ Ty.path "isize" ] |),
+            M.get_function (| "core::intrinsics::wrapping_sub", [], [ Ty.path "isize" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -40618,7 +40704,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_mul", [ Ty.path "isize" ] |),
+            M.get_function (| "core::intrinsics::wrapping_mul", [], [ Ty.path "isize" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -40969,6 +41055,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -41201,7 +41288,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::add_with_overflow", [ Ty.path "i64" ] |),
+                  M.get_function (| "core::intrinsics::add_with_overflow", [], [ Ty.path "i64" ] |),
                   [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |),
@@ -41344,7 +41431,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::sub_with_overflow", [ Ty.path "i64" ] |),
+                  M.get_function (| "core::intrinsics::sub_with_overflow", [], [ Ty.path "i64" ] |),
                   [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |),
@@ -41488,7 +41575,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::mul_with_overflow", [ Ty.path "i64" ] |),
+                  M.get_function (| "core::intrinsics::mul_with_overflow", [], [ Ty.path "i64" ] |),
                   [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |),
@@ -41535,7 +41622,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               BinOp.bit_and
                                 (BinOp.eq (|
@@ -41593,7 +41680,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               BinOp.bit_and
                                 (BinOp.eq (|
@@ -41655,7 +41742,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.Isize (-1) |)
                             ]
                           |)
@@ -41712,7 +41799,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.Isize (-1) |)
                             ]
                           |)
@@ -41773,7 +41860,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               BinOp.eq (|
                                 M.read (| self |),
@@ -42164,6 +42251,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -42393,6 +42481,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_sqrt::panic_for_negative_argument",
+                            [],
                             []
                           |),
                           []
@@ -43055,7 +43144,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -43109,6 +43198,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -43165,6 +43255,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -43221,6 +43312,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -43329,6 +43421,7 @@ Module num.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::intrinsics::ctlz_nonzero",
+                                    [],
                                     [ Ty.path "isize" ]
                                   |),
                                   [ M.read (| self |) ]
@@ -43380,7 +43473,7 @@ Module num.
                         "core::option::Option::Some"
                         [
                           M.call_closure (|
-                            M.get_function (| "core::num::int_log10::i64", [] |),
+                            M.get_function (| "core::num::int_log10::i64", [], [] |),
                             [ M.rust_cast (M.read (| self |)) ]
                           |)
                         ]
@@ -43644,6 +43737,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.path "isize";
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ]
@@ -43720,6 +43814,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ];
                 Ty.path "isize"
@@ -43855,7 +43950,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::ctpop", [ Ty.path "u8" ] |),
+                      M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u8" ] |),
                       [ M.read (| self |) ]
                     |)
                   |)
@@ -43902,7 +43997,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::ctlz", [ Ty.path "u8" ] |),
+                      M.get_function (| "core::intrinsics::ctlz", [], [ Ty.path "u8" ] |),
                       [ M.read (| M.use self |) ]
                     |)
                   |)
@@ -43931,7 +44026,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::cttz", [ Ty.path "u8" ] |),
+                      M.get_function (| "core::intrinsics::cttz", [], [ Ty.path "u8" ] |),
                       [ M.read (| self |) ]
                     |)
                   |)
@@ -44016,7 +44111,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::rotate_left", [ Ty.path "u8" ] |),
+                      M.get_function (| "core::intrinsics::rotate_left", [], [ Ty.path "u8" ] |),
                       [ M.read (| self |); M.read (| n |) ]
                     |)
                   |)
@@ -44045,7 +44140,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::rotate_right", [ Ty.path "u8" ] |),
+                      M.get_function (| "core::intrinsics::rotate_right", [], [ Ty.path "u8" ] |),
                       [ M.read (| self |); M.read (| n |) ]
                     |)
                   |)
@@ -44071,7 +44166,7 @@ Module num.
             M.use
               (M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::bswap", [ Ty.path "u8" ] |),
+                  M.get_function (| "core::intrinsics::bswap", [], [ Ty.path "u8" ] |),
                   [ M.read (| M.use self |) ]
                 |)
               |))
@@ -44095,7 +44190,7 @@ Module num.
             M.use
               (M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::bitreverse", [ Ty.path "u8" ] |),
+                  M.get_function (| "core::intrinsics::bitreverse", [], [ Ty.path "u8" ] |),
                   [ M.read (| M.use self |) ]
                 |)
               |))
@@ -44236,7 +44331,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
@@ -44244,6 +44339,7 @@ Module num.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::intrinsics::add_with_overflow",
+                                        [],
                                         [ Ty.path "u8" ]
                                       |),
                                       [ M.read (| self |); M.read (| rhs |) ]
@@ -44266,6 +44362,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_add",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -44318,7 +44415,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -44368,7 +44465,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -44390,7 +44487,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_add", [ Ty.path "u8" ] |),
+                M.get_function (| "core::intrinsics::unchecked_add", [], [ Ty.path "u8" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -44437,7 +44534,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -44498,7 +44595,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -44555,6 +44652,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_sub",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -44607,7 +44705,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::sub", [] |),
+                                  M.get_function (| "core::num::overflow_panic::sub", [], [] |),
                                   []
                                 |)
                               |)
@@ -44657,7 +44755,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -44679,7 +44777,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "u8" ] |),
+                M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "u8" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -44781,7 +44879,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -44841,7 +44939,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::mul", [] |),
+                                  M.get_function (| "core::num::overflow_panic::mul", [], [] |),
                                   []
                                 |)
                               |)
@@ -44891,7 +44989,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -44913,7 +45011,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_mul", [ Ty.path "u8" ] |),
+                M.get_function (| "core::intrinsics::unchecked_mul", [], [ Ty.path "u8" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -44951,7 +45049,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U8 0 |) ]
                           |)
                         |)) in
@@ -44966,6 +45064,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_div",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -45022,7 +45121,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U8 0 |) ]
                           |)
                         |)) in
@@ -45094,7 +45193,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U8 0 |) ]
                           |)
                         |)) in
@@ -45109,6 +45208,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_rem",
+                              [],
                               [ Ty.path "u8" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -45165,7 +45265,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U8 0 |) ]
                           |)
                         |)) in
@@ -45244,7 +45344,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -45298,6 +45398,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -45354,6 +45455,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -45410,6 +45512,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -45787,7 +45890,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -45846,7 +45949,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::neg", [] |),
+                                  M.get_function (| "core::num::overflow_panic::neg", [], [] |),
                                   []
                                 |)
                               |)
@@ -45952,7 +46055,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shl", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shl", [], [] |),
                                   []
                                 |)
                               |)
@@ -46001,7 +46104,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -46025,6 +46128,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shl",
+                  [],
                   [ Ty.path "u8"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -46175,7 +46279,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shr", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shr", [], [] |),
                                   []
                                 |)
                               |)
@@ -46224,7 +46328,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -46248,6 +46352,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shr",
+                  [],
                   [ Ty.path "u8"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -46695,7 +46800,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_add", [ Ty.path "u8" ] |),
+            M.get_function (| "core::intrinsics::saturating_add", [], [ Ty.path "u8" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -46794,7 +46899,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_sub", [ Ty.path "u8" ] |),
+            M.get_function (| "core::intrinsics::saturating_sub", [], [ Ty.path "u8" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -46929,7 +47034,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_add", [ Ty.path "u8" ] |),
+            M.get_function (| "core::intrinsics::wrapping_add", [], [ Ty.path "u8" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -46970,7 +47075,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_sub", [ Ty.path "u8" ] |),
+            M.get_function (| "core::intrinsics::wrapping_sub", [], [ Ty.path "u8" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -46990,7 +47095,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_mul", [ Ty.path "u8" ] |),
+            M.get_function (| "core::intrinsics::wrapping_mul", [], [ Ty.path "u8" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -47234,6 +47339,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -47466,7 +47572,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::add_with_overflow", [ Ty.path "u8" ] |),
+                  M.get_function (| "core::intrinsics::add_with_overflow", [], [ Ty.path "u8" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -47613,7 +47719,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::sub_with_overflow", [ Ty.path "u8" ] |),
+                  M.get_function (| "core::intrinsics::sub_with_overflow", [], [ Ty.path "u8" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -47732,7 +47838,7 @@ Module num.
                         (M.alloc (|
                           BinOp.eq (|
                             M.call_closure (|
-                              M.get_function (| "core::mem::size_of", [ Ty.path "u8" ] |),
+                              M.get_function (| "core::mem::size_of", [], [ Ty.path "u8" ] |),
                               []
                             |),
                             Value.Integer IntegerKind.Usize 1
@@ -47799,7 +47905,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::mul_with_overflow", [ Ty.path "u8" ] |),
+                  M.get_function (| "core::intrinsics::mul_with_overflow", [], [ Ty.path "u8" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -48254,6 +48360,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -48476,7 +48583,7 @@ Module num.
                 M.use
                   (M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::num::int_sqrt::u8", [] |),
+                      M.get_function (| "core::num::int_sqrt::u8", [], [] |),
                       [ M.read (| M.use self |) ]
                     |)
                   |))
@@ -48485,7 +48592,7 @@ Module num.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::hint::assert_unchecked", [] |),
+                    M.get_function (| "core::hint::assert_unchecked", [], [] |),
                     [
                       BinOp.le (|
                         M.read (| result |),
@@ -48843,7 +48950,7 @@ Module num.
                 let~ z :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u8" ] |),
+                      M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u8" ] |),
                       [ M.read (| p |) ]
                     |)
                   |) in
@@ -49007,6 +49114,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.path "u8";
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u8" ]
@@ -49083,6 +49191,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u8" ];
                 Ty.path "u8"
@@ -49864,7 +49973,7 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::ascii::escape_default", [] |),
+            M.get_function (| "core::ascii::escape_default", [], [] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -50021,7 +50130,7 @@ Module num.
                           let~ _ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::num::from_str_radix_panic", [] |),
+                                M.get_function (| "core::num::from_str_radix_panic", [], [] |),
                                 [ M.read (| radix |) ]
                               |)
                             |) in
@@ -50191,6 +50300,7 @@ Module num.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::num::can_not_overflow",
+                                            [],
                                             [ Ty.path "u8" ]
                                           |),
                                           [
@@ -50990,7 +51100,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::ctpop", [ Ty.path "u16" ] |),
+                      M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u16" ] |),
                       [ M.read (| self |) ]
                     |)
                   |)
@@ -51037,7 +51147,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::ctlz", [ Ty.path "u16" ] |),
+                      M.get_function (| "core::intrinsics::ctlz", [], [ Ty.path "u16" ] |),
                       [ M.read (| M.use self |) ]
                     |)
                   |)
@@ -51066,7 +51176,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::cttz", [ Ty.path "u16" ] |),
+                      M.get_function (| "core::intrinsics::cttz", [], [ Ty.path "u16" ] |),
                       [ M.read (| self |) ]
                     |)
                   |)
@@ -51151,7 +51261,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::rotate_left", [ Ty.path "u16" ] |),
+                      M.get_function (| "core::intrinsics::rotate_left", [], [ Ty.path "u16" ] |),
                       [ M.read (| self |); M.read (| n |) ]
                     |)
                   |)
@@ -51180,7 +51290,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::rotate_right", [ Ty.path "u16" ] |),
+                      M.get_function (| "core::intrinsics::rotate_right", [], [ Ty.path "u16" ] |),
                       [ M.read (| self |); M.read (| n |) ]
                     |)
                   |)
@@ -51206,7 +51316,7 @@ Module num.
             M.use
               (M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::bswap", [ Ty.path "u16" ] |),
+                  M.get_function (| "core::intrinsics::bswap", [], [ Ty.path "u16" ] |),
                   [ M.read (| M.use self |) ]
                 |)
               |))
@@ -51230,7 +51340,7 @@ Module num.
             M.use
               (M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::bitreverse", [ Ty.path "u16" ] |),
+                  M.get_function (| "core::intrinsics::bitreverse", [], [ Ty.path "u16" ] |),
                   [ M.read (| M.use self |) ]
                 |)
               |))
@@ -51371,7 +51481,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
@@ -51379,6 +51489,7 @@ Module num.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::intrinsics::add_with_overflow",
+                                        [],
                                         [ Ty.path "u16" ]
                                       |),
                                       [ M.read (| self |); M.read (| rhs |) ]
@@ -51401,6 +51512,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_add",
+                              [],
                               [ Ty.path "u16" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -51453,7 +51565,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -51503,7 +51615,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -51525,7 +51637,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_add", [ Ty.path "u16" ] |),
+                M.get_function (| "core::intrinsics::unchecked_add", [], [ Ty.path "u16" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -51572,7 +51684,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -51633,7 +51745,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -51690,6 +51802,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_sub",
+                              [],
                               [ Ty.path "u16" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -51742,7 +51855,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::sub", [] |),
+                                  M.get_function (| "core::num::overflow_panic::sub", [], [] |),
                                   []
                                 |)
                               |)
@@ -51792,7 +51905,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -51814,7 +51927,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "u16" ] |),
+                M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "u16" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -51916,7 +52029,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -51976,7 +52089,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::mul", [] |),
+                                  M.get_function (| "core::num::overflow_panic::mul", [], [] |),
                                   []
                                 |)
                               |)
@@ -52026,7 +52139,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -52048,7 +52161,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_mul", [ Ty.path "u16" ] |),
+                M.get_function (| "core::intrinsics::unchecked_mul", [], [ Ty.path "u16" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -52086,7 +52199,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U16 0 |) ]
                           |)
                         |)) in
@@ -52101,6 +52214,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_div",
+                              [],
                               [ Ty.path "u16" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -52157,7 +52271,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U16 0 |) ]
                           |)
                         |)) in
@@ -52229,7 +52343,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U16 0 |) ]
                           |)
                         |)) in
@@ -52244,6 +52358,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_rem",
+                              [],
                               [ Ty.path "u16" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -52300,7 +52415,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U16 0 |) ]
                           |)
                         |)) in
@@ -52379,7 +52494,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -52433,6 +52548,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -52489,6 +52605,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -52545,6 +52662,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -52926,7 +53044,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -52985,7 +53103,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::neg", [] |),
+                                  M.get_function (| "core::num::overflow_panic::neg", [], [] |),
                                   []
                                 |)
                               |)
@@ -53091,7 +53209,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shl", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shl", [], [] |),
                                   []
                                 |)
                               |)
@@ -53140,7 +53258,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -53164,6 +53282,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shl",
+                  [],
                   [ Ty.path "u16"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -53314,7 +53433,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shr", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shr", [], [] |),
                                   []
                                 |)
                               |)
@@ -53363,7 +53482,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -53387,6 +53506,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shr",
+                  [],
                   [ Ty.path "u16"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -53834,7 +53954,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_add", [ Ty.path "u16" ] |),
+            M.get_function (| "core::intrinsics::saturating_add", [], [ Ty.path "u16" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -53933,7 +54053,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_sub", [ Ty.path "u16" ] |),
+            M.get_function (| "core::intrinsics::saturating_sub", [], [ Ty.path "u16" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -54068,7 +54188,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_add", [ Ty.path "u16" ] |),
+            M.get_function (| "core::intrinsics::wrapping_add", [], [ Ty.path "u16" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -54109,7 +54229,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_sub", [ Ty.path "u16" ] |),
+            M.get_function (| "core::intrinsics::wrapping_sub", [], [ Ty.path "u16" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -54129,7 +54249,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_mul", [ Ty.path "u16" ] |),
+            M.get_function (| "core::intrinsics::wrapping_mul", [], [ Ty.path "u16" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -54374,6 +54494,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -54606,7 +54727,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::add_with_overflow", [ Ty.path "u16" ] |),
+                  M.get_function (| "core::intrinsics::add_with_overflow", [], [ Ty.path "u16" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -54753,7 +54874,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::sub_with_overflow", [ Ty.path "u16" ] |),
+                  M.get_function (| "core::intrinsics::sub_with_overflow", [], [ Ty.path "u16" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -54872,7 +54993,7 @@ Module num.
                         (M.alloc (|
                           BinOp.eq (|
                             M.call_closure (|
-                              M.get_function (| "core::mem::size_of", [ Ty.path "u16" ] |),
+                              M.get_function (| "core::mem::size_of", [], [ Ty.path "u16" ] |),
                               []
                             |),
                             Value.Integer IntegerKind.Usize 1
@@ -54939,7 +55060,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::mul_with_overflow", [ Ty.path "u16" ] |),
+                  M.get_function (| "core::intrinsics::mul_with_overflow", [], [ Ty.path "u16" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -55398,6 +55519,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -55620,7 +55742,7 @@ Module num.
                 M.use
                   (M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::num::int_sqrt::u16", [] |),
+                      M.get_function (| "core::num::int_sqrt::u16", [], [] |),
                       [ M.read (| M.use self |) ]
                     |)
                   |))
@@ -55629,7 +55751,7 @@ Module num.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::hint::assert_unchecked", [] |),
+                    M.get_function (| "core::hint::assert_unchecked", [], [] |),
                     [
                       BinOp.le (|
                         M.read (| result |),
@@ -55987,7 +56109,7 @@ Module num.
                 let~ z :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u16" ] |),
+                      M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u16" ] |),
                       [ M.read (| p |) ]
                     |)
                   |) in
@@ -56159,6 +56281,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.path "u16";
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u8" ]
@@ -56235,6 +56358,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u8" ];
                 Ty.path "u16"
@@ -56526,7 +56650,7 @@ Module num.
                           let~ _ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::num::from_str_radix_panic", [] |),
+                                M.get_function (| "core::num::from_str_radix_panic", [], [] |),
                                 [ M.read (| radix |) ]
                               |)
                             |) in
@@ -56696,6 +56820,7 @@ Module num.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::num::can_not_overflow",
+                                            [],
                                             [ Ty.path "u16" ]
                                           |),
                                           [
@@ -57495,7 +57620,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::ctpop", [ Ty.path "u32" ] |),
+                      M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u32" ] |),
                       [ M.read (| self |) ]
                     |)
                   |)
@@ -57542,7 +57667,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::ctlz", [ Ty.path "u32" ] |),
+                      M.get_function (| "core::intrinsics::ctlz", [], [ Ty.path "u32" ] |),
                       [ M.read (| M.use self |) ]
                     |)
                   |)
@@ -57571,7 +57696,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::cttz", [ Ty.path "u32" ] |),
+                      M.get_function (| "core::intrinsics::cttz", [], [ Ty.path "u32" ] |),
                       [ M.read (| self |) ]
                     |)
                   |)
@@ -57656,7 +57781,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::rotate_left", [ Ty.path "u32" ] |),
+                      M.get_function (| "core::intrinsics::rotate_left", [], [ Ty.path "u32" ] |),
                       [ M.read (| self |); M.read (| n |) ]
                     |)
                   |)
@@ -57685,7 +57810,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::rotate_right", [ Ty.path "u32" ] |),
+                      M.get_function (| "core::intrinsics::rotate_right", [], [ Ty.path "u32" ] |),
                       [ M.read (| self |); M.read (| n |) ]
                     |)
                   |)
@@ -57711,7 +57836,7 @@ Module num.
             M.use
               (M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::bswap", [ Ty.path "u32" ] |),
+                  M.get_function (| "core::intrinsics::bswap", [], [ Ty.path "u32" ] |),
                   [ M.read (| M.use self |) ]
                 |)
               |))
@@ -57735,7 +57860,7 @@ Module num.
             M.use
               (M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::bitreverse", [ Ty.path "u32" ] |),
+                  M.get_function (| "core::intrinsics::bitreverse", [], [ Ty.path "u32" ] |),
                   [ M.read (| M.use self |) ]
                 |)
               |))
@@ -57876,7 +58001,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
@@ -57884,6 +58009,7 @@ Module num.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::intrinsics::add_with_overflow",
+                                        [],
                                         [ Ty.path "u32" ]
                                       |),
                                       [ M.read (| self |); M.read (| rhs |) ]
@@ -57906,6 +58032,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_add",
+                              [],
                               [ Ty.path "u32" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -57958,7 +58085,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -58008,7 +58135,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -58030,7 +58157,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_add", [ Ty.path "u32" ] |),
+                M.get_function (| "core::intrinsics::unchecked_add", [], [ Ty.path "u32" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -58077,7 +58204,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -58138,7 +58265,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -58195,6 +58322,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_sub",
+                              [],
                               [ Ty.path "u32" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -58247,7 +58375,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::sub", [] |),
+                                  M.get_function (| "core::num::overflow_panic::sub", [], [] |),
                                   []
                                 |)
                               |)
@@ -58297,7 +58425,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -58319,7 +58447,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "u32" ] |),
+                M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "u32" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -58421,7 +58549,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -58481,7 +58609,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::mul", [] |),
+                                  M.get_function (| "core::num::overflow_panic::mul", [], [] |),
                                   []
                                 |)
                               |)
@@ -58531,7 +58659,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -58553,7 +58681,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_mul", [ Ty.path "u32" ] |),
+                M.get_function (| "core::intrinsics::unchecked_mul", [], [ Ty.path "u32" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -58591,7 +58719,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U32 0 |) ]
                           |)
                         |)) in
@@ -58606,6 +58734,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_div",
+                              [],
                               [ Ty.path "u32" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -58662,7 +58791,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U32 0 |) ]
                           |)
                         |)) in
@@ -58734,7 +58863,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U32 0 |) ]
                           |)
                         |)) in
@@ -58749,6 +58878,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_rem",
+                              [],
                               [ Ty.path "u32" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -58805,7 +58935,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U32 0 |) ]
                           |)
                         |)) in
@@ -58884,7 +59014,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -58938,6 +59068,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -58994,6 +59125,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -59050,6 +59182,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -59431,7 +59564,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -59490,7 +59623,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::neg", [] |),
+                                  M.get_function (| "core::num::overflow_panic::neg", [], [] |),
                                   []
                                 |)
                               |)
@@ -59596,7 +59729,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shl", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shl", [], [] |),
                                   []
                                 |)
                               |)
@@ -59645,7 +59778,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -59669,6 +59802,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shl",
+                  [],
                   [ Ty.path "u32"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -59819,7 +59953,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shr", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shr", [], [] |),
                                   []
                                 |)
                               |)
@@ -59868,7 +60002,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -59892,6 +60026,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shr",
+                  [],
                   [ Ty.path "u32"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -60339,7 +60474,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_add", [ Ty.path "u32" ] |),
+            M.get_function (| "core::intrinsics::saturating_add", [], [ Ty.path "u32" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -60438,7 +60573,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_sub", [ Ty.path "u32" ] |),
+            M.get_function (| "core::intrinsics::saturating_sub", [], [ Ty.path "u32" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -60573,7 +60708,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_add", [ Ty.path "u32" ] |),
+            M.get_function (| "core::intrinsics::wrapping_add", [], [ Ty.path "u32" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -60614,7 +60749,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_sub", [ Ty.path "u32" ] |),
+            M.get_function (| "core::intrinsics::wrapping_sub", [], [ Ty.path "u32" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -60634,7 +60769,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_mul", [ Ty.path "u32" ] |),
+            M.get_function (| "core::intrinsics::wrapping_mul", [], [ Ty.path "u32" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -60879,6 +61014,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -61111,7 +61247,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::add_with_overflow", [ Ty.path "u32" ] |),
+                  M.get_function (| "core::intrinsics::add_with_overflow", [], [ Ty.path "u32" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -61258,7 +61394,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::sub_with_overflow", [ Ty.path "u32" ] |),
+                  M.get_function (| "core::intrinsics::sub_with_overflow", [], [ Ty.path "u32" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -61377,7 +61513,7 @@ Module num.
                         (M.alloc (|
                           BinOp.eq (|
                             M.call_closure (|
-                              M.get_function (| "core::mem::size_of", [ Ty.path "u32" ] |),
+                              M.get_function (| "core::mem::size_of", [], [ Ty.path "u32" ] |),
                               []
                             |),
                             Value.Integer IntegerKind.Usize 1
@@ -61444,7 +61580,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::mul_with_overflow", [ Ty.path "u32" ] |),
+                  M.get_function (| "core::intrinsics::mul_with_overflow", [], [ Ty.path "u32" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -61903,6 +62039,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -62125,7 +62262,7 @@ Module num.
                 M.use
                   (M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::num::int_sqrt::u32", [] |),
+                      M.get_function (| "core::num::int_sqrt::u32", [], [] |),
                       [ M.read (| M.use self |) ]
                     |)
                   |))
@@ -62134,7 +62271,7 @@ Module num.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::hint::assert_unchecked", [] |),
+                    M.get_function (| "core::hint::assert_unchecked", [], [] |),
                     [
                       BinOp.le (|
                         M.read (| result |),
@@ -62492,7 +62629,7 @@ Module num.
                 let~ z :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u32" ] |),
+                      M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u32" ] |),
                       [ M.read (| p |) ]
                     |)
                   |) in
@@ -62664,6 +62801,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.path "u32";
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ]
@@ -62740,6 +62878,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ];
                 Ty.path "u32"
@@ -63006,7 +63145,7 @@ Module num.
                           let~ _ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::num::from_str_radix_panic", [] |),
+                                M.get_function (| "core::num::from_str_radix_panic", [], [] |),
                                 [ M.read (| radix |) ]
                               |)
                             |) in
@@ -63176,6 +63315,7 @@ Module num.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::num::can_not_overflow",
+                                            [],
                                             [ Ty.path "u32" ]
                                           |),
                                           [
@@ -63971,7 +64111,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::ctpop", [ Ty.path "u64" ] |),
+                      M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u64" ] |),
                       [ M.read (| self |) ]
                     |)
                   |)
@@ -64018,7 +64158,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::ctlz", [ Ty.path "u64" ] |),
+                      M.get_function (| "core::intrinsics::ctlz", [], [ Ty.path "u64" ] |),
                       [ M.read (| M.use self |) ]
                     |)
                   |)
@@ -64047,7 +64187,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::cttz", [ Ty.path "u64" ] |),
+                      M.get_function (| "core::intrinsics::cttz", [], [ Ty.path "u64" ] |),
                       [ M.read (| self |) ]
                     |)
                   |)
@@ -64132,7 +64272,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::rotate_left", [ Ty.path "u64" ] |),
+                      M.get_function (| "core::intrinsics::rotate_left", [], [ Ty.path "u64" ] |),
                       [ M.read (| self |); M.read (| n |) ]
                     |)
                   |)
@@ -64161,7 +64301,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::rotate_right", [ Ty.path "u64" ] |),
+                      M.get_function (| "core::intrinsics::rotate_right", [], [ Ty.path "u64" ] |),
                       [ M.read (| self |); M.read (| n |) ]
                     |)
                   |)
@@ -64187,7 +64327,7 @@ Module num.
             M.use
               (M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::bswap", [ Ty.path "u64" ] |),
+                  M.get_function (| "core::intrinsics::bswap", [], [ Ty.path "u64" ] |),
                   [ M.read (| M.use self |) ]
                 |)
               |))
@@ -64211,7 +64351,7 @@ Module num.
             M.use
               (M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::bitreverse", [ Ty.path "u64" ] |),
+                  M.get_function (| "core::intrinsics::bitreverse", [], [ Ty.path "u64" ] |),
                   [ M.read (| M.use self |) ]
                 |)
               |))
@@ -64352,7 +64492,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
@@ -64360,6 +64500,7 @@ Module num.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::intrinsics::add_with_overflow",
+                                        [],
                                         [ Ty.path "u64" ]
                                       |),
                                       [ M.read (| self |); M.read (| rhs |) ]
@@ -64382,6 +64523,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_add",
+                              [],
                               [ Ty.path "u64" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -64434,7 +64576,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -64484,7 +64626,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -64506,7 +64648,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_add", [ Ty.path "u64" ] |),
+                M.get_function (| "core::intrinsics::unchecked_add", [], [ Ty.path "u64" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -64553,7 +64695,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -64614,7 +64756,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -64671,6 +64813,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_sub",
+                              [],
                               [ Ty.path "u64" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -64723,7 +64866,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::sub", [] |),
+                                  M.get_function (| "core::num::overflow_panic::sub", [], [] |),
                                   []
                                 |)
                               |)
@@ -64773,7 +64916,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -64795,7 +64938,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "u64" ] |),
+                M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "u64" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -64897,7 +65040,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -64957,7 +65100,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::mul", [] |),
+                                  M.get_function (| "core::num::overflow_panic::mul", [], [] |),
                                   []
                                 |)
                               |)
@@ -65007,7 +65150,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -65029,7 +65172,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_mul", [ Ty.path "u64" ] |),
+                M.get_function (| "core::intrinsics::unchecked_mul", [], [ Ty.path "u64" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -65067,7 +65210,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U64 0 |) ]
                           |)
                         |)) in
@@ -65082,6 +65225,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_div",
+                              [],
                               [ Ty.path "u64" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -65138,7 +65282,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U64 0 |) ]
                           |)
                         |)) in
@@ -65210,7 +65354,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U64 0 |) ]
                           |)
                         |)) in
@@ -65225,6 +65369,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_rem",
+                              [],
                               [ Ty.path "u64" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -65281,7 +65426,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U64 0 |) ]
                           |)
                         |)) in
@@ -65360,7 +65505,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -65414,6 +65559,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -65470,6 +65616,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -65526,6 +65673,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -65907,7 +66055,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -65966,7 +66114,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::neg", [] |),
+                                  M.get_function (| "core::num::overflow_panic::neg", [], [] |),
                                   []
                                 |)
                               |)
@@ -66072,7 +66220,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shl", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shl", [], [] |),
                                   []
                                 |)
                               |)
@@ -66121,7 +66269,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -66145,6 +66293,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shl",
+                  [],
                   [ Ty.path "u64"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -66295,7 +66444,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shr", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shr", [], [] |),
                                   []
                                 |)
                               |)
@@ -66344,7 +66493,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -66368,6 +66517,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shr",
+                  [],
                   [ Ty.path "u64"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -66815,7 +66965,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_add", [ Ty.path "u64" ] |),
+            M.get_function (| "core::intrinsics::saturating_add", [], [ Ty.path "u64" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -66914,7 +67064,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_sub", [ Ty.path "u64" ] |),
+            M.get_function (| "core::intrinsics::saturating_sub", [], [ Ty.path "u64" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -67049,7 +67199,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_add", [ Ty.path "u64" ] |),
+            M.get_function (| "core::intrinsics::wrapping_add", [], [ Ty.path "u64" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -67090,7 +67240,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_sub", [ Ty.path "u64" ] |),
+            M.get_function (| "core::intrinsics::wrapping_sub", [], [ Ty.path "u64" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -67110,7 +67260,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_mul", [ Ty.path "u64" ] |),
+            M.get_function (| "core::intrinsics::wrapping_mul", [], [ Ty.path "u64" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -67355,6 +67505,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -67587,7 +67738,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::add_with_overflow", [ Ty.path "u64" ] |),
+                  M.get_function (| "core::intrinsics::add_with_overflow", [], [ Ty.path "u64" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -67734,7 +67885,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::sub_with_overflow", [ Ty.path "u64" ] |),
+                  M.get_function (| "core::intrinsics::sub_with_overflow", [], [ Ty.path "u64" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -67853,7 +68004,7 @@ Module num.
                         (M.alloc (|
                           BinOp.eq (|
                             M.call_closure (|
-                              M.get_function (| "core::mem::size_of", [ Ty.path "u64" ] |),
+                              M.get_function (| "core::mem::size_of", [], [ Ty.path "u64" ] |),
                               []
                             |),
                             Value.Integer IntegerKind.Usize 1
@@ -67920,7 +68071,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::mul_with_overflow", [ Ty.path "u64" ] |),
+                  M.get_function (| "core::intrinsics::mul_with_overflow", [], [ Ty.path "u64" ] |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -68379,6 +68530,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -68601,7 +68753,7 @@ Module num.
                 M.use
                   (M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::num::int_sqrt::u64", [] |),
+                      M.get_function (| "core::num::int_sqrt::u64", [], [] |),
                       [ M.read (| M.use self |) ]
                     |)
                   |))
@@ -68610,7 +68762,7 @@ Module num.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::hint::assert_unchecked", [] |),
+                    M.get_function (| "core::hint::assert_unchecked", [], [] |),
                     [
                       BinOp.le (|
                         M.read (| result |),
@@ -68968,7 +69120,7 @@ Module num.
                 let~ z :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u64" ] |),
+                      M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u64" ] |),
                       [ M.read (| p |) ]
                     |)
                   |) in
@@ -69140,6 +69292,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.path "u64";
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ]
@@ -69216,6 +69369,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ];
                 Ty.path "u64"
@@ -69482,7 +69636,7 @@ Module num.
                           let~ _ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::num::from_str_radix_panic", [] |),
+                                M.get_function (| "core::num::from_str_radix_panic", [], [] |),
                                 [ M.read (| radix |) ]
                               |)
                             |) in
@@ -69652,6 +69806,7 @@ Module num.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::num::can_not_overflow",
+                                            [],
                                             [ Ty.path "u64" ]
                                           |),
                                           [
@@ -70451,7 +70606,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::ctpop", [ Ty.path "u128" ] |),
+                      M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u128" ] |),
                       [ M.read (| self |) ]
                     |)
                   |)
@@ -70498,7 +70653,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::ctlz", [ Ty.path "u128" ] |),
+                      M.get_function (| "core::intrinsics::ctlz", [], [ Ty.path "u128" ] |),
                       [ M.read (| M.use self |) ]
                     |)
                   |)
@@ -70527,7 +70682,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::cttz", [ Ty.path "u128" ] |),
+                      M.get_function (| "core::intrinsics::cttz", [], [ Ty.path "u128" ] |),
                       [ M.read (| self |) ]
                     |)
                   |)
@@ -70612,7 +70767,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::rotate_left", [ Ty.path "u128" ] |),
+                      M.get_function (| "core::intrinsics::rotate_left", [], [ Ty.path "u128" ] |),
                       [ M.read (| self |); M.read (| n |) ]
                     |)
                   |)
@@ -70641,7 +70796,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::rotate_right", [ Ty.path "u128" ] |),
+                      M.get_function (| "core::intrinsics::rotate_right", [], [ Ty.path "u128" ] |),
                       [ M.read (| self |); M.read (| n |) ]
                     |)
                   |)
@@ -70667,7 +70822,7 @@ Module num.
             M.use
               (M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::bswap", [ Ty.path "u128" ] |),
+                  M.get_function (| "core::intrinsics::bswap", [], [ Ty.path "u128" ] |),
                   [ M.read (| M.use self |) ]
                 |)
               |))
@@ -70691,7 +70846,7 @@ Module num.
             M.use
               (M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::bitreverse", [ Ty.path "u128" ] |),
+                  M.get_function (| "core::intrinsics::bitreverse", [], [ Ty.path "u128" ] |),
                   [ M.read (| M.use self |) ]
                 |)
               |))
@@ -70832,7 +70987,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
@@ -70840,6 +70995,7 @@ Module num.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::intrinsics::add_with_overflow",
+                                        [],
                                         [ Ty.path "u128" ]
                                       |),
                                       [ M.read (| self |); M.read (| rhs |) ]
@@ -70862,6 +71018,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_add",
+                              [],
                               [ Ty.path "u128" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -70914,7 +71071,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -70964,7 +71121,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -70986,7 +71143,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_add", [ Ty.path "u128" ] |),
+                M.get_function (| "core::intrinsics::unchecked_add", [], [ Ty.path "u128" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -71033,7 +71190,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -71094,7 +71251,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -71151,6 +71308,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_sub",
+                              [],
                               [ Ty.path "u128" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -71203,7 +71361,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::sub", [] |),
+                                  M.get_function (| "core::num::overflow_panic::sub", [], [] |),
                                   []
                                 |)
                               |)
@@ -71253,7 +71411,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -71275,7 +71433,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "u128" ] |),
+                M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "u128" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -71377,7 +71535,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -71437,7 +71595,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::mul", [] |),
+                                  M.get_function (| "core::num::overflow_panic::mul", [], [] |),
                                   []
                                 |)
                               |)
@@ -71487,7 +71645,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -71509,7 +71667,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_mul", [ Ty.path "u128" ] |),
+                M.get_function (| "core::intrinsics::unchecked_mul", [], [ Ty.path "u128" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -71547,7 +71705,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U128 0 |) ]
                           |)
                         |)) in
@@ -71562,6 +71720,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_div",
+                              [],
                               [ Ty.path "u128" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -71618,7 +71777,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U128 0 |) ]
                           |)
                         |)) in
@@ -71690,7 +71849,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U128 0 |) ]
                           |)
                         |)) in
@@ -71705,6 +71864,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_rem",
+                              [],
                               [ Ty.path "u128" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -71761,7 +71921,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U128 0 |) ]
                           |)
                         |)) in
@@ -71840,7 +72000,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -71894,6 +72054,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -71950,6 +72111,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -72006,6 +72168,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -72393,7 +72556,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -72452,7 +72615,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::neg", [] |),
+                                  M.get_function (| "core::num::overflow_panic::neg", [], [] |),
                                   []
                                 |)
                               |)
@@ -72558,7 +72721,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shl", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shl", [], [] |),
                                   []
                                 |)
                               |)
@@ -72607,7 +72770,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -72631,6 +72794,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shl",
+                  [],
                   [ Ty.path "u128"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -72781,7 +72945,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shr", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shr", [], [] |),
                                   []
                                 |)
                               |)
@@ -72830,7 +72994,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -72854,6 +73018,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shr",
+                  [],
                   [ Ty.path "u128"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -73301,7 +73466,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_add", [ Ty.path "u128" ] |),
+            M.get_function (| "core::intrinsics::saturating_add", [], [ Ty.path "u128" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -73403,7 +73568,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_sub", [ Ty.path "u128" ] |),
+            M.get_function (| "core::intrinsics::saturating_sub", [], [ Ty.path "u128" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -73538,7 +73703,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_add", [ Ty.path "u128" ] |),
+            M.get_function (| "core::intrinsics::wrapping_add", [], [ Ty.path "u128" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -73579,7 +73744,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_sub", [ Ty.path "u128" ] |),
+            M.get_function (| "core::intrinsics::wrapping_sub", [], [ Ty.path "u128" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -73599,7 +73764,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_mul", [ Ty.path "u128" ] |),
+            M.get_function (| "core::intrinsics::wrapping_mul", [], [ Ty.path "u128" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -73844,6 +74009,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -74076,7 +74242,11 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::add_with_overflow", [ Ty.path "u128" ] |),
+                  M.get_function (|
+                    "core::intrinsics::add_with_overflow",
+                    [],
+                    [ Ty.path "u128" ]
+                  |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -74223,7 +74393,11 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::sub_with_overflow", [ Ty.path "u128" ] |),
+                  M.get_function (|
+                    "core::intrinsics::sub_with_overflow",
+                    [],
+                    [ Ty.path "u128" ]
+                  |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -74342,7 +74516,7 @@ Module num.
                         (M.alloc (|
                           BinOp.eq (|
                             M.call_closure (|
-                              M.get_function (| "core::mem::size_of", [ Ty.path "u128" ] |),
+                              M.get_function (| "core::mem::size_of", [], [ Ty.path "u128" ] |),
                               []
                             |),
                             Value.Integer IntegerKind.Usize 1
@@ -74409,7 +74583,11 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::mul_with_overflow", [ Ty.path "u128" ] |),
+                  M.get_function (|
+                    "core::intrinsics::mul_with_overflow",
+                    [],
+                    [ Ty.path "u128" ]
+                  |),
                   [ M.read (| M.use self |); M.read (| M.use rhs |) ]
                 |)
               |),
@@ -74868,6 +75046,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -75090,7 +75269,7 @@ Module num.
                 M.use
                   (M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::num::int_sqrt::u128", [] |),
+                      M.get_function (| "core::num::int_sqrt::u128", [], [] |),
                       [ M.read (| M.use self |) ]
                     |)
                   |))
@@ -75099,7 +75278,7 @@ Module num.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::hint::assert_unchecked", [] |),
+                    M.get_function (| "core::hint::assert_unchecked", [], [] |),
                     [
                       BinOp.le (|
                         M.read (| result |),
@@ -75457,7 +75636,7 @@ Module num.
                 let~ z :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "u128" ] |),
+                      M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u128" ] |),
                       [ M.read (| p |) ]
                     |)
                   |) in
@@ -75629,6 +75808,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.path "u128";
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ]
@@ -75705,6 +75885,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ];
                 Ty.path "u128"
@@ -75892,7 +76073,7 @@ Module num.
                           let~ _ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::num::from_str_radix_panic", [] |),
+                                M.get_function (| "core::num::from_str_radix_panic", [], [] |),
                                 [ M.read (| radix |) ]
                               |)
                             |) in
@@ -76062,6 +76243,7 @@ Module num.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::num::can_not_overflow",
+                                            [],
                                             [ Ty.path "u128" ]
                                           |),
                                           [
@@ -76861,7 +77043,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::ctpop", [ Ty.path "usize" ] |),
+                      M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "usize" ] |),
                       [ M.read (| self |) ]
                     |)
                   |)
@@ -76908,7 +77090,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::ctlz", [ Ty.path "u64" ] |),
+                      M.get_function (| "core::intrinsics::ctlz", [], [ Ty.path "u64" ] |),
                       [ M.rust_cast (M.read (| self |)) ]
                     |)
                   |)
@@ -76937,7 +77119,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::cttz", [ Ty.path "usize" ] |),
+                      M.get_function (| "core::intrinsics::cttz", [], [ Ty.path "usize" ] |),
                       [ M.read (| self |) ]
                     |)
                   |)
@@ -77022,7 +77204,7 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::rotate_left", [ Ty.path "usize" ] |),
+                      M.get_function (| "core::intrinsics::rotate_left", [], [ Ty.path "usize" ] |),
                       [ M.read (| self |); M.read (| n |) ]
                     |)
                   |)
@@ -77051,7 +77233,11 @@ Module num.
                 M.read (|
                   M.return_ (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::rotate_right", [ Ty.path "usize" ] |),
+                      M.get_function (|
+                        "core::intrinsics::rotate_right",
+                        [],
+                        [ Ty.path "usize" ]
+                      |),
                       [ M.read (| self |); M.read (| n |) ]
                     |)
                   |)
@@ -77075,7 +77261,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_function (| "core::intrinsics::bswap", [ Ty.path "u64" ] |),
+              M.get_function (| "core::intrinsics::bswap", [], [ Ty.path "u64" ] |),
               [ M.rust_cast (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -77095,7 +77281,7 @@ Module num.
           (let self := M.alloc (| self |) in
           M.rust_cast
             (M.call_closure (|
-              M.get_function (| "core::intrinsics::bitreverse", [ Ty.path "u64" ] |),
+              M.get_function (| "core::intrinsics::bitreverse", [], [ Ty.path "u64" ] |),
               [ M.rust_cast (M.read (| self |)) ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -77234,7 +77420,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [
                               M.read (|
                                 M.SubPointer.get_tuple_field (|
@@ -77242,6 +77428,7 @@ Module num.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::intrinsics::add_with_overflow",
+                                        [],
                                         [ Ty.path "usize" ]
                                       |),
                                       [ M.read (| self |); M.read (| rhs |) ]
@@ -77264,6 +77451,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_add",
+                              [],
                               [ Ty.path "usize" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -77316,7 +77504,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -77366,7 +77554,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -77388,7 +77576,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_add", [ Ty.path "usize" ] |),
+                M.get_function (| "core::intrinsics::unchecked_add", [], [ Ty.path "usize" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -77435,7 +77623,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -77496,7 +77684,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::add", [] |),
+                                  M.get_function (| "core::num::overflow_panic::add", [], [] |),
                                   []
                                 |)
                               |)
@@ -77553,6 +77741,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_sub",
+                              [],
                               [ Ty.path "usize" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -77605,7 +77794,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::sub", [] |),
+                                  M.get_function (| "core::num::overflow_panic::sub", [], [] |),
                                   []
                                 |)
                               |)
@@ -77655,7 +77844,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -77677,7 +77866,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
+                M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "usize" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -77779,7 +77968,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -77839,7 +78028,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::mul", [] |),
+                                  M.get_function (| "core::num::overflow_panic::mul", [], [] |),
                                   []
                                 |)
                               |)
@@ -77889,7 +78078,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -77911,7 +78100,7 @@ Module num.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::intrinsics::unchecked_mul", [ Ty.path "usize" ] |),
+                M.get_function (| "core::intrinsics::unchecked_mul", [], [ Ty.path "usize" ] |),
                 [ M.read (| self |); M.read (| rhs |) ]
               |)
             |)
@@ -77949,7 +78138,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.Usize 0 |) ]
                           |)
                         |)) in
@@ -77964,6 +78153,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_div",
+                              [],
                               [ Ty.path "usize" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -78020,7 +78210,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.Usize 0 |) ]
                           |)
                         |)) in
@@ -78092,7 +78282,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.Usize 0 |) ]
                           |)
                         |)) in
@@ -78107,6 +78297,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::intrinsics::unchecked_rem",
+                              [],
                               [ Ty.path "usize" ]
                             |),
                             [ M.read (| self |); M.read (| rhs |) ]
@@ -78163,7 +78354,7 @@ Module num.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::unlikely", [] |),
+                            M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.Usize 0 |) ]
                           |)
                         |)) in
@@ -78242,7 +78433,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -78296,6 +78487,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -78352,6 +78544,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -78408,6 +78601,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::int_log10::panic_for_nonpositive_argument",
+                            [],
                             []
                           |),
                           []
@@ -78795,7 +78989,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unlikely", [] |),
+                                    M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                     [ M.read (| b |) ]
                                   |)
                                 |)) in
@@ -78854,7 +79048,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::neg", [] |),
+                                  M.get_function (| "core::num::overflow_panic::neg", [], [] |),
                                   []
                                 |)
                               |)
@@ -78960,7 +79154,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shl", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shl", [], [] |),
                                   []
                                 |)
                               |)
@@ -79009,7 +79203,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -79033,6 +79227,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shl",
+                  [],
                   [ Ty.path "usize"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -79183,7 +79378,7 @@ Module num.
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::num::overflow_panic::shr", [] |),
+                                  M.get_function (| "core::num::overflow_panic::shr", [], [] |),
                                   []
                                 |)
                               |)
@@ -79232,7 +79427,7 @@ Module num.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
@@ -79256,6 +79451,7 @@ Module num.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::unchecked_shr",
+                  [],
                   [ Ty.path "usize"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |); M.read (| rhs |) ]
@@ -79703,7 +79899,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_add", [ Ty.path "usize" ] |),
+            M.get_function (| "core::intrinsics::saturating_add", [], [ Ty.path "usize" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -79805,7 +80001,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::saturating_sub", [ Ty.path "usize" ] |),
+            M.get_function (| "core::intrinsics::saturating_sub", [], [ Ty.path "usize" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -79940,7 +80136,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_add", [ Ty.path "usize" ] |),
+            M.get_function (| "core::intrinsics::wrapping_add", [], [ Ty.path "usize" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -79981,7 +80177,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_sub", [ Ty.path "usize" ] |),
+            M.get_function (| "core::intrinsics::wrapping_sub", [], [ Ty.path "usize" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -80001,7 +80197,7 @@ Module num.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::wrapping_mul", [ Ty.path "usize" ] |),
+            M.get_function (| "core::intrinsics::wrapping_mul", [], [ Ty.path "usize" ] |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -80248,6 +80444,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -80480,7 +80677,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::add_with_overflow", [ Ty.path "u64" ] |),
+                  M.get_function (| "core::intrinsics::add_with_overflow", [], [ Ty.path "u64" ] |),
                   [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |),
@@ -80627,7 +80824,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::sub_with_overflow", [ Ty.path "u64" ] |),
+                  M.get_function (| "core::intrinsics::sub_with_overflow", [], [ Ty.path "u64" ] |),
                   [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |),
@@ -80746,7 +80943,7 @@ Module num.
                         (M.alloc (|
                           BinOp.eq (|
                             M.call_closure (|
-                              M.get_function (| "core::mem::size_of", [ Ty.path "usize" ] |),
+                              M.get_function (| "core::mem::size_of", [], [ Ty.path "usize" ] |),
                               []
                             |),
                             Value.Integer IntegerKind.Usize 1
@@ -80813,7 +81010,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::mul_with_overflow", [ Ty.path "u64" ] |),
+                  M.get_function (| "core::intrinsics::mul_with_overflow", [], [ Ty.path "u64" ] |),
                   [ M.rust_cast (M.read (| self |)); M.rust_cast (M.read (| rhs |)) ]
                 |)
               |),
@@ -81273,6 +81470,7 @@ Module num.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::is_val_statically_known",
+                                  [],
                                   [ Ty.path "u32" ]
                                 |),
                                 [ M.read (| exp |) ]
@@ -81494,7 +81692,7 @@ Module num.
               M.alloc (|
                 M.rust_cast
                   (M.call_closure (|
-                    M.get_function (| "core::num::int_sqrt::u64", [] |),
+                    M.get_function (| "core::num::int_sqrt::u64", [], [] |),
                     [ M.rust_cast (M.read (| self |)) ]
                   |))
               |) in
@@ -81502,7 +81700,7 @@ Module num.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::hint::assert_unchecked", [] |),
+                    M.get_function (| "core::hint::assert_unchecked", [], [] |),
                     [
                       BinOp.le (|
                         M.read (| result |),
@@ -81860,7 +82058,11 @@ Module num.
                 let~ z :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::ctlz_nonzero", [ Ty.path "usize" ] |),
+                      M.get_function (|
+                        "core::intrinsics::ctlz_nonzero",
+                        [],
+                        [ Ty.path "usize" ]
+                      |),
                       [ M.read (| p |) ]
                     |)
                   |) in
@@ -82036,6 +82238,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.path "usize";
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ]
@@ -82112,6 +82315,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ];
                 Ty.path "usize"
@@ -82299,7 +82503,11 @@ Module num.
                                 BinOp.lt (|
                                   M.read (| i |),
                                   M.call_closure (|
-                                    M.get_function (| "core::mem::size_of", [ Ty.path "usize" ] |),
+                                    M.get_function (|
+                                      "core::mem::size_of",
+                                      [],
+                                      [ Ty.path "usize" ]
+                                    |),
                                     []
                                   |)
                                 |)
@@ -82490,6 +82698,7 @@ Module num.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "core::num::FpCategory" ]
                   |),
                   [ M.read (| self |) ]
@@ -82500,6 +82709,7 @@ Module num.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "core::num::FpCategory" ]
                   |),
                   [ M.read (| other |) ]
@@ -83013,7 +83223,7 @@ Module num.
               |),
               BinOp.Wrap.sub (|
                 BinOp.Wrap.mul (|
-                  M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |),
+                  M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |),
                   Value.Integer IntegerKind.Usize 2
                 |),
                 M.rust_cast (M.read (| is_signed_ty |))
@@ -83036,7 +83246,7 @@ Module num.
       ltac:(M.monadic
         (let _radix := M.alloc (| _radix |) in
         M.call_closure (|
-          M.get_function (| "core::panicking::panic_fmt", [] |),
+          M.get_function (| "core::panicking::panic_fmt", [], [] |),
           [
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -83070,7 +83280,7 @@ Module num.
       ltac:(M.monadic
         (let radix := M.alloc (| radix |) in
         M.call_closure (|
-          M.get_function (| "core::panicking::panic_fmt", [] |),
+          M.get_function (| "core::panicking::panic_fmt", [], [] |),
           [
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -83121,6 +83331,7 @@ Module num.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::const_eval_select",
+              [],
               [
                 Ty.tuple [ Ty.path "u32" ];
                 Ty.function [ Ty.path "u32" ] (Ty.path "never");
@@ -83130,8 +83341,8 @@ Module num.
             |),
             [
               Value.Tuple [ M.read (| radix |) ];
-              M.get_function (| "core::num::from_str_radix_panic_ct", [] |);
-              M.get_function (| "core::num::from_str_radix_panic_rt", [] |)
+              M.get_function (| "core::num::from_str_radix_panic_ct", [], [] |);
+              M.get_function (| "core::num::from_str_radix_panic_rt", [], [] |)
             ]
           |)
         |)))

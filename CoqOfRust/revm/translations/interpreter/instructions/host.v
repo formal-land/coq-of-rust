@@ -200,6 +200,7 @@ Module instructions.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "revm_interpreter::gas::calc::warm_cold_cost",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -881,6 +882,7 @@ Module instructions.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "revm_interpreter::gas::calc::warm_cold_cost_with_delegation",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [ M.read (| load |) ]
@@ -1489,6 +1491,7 @@ Module instructions.
                                                                       M.call_closure (|
                                                                         M.get_function (|
                                                                           "revm_interpreter::gas::calc::warm_cold_cost_with_delegation",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [ M.read (| load |) ]
@@ -2078,6 +2081,7 @@ Module instructions.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "revm_interpreter::gas::calc::extcodecopy_cost",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -2416,6 +2420,7 @@ Module instructions.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::cmp::min",
+                                                [],
                                                 [ Ty.path "usize" ]
                                               |),
                                               [
@@ -2586,6 +2591,7 @@ Module instructions.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "revm_interpreter::interpreter::shared_memory::num_words",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -3182,6 +3188,7 @@ Module instructions.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "revm_interpreter::gas::calc::sload_cost",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -3604,6 +3611,7 @@ Module instructions.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "revm_interpreter::gas::calc::sstore_cost",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -3706,6 +3714,7 @@ Module instructions.
                                         M.call_closure (|
                                           M.get_function (|
                                             "revm_interpreter::gas::calc::sstore_refund",
+                                            [],
                                             []
                                           |),
                                           [
@@ -4579,7 +4588,11 @@ Module instructions.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "revm_interpreter::gas::calc::log_cost", [] |),
+                                M.get_function (|
+                                  "revm_interpreter::gas::calc::log_cost",
+                                  [],
+                                  []
+                                |),
                                 [
                                   M.rust_cast
                                     (M.read (|
@@ -4897,6 +4910,7 @@ Module instructions.
                                         M.call_closure (|
                                           M.get_function (|
                                             "revm_interpreter::interpreter::shared_memory::num_words",
+                                            [],
                                             []
                                           |),
                                           [
@@ -5737,6 +5751,7 @@ Module instructions.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "revm_interpreter::gas::calc::selfdestruct_cost",
+                                                          [],
                                                           []
                                                         |),
                                                         [

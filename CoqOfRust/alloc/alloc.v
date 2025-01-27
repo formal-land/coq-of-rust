@@ -124,14 +124,14 @@ Module alloc.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::ptr::read_volatile", [ Ty.path "u8" ] |),
+                M.get_function (| "core::ptr::read_volatile", [], [ Ty.path "u8" ] |),
                 [ M.read (| M.get_constant (| "alloc::alloc::__rust_no_alloc_shim_is_unstable" |) |)
                 ]
               |)
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "alloc::alloc::__rust_alloc", [] |),
+              M.get_function (| "alloc::alloc::__rust_alloc", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [] |),
@@ -166,7 +166,7 @@ Module alloc.
         (let ptr := M.alloc (| ptr |) in
         let layout := M.alloc (| layout |) in
         M.call_closure (|
-          M.get_function (| "alloc::alloc::__rust_dealloc", [] |),
+          M.get_function (| "alloc::alloc::__rust_dealloc", [], [] |),
           [
             M.read (| ptr |);
             M.call_closure (|
@@ -197,7 +197,7 @@ Module alloc.
         let layout := M.alloc (| layout |) in
         let new_size := M.alloc (| new_size |) in
         M.call_closure (|
-          M.get_function (| "alloc::alloc::__rust_realloc", [] |),
+          M.get_function (| "alloc::alloc::__rust_realloc", [], [] |),
           [
             M.read (| ptr |);
             M.call_closure (|
@@ -236,14 +236,14 @@ Module alloc.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::ptr::read_volatile", [ Ty.path "u8" ] |),
+                M.get_function (| "core::ptr::read_volatile", [], [ Ty.path "u8" ] |),
                 [ M.read (| M.get_constant (| "alloc::alloc::__rust_no_alloc_shim_is_unstable" |) |)
                 ]
               |)
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "alloc::alloc::__rust_alloc_zeroed", [] |),
+              M.get_function (| "alloc::alloc::__rust_alloc_zeroed", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [] |),
@@ -356,7 +356,7 @@ Module alloc.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
-                                        M.get_function (| "alloc::alloc::alloc_zeroed", [] |),
+                                        M.get_function (| "alloc::alloc::alloc_zeroed", [], [] |),
                                         [ M.read (| layout |) ]
                                       |)
                                     |)));
@@ -364,7 +364,7 @@ Module alloc.
                                   ltac:(M.monadic
                                     (M.alloc (|
                                       M.call_closure (|
-                                        M.get_function (| "alloc::alloc::alloc", [] |),
+                                        M.get_function (| "alloc::alloc::alloc", [], [] |),
                                         [ M.read (| layout |) ]
                                       |)
                                     |)))
@@ -619,7 +619,7 @@ Module alloc.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                           [
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -719,7 +719,7 @@ Module alloc.
                         let~ _ :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::hint::assert_unchecked", [] |),
+                              M.get_function (| "core::hint::assert_unchecked", [], [] |),
                               [
                                 BinOp.ge (|
                                   M.read (| new_size |),
@@ -738,7 +738,7 @@ Module alloc.
                         let~ raw_ptr :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "alloc::alloc::realloc", [] |),
+                              M.get_function (| "alloc::alloc::realloc", [], [] |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -1039,6 +1039,7 @@ Module alloc.
                             M.call_closure (|
                               M.get_function (|
                                 "core::intrinsics::copy_nonoverlapping",
+                                [],
                                 [ Ty.path "u8" ]
                               |),
                               [
@@ -1175,7 +1176,7 @@ Module alloc.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "alloc::alloc::dealloc", [] |),
+                        M.get_function (| "alloc::alloc::dealloc", [], [] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -1361,7 +1362,7 @@ Module alloc.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                           [
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -1480,7 +1481,7 @@ Module alloc.
                         let~ _ :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::hint::assert_unchecked", [] |),
+                              M.get_function (| "core::hint::assert_unchecked", [], [] |),
                               [
                                 BinOp.le (|
                                   M.read (| new_size |),
@@ -1499,7 +1500,7 @@ Module alloc.
                         let~ raw_ptr :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "alloc::alloc::realloc", [] |),
+                              M.get_function (| "alloc::alloc::realloc", [], [] |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -1757,6 +1758,7 @@ Module alloc.
                             M.call_closure (|
                               M.get_function (|
                                 "core::intrinsics::copy_nonoverlapping",
+                                [],
                                 [ Ty.path "u8" ]
                               |),
                               [
@@ -1893,7 +1895,7 @@ Module alloc.
                   M.alloc (|
                     M.never_to_any (|
                       M.call_closure (|
-                        M.get_function (| "alloc::alloc::handle_alloc_error", [] |),
+                        M.get_function (| "alloc::alloc::handle_alloc_error", [], [] |),
                         [ M.read (| layout |) ]
                       |)
                     |)
@@ -1941,6 +1943,7 @@ Module alloc.
         M.call_closure (|
           M.get_function (|
             "core::intrinsics::const_eval_select",
+            [],
             [
               Ty.tuple [ Ty.path "core::alloc::layout::Layout" ];
               Ty.function [ Ty.path "core::alloc::layout::Layout" ] (Ty.path "never");
@@ -1950,8 +1953,8 @@ Module alloc.
           |),
           [
             Value.Tuple [ M.read (| layout |) ];
-            M.get_function (| "alloc::alloc::handle_alloc_error.ct_error", [] |);
-            M.get_function (| "alloc::alloc::handle_alloc_error.rt_error", [] |)
+            M.get_function (| "alloc::alloc::handle_alloc_error.ct_error", [], [] |);
+            M.get_function (| "alloc::alloc::handle_alloc_error.rt_error", [], [] |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1977,7 +1980,7 @@ Module alloc.
               fun γ =>
                 ltac:(M.monadic
                   (M.call_closure (|
-                    M.get_function (| "core::panicking::panic_fmt", [] |),
+                    M.get_function (| "core::panicking::panic_fmt", [], [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -2013,7 +2016,7 @@ Module alloc.
         ltac:(M.monadic
           (let layout := M.alloc (| layout |) in
           M.call_closure (|
-            M.get_function (| "alloc::alloc::__rust_alloc_error_handler", [] |),
+            M.get_function (| "alloc::alloc::__rust_alloc_error_handler", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [] |),
@@ -2079,7 +2082,7 @@ Module alloc.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -2117,7 +2120,7 @@ Module alloc.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::panicking::panic_nounwind_fmt", [] |),
+                        M.get_function (| "core::panicking::panic_nounwind_fmt", [], [] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|

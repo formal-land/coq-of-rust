@@ -17,6 +17,7 @@ Module str.
         M.call_closure (|
           M.get_function (|
             "core::intrinsics::const_eval_select",
+            [],
             [
               Ty.tuple
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "usize"; Ty.path "usize" ];
@@ -31,8 +32,8 @@ Module str.
           |),
           [
             Value.Tuple [ M.read (| s |); M.read (| begin |); M.read (| end_ |) ];
-            M.get_function (| "core::str::slice_error_fail_ct", [] |);
-            M.get_function (| "core::str::slice_error_fail_rt", [] |)
+            M.get_function (| "core::str::slice_error_fail_ct", [], [] |);
+            M.get_function (| "core::str::slice_error_fail_rt", [], [] |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -68,7 +69,7 @@ Module str.
                             fun γ =>
                               ltac:(M.monadic
                                 (M.call_closure (|
-                                  M.get_function (| "core::panicking::panic_fmt", [] |),
+                                  M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -260,7 +261,7 @@ Module str.
                             |) in
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic_fmt", [] |),
+                              M.get_function (| "core::panicking::panic_fmt", [], [] |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -332,7 +333,7 @@ Module str.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -498,7 +499,7 @@ Module str.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "core::panicking::panic_fmt", [] |),
+              M.get_function (| "core::panicking::panic_fmt", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -1106,6 +1107,7 @@ Module str.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::transmute",
+              [],
               [
                 Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
@@ -1383,7 +1385,7 @@ Module str.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::str::slice_error_fail", [] |),
+                          M.get_function (| "core::str::slice_error_fail", [], [] |),
                           [ M.read (| self |); Value.Integer IntegerKind.Usize 0; M.read (| mid |) ]
                         |)
                       |)
@@ -1449,7 +1451,7 @@ Module str.
                     (M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::str::slice_error_fail", [] |),
+                          M.get_function (| "core::str::slice_error_fail", [], [] |),
                           [ M.read (| self |); Value.Integer IntegerKind.Usize 0; M.read (| mid |) ]
                         |)
                       |)
@@ -1655,11 +1657,12 @@ Module str.
               Value.Tuple
                 [
                   M.call_closure (|
-                    M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [] |),
+                    M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [], [] |),
                     [
                       M.call_closure (|
                         M.get_function (|
                           "core::slice::raw::from_raw_parts_mut",
+                          [],
                           [ Ty.path "u8" ]
                         |),
                         [ M.read (| ptr |); M.read (| mid |) ]
@@ -1667,11 +1670,12 @@ Module str.
                     ]
                   |);
                   M.call_closure (|
-                    M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [] |),
+                    M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [], [] |),
                     [
                       M.call_closure (|
                         M.get_function (|
                           "core::slice::raw::from_raw_parts_mut",
+                          [],
                           [ Ty.path "u8" ]
                         |),
                         [
@@ -3787,7 +3791,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::str::converts::from_utf8_unchecked", [] |),
+            M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
@@ -3823,7 +3827,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::str::converts::from_utf8_unchecked", [] |),
+            M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
@@ -3859,7 +3863,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::str::converts::from_utf8_unchecked", [] |),
+            M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
@@ -4235,7 +4239,7 @@ Module str.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [] |),
+            M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [], [] |),
             [ M.alloc (| Value.Array [] |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

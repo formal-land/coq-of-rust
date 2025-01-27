@@ -280,7 +280,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ v3 :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "impl_trait_as_return_type::combine_vecs", [] |),
+              M.get_function (| "impl_trait_as_return_type::combine_vecs", [], [] |),
               [ M.read (| v1 |); M.read (| v2 |) ]
             |)
           |) in
@@ -357,6 +357,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::panicking::assert_failed",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -457,6 +458,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::panicking::assert_failed",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -557,6 +559,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::panicking::assert_failed",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -657,6 +660,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::panicking::assert_failed",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -757,6 +761,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::panicking::assert_failed",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -788,7 +793,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),

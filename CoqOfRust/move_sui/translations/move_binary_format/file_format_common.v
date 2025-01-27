@@ -73,7 +73,7 @@ Module file_format_common.
               BinOp.Wrap.mul (|
                 M.rust_cast
                   (M.call_closure (|
-                    M.get_function (| "core::mem::size_of", [ Ty.path "u32" ] |),
+                    M.get_function (| "core::mem::size_of", [], [ Ty.path "u32" ] |),
                     []
                   |)),
                 Value.Integer IntegerKind.U8 2
@@ -532,6 +532,7 @@ Module file_format_common.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format_common::TableType" ]
                   |),
                   [ M.read (| self |) ]
@@ -582,6 +583,7 @@ Module file_format_common.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format_common::TableType" ]
                   |),
                   [ M.read (| self |) ]
@@ -592,6 +594,7 @@ Module file_format_common.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format_common::TableType" ]
                   |),
                   [ M.read (| other |) ]
@@ -2463,6 +2466,7 @@ Module file_format_common.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -2470,7 +2474,11 @@ Module file_format_common.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -2686,6 +2694,7 @@ Module file_format_common.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -2693,7 +2702,11 @@ Module file_format_common.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -3643,6 +3656,7 @@ Module file_format_common.
                                   M.call_closure (|
                                     M.get_function (|
                                       "move_binary_format::file_format_common::read_u8",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| cursor |) ]
@@ -3700,6 +3714,7 @@ Module file_format_common.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "anyhow::__private::format_err",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -3805,6 +3820,7 @@ Module file_format_common.
                                                                           M.call_closure (|
                                                                             M.get_function (|
                                                                               "anyhow::__private::format_err",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -3910,7 +3926,7 @@ Module file_format_common.
                         let~ error :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "anyhow::__private::format_err", [] |),
+                              M.get_function (| "anyhow::__private::format_err", [], [] |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|

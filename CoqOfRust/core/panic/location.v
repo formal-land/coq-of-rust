@@ -557,7 +557,10 @@ Module panic.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::intrinsics::caller_location", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::intrinsics::caller_location", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

@@ -219,7 +219,7 @@ Module str.
                 let~ init :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::str::validations::utf8_first_byte", [] |),
+                      M.get_function (| "core::str::validations::utf8_first_byte", [], [] |),
                       [ M.read (| x |); Value.Integer IntegerKind.U32 2 ]
                     |)
                   |) in
@@ -251,7 +251,7 @@ Module str.
                 let~ ch :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::str::validations::utf8_acc_cont_byte", [] |),
+                      M.get_function (| "core::str::validations::utf8_acc_cont_byte", [], [] |),
                       [ M.read (| init |); M.read (| y |) ]
                     |)
                   |) in
@@ -298,6 +298,7 @@ Module str.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::str::validations::utf8_acc_cont_byte",
+                                  [],
                                   []
                                 |),
                                 [
@@ -377,6 +378,7 @@ Module str.
                                         (M.call_closure (|
                                           M.get_function (|
                                             "core::str::validations::utf8_acc_cont_byte",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| y_z |); M.read (| w |) ]
@@ -584,7 +586,7 @@ Module str.
                   M.write (|
                     ch,
                     M.call_closure (|
-                      M.get_function (| "core::str::validations::utf8_first_byte", [] |),
+                      M.get_function (| "core::str::validations::utf8_first_byte", [], [] |),
                       [ M.read (| z |); Value.Integer IntegerKind.U32 2 ]
                     |)
                   |) in
@@ -600,6 +602,7 @@ Module str.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::str::validations::utf8_is_cont_byte",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| z |) ]
@@ -636,7 +639,11 @@ Module str.
                             M.write (|
                               ch,
                               M.call_closure (|
-                                M.get_function (| "core::str::validations::utf8_first_byte", [] |),
+                                M.get_function (|
+                                  "core::str::validations::utf8_first_byte",
+                                  [],
+                                  []
+                                |),
                                 [ M.read (| y |); Value.Integer IntegerKind.U32 3 ]
                               |)
                             |) in
@@ -652,6 +659,7 @@ Module str.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::str::validations::utf8_is_cont_byte",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| y |) ]
@@ -693,6 +701,7 @@ Module str.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::str::validations::utf8_first_byte",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| x |); Value.Integer IntegerKind.U32 4 ]
@@ -704,6 +713,7 @@ Module str.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::str::validations::utf8_acc_cont_byte",
+                                            [],
                                             []
                                           |),
                                           [ M.read (| ch |); M.read (| y |) ]
@@ -719,6 +729,7 @@ Module str.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::str::validations::utf8_acc_cont_byte",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| ch |); M.read (| z |) ]
@@ -732,7 +743,7 @@ Module str.
                   M.write (|
                     ch,
                     M.call_closure (|
-                      M.get_function (| "core::str::validations::utf8_acc_cont_byte", [] |),
+                      M.get_function (| "core::str::validations::utf8_acc_cont_byte", [], [] |),
                       [ M.read (| ch |); M.read (| w |) ]
                     |)
                   |) in
@@ -918,7 +929,7 @@ Module str.
                 let~ usize_bytes :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::mem::size_of", [ Ty.path "usize" ] |),
+                      M.get_function (| "core::mem::size_of", [], [ Ty.path "usize" ] |),
                       []
                     |)
                   |) in
@@ -1020,6 +1031,7 @@ Module str.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::str::validations::utf8_char_width",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| first |) ]
@@ -2050,6 +2062,7 @@ Module str.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::str::validations::contains_nonascii",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -2064,6 +2077,7 @@ Module str.
                                                                   M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::str::validations::contains_nonascii",
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [

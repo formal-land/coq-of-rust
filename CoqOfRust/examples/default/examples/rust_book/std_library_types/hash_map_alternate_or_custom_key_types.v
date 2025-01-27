@@ -243,7 +243,7 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -276,7 +276,7 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -309,7 +309,7 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -355,7 +355,7 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "std::io::stdio::_print", [] |),
+                        M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -378,7 +378,7 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "std::io::stdio::_print", [] |),
+                        M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -424,7 +424,7 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "std::io::stdio::_print", [] |),
+                        M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -472,7 +472,7 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                 (let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
+                      M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -580,7 +580,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [] |),
+              M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [], [] |),
               [
                 accounts;
                 M.read (| Value.String "j.everyman" |);
@@ -591,7 +591,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [] |),
+              M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [], [] |),
               [
                 accounts;
                 M.read (| Value.String "j.everyman" |);

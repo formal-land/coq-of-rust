@@ -163,7 +163,7 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::panicking::panic", [] |),
+                                    M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
                                         Value.String
@@ -553,7 +553,7 @@ Definition black_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::panicking::panic", [] |),
+                                  M.get_function (| "core::panicking::panic", [], [] |),
                                   [
                                     M.read (|
                                       Value.String
@@ -572,7 +572,7 @@ Definition black_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
           |) in
         M.alloc (|
           M.call_closure (|
-            M.get_function (| "core::ptr::read_volatile", [ Ty.path "u8" ] |),
+            M.get_function (| "core::ptr::read_volatile", [], [ Ty.path "u8" ] |),
             [ M.read (| M.use (M.alloc (| input |)) |) ]
           |)
         |)
@@ -601,7 +601,7 @@ Module Impl_core_convert_From_u8_for_subtle_Choice.
           "subtle::Choice"
           [
             M.call_closure (|
-              M.get_function (| "subtle::black_box", [] |),
+              M.get_function (| "subtle::black_box", [], [] |),
               [ M.read (| input |) ]
             |)
           ]))
@@ -1425,7 +1425,7 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
                 BinOp.Wrap.sub (|
                   BinOp.Wrap.mul (|
                     M.call_closure (|
-                      M.get_function (| "core::mem::size_of", [ Ty.path "usize" ] |),
+                      M.get_function (| "core::mem::size_of", [], [ Ty.path "usize" ] |),
                       []
                     |),
                     Value.Integer IntegerKind.Usize 8
@@ -3318,6 +3318,7 @@ Module Impl_subtle_CtOption_T.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::panicking::assert_failed",
+                                        [],
                                         [ Ty.path "u8"; Ty.path "u8" ]
                                       |),
                                       [
@@ -3447,6 +3448,7 @@ Module Impl_subtle_CtOption_T.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::panicking::assert_failed",
+                                        [],
                                         [ Ty.path "u8"; Ty.path "u8" ]
                                       |),
                                       [

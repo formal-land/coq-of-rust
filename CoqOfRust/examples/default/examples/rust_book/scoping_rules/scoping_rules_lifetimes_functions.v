@@ -16,7 +16,7 @@ Definition print_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -92,7 +92,7 @@ Definition print_multi (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -184,28 +184,28 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "scoping_rules_lifetimes_functions::print_one", [] |),
+              M.get_function (| "scoping_rules_lifetimes_functions::print_one", [], [] |),
               [ x ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "scoping_rules_lifetimes_functions::print_multi", [] |),
+              M.get_function (| "scoping_rules_lifetimes_functions::print_multi", [], [] |),
               [ x; y ]
             |)
           |) in
         let~ z :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "scoping_rules_lifetimes_functions::pass_x", [] |),
+              M.get_function (| "scoping_rules_lifetimes_functions::pass_x", [], [] |),
               [ x; y ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "scoping_rules_lifetimes_functions::print_one", [] |),
+              M.get_function (| "scoping_rules_lifetimes_functions::print_one", [], [] |),
               [ M.read (| z |) ]
             |)
           |) in
@@ -213,14 +213,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "scoping_rules_lifetimes_functions::add_one", [] |),
+              M.get_function (| "scoping_rules_lifetimes_functions::add_one", [], [] |),
               [ t ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "scoping_rules_lifetimes_functions::print_one", [] |),
+              M.get_function (| "scoping_rules_lifetimes_functions::print_one", [], [] |),
               [ t ]
             |)
           |) in

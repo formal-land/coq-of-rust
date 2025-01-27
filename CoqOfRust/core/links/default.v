@@ -126,7 +126,7 @@ Module Impl_Default_for_integer.
       { reflexivity. }
     }
     { destruct kind; cbn; eapply Run.Pure;
-        now instantiate (1 := Integer.Make 0).
+        now instantiate (1 := {| Integer.value := _ |}).
     }
   Defined.
 

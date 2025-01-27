@@ -19,7 +19,7 @@ Module ptr.
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::ptr_metadata", [ T; Ty.associated ] |),
+            M.get_function (| "core::intrinsics::ptr_metadata", [], [ T; Ty.associated ] |),
             [ M.read (| ptr |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -44,6 +44,7 @@ Module ptr.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::aggregate_raw_ptr",
+              [],
               [
                 Ty.apply (Ty.path "*const") [] [ T ];
                 Ty.apply (Ty.path "*const") [] [ impl_Thin ];
@@ -75,6 +76,7 @@ Module ptr.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::aggregate_raw_ptr",
+              [],
               [
                 Ty.apply (Ty.path "*mut") [] [ T ];
                 Ty.apply (Ty.path "*mut") [] [ impl_Thin ];
@@ -132,6 +134,7 @@ Module ptr.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::transmute",
+                [],
                 [
                   Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ];
                   Ty.apply (Ty.path "*const") [] [ Ty.path "core::ptr::metadata::VTable" ]
@@ -162,7 +165,7 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::vtable_size", [] |),
+              M.get_function (| "core::intrinsics::vtable_size", [], [] |),
               [
                 M.rust_cast
                   (M.call_closure (|
@@ -195,7 +198,7 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::vtable_align", [] |),
+              M.get_function (| "core::intrinsics::vtable_align", [], [] |),
               [
                 M.rust_cast
                   (M.call_closure (|
@@ -437,7 +440,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::ptr::eq", [ Ty.path "core::ptr::metadata::VTable" ] |),
+              M.get_function (| "core::ptr::eq", [], [ Ty.path "core::ptr::metadata::VTable" ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -592,7 +595,11 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let hasher := M.alloc (| hasher |) in
             M.call_closure (|
-              M.get_function (| "core::ptr::hash", [ Ty.path "core::ptr::metadata::VTable"; H ] |),
+              M.get_function (|
+                "core::ptr::hash",
+                [],
+                [ Ty.path "core::ptr::metadata::VTable"; H ]
+              |),
               [
                 M.call_closure (|
                   M.get_associated_function (|

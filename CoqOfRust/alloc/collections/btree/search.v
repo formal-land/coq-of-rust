@@ -568,6 +568,7 @@ Module collections.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::panicking::panic_fmt",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -600,6 +601,7 @@ Module collections.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::panicking::panic_fmt",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -736,6 +738,7 @@ Module collections.
                                                                           M.call_closure (|
                                                                             M.get_function (|
                                                                               "core::panicking::panic_fmt",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -769,6 +772,7 @@ Module collections.
                                                                           M.call_closure (|
                                                                             M.get_function (|
                                                                               "core::panicking::panic_fmt",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -1042,6 +1046,7 @@ Module collections.
                                                                                           M.call_closure (|
                                                                                             M.get_function (|
                                                                                               "core::panicking::assert_failed",
+                                                                                              [],
                                                                                               [
                                                                                                 Ty.path
                                                                                                   "usize";
@@ -1663,7 +1668,7 @@ Module collections.
                                         M.alloc (|
                                           M.never_to_any (|
                                             M.call_closure (|
-                                              M.get_function (| "core::panicking::panic", [] |),
+                                              M.get_function (| "core::panicking::panic", [], [] |),
                                               [
                                                 M.read (|
                                                   Value.String

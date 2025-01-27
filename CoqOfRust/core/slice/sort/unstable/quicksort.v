@@ -167,6 +167,7 @@ Module slice.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::slice::sort::unstable::heapsort::heapsort",
+                                                  [],
                                                   [ T; F ]
                                                 |),
                                                 [ M.read (| v |); M.read (| is_less |) ]
@@ -190,6 +191,7 @@ Module slice.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::slice::sort::shared::pivot::choose_pivot",
+                                  [],
                                   [ T; F ]
                                 |),
                                 [ M.read (| v |); M.read (| is_less |) ]
@@ -266,6 +268,7 @@ Module slice.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::slice::sort::unstable::quicksort::partition",
+                                                          [],
                                                           [
                                                             T;
                                                             Ty.function
@@ -413,6 +416,7 @@ Module slice.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::slice::sort::unstable::quicksort::partition",
+                                  [],
                                   [ T; F ]
                                 |),
                                 [ M.read (| v |); M.read (| pivot_pos |); M.read (| is_less |) ]
@@ -421,7 +425,7 @@ Module slice.
                           let~ _ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::intrinsics::assume", [] |),
+                                M.get_function (| "core::intrinsics::assume", [], [] |),
                                 [
                                   BinOp.lt (|
                                     M.read (| num_lt |),
@@ -485,6 +489,7 @@ Module slice.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::slice::sort::unstable::quicksort::quicksort",
+                                                  [],
                                                   [ T; F ]
                                                 |),
                                                 [
@@ -632,7 +637,7 @@ Module slice.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::abort", [] |),
+                                    M.get_function (| "core::intrinsics::abort", [], [] |),
                                     []
                                   |)
                                 |)
@@ -713,7 +718,7 @@ Module slice.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.call_closure (|
-                                            M.get_function (| "core::intrinsics::abort", [] |),
+                                            M.get_function (| "core::intrinsics::abort", [], [] |),
                                             []
                                           |)
                                         |)
@@ -782,7 +787,7 @@ Module slice.
                             (M.alloc (|
                               BinOp.le (|
                                 M.call_closure (|
-                                  M.get_function (| "core::mem::size_of", [ T ] |),
+                                  M.get_function (| "core::mem::size_of", [], [ T ] |),
                                   []
                                 |),
                                 M.read (|
@@ -799,6 +804,7 @@ Module slice.
                           M.pointer_coercion
                             (M.get_function (|
                               "core::slice::sort::unstable::quicksort::partition_lomuto_branchless_cyclic",
+                              [],
                               [ T; F ]
                             |))
                         |)));
@@ -809,6 +815,7 @@ Module slice.
                           M.pointer_coercion
                             (M.get_function (|
                               "core::slice::sort::unstable::quicksort::partition_hoare_branchy_cyclic",
+                              [],
                               [ T; F ]
                             |))
                         |)))
@@ -1199,6 +1206,7 @@ Module slice.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::ptr::read",
+                                                          [],
                                                           [ T ]
                                                         |),
                                                         [
@@ -1279,6 +1287,7 @@ Module slice.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::intrinsics::copy_nonoverlapping",
+                                            [],
                                             [ T ]
                                           |),
                                           [
@@ -1311,7 +1320,11 @@ Module slice.
                           let~ _ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                                M.get_function (|
+                                  "core::intrinsics::copy_nonoverlapping",
+                                  [],
+                                  [ T ]
+                                |),
                                 [
                                   (* MutToConstPointer *) M.pointer_coercion (M.read (| right |));
                                   M.read (| left |);
@@ -1597,6 +1610,7 @@ Module slice.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::intrinsics::copy",
+                                                    [],
                                                     [ T ]
                                                   |),
                                                   [
@@ -1622,6 +1636,7 @@ Module slice.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::intrinsics::copy_nonoverlapping",
+                                                    [],
                                                     [ T ]
                                                   |),
                                                   [
@@ -1714,7 +1729,7 @@ Module slice.
                           |),
                           [
                             M.call_closure (|
-                              M.get_function (| "core::ptr::read", [ T ] |),
+                              M.get_function (| "core::ptr::read", [], [ T ] |),
                               [ (* MutToConstPointer *) M.pointer_coercion (M.read (| v_base |)) ]
                             |)
                           ]
@@ -2107,6 +2122,7 @@ Module slice.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::mem::forget",
+                                                [],
                                                 [
                                                   Ty.apply
                                                     (Ty.path
@@ -2184,7 +2200,7 @@ Module slice.
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                         [
                           M.call_closure (|
                             M.get_trait_method (|
@@ -2262,7 +2278,7 @@ Module slice.
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                         [
                           (* MutToConstPointer *)
                           M.pointer_coercion

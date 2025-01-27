@@ -69,6 +69,7 @@ Module control_flow_v5.
                         M.call_closure (|
                           M.get_function (|
                             "move_bytecode_verifier::control_flow_v5::verify_fallthrough",
+                            [],
                             []
                           |),
                           [
@@ -158,6 +159,7 @@ Module control_flow_v5.
                   M.call_closure (|
                     M.get_function (|
                       "move_bytecode_verifier::control_flow_v5::instruction_labels",
+                      [],
                       []
                     |),
                     [ M.read (| context |) ]
@@ -165,7 +167,11 @@ Module control_flow_v5.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "move_bytecode_verifier::control_flow_v5::check_jumps", [] |),
+                  M.get_function (|
+                    "move_bytecode_verifier::control_flow_v5::check_jumps",
+                    [],
+                    []
+                  |),
                   [ M.read (| verifier_config |); M.read (| context |); M.read (| labels |) ]
                 |)
               |)
@@ -1051,6 +1057,7 @@ Module control_flow_v5.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "move_bytecode_verifier::control_flow_v5::is_back_edge",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1158,6 +1165,7 @@ Module control_flow_v5.
                         M.call_closure (|
                           M.get_function (|
                             "move_bytecode_verifier::control_flow_v5::check_continues",
+                            [],
                             []
                           |),
                           [
@@ -1255,6 +1263,7 @@ Module control_flow_v5.
                         M.call_closure (|
                           M.get_function (|
                             "move_bytecode_verifier::control_flow_v5::check_breaks",
+                            [],
                             []
                           |),
                           [
@@ -1339,6 +1348,7 @@ Module control_flow_v5.
                   M.call_closure (|
                     M.get_function (|
                       "move_bytecode_verifier::control_flow_v5::count_loop_depth",
+                      [],
                       []
                     |),
                     [
@@ -1379,6 +1389,7 @@ Module control_flow_v5.
                         M.call_closure (|
                           M.get_function (|
                             "move_bytecode_verifier::control_flow_v5::check_no_loop_splits",
+                            [],
                             []
                           |),
                           [
@@ -1475,6 +1486,7 @@ Module control_flow_v5.
                 M.call_closure (|
                   M.get_function (|
                     "move_bytecode_verifier::control_flow_v5::check_loop_depth",
+                    [],
                     []
                   |),
                   [
@@ -1869,6 +1881,7 @@ Module control_flow_v5.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "move_bytecode_verifier::control_flow_v5::is_back_edge",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -1970,6 +1983,7 @@ Module control_flow_v5.
                                                                               M.call_closure (|
                                                                                 M.get_function (|
                                                                                   "core::hint::must_use",
+                                                                                  [],
                                                                                   [
                                                                                     Ty.path
                                                                                       "alloc::string::String"
@@ -1982,6 +1996,7 @@ Module control_flow_v5.
                                                                                         M.call_closure (|
                                                                                           M.get_function (|
                                                                                             "alloc::fmt::format",
+                                                                                            [],
                                                                                             []
                                                                                           |),
                                                                                           [
@@ -2047,6 +2062,7 @@ Module control_flow_v5.
                                                                                   M.call_closure (|
                                                                                     M.get_function (|
                                                                                       "core::panicking::panic_fmt",
+                                                                                      [],
                                                                                       []
                                                                                     |),
                                                                                     [
@@ -2262,6 +2278,7 @@ Module control_flow_v5.
         M.call_closure (|
           M.get_function (|
             "move_bytecode_verifier::control_flow_v5::check_code",
+            [],
             [
               Ty.function
                 [
@@ -2373,6 +2390,7 @@ Module control_flow_v5.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "move_bytecode_verifier::control_flow_v5::is_back_edge",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -2483,6 +2501,7 @@ Module control_flow_v5.
                                                                                       M.call_closure (|
                                                                                         M.get_function (|
                                                                                           "core::hint::must_use",
+                                                                                          [],
                                                                                           [
                                                                                             Ty.path
                                                                                               "alloc::string::String"
@@ -2496,6 +2515,7 @@ Module control_flow_v5.
                                                                                                 M.call_closure (|
                                                                                                   M.get_function (|
                                                                                                     "alloc::fmt::format",
+                                                                                                    [],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -2565,6 +2585,7 @@ Module control_flow_v5.
                                                                                           M.call_closure (|
                                                                                             M.get_function (|
                                                                                               "core::panicking::panic_fmt",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -2801,6 +2822,7 @@ Module control_flow_v5.
         M.call_closure (|
           M.get_function (|
             "move_bytecode_verifier::control_flow_v5::check_code",
+            [],
             [
               Ty.function
                 [
@@ -2913,6 +2935,7 @@ Module control_flow_v5.
                                                                           M.call_closure (|
                                                                             M.get_function (|
                                                                               "move_bytecode_verifier::control_flow_v5::is_back_edge",
+                                                                              [],
                                                                               []
                                                                             |),
                                                                             [
@@ -3292,6 +3315,7 @@ Module control_flow_v5.
             M.call_closure (|
               M.get_function (|
                 "move_bytecode_verifier::control_flow_v5::check_code",
+                [],
                 [
                   Ty.function
                     [
@@ -3753,6 +3777,7 @@ Module control_flow_v5.
                 M.call_closure (|
                   M.get_function (|
                     "move_bytecode_verifier::control_flow_v5::check_code",
+                    [],
                     [
                       Ty.function
                         [

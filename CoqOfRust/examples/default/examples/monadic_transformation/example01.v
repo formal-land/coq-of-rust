@@ -48,17 +48,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "example01::id", [] |),
+              M.get_function (| "example01::id", [], [] |),
               [ Value.Integer IntegerKind.U64 0 ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "example01::id", [] |),
+              M.get_function (| "example01::id", [], [] |),
               [
                 M.call_closure (|
-                  M.get_function (| "example01::id", [] |),
+                  M.get_function (| "example01::id", [], [] |),
                   [ Value.Integer IntegerKind.U64 0 ]
                 |)
               ]
@@ -67,13 +67,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "example01::id", [] |),
+              M.get_function (| "example01::id", [], [] |),
               [
                 M.call_closure (|
-                  M.get_function (| "example01::id", [] |),
+                  M.get_function (| "example01::id", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_function (| "example01::id", [] |),
+                      M.get_function (| "example01::id", [], [] |),
                       [ Value.Integer IntegerKind.U64 0 ]
                     |)
                   ]
@@ -84,16 +84,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "example01::id", [] |),
+              M.get_function (| "example01::id", [], [] |),
               [
                 M.call_closure (|
-                  M.get_function (| "example01::id", [] |),
+                  M.get_function (| "example01::id", [], [] |),
                   [
                     M.call_closure (|
-                      M.get_function (| "example01::id", [] |),
+                      M.get_function (| "example01::id", [], [] |),
                       [
                         M.call_closure (|
-                          M.get_function (| "example01::id", [] |),
+                          M.get_function (| "example01::id", [], [] |),
                           [ Value.Integer IntegerKind.U64 0 ]
                         |)
                       ]
@@ -106,14 +106,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "example01::tri", [] |),
+              M.get_function (| "example01::tri", [], [] |),
               [
                 M.call_closure (|
-                  M.get_function (| "example01::id", [] |),
+                  M.get_function (| "example01::id", [], [] |),
                   [ Value.Integer IntegerKind.U64 1 ]
                 |);
                 M.call_closure (|
-                  M.get_function (| "example01::id", [] |),
+                  M.get_function (| "example01::id", [], [] |),
                   [ Value.Integer IntegerKind.U64 2 ]
                 |);
                 Value.Integer IntegerKind.U64 3

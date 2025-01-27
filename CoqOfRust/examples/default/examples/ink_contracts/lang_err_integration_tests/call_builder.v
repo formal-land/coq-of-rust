@@ -201,7 +201,7 @@ Module Impl_call_builder_CallBuilderTest.
             M.alloc (|
               M.never_to_any (|
                 M.call_closure (|
-                  M.get_function (| "core::panicking::panic", [] |),
+                  M.get_function (| "core::panicking::panic", [], [] |),
                   [ M.read (| Value.String "not yet implemented" |) ]
                 |)
               |)
@@ -229,7 +229,7 @@ Module Impl_call_builder_CallBuilderTest.
                   M.alloc (|
                     M.never_to_any (|
                       M.call_closure (|
-                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|

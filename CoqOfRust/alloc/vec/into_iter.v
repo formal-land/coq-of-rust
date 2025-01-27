@@ -101,7 +101,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::slice::raw::from_raw_parts", [ T ] |),
+              M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
               [
                 (* MutToConstPointer *)
                 M.pointer_coercion
@@ -222,7 +222,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
+              M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -392,6 +392,7 @@ Module vec.
                   M.call_closure (|
                     M.get_function (|
                       "core::ptr::drop_in_place",
+                      [],
                       [ Ty.apply (Ty.path "slice") [] [ T ] ]
                     |),
                     [ M.read (| remaining |) ]
@@ -1253,7 +1254,7 @@ Module vec.
               let~ to_drop :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
+                    M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -1347,6 +1348,7 @@ Module vec.
                     M.call_closure (|
                       M.get_function (|
                         "core::ptr::drop_in_place",
+                        [],
                         [ Ty.apply (Ty.path "slice") [] [ T ] ]
                       |),
                       [ M.read (| to_drop |) ]
@@ -1684,6 +1686,7 @@ Module vec.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::intrinsics::copy_nonoverlapping",
+                                          [],
                                           [ T ]
                                         |),
                                         [
@@ -1778,7 +1781,7 @@ Module vec.
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                         [
                           (* MutToConstPointer *)
                           M.pointer_coercion
@@ -2856,7 +2859,7 @@ Module vec.
                               "core::option::Option::Some"
                               [
                                 M.call_closure (|
-                                  M.get_function (| "core::ptr::read", [ T ] |),
+                                  M.get_function (| "core::ptr::read", [], [ T ] |),
                                   [
                                     (* MutToConstPointer *)
                                     M.pointer_coercion
@@ -2972,7 +2975,7 @@ Module vec.
                               "core::option::Option::Some"
                               [
                                 M.call_closure (|
-                                  M.get_function (| "core::ptr::read", [ T ] |),
+                                  M.get_function (| "core::ptr::read", [], [ T ] |),
                                   [
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
@@ -3114,7 +3117,7 @@ Module vec.
               let~ to_drop :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
+                    M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
                     [
                       M.rust_cast
                         (M.read (|
@@ -3134,6 +3137,7 @@ Module vec.
                     M.call_closure (|
                       M.get_function (|
                         "core::ptr::drop_in_place",
+                        [],
                         [ Ty.apply (Ty.path "slice") [] [ T ] ]
                       |),
                       [ M.read (| to_drop |) ]
@@ -3539,6 +3543,7 @@ Module vec.
                   M.call_closure (|
                     M.get_function (|
                       "core::ptr::drop_in_place",
+                      [],
                       [ Ty.apply (Ty.path "slice") [] [ T ] ]
                     |),
                     [

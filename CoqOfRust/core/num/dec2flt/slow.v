@@ -190,7 +190,7 @@ Module num.
                   let~ d :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::num::dec2flt::decimal::parse_decimal", [] |),
+                        M.get_function (| "core::num::dec2flt::decimal::parse_decimal", [], [] |),
                         [ M.read (| s |) ]
                       |)
                     |) in

@@ -934,7 +934,7 @@ Module collections.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [ M.read (| Value.String "assertion failed: height > 0" |)
                                           ]
                                         |)
@@ -1131,7 +1131,7 @@ Module collections.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [ M.read (| Value.String "assertion failed: height > 0" |)
                                           ]
                                         |)
@@ -1566,6 +1566,7 @@ Module collections.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "core::panicking::panic",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [
@@ -1831,7 +1832,7 @@ Module collections.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [
                                   M.read (|
                                     Value.String "assertion failed: edge.height == self.height - 1"
@@ -1900,7 +1901,7 @@ Module collections.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [ M.read (| Value.String "assertion failed: idx < CAPACITY" |) ]
                               |)
                             |)
@@ -2747,7 +2748,7 @@ Module collections.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [ M.read (| Value.String "assertion failed: len > 0" |) ]
                               |)
                             |)
@@ -2836,7 +2837,7 @@ Module collections.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [ M.read (| Value.String "assertion failed: len > 0" |) ]
                               |)
                             |)
@@ -3049,6 +3050,7 @@ Module collections.
                                                                     M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::panicking::assert_failed",
+                                                                        [],
                                                                         [
                                                                           Ty.path "usize";
                                                                           Ty.path "usize"
@@ -4207,7 +4209,7 @@ Module collections.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String "assertion failed: self.height == 0"
@@ -4311,7 +4313,7 @@ Module collections.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String "assertion failed: self.height > 0"
@@ -4414,6 +4416,7 @@ Module collections.
                         M.call_closure (|
                           M.get_function (|
                             "core::ptr::read",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::NodeRef")
@@ -4490,6 +4493,7 @@ Module collections.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::ptr::read",
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path
@@ -4636,6 +4640,7 @@ Module collections.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::ptr::read",
+                                                            [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path
@@ -4733,7 +4738,11 @@ Module collections.
                                         M.alloc (|
                                           M.never_to_any (|
                                             M.call_closure (|
-                                              M.get_function (| "core::panicking::panic_fmt", [] |),
+                                              M.get_function (|
+                                                "core::panicking::panic_fmt",
+                                                [],
+                                                []
+                                              |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -4960,6 +4969,7 @@ Module collections.
                     M.call_closure (|
                       M.get_function (|
                         "alloc::collections::btree::mem::take_mut",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::NodeRef")
@@ -5147,7 +5157,7 @@ Module collections.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [ M.read (| Value.String "assertion failed: self.height > 0" |) ]
                               |)
                             |)
@@ -5578,7 +5588,7 @@ Module collections.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [ M.read (| Value.String "assertion failed: idx < CAPACITY" |) ]
                               |)
                             |)
@@ -6157,7 +6167,7 @@ Module collections.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String "assertion failed: idx < node.len()"
@@ -6780,7 +6790,7 @@ Module collections.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String "assertion failed: idx <= node.len()"
@@ -7108,7 +7118,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String "assertion failed: edge_idx <= CAPACITY"
@@ -7334,7 +7344,7 @@ Module collections.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String
@@ -7382,7 +7392,11 @@ Module collections.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "alloc::collections::btree::node::slice_insert", [ K ] |),
+                      M.get_function (|
+                        "alloc::collections::btree::node::slice_insert",
+                        [],
+                        [ K ]
+                      |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -7430,7 +7444,11 @@ Module collections.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "alloc::collections::btree::node::slice_insert", [ V ] |),
+                      M.get_function (|
+                        "alloc::collections::btree::node::slice_insert",
+                        [],
+                        [ V ]
+                      |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -7688,6 +7706,7 @@ Module collections.
                             M.call_closure (|
                               M.get_function (|
                                 "alloc::collections::btree::node::splitpoint",
+                                [],
                                 []
                               |),
                               [
@@ -8687,7 +8706,7 @@ Module collections.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String
@@ -8756,7 +8775,7 @@ Module collections.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String
@@ -8804,7 +8823,11 @@ Module collections.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "alloc::collections::btree::node::slice_insert", [ K ] |),
+                      M.get_function (|
+                        "alloc::collections::btree::node::slice_insert",
+                        [],
+                        [ K ]
+                      |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -8852,7 +8875,11 @@ Module collections.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "alloc::collections::btree::node::slice_insert", [ V ] |),
+                      M.get_function (|
+                        "alloc::collections::btree::node::slice_insert",
+                        [],
+                        [ V ]
+                      |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -8902,6 +8929,7 @@ Module collections.
                     M.call_closure (|
                       M.get_function (|
                         "alloc::collections::btree::node::slice_insert",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
@@ -9148,7 +9176,7 @@ Module collections.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [
                                   M.read (|
                                     Value.String
@@ -9232,6 +9260,7 @@ Module collections.
                             M.call_closure (|
                               M.get_function (|
                                 "alloc::collections::btree::node::splitpoint",
+                                [],
                                 []
                               |),
                               [
@@ -9848,7 +9877,7 @@ Module collections.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String
@@ -10125,7 +10154,7 @@ Module collections.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String
@@ -10291,7 +10320,7 @@ Module collections.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String
@@ -10500,7 +10529,7 @@ Module collections.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String
@@ -10677,11 +10706,11 @@ Module collections.
                           Value.Tuple
                             [
                               M.call_closure (|
-                                M.get_function (| "core::mem::replace", [ K ] |),
+                                M.get_function (| "core::mem::replace", [], [ K ] |),
                                 [ M.read (| key |); M.read (| k |) ]
                               |);
                               M.call_closure (|
-                                M.get_function (| "core::mem::replace", [ V ] |),
+                                M.get_function (| "core::mem::replace", [], [ V ] |),
                                 [ M.read (| val |); M.read (| v |) ]
                               |)
                             ]
@@ -10794,7 +10823,7 @@ Module collections.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String
@@ -10948,7 +10977,11 @@ Module collections.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "alloc::collections::btree::node::move_to_slice", [ K ] |),
+                      M.get_function (|
+                        "alloc::collections::btree::node::move_to_slice",
+                        [],
+                        [ K ]
+                      |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11025,7 +11058,11 @@ Module collections.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "alloc::collections::btree::node::move_to_slice", [ V ] |),
+                      M.get_function (|
+                        "alloc::collections::btree::node::move_to_slice",
+                        [],
+                        [ V ]
+                      |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11303,7 +11340,7 @@ Module collections.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String
@@ -11508,7 +11545,7 @@ Module collections.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String
@@ -11794,7 +11831,11 @@ Module collections.
                 let~ k :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "alloc::collections::btree::node::slice_remove", [ K ] |),
+                      M.get_function (|
+                        "alloc::collections::btree::node::slice_remove",
+                        [],
+                        [ K ]
+                      |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11841,7 +11882,11 @@ Module collections.
                 let~ v :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "alloc::collections::btree::node::slice_remove", [ V ] |),
+                      M.get_function (|
+                        "alloc::collections::btree::node::slice_remove",
+                        [],
+                        [ V ]
+                      |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -12098,6 +12143,7 @@ Module collections.
                     M.call_closure (|
                       M.get_function (|
                         "alloc::collections::btree::node::move_to_slice",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
@@ -12303,6 +12349,7 @@ Module collections.
                     M.call_closure (|
                       M.get_function (|
                         "core::ptr::read",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::Handle")
@@ -12329,6 +12376,7 @@ Module collections.
                     M.call_closure (|
                       M.get_function (|
                         "core::ptr::read",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::Handle")
@@ -12955,7 +13003,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String
@@ -12995,6 +13043,7 @@ Module collections.
                               M.call_closure (|
                                 M.get_function (|
                                   "alloc::collections::btree::node::slice_remove",
+                                  [],
                                   [ K ]
                                 |),
                                 [
@@ -13082,6 +13131,7 @@ Module collections.
                               M.call_closure (|
                                 M.get_function (|
                                   "alloc::collections::btree::node::move_to_slice",
+                                  [],
                                   [ K ]
                                 |),
                                 [
@@ -13172,6 +13222,7 @@ Module collections.
                               M.call_closure (|
                                 M.get_function (|
                                   "alloc::collections::btree::node::slice_remove",
+                                  [],
                                   [ V ]
                                 |),
                                 [
@@ -13259,6 +13310,7 @@ Module collections.
                               M.call_closure (|
                                 M.get_function (|
                                   "alloc::collections::btree::node::move_to_slice",
+                                  [],
                                   [ V ]
                                 |),
                                 [
@@ -13349,6 +13401,7 @@ Module collections.
                               M.call_closure (|
                                 M.get_function (|
                                   "alloc::collections::btree::node::slice_remove",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ptr::non_null::NonNull")
@@ -13570,6 +13623,7 @@ Module collections.
                                       M.call_closure (|
                                         M.get_function (|
                                           "alloc::collections::btree::node::move_to_slice",
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "core::ptr::non_null::NonNull")
@@ -14264,7 +14318,7 @@ Module collections.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [
                                   M.read (|
                                     Value.String
@@ -14619,7 +14673,7 @@ Module collections.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [ M.read (| Value.String "assertion failed: count > 0" |) ]
                               |)
                             |)
@@ -14709,7 +14763,7 @@ Module collections.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [
                                   M.read (|
                                     Value.String
@@ -14740,7 +14794,7 @@ Module collections.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [
                                   M.read (|
                                     Value.String "assertion failed: old_left_len >= count"
@@ -14804,7 +14858,11 @@ Module collections.
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "alloc::collections::btree::node::slice_shr", [ K ] |),
+                        M.get_function (|
+                          "alloc::collections::btree::node::slice_shr",
+                          [],
+                          [ K ]
+                        |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -14848,7 +14906,11 @@ Module collections.
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "alloc::collections::btree::node::slice_shr", [ V ] |),
+                        M.get_function (|
+                          "alloc::collections::btree::node::slice_shr",
+                          [],
+                          [ V ]
+                        |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -14894,6 +14956,7 @@ Module collections.
                       M.call_closure (|
                         M.get_function (|
                           "alloc::collections::btree::node::move_to_slice",
+                          [],
                           [ K ]
                         |),
                         [
@@ -14985,6 +15048,7 @@ Module collections.
                       M.call_closure (|
                         M.get_function (|
                           "alloc::collections::btree::node::move_to_slice",
+                          [],
                           [ V ]
                         |),
                         [
@@ -15364,6 +15428,7 @@ Module collections.
                             M.call_closure (|
                               M.get_function (|
                                 "alloc::collections::btree::node::slice_shr",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
@@ -15438,6 +15503,7 @@ Module collections.
                             M.call_closure (|
                               M.get_function (|
                                 "alloc::collections::btree::node::move_to_slice",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
@@ -15616,7 +15682,7 @@ Module collections.
                         (M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [ M.read (| Value.String "internal error: entered unreachable code" |)
                               ]
                             |)
@@ -15730,7 +15796,7 @@ Module collections.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [ M.read (| Value.String "assertion failed: count > 0" |) ]
                               |)
                             |)
@@ -15820,7 +15886,7 @@ Module collections.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [
                                   M.read (|
                                     Value.String
@@ -15851,7 +15917,7 @@ Module collections.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [
                                   M.read (|
                                     Value.String "assertion failed: old_right_len >= count"
@@ -16109,6 +16175,7 @@ Module collections.
                               M.call_closure (|
                                 M.get_function (|
                                   "alloc::collections::btree::node::move_to_slice",
+                                  [],
                                   [ K ]
                                 |),
                                 [
@@ -16205,6 +16272,7 @@ Module collections.
                               M.call_closure (|
                                 M.get_function (|
                                   "alloc::collections::btree::node::move_to_slice",
+                                  [],
                                   [ V ]
                                 |),
                                 [
@@ -16301,6 +16369,7 @@ Module collections.
                               M.call_closure (|
                                 M.get_function (|
                                   "alloc::collections::btree::node::slice_shl",
+                                  [],
                                   [ K ]
                                 |),
                                 [
@@ -16349,6 +16418,7 @@ Module collections.
                               M.call_closure (|
                                 M.get_function (|
                                   "alloc::collections::btree::node::slice_shl",
+                                  [],
                                   [ V ]
                                 |),
                                 [
@@ -16493,6 +16563,7 @@ Module collections.
                             M.call_closure (|
                               M.get_function (|
                                 "alloc::collections::btree::node::move_to_slice",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
@@ -16617,6 +16688,7 @@ Module collections.
                             M.call_closure (|
                               M.get_function (|
                                 "alloc::collections::btree::node::slice_shl",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
@@ -16785,7 +16857,7 @@ Module collections.
                         (M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [ M.read (| Value.String "internal error: entered unreachable code" |)
                               ]
                             |)
@@ -17435,7 +17507,7 @@ Module collections.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [
                                   M.read (|
                                     Value.String "assertion failed: right_node.len() == 0"
@@ -17480,7 +17552,7 @@ Module collections.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [
                                   M.read (|
                                     Value.String
@@ -17555,6 +17627,7 @@ Module collections.
                             M.call_closure (|
                               M.get_function (|
                                 "alloc::collections::btree::node::move_to_slice",
+                                [],
                                 [ K ]
                               |),
                               [
@@ -17641,6 +17714,7 @@ Module collections.
                             M.call_closure (|
                               M.get_function (|
                                 "alloc::collections::btree::node::move_to_slice",
+                                [],
                                 [ V ]
                               |),
                               [
@@ -17786,6 +17860,7 @@ Module collections.
                                     M.call_closure (|
                                       M.get_function (|
                                         "alloc::collections::btree::node::move_to_slice",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::ptr::non_null::NonNull")
@@ -17977,7 +18052,7 @@ Module collections.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String "internal error: entered unreachable code"
@@ -18484,7 +18559,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [ M.read (| Value.String "assertion failed: len > idx" |) ]
                                       |)
                                     |)
@@ -18534,6 +18609,7 @@ Module collections.
                             M.call_closure (|
                               M.get_function (|
                                 "core::intrinsics::copy",
+                                [],
                                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                                 ]
                               |),
@@ -18684,7 +18760,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [ M.read (| Value.String "assertion failed: idx < len" |) ]
                                       |)
                                     |)
@@ -18738,6 +18814,7 @@ Module collections.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::copy",
+                      [],
                       [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                     |),
                     [
@@ -18818,6 +18895,7 @@ Module collections.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::copy",
+                      [],
                       [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                     |),
                     [
@@ -18896,6 +18974,7 @@ Module collections.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::copy",
+                      [],
                       [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                     |),
                     [
@@ -19003,7 +19082,7 @@ Module collections.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [ M.read (| Value.String "assertion failed: src.len() == dst.len()" |)
                               ]
                             |)
@@ -19017,6 +19096,7 @@ Module collections.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::copy_nonoverlapping",
+                      [],
                       [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                     |),
                     [

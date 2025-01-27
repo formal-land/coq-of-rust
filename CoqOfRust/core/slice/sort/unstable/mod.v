@@ -86,7 +86,7 @@ Module slice.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::likely", [] |),
+                                    M.get_function (| "core::intrinsics::likely", [], [] |),
                                     [
                                       BinOp.lt (|
                                         M.read (| len |),
@@ -113,7 +113,7 @@ Module slice.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::likely", [] |),
+                                    M.get_function (| "core::intrinsics::likely", [], [] |),
                                     [
                                       BinOp.le (|
                                         M.read (| len |),
@@ -136,6 +136,7 @@ Module slice.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::slice::sort::shared::smallsort::insertion_sort_shift_left",
+                                          [],
                                           [ T; F ]
                                         |),
                                         [
@@ -155,7 +156,7 @@ Module slice.
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::slice::sort::unstable::ipnsort", [ T; F ] |),
+                        M.get_function (| "core::slice::sort::unstable::ipnsort", [], [ T; F ] |),
                         [ M.read (| v |); M.read (| is_less |) ]
                       |)
                     |) in
@@ -224,6 +225,7 @@ Module slice.
                       M.call_closure (|
                         M.get_function (|
                           "core::slice::sort::shared::find_existing_run",
+                          [],
                           [ T; F ]
                         |),
                         [ M.read (| v |); M.read (| is_less |) ]
@@ -239,7 +241,7 @@ Module slice.
                           let~ _ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::intrinsics::assume", [] |),
+                                M.get_function (| "core::intrinsics::assume", [], [] |),
                                 [ BinOp.le (| M.read (| run_len |), M.read (| len |) |) ]
                               |)
                             |) in
@@ -316,6 +318,7 @@ Module slice.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::slice::sort::unstable::quicksort::quicksort",
+                                  [],
                                   [ T; F ]
                                 |),
                                 [

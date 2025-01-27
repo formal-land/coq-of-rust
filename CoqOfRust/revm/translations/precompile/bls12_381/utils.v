@@ -168,7 +168,7 @@ Module bls12_381.
                         let~ _ :=
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "blst::blst_bendian_from_fp", [] |),
+                              M.get_function (| "blst::blst_bendian_from_fp", [], [] |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -258,6 +258,7 @@ Module bls12_381.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -265,7 +266,11 @@ Module bls12_381.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -474,6 +479,7 @@ Module bls12_381.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::hint::must_use",
+                                                      [],
                                                       [ Ty.path "alloc::string::String" ]
                                                     |),
                                                     [
@@ -483,6 +489,7 @@ Module bls12_381.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "alloc::fmt::format",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -673,6 +680,7 @@ Module bls12_381.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::hint::must_use",
+                                              [],
                                               [ Ty.path "alloc::string::String" ]
                                             |),
                                             [
@@ -680,7 +688,11 @@ Module bls12_381.
                                                 let~ res :=
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_function (| "alloc::fmt::format", [] |),
+                                                      M.get_function (|
+                                                        "alloc::fmt::format",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -799,7 +811,7 @@ Module bls12_381.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "blst::blst_scalar_from_bendian", [] |),
+                      M.get_function (| "blst::blst_scalar_from_bendian", [], [] |),
                       [
                         out;
                         M.call_closure (|
@@ -1054,6 +1066,7 @@ Module bls12_381.
                                   M.call_closure (|
                                     M.get_function (|
                                       "revm_precompile::bls12_381::utils::is_valid_be",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| input |) ]
@@ -1108,7 +1121,7 @@ Module bls12_381.
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "blst::blst_fp_from_bendian", [] |),
+                        M.get_function (| "blst::blst_fp_from_bendian", [], [] |),
                         [
                           fp;
                           M.call_closure (|

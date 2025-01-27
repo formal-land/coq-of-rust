@@ -300,7 +300,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String "assertion failed: !self.heap.is_empty()"
@@ -454,7 +454,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String "assertion failed: !self.heap.is_empty()"
@@ -1309,7 +1309,11 @@ Module collections.
                                               let~ _ :=
                                                 M.alloc (|
                                                   M.call_closure (|
-                                                    M.get_function (| "core::mem::swap", [ T ] |),
+                                                    M.get_function (|
+                                                      "core::mem::swap",
+                                                      [],
+                                                      [ T ]
+                                                    |),
                                                     [
                                                       item;
                                                       M.call_closure (|
@@ -1530,7 +1534,7 @@ Module collections.
                               let~ _ :=
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::ptr::swap", [ T ] |),
+                                    M.get_function (| "core::ptr::swap", [], [ T ] |),
                                     [
                                       M.read (| ptr |);
                                       M.call_closure (|
@@ -2523,6 +2527,7 @@ Module collections.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::drop",
+                      [],
                       [ Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [] [ T ] ]
                     |),
                     [ M.read (| hole |) ]
@@ -3054,6 +3059,7 @@ Module collections.
                             M.call_closure (|
                               M.get_function (|
                                 "core::mem::swap",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::collections::binary_heap::BinaryHeap")
@@ -4005,7 +4011,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String "assertion failed: pos < data.len()"
@@ -4024,7 +4030,7 @@ Module collections.
               let~ elt :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::ptr::read", [ T ] |),
+                    M.get_function (| "core::ptr::read", [], [ T ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -4175,7 +4181,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String "assertion failed: index != self.pos"
@@ -4239,7 +4245,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String "assertion failed: index < self.data.len()"
@@ -4342,7 +4348,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String "assertion failed: index != self.pos"
@@ -4406,7 +4412,7 @@ Module collections.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String "assertion failed: index < self.data.len()"
@@ -4474,7 +4480,7 @@ Module collections.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                      M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                       [
                         M.read (| index_ptr |);
                         M.read (| hole_ptr |);
@@ -4533,7 +4539,7 @@ Module collections.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                    M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                     [
                       M.call_closure (|
                         M.get_trait_method (|
@@ -6210,7 +6216,7 @@ Module collections.
                           let~ _ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::mem::drop", [ T ] |),
+                                M.get_function (| "core::mem::drop", [], [ T ] |),
                                 [ M.read (| item |) ]
                               |)
                             |) in
@@ -6219,6 +6225,7 @@ Module collections.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::mem::forget",
+                                  [],
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::collections::binary_heap::drop::DropGuard")

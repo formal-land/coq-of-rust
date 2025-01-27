@@ -202,6 +202,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::panicking::assert_failed",
+                                      [],
                                       [
                                         Ty.path "alloc::string::String";
                                         Ty.path "alloc::string::String"
@@ -274,6 +275,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::panicking::assert_failed",
+                                      [],
                                       [ Ty.path "u8"; Ty.path "u8" ]
                                     |),
                                     [

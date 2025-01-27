@@ -164,7 +164,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
+                      M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -205,7 +205,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "std::io::stdio::_print", [] |),
+                      M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -264,12 +264,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.call_closure (|
               M.get_function (|
                 "introducing_question_mark_is_an_replacement_for_deprecated_try::print",
+                [],
                 []
               |),
               [
                 M.call_closure (|
                   M.get_function (|
                     "introducing_question_mark_is_an_replacement_for_deprecated_try::multiply",
+                    [],
                     []
                   |),
                   [ M.read (| Value.String "10" |); M.read (| Value.String "2" |) ]
@@ -282,12 +284,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.call_closure (|
               M.get_function (|
                 "introducing_question_mark_is_an_replacement_for_deprecated_try::print",
+                [],
                 []
               |),
               [
                 M.call_closure (|
                   M.get_function (|
                     "introducing_question_mark_is_an_replacement_for_deprecated_try::multiply",
+                    [],
                     []
                   |),
                   [ M.read (| Value.String "t" |); M.read (| Value.String "2" |) ]

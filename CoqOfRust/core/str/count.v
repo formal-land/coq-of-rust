@@ -7,7 +7,10 @@ Module str.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            M.call_closure (| M.get_function (| "core::mem::size_of", [ Ty.path "usize" ] |), [] |)
+            M.call_closure (|
+              M.get_function (| "core::mem::size_of", [], [ Ty.path "usize" ] |),
+              []
+            |)
           |))).
     
     Definition value_UNROLL_INNER : Value.t :=
@@ -58,7 +61,7 @@ Module str.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::str::count::char_count_general_case", [] |),
+                        M.get_function (| "core::str::count::char_count_general_case", [], [] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
@@ -71,7 +74,7 @@ Module str.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::str::count::do_count_chars", [] |),
+                        M.get_function (| "core::str::count::do_count_chars", [], [] |),
                         [ M.read (| s |) ]
                       |)
                     |)))
@@ -198,7 +201,7 @@ Module str.
                                     M.use
                                       (M.alloc (|
                                         M.call_closure (|
-                                          M.get_function (| "core::intrinsics::unlikely", [] |),
+                                          M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                           [
                                             LogicalOp.or (|
                                               LogicalOp.or (|
@@ -268,6 +271,7 @@ Module str.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::str::count::char_count_general_case",
+                                              [],
                                               []
                                             |),
                                             [
@@ -294,6 +298,7 @@ Module str.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::str::count::char_count_general_case",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| head |) ]
@@ -301,6 +306,7 @@ Module str.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::str::count::char_count_general_case",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| tail |) ]
@@ -634,6 +640,7 @@ Module str.
                                                                                                                   M.call_closure (|
                                                                                                                     M.get_function (|
                                                                                                                       "core::str::count::contains_non_continuation_byte",
+                                                                                                                      [],
                                                                                                                       []
                                                                                                                     |),
                                                                                                                     [
@@ -674,6 +681,7 @@ Module str.
                                                                 M.call_closure (|
                                                                   M.get_function (|
                                                                     "core::str::count::sum_bytes_in_usize",
+                                                                    [],
                                                                     []
                                                                   |),
                                                                   [ M.read (| counts |) ]
@@ -831,6 +839,7 @@ Module str.
                                                                                                         M.call_closure (|
                                                                                                           M.get_function (|
                                                                                                             "core::str::count::contains_non_continuation_byte",
+                                                                                                            [],
                                                                                                             []
                                                                                                           |),
                                                                                                           [
@@ -863,6 +872,7 @@ Module str.
                                                                               M.call_closure (|
                                                                                 M.get_function (|
                                                                                   "core::str::count::sum_bytes_in_usize",
+                                                                                  [],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -1099,6 +1109,7 @@ Module str.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::str::validations::utf8_is_cont_byte",
+                                          [],
                                           []
                                         |),
                                         [ M.read (| byte |) ]

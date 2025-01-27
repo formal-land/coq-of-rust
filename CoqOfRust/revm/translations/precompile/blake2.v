@@ -16,11 +16,11 @@ Module blake2.
             "revm_precompile::PrecompileWithAddress"
             [
               M.call_closure (|
-                M.get_function (| "revm_precompile::u64_to_address", [] |),
+                M.get_function (| "revm_precompile::u64_to_address", [], [] |),
                 [ Value.Integer IntegerKind.U64 9 ]
               |);
               (* ReifyFnPointer *)
-              M.pointer_coercion (M.get_function (| "revm_precompile::blake2::run", [] |))
+              M.pointer_coercion (M.get_function (| "revm_precompile::blake2::run", [], [] |))
             ]
         |))).
   
@@ -926,7 +926,7 @@ Module blake2.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "revm_precompile::blake2::algo::compress", [] |),
+                    M.get_function (| "revm_precompile::blake2::algo::compress", [], [] |),
                     [ M.read (| rounds |); h; M.read (| m |); M.read (| t |); M.read (| f |) ]
                   |)
                 |) in
@@ -1787,6 +1787,7 @@ Module blake2.
                                           M.call_closure (|
                                             M.get_function (|
                                               "revm_precompile::blake2::algo::g",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1821,6 +1822,7 @@ Module blake2.
                                           M.call_closure (|
                                             M.get_function (|
                                               "revm_precompile::blake2::algo::g",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1855,6 +1857,7 @@ Module blake2.
                                           M.call_closure (|
                                             M.get_function (|
                                               "revm_precompile::blake2::algo::g",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1889,6 +1892,7 @@ Module blake2.
                                           M.call_closure (|
                                             M.get_function (|
                                               "revm_precompile::blake2::algo::g",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1923,6 +1927,7 @@ Module blake2.
                                           M.call_closure (|
                                             M.get_function (|
                                               "revm_precompile::blake2::algo::g",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1957,6 +1962,7 @@ Module blake2.
                                           M.call_closure (|
                                             M.get_function (|
                                               "revm_precompile::blake2::algo::g",
+                                              [],
                                               []
                                             |),
                                             [
@@ -1991,6 +1997,7 @@ Module blake2.
                                           M.call_closure (|
                                             M.get_function (|
                                               "revm_precompile::blake2::algo::g",
+                                              [],
                                               []
                                             |),
                                             [
@@ -2025,6 +2032,7 @@ Module blake2.
                                           M.call_closure (|
                                             M.get_function (|
                                               "revm_precompile::blake2::algo::g",
+                                              [],
                                               []
                                             |),
                                             [

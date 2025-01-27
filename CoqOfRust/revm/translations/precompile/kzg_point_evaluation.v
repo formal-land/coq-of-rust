@@ -12,7 +12,7 @@ Module kzg_point_evaluation.
               M.read (| M.get_constant (| "revm_precompile::kzg_point_evaluation::ADDRESS" |) |);
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_precompile::kzg_point_evaluation::run", [] |))
+                (M.get_function (| "revm_precompile::kzg_point_evaluation::run", [], [] |))
             ]
         |))).
   
@@ -21,7 +21,7 @@ Module kzg_point_evaluation.
       ltac:(M.monadic
         (M.alloc (|
           M.call_closure (|
-            M.get_function (| "revm_precompile::u64_to_address", [] |),
+            M.get_function (| "revm_precompile::u64_to_address", [], [] |),
             [ Value.Integer IntegerKind.U64 10 ]
           |)
         |))).
@@ -300,6 +300,7 @@ Module kzg_point_evaluation.
                                     M.call_closure (|
                                       M.get_function (|
                                         "revm_precompile::kzg_point_evaluation::kzg_to_versioned_hash",
+                                        [],
                                         []
                                       |),
                                       [ M.read (| commitment |) ]
@@ -343,14 +344,22 @@ Module kzg_point_evaluation.
               let~ commitment :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "revm_precompile::kzg_point_evaluation::as_bytes48", [] |),
+                    M.get_function (|
+                      "revm_precompile::kzg_point_evaluation::as_bytes48",
+                      [],
+                      []
+                    |),
                     [ M.read (| commitment |) ]
                   |)
                 |) in
               let~ z :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "revm_precompile::kzg_point_evaluation::as_bytes32", [] |),
+                    M.get_function (|
+                      "revm_precompile::kzg_point_evaluation::as_bytes32",
+                      [],
+                      []
+                    |),
                     [
                       M.call_closure (|
                         M.get_trait_method (|
@@ -396,7 +405,11 @@ Module kzg_point_evaluation.
               let~ y :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "revm_precompile::kzg_point_evaluation::as_bytes32", [] |),
+                    M.get_function (|
+                      "revm_precompile::kzg_point_evaluation::as_bytes32",
+                      [],
+                      []
+                    |),
                     [
                       M.call_closure (|
                         M.get_trait_method (|
@@ -442,7 +455,11 @@ Module kzg_point_evaluation.
               let~ proof :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "revm_precompile::kzg_point_evaluation::as_bytes48", [] |),
+                    M.get_function (|
+                      "revm_precompile::kzg_point_evaluation::as_bytes48",
+                      [],
+                      []
+                    |),
                     [
                       M.call_closure (|
                         M.get_trait_method (|
@@ -498,6 +515,7 @@ Module kzg_point_evaluation.
                                 M.call_closure (|
                                   M.get_function (|
                                     "revm_precompile::kzg_point_evaluation::verify_kzg_proof",
+                                    [],
                                     []
                                   |),
                                   [
@@ -769,7 +787,7 @@ Module kzg_point_evaluation.
           let~ kzg_settings :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "c_kzg::ethereum_kzg_settings::ethereum_kzg_settings", [] |),
+                M.get_function (| "c_kzg::ethereum_kzg_settings::ethereum_kzg_settings", [], [] |),
                 []
               |)
             |) in
@@ -876,7 +894,11 @@ Module kzg_point_evaluation.
               |),
               [
                 M.call_closure (|
-                  M.get_function (| "revm_precompile::kzg_point_evaluation::as_array", [] |),
+                  M.get_function (|
+                    "revm_precompile::kzg_point_evaluation::as_array",
+                    [ Value.Integer IntegerKind.Usize 32 ],
+                    []
+                  |),
                   [ M.read (| bytes |) ]
                 |)
               ]
@@ -915,7 +937,11 @@ Module kzg_point_evaluation.
               |),
               [
                 M.call_closure (|
-                  M.get_function (| "revm_precompile::kzg_point_evaluation::as_array", [] |),
+                  M.get_function (|
+                    "revm_precompile::kzg_point_evaluation::as_array",
+                    [ Value.Integer IntegerKind.Usize 48 ],
+                    []
+                  |),
                   [ M.read (| bytes |) ]
                 |)
               ]

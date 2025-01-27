@@ -439,7 +439,7 @@ Module vec.
                                   let~ _ :=
                                     M.alloc (|
                                       M.call_closure (|
-                                        M.get_function (| "core::intrinsics::copy", [ T ] |),
+                                        M.get_function (| "core::intrinsics::copy", [], [ T ] |),
                                         [
                                           M.read (| src |);
                                           M.read (| dst |);
@@ -507,7 +507,7 @@ Module vec.
                                 let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
-                                      M.get_function (| "core::intrinsics::copy", [ T ] |),
+                                      M.get_function (| "core::intrinsics::copy", [], [ T ] |),
                                       [
                                         M.read (| src |);
                                         M.read (| dst |);
@@ -705,7 +705,7 @@ Module vec.
                                 ltac:(M.monadic
                                   (let elt := M.copy (| γ |) in
                                   M.call_closure (|
-                                    M.get_function (| "core::ptr::read", [ T ] |),
+                                    M.get_function (| "core::ptr::read", [], [ T ] |),
                                     [ M.read (| M.use (M.alloc (| M.read (| elt |) |)) |) ]
                                   |)))
                             ]
@@ -812,7 +812,7 @@ Module vec.
                                 ltac:(M.monadic
                                   (let elt := M.copy (| γ |) in
                                   M.call_closure (|
-                                    M.get_function (| "core::ptr::read", [ T ] |),
+                                    M.get_function (| "core::ptr::read", [], [ T ] |),
                                     [ M.read (| M.use (M.alloc (| M.read (| elt |) |)) |) ]
                                   |)))
                             ]
@@ -918,6 +918,7 @@ Module vec.
                       M.call_closure (|
                         M.get_function (|
                           "core::mem::take",
+                          [],
                           [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ]
                         |),
                         [
@@ -1133,7 +1134,7 @@ Module vec.
                   let~ to_drop :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
+                        M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -1152,6 +1153,7 @@ Module vec.
                       M.call_closure (|
                         M.get_function (|
                           "core::ptr::drop_in_place",
+                          [],
                           [ Ty.apply (Ty.path "slice") [] [ T ] ]
                         |),
                         [ M.read (| to_drop |) ]

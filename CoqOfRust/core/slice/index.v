@@ -102,6 +102,7 @@ Module slice.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::const_eval_select",
+              [],
               [
                 Ty.tuple [ Ty.path "usize"; Ty.path "usize" ];
                 Ty.function [ Ty.path "usize"; Ty.path "usize" ] (Ty.path "never");
@@ -111,8 +112,8 @@ Module slice.
             |),
             [
               Value.Tuple [ M.read (| index |); M.read (| len |) ];
-              M.get_function (| "core::slice::index::slice_start_index_len_fail_ct", [] |);
-              M.get_function (| "core::slice::index::slice_start_index_len_fail_rt", [] |)
+              M.get_function (| "core::slice::index::slice_start_index_len_fail_ct", [], [] |);
+              M.get_function (| "core::slice::index::slice_start_index_len_fail_rt", [], [] |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -137,7 +138,7 @@ Module slice.
           (let index := M.alloc (| index |) in
           let len := M.alloc (| len |) in
           M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -208,7 +209,7 @@ Module slice.
                       fun γ =>
                         ltac:(M.monadic
                           (M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -257,6 +258,7 @@ Module slice.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::const_eval_select",
+              [],
               [
                 Ty.tuple [ Ty.path "usize"; Ty.path "usize" ];
                 Ty.function [ Ty.path "usize"; Ty.path "usize" ] (Ty.path "never");
@@ -266,8 +268,8 @@ Module slice.
             |),
             [
               Value.Tuple [ M.read (| index |); M.read (| len |) ];
-              M.get_function (| "core::slice::index::slice_end_index_len_fail_ct", [] |);
-              M.get_function (| "core::slice::index::slice_end_index_len_fail_rt", [] |)
+              M.get_function (| "core::slice::index::slice_end_index_len_fail_ct", [], [] |);
+              M.get_function (| "core::slice::index::slice_end_index_len_fail_rt", [], [] |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -292,7 +294,7 @@ Module slice.
           (let index := M.alloc (| index |) in
           let len := M.alloc (| len |) in
           M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -361,7 +363,7 @@ Module slice.
                       fun γ =>
                         ltac:(M.monadic
                           (M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -408,6 +410,7 @@ Module slice.
           M.call_closure (|
             M.get_function (|
               "core::intrinsics::const_eval_select",
+              [],
               [
                 Ty.tuple [ Ty.path "usize"; Ty.path "usize" ];
                 Ty.function [ Ty.path "usize"; Ty.path "usize" ] (Ty.path "never");
@@ -417,8 +420,8 @@ Module slice.
             |),
             [
               Value.Tuple [ M.read (| index |); M.read (| end_ |) ];
-              M.get_function (| "core::slice::index::slice_index_order_fail_ct", [] |);
-              M.get_function (| "core::slice::index::slice_index_order_fail_rt", [] |)
+              M.get_function (| "core::slice::index::slice_index_order_fail_ct", [], [] |);
+              M.get_function (| "core::slice::index::slice_index_order_fail_rt", [], [] |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -443,7 +446,7 @@ Module slice.
           (let index := M.alloc (| index |) in
           let end_ := M.alloc (| end_ |) in
           M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -512,7 +515,7 @@ Module slice.
                       fun γ =>
                         ltac:(M.monadic
                           (M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -557,7 +560,7 @@ Module slice.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -596,7 +599,7 @@ Module slice.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -636,6 +639,7 @@ Module slice.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::offset",
+                  [],
                   [ Ty.apply (Ty.path "*const") [] [ T ]; Ty.path "usize" ]
                 |),
                 [ M.read (| ptr |); M.read (| index |) ]
@@ -666,6 +670,7 @@ Module slice.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::offset",
+                  [],
                   [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.path "usize" ]
                 |),
                 [ M.read (| ptr |); M.read (| index |) ]
@@ -700,7 +705,7 @@ Module slice.
             let~ ptr :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::index::get_noubcheck", [ T ] |),
+                  M.get_function (| "core::slice::index::get_noubcheck", [], [ T ] |),
                   [ M.read (| ptr |); M.read (| offset |) ]
                 |)
               |) in
@@ -708,6 +713,7 @@ Module slice.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::aggregate_raw_ptr",
+                  [],
                   [
                     Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
                     Ty.apply (Ty.path "*const") [] [ T ];
@@ -750,7 +756,7 @@ Module slice.
             let~ ptr :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::index::get_mut_noubcheck", [ T ] |),
+                  M.get_function (| "core::slice::index::get_mut_noubcheck", [], [ T ] |),
                   [ M.read (| ptr |); M.read (| offset |) ]
                 |)
               |) in
@@ -758,6 +764,7 @@ Module slice.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::aggregate_raw_ptr",
+                  [],
                   [
                     Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
                     Ty.apply (Ty.path "*mut") [] [ T ];
@@ -972,7 +979,7 @@ Module slice.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
-                              M.get_function (| "core::slice::index::get_noubcheck", [ T ] |),
+                              M.get_function (| "core::slice::index::get_noubcheck", [], [ T ] |),
                               [ M.read (| slice |); M.read (| self |) ]
                             |)
                           ]
@@ -1030,7 +1037,11 @@ Module slice.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
-                              M.get_function (| "core::slice::index::get_mut_noubcheck", [ T ] |),
+                              M.get_function (|
+                                "core::slice::index::get_mut_noubcheck",
+                                [],
+                                [ T ]
+                              |),
                               [ M.read (| slice |); M.read (| self |) ]
                             |)
                           ]
@@ -1086,7 +1097,7 @@ Module slice.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                                M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                                 []
                               |)
                             |)) in
@@ -1123,7 +1134,7 @@ Module slice.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::assume", [] |),
+                    M.get_function (| "core::intrinsics::assume", [], [] |),
                     [
                       BinOp.lt (|
                         M.read (| self |),
@@ -1141,7 +1152,7 @@ Module slice.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::index::get_noubcheck", [ T ] |),
+                  M.get_function (| "core::slice::index::get_noubcheck", [], [ T ] |),
                   [ M.read (| slice |); M.read (| self |) ]
                 |)
               |)
@@ -1183,7 +1194,7 @@ Module slice.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                M.get_function (| "core::intrinsics::ub_checks", [], [] |),
                                 []
                               |)
                             |)) in
@@ -1219,7 +1230,7 @@ Module slice.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::index::get_mut_noubcheck", [ T ] |),
+                  M.get_function (| "core::slice::index::get_mut_noubcheck", [], [ T ] |),
                   [ M.read (| slice |); M.read (| self |) ]
                 |)
               |)
@@ -1338,6 +1349,7 @@ Module slice.
                             M.call_closure (|
                               M.get_function (|
                                 "core::slice::index::get_offset_len_noubcheck",
+                                [],
                                 [ T ]
                               |),
                               [
@@ -1424,6 +1436,7 @@ Module slice.
                             M.call_closure (|
                               M.get_function (|
                                 "core::slice::index::get_offset_len_mut_noubcheck",
+                                [],
                                 [ T ]
                               |),
                               [
@@ -1494,7 +1507,7 @@ Module slice.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                M.get_function (| "core::intrinsics::ub_checks", [], [] |),
                                 []
                               |)
                             |)) in
@@ -1537,7 +1550,7 @@ Module slice.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::index::get_offset_len_noubcheck", [ T ] |),
+                  M.get_function (| "core::slice::index::get_offset_len_noubcheck", [], [ T ] |),
                   [
                     M.read (| slice |);
                     M.call_closure (|
@@ -1598,7 +1611,7 @@ Module slice.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                M.get_function (| "core::intrinsics::ub_checks", [], [] |),
                                 []
                               |)
                             |)) in
@@ -1641,7 +1654,11 @@ Module slice.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::index::get_offset_len_mut_noubcheck", [ T ] |),
+                  M.get_function (|
+                    "core::slice::index::get_offset_len_mut_noubcheck",
+                    [],
+                    [ T ]
+                  |),
                   [
                     M.read (| slice |);
                     M.call_closure (|
@@ -1717,6 +1734,7 @@ Module slice.
                         M.call_closure (|
                           M.get_function (|
                             "core::slice::index::get_offset_len_noubcheck",
+                            [],
                             [ T ]
                           |),
                           [
@@ -1745,7 +1763,11 @@ Module slice.
                       (M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::slice::index::slice_end_index_len_fail", [] |),
+                            M.get_function (|
+                              "core::slice::index::slice_end_index_len_fail",
+                              [],
+                              []
+                            |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -1823,6 +1845,7 @@ Module slice.
                         M.call_closure (|
                           M.get_function (|
                             "core::slice::index::get_offset_len_mut_noubcheck",
+                            [],
                             [ T ]
                           |),
                           [
@@ -1851,7 +1874,11 @@ Module slice.
                       (M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::slice::index::slice_end_index_len_fail", [] |),
+                            M.get_function (|
+                              "core::slice::index::slice_end_index_len_fail",
+                              [],
+                              []
+                            |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -1988,6 +2015,7 @@ Module slice.
                             M.call_closure (|
                               M.get_function (|
                                 "core::slice::index::get_offset_len_noubcheck",
+                                [],
                                 [ T ]
                               |),
                               [
@@ -2096,6 +2124,7 @@ Module slice.
                             M.call_closure (|
                               M.get_function (|
                                 "core::slice::index::get_offset_len_mut_noubcheck",
+                                [],
                                 [ T ]
                               |),
                               [
@@ -2168,7 +2197,7 @@ Module slice.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                M.get_function (| "core::intrinsics::ub_checks", [], [] |),
                                 []
                               |)
                             |)) in
@@ -2218,7 +2247,7 @@ Module slice.
               let~ new_len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "usize" ] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -2239,7 +2268,7 @@ Module slice.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::index::get_offset_len_noubcheck", [ T ] |),
+                  M.get_function (| "core::slice::index::get_offset_len_noubcheck", [], [ T ] |),
                   [
                     M.read (| slice |);
                     M.read (|
@@ -2298,7 +2327,7 @@ Module slice.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                M.get_function (| "core::intrinsics::ub_checks", [], [] |),
                                 []
                               |)
                             |)) in
@@ -2348,7 +2377,7 @@ Module slice.
               let~ new_len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "usize" ] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -2369,7 +2398,11 @@ Module slice.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::slice::index::get_offset_len_mut_noubcheck", [ T ] |),
+                  M.get_function (|
+                    "core::slice::index::get_offset_len_mut_noubcheck",
+                    [],
+                    [ T ]
+                  |),
                   [
                     M.read (| slice |);
                     M.read (|
@@ -2477,6 +2510,7 @@ Module slice.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::slice::index::slice_end_index_len_fail",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2506,6 +2540,7 @@ Module slice.
                         M.call_closure (|
                           M.get_function (|
                             "core::slice::index::get_offset_len_noubcheck",
+                            [],
                             [ T ]
                           |),
                           [
@@ -2616,6 +2651,7 @@ Module slice.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::slice::index::slice_end_index_len_fail",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2645,6 +2681,7 @@ Module slice.
                         M.call_closure (|
                           M.get_function (|
                             "core::slice::index::get_offset_len_mut_noubcheck",
+                            [],
                             [ T ]
                           |),
                           [
@@ -3482,6 +3519,7 @@ Module slice.
                             M.call_closure (|
                               M.get_function (|
                                 "core::slice::index::slice_start_index_len_fail",
+                                [],
                                 []
                               |),
                               [
@@ -3574,6 +3612,7 @@ Module slice.
                             M.call_closure (|
                               M.get_function (|
                                 "core::slice::index::slice_start_index_len_fail",
+                                [],
                                 []
                               |),
                               [
@@ -4306,6 +4345,7 @@ Module slice.
                             M.call_closure (|
                               M.get_function (|
                                 "core::slice::index::slice_end_index_overflow_fail",
+                                [],
                                 []
                               |),
                               []
@@ -4393,6 +4433,7 @@ Module slice.
                             M.call_closure (|
                               M.get_function (|
                                 "core::slice::index::slice_end_index_overflow_fail",
+                                [],
                                 []
                               |),
                               []
@@ -5121,6 +5162,7 @@ Module slice.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::slice::index::slice_start_index_overflow_fail",
+                                                      [],
                                                       []
                                                     |),
                                                     []
@@ -5193,6 +5235,7 @@ Module slice.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::slice::index::slice_end_index_overflow_fail",
+                                                      [],
                                                       []
                                                     |),
                                                     []
@@ -5236,7 +5279,11 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::slice::index::slice_index_order_fail", [] |),
+                            M.get_function (|
+                              "core::slice::index::slice_index_order_fail",
+                              [],
+                              []
+                            |),
                             [ M.read (| start |); M.read (| end_ |) ]
                           |)
                         |)
@@ -5256,7 +5303,11 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::slice::index::slice_end_index_len_fail", [] |),
+                            M.get_function (|
+                              "core::slice::index::slice_end_index_len_fail",
+                              [],
+                              []
+                            |),
                             [ M.read (| end_ |); M.read (| len |) ]
                           |)
                         |)
@@ -6118,6 +6169,7 @@ Module slice.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "core::slice::index::slice_start_index_overflow_fail",
+                                                              [],
                                                               []
                                                             |),
                                                             []
@@ -6186,6 +6238,7 @@ Module slice.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "core::slice::index::slice_end_index_overflow_fail",
+                                                              [],
                                                               []
                                                             |),
                                                             []
@@ -6285,7 +6338,7 @@ Module slice.
                             |),
                             [
                               M.call_closure (|
-                                M.get_function (| "core::slice::index::into_range", [] |),
+                                M.get_function (| "core::slice::index::into_range", [], [] |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -6406,7 +6459,7 @@ Module slice.
                             |),
                             [
                               M.call_closure (|
-                                M.get_function (| "core::slice::index::into_range", [] |),
+                                M.get_function (| "core::slice::index::into_range", [], [] |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -6511,7 +6564,7 @@ Module slice.
               |),
               [
                 M.call_closure (|
-                  M.get_function (| "core::slice::index::into_range_unchecked", [] |),
+                  M.get_function (| "core::slice::index::into_range_unchecked", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -6558,7 +6611,7 @@ Module slice.
               |),
               [
                 M.call_closure (|
-                  M.get_function (| "core::slice::index::into_range_unchecked", [] |),
+                  M.get_function (| "core::slice::index::into_range_unchecked", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -6599,7 +6652,7 @@ Module slice.
               |),
               [
                 M.call_closure (|
-                  M.get_function (| "core::slice::index::into_slice_range", [] |),
+                  M.get_function (| "core::slice::index::into_slice_range", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -6640,7 +6693,7 @@ Module slice.
               |),
               [
                 M.call_closure (|
-                  M.get_function (| "core::slice::index::into_slice_range", [] |),
+                  M.get_function (| "core::slice::index::into_slice_range", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|

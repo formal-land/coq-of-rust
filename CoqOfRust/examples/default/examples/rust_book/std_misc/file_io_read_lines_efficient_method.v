@@ -171,6 +171,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.call_closure (|
                       M.get_function (|
                         "file_io_read_lines_efficient_method::read_lines",
+                        [],
                         [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                       |),
                       [ M.read (| Value.String "./hosts" |) ]
@@ -265,6 +266,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "std::io::stdio::_print",
+                                                          [],
                                                           []
                                                         |),
                                                         [

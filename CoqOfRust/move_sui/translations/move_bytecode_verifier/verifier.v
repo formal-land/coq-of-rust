@@ -15,6 +15,7 @@ Module verifier.
         M.call_closure (|
           M.get_function (|
             "move_bytecode_verifier::verifier::verify_module_with_config_unmetered",
+            [],
             []
           |),
           [
@@ -136,6 +137,7 @@ Module verifier.
               M.call_closure (|
                 M.get_function (|
                   "move_bytecode_verifier::verifier::verify_module_with_config_metered",
+                  [],
                   [ impl_Meter__plus___Sized ]
                 |),
                 [ M.read (| config |); M.read (| module |); M.read (| meter |) ]
@@ -145,7 +147,7 @@ Module verifier.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "std::io::stdio::_eprint", [] |),
+                  M.get_function (| "std::io::stdio::_eprint", [], [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -235,6 +237,7 @@ Module verifier.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::hint::must_use",
+                                                [],
                                                 [ Ty.path "alloc::string::String" ]
                                               |),
                                               [
@@ -244,6 +247,7 @@ Module verifier.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "alloc::fmt::format",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -457,7 +461,7 @@ Module verifier.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -1033,6 +1037,7 @@ Module verifier.
                         M.call_closure (|
                           M.get_function (|
                             "move_bytecode_verifier::constants::verify_module",
+                            [],
                             []
                           |),
                           [ M.read (| module |) ]
@@ -1108,7 +1113,11 @@ Module verifier.
                       |),
                       [
                         M.call_closure (|
-                          M.get_function (| "move_bytecode_verifier::friends::verify_module", [] |),
+                          M.get_function (|
+                            "move_bytecode_verifier::friends::verify_module",
+                            [],
+                            []
+                          |),
                           [ M.read (| module |) ]
                         |)
                       ]
@@ -1184,6 +1193,7 @@ Module verifier.
                         M.call_closure (|
                           M.get_function (|
                             "move_bytecode_verifier::ability_field_requirements::verify_module",
+                            [],
                             []
                           |),
                           [ M.read (| module |) ]
@@ -1483,6 +1493,7 @@ Module verifier.
                 M.call_closure (|
                   M.get_function (|
                     "move_bytecode_verifier::script_signature::verify_module",
+                    [],
                     []
                   |),
                   [
@@ -1491,6 +1502,7 @@ Module verifier.
                     M.pointer_coercion
                       (M.get_function (|
                         "move_bytecode_verifier::script_signature::no_additional_script_signature_checks",
+                        [],
                         []
                       |))
                   ]
@@ -1527,6 +1539,7 @@ Module verifier.
         M.call_closure (|
           M.get_function (|
             "move_bytecode_verifier::verifier::verify_module_with_config_metered",
+            [],
             [ Ty.path "move_bytecode_verifier_meter::dummy::DummyMeter" ]
           |),
           [

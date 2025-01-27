@@ -346,6 +346,7 @@ Module collections.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "alloc::collections::TryReserveErrorKind" ]
                   |),
                   [ M.read (| self |) ]
@@ -356,6 +357,7 @@ Module collections.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "alloc::collections::TryReserveErrorKind" ]
                   |),
                   [ M.read (| other |) ]

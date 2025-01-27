@@ -9181,6 +9181,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::StructFieldInformation" ]
                   |),
                   [ M.read (| self |) ]
@@ -9191,6 +9192,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::StructFieldInformation" ]
                   |),
                   [ M.read (| other |) ]
@@ -11082,6 +11084,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::Visibility" ]
                   |),
                   [ M.read (| self |) ]
@@ -11092,6 +11095,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::Visibility" ]
                   |),
                   [ M.read (| other |) ]
@@ -11126,6 +11130,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::Visibility" ]
                   |),
                   [ M.read (| self |) ]
@@ -11136,6 +11141,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::Visibility" ]
                   |),
                   [ M.read (| other |) ]
@@ -11181,6 +11187,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::Visibility" ]
                   |),
                   [ M.read (| self |) ]
@@ -11191,6 +11198,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::Visibility" ]
                   |),
                   [ M.read (| other |) ]
@@ -13235,6 +13243,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::Ability" ]
                   |),
                   [ M.read (| self |) ]
@@ -13274,6 +13283,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::Ability" ]
                   |),
                   [ M.read (| self |) ]
@@ -13284,6 +13294,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::Ability" ]
                   |),
                   [ M.read (| other |) ]
@@ -13334,6 +13345,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::Ability" ]
                   |),
                   [ M.read (| self |) ]
@@ -13344,6 +13356,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::Ability" ]
                   |),
                   [ M.read (| other |) ]
@@ -13378,6 +13391,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::Ability" ]
                   |),
                   [ M.read (| self |) ]
@@ -13388,6 +13402,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::Ability" ]
                   |),
                   [ M.read (| other |) ]
@@ -16207,6 +16222,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                   |),
                   [ M.read (| self |) ]
@@ -16419,6 +16435,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                   |),
                   [ M.read (| self |) ]
@@ -16429,6 +16446,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                   |),
                   [ M.read (| other |) ]
@@ -16726,6 +16744,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                   |),
                   [ M.read (| self |) ]
@@ -16736,6 +16755,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                   |),
                   [ M.read (| other |) ]
@@ -17108,6 +17128,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                   |),
                   [ M.read (| self |) ]
@@ -17118,6 +17139,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                   |),
                   [ M.read (| other |) ]
@@ -20077,7 +20099,7 @@ Module file_format.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
@@ -22855,6 +22877,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::Bytecode" ]
                   |),
                   [ M.read (| self |) ]
@@ -24358,7 +24381,7 @@ Module file_format.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic_fmt", [] |),
+                                M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -24687,6 +24710,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::Bytecode" ]
                   |),
                   [ M.read (| self |) ]
@@ -24697,6 +24721,7 @@ Module file_format.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::file_format::Bytecode" ]
                   |),
                   [ M.read (| other |) ]
@@ -31958,7 +31983,7 @@ Module file_format.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String
@@ -32425,7 +32450,7 @@ Module file_format.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic_fmt", [] |),
+                                      M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -32601,7 +32626,7 @@ Module file_format.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String
@@ -32687,7 +32712,7 @@ Module file_format.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String
@@ -32979,7 +33004,7 @@ Module file_format.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String
@@ -33065,7 +33090,7 @@ Module file_format.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String
@@ -33209,7 +33234,7 @@ Module file_format.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String
@@ -33354,7 +33379,7 @@ Module file_format.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String
@@ -33441,7 +33466,7 @@ Module file_format.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String
@@ -33585,7 +33610,7 @@ Module file_format.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String
@@ -34147,7 +34172,7 @@ Module file_format.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String
@@ -34271,7 +34296,7 @@ Module file_format.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
+                                      M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
                                           Value.String
@@ -36657,6 +36682,7 @@ Module file_format.
                                   M.call_closure (|
                                     M.get_function (|
                                       "move_binary_format::file_format::self_module_name",
+                                      [],
                                       []
                                     |),
                                     []
@@ -36992,7 +37018,7 @@ Module file_format.
           let~ m :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "move_binary_format::file_format::empty_module", [] |),
+                M.get_function (| "move_binary_format::file_format::empty_module", [], [] |),
                 []
               |)
             |) in

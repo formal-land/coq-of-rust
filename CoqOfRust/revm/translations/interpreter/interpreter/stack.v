@@ -1877,6 +1877,7 @@ Module interpreter.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1923,6 +1924,7 @@ Module interpreter.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::hint::unreachable_unchecked",
+                                                            [],
                                                             []
                                                           |),
                                                           []
@@ -2230,7 +2232,11 @@ Module interpreter.
                                         M.alloc (|
                                           M.never_to_any (|
                                             M.call_closure (|
-                                              M.get_function (| "core::panicking::panic_fmt", [] |),
+                                              M.get_function (|
+                                                "core::panicking::panic_fmt",
+                                                [],
+                                                []
+                                              |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -2275,6 +2281,7 @@ Module interpreter.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::hint::unreachable_unchecked",
+                                                        [],
                                                         []
                                                       |),
                                                       []
@@ -2405,6 +2412,7 @@ Module interpreter.
                             M.call_closure (|
                               M.get_function (|
                                 "core::intrinsics::copy_nonoverlapping",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "ruint::Uint")
@@ -2574,6 +2582,7 @@ Module interpreter.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::panicking::panic_fmt",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -2620,6 +2629,7 @@ Module interpreter.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::hint::unreachable_unchecked",
+                                                            [],
                                                             []
                                                           |),
                                                           []
@@ -2745,6 +2755,7 @@ Module interpreter.
                         M.call_closure (|
                           M.get_function (|
                             "core::ptr::swap_nonoverlapping",
+                            [],
                             [
                               Ty.apply
                                 (Ty.path "ruint::Uint")
@@ -3836,6 +3847,7 @@ Module interpreter.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::panicking::assert_failed",
+                                                            [],
                                                             [ Ty.path "usize"; Ty.path "usize" ]
                                                           |),
                                                           [

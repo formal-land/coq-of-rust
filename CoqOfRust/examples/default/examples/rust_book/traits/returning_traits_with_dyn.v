@@ -154,7 +154,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ animal :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "returning_traits_with_dyn::random_animal", [] |),
+              M.get_function (| "returning_traits_with_dyn::random_animal", [], [] |),
               [ M.read (| random_number |) ]
             |)
           |) in
@@ -162,7 +162,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),

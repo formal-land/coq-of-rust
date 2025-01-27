@@ -359,6 +359,7 @@ Module slice.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::forget",
+                      [],
                       [ Ty.apply (Ty.path "alloc::slice::hack::to_vec::DropGuard") [] [ T; A ] ]
                     |),
                     [ M.read (| guard |) ]
@@ -543,6 +544,7 @@ Module slice.
                 M.call_closure (|
                   M.get_function (|
                     "alloc::slice::stable_sort",
+                    [],
                     [
                       T;
                       Ty.function
@@ -586,6 +588,7 @@ Module slice.
                 M.call_closure (|
                   M.get_function (|
                     "alloc::slice::stable_sort",
+                    [],
                     [
                       T;
                       Ty.function
@@ -692,6 +695,7 @@ Module slice.
                 M.call_closure (|
                   M.get_function (|
                     "alloc::slice::stable_sort",
+                    [],
                     [
                       T;
                       Ty.function
@@ -1732,7 +1736,7 @@ Module slice.
           (let self := M.alloc (| self |) in
           let alloc := M.alloc (| alloc |) in
           M.call_closure (|
-            M.get_function (| "alloc::slice::hack::to_vec", [ T; A ] |),
+            M.get_function (| "alloc::slice::hack::to_vec", [], [ T; A ] |),
             [ M.read (| self |); M.read (| alloc |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1755,7 +1759,7 @@ Module slice.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "alloc::slice::hack::into_vec", [ T; A ] |),
+            M.get_function (| "alloc::slice::hack::into_vec", [], [ T; A ] |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1954,6 +1958,7 @@ Module slice.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::intrinsics::copy_nonoverlapping",
+                                        [],
                                         [ T ]
                                       |),
                                       [
@@ -2110,7 +2115,11 @@ Module slice.
                           let~ _ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                                M.get_function (|
+                                  "core::intrinsics::copy_nonoverlapping",
+                                  [],
+                                  [ T ]
+                                |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -3681,6 +3690,7 @@ Module slice.
               M.call_closure (|
                 M.get_function (|
                   "core::slice::sort::stable::sort",
+                  [],
                   [
                     T;
                     F;

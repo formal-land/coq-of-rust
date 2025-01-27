@@ -42,7 +42,10 @@ Module panicking.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.never_to_any (|
-                        M.call_closure (| M.get_function (| "core::intrinsics::abort", [] |), [] |)
+                        M.call_closure (|
+                          M.get_function (| "core::intrinsics::abort", [], [] |),
+                          []
+                        |)
                       |)
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -73,7 +76,7 @@ Module panicking.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "core::panicking::panic_fmt::panic_impl", [] |),
+              M.get_function (| "core::panicking::panic_fmt::panic_impl", [], [] |),
               [ pi ]
             |)
           |)
@@ -136,6 +139,7 @@ Module panicking.
         M.call_closure (|
           M.get_function (|
             "core::intrinsics::const_eval_select",
+            [],
             [
               Ty.tuple [ Ty.path "core::fmt::Arguments"; Ty.path "bool" ];
               Ty.function [ Ty.path "core::fmt::Arguments"; Ty.path "bool" ] (Ty.path "never");
@@ -145,8 +149,8 @@ Module panicking.
           |),
           [
             Value.Tuple [ M.read (| fmt |); M.read (| force_no_backtrace |) ];
-            M.get_function (| "core::panicking::panic_nounwind_fmt.comptime", [] |);
-            M.get_function (| "core::panicking::panic_nounwind_fmt.runtime", [] |)
+            M.get_function (| "core::panicking::panic_nounwind_fmt.comptime", [], [] |);
+            M.get_function (| "core::panicking::panic_nounwind_fmt.runtime", [], [] |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -199,7 +203,7 @@ Module panicking.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::abort", [] |),
+                            M.get_function (| "core::intrinsics::abort", [], [] |),
                             []
                           |)
                         |)
@@ -232,7 +236,11 @@ Module panicking.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::panicking::panic_nounwind_fmt::runtime::panic_impl", [] |),
+                M.get_function (|
+                  "core::panicking::panic_nounwind_fmt::runtime::panic_impl",
+                  [],
+                  []
+                |),
                 [ pi ]
               |)
             |)
@@ -262,7 +270,7 @@ Module panicking.
           (let fmt := M.alloc (| fmt |) in
           let _force_no_backtrace := M.alloc (| _force_no_backtrace |) in
           M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [ M.read (| fmt |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -293,7 +301,7 @@ Module panicking.
       ltac:(M.monadic
         (let expr := M.alloc (| expr |) in
         M.call_closure (|
-          M.get_function (| "core::panicking::panic_fmt", [] |),
+          M.get_function (| "core::panicking::panic_fmt", [], [] |),
           [
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -323,7 +331,7 @@ Module panicking.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -359,7 +367,7 @@ Module panicking.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -395,7 +403,7 @@ Module panicking.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -431,7 +439,7 @@ Module panicking.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -467,7 +475,7 @@ Module panicking.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -505,7 +513,7 @@ Module panicking.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -541,7 +549,7 @@ Module panicking.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -577,7 +585,7 @@ Module panicking.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -613,7 +621,7 @@ Module panicking.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -647,7 +655,7 @@ Module panicking.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -690,7 +698,7 @@ Module panicking.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -730,7 +738,7 @@ Module panicking.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -770,7 +778,7 @@ Module panicking.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -807,7 +815,7 @@ Module panicking.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -850,7 +858,7 @@ Module panicking.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -890,7 +898,7 @@ Module panicking.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -930,7 +938,7 @@ Module panicking.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -971,7 +979,7 @@ Module panicking.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -1008,7 +1016,7 @@ Module panicking.
       ltac:(M.monadic
         (let expr := M.alloc (| expr |) in
         M.call_closure (|
-          M.get_function (| "core::panicking::panic_nounwind_fmt", [] |),
+          M.get_function (| "core::panicking::panic_nounwind_fmt", [], [] |),
           [
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -1033,7 +1041,7 @@ Module panicking.
       ltac:(M.monadic
         (let expr := M.alloc (| expr |) in
         M.call_closure (|
-          M.get_function (| "core::panicking::panic_nounwind_fmt", [] |),
+          M.get_function (| "core::panicking::panic_nounwind_fmt", [], [] |),
           [
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -1060,6 +1068,7 @@ Module panicking.
         (M.call_closure (|
           M.get_function (|
             "core::panicking::panic_display",
+            [],
             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
           |),
           [ Value.String "explicit panic" ]
@@ -1080,7 +1089,7 @@ Module panicking.
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         M.call_closure (|
-          M.get_function (| "core::panicking::panic_fmt", [] |),
+          M.get_function (| "core::panicking::panic_fmt", [], [] |),
           [
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -1125,6 +1134,7 @@ Module panicking.
         M.call_closure (|
           M.get_function (|
             "core::panicking::panic_display",
+            [],
             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
           |),
           [ expr ]
@@ -1145,7 +1155,7 @@ Module panicking.
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         M.call_closure (|
-          M.get_function (| "core::panicking::panic_fmt", [] |),
+          M.get_function (| "core::panicking::panic_fmt", [], [] |),
           [
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -1199,7 +1209,10 @@ Module panicking.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.never_to_any (|
-                        M.call_closure (| M.get_function (| "core::intrinsics::abort", [] |), [] |)
+                        M.call_closure (|
+                          M.get_function (| "core::intrinsics::abort", [], [] |),
+                          []
+                        |)
                       |)
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -1207,7 +1220,7 @@ Module panicking.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "core::panicking::panic_fmt", [] |),
+              M.get_function (| "core::panicking::panic_fmt", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -1287,7 +1300,10 @@ Module panicking.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.never_to_any (|
-                        M.call_closure (| M.get_function (| "core::intrinsics::abort", [] |), [] |)
+                        M.call_closure (|
+                          M.get_function (| "core::intrinsics::abort", [], [] |),
+                          []
+                        |)
                       |)
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -1295,7 +1311,7 @@ Module panicking.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "core::panicking::panic_nounwind_fmt", [] |),
+              M.get_function (| "core::panicking::panic_nounwind_fmt", [], [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
@@ -1400,7 +1416,7 @@ Module panicking.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
-          M.get_function (| "core::panicking::panic_nounwind", [] |),
+          M.get_function (| "core::panicking::panic_nounwind", [], [] |),
           [ M.read (| Value.String "panic in a function that cannot unwind" |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1420,7 +1436,7 @@ Module panicking.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
-          M.get_function (| "core::panicking::panic_nounwind_nobacktrace", [] |),
+          M.get_function (| "core::panicking::panic_nounwind_nobacktrace", [], [] |),
           [ M.read (| Value.String "panic in a destructor during cleanup" |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1471,6 +1487,7 @@ Module panicking.
                     M.call_closure (|
                       M.get_function (|
                         "core::panicking::panic_display",
+                        [],
                         [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                       |),
                       [ msg ]
@@ -1482,7 +1499,7 @@ Module panicking.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::hint::unreachable_unchecked", [] |),
+                          M.get_function (| "core::hint::unreachable_unchecked", [], [] |),
                           []
                         |)
                       |)
@@ -1594,7 +1611,7 @@ Module panicking.
         let right := M.alloc (| right |) in
         let args := M.alloc (| args |) in
         M.call_closure (|
-          M.get_function (| "core::panicking::assert_failed_inner", [] |),
+          M.get_function (| "core::panicking::assert_failed_inner", [], [] |),
           [ M.read (| kind |); left; right; M.read (| args |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1626,7 +1643,7 @@ Module panicking.
         let right := M.alloc (| right |) in
         let args := M.alloc (| args |) in
         M.call_closure (|
-          M.get_function (| "core::panicking::assert_failed_inner", [] |),
+          M.get_function (| "core::panicking::assert_failed_inner", [], [] |),
           [
             Value.StructTuple "core::panicking::AssertKind::Match" [];
             left;
@@ -1758,7 +1775,7 @@ Module panicking.
                   let args := M.copy (| γ0_0 |) in
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::panicking::panic_fmt", [] |),
+                      M.get_function (| "core::panicking::panic_fmt", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
@@ -1835,7 +1852,7 @@ Module panicking.
                   (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::panicking::panic_fmt", [] |),
+                      M.get_function (| "core::panicking::panic_fmt", [], [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|

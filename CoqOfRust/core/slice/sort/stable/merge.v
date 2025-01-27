@@ -124,6 +124,7 @@ Module slice.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::cmp::min",
+                                              [],
                                               [ Ty.path "usize" ]
                                             |),
                                             [
@@ -236,7 +237,7 @@ Module slice.
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                          M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                           [
                             (* MutToConstPointer *) M.pointer_coercion (M.read (| save_base |));
                             M.read (| buf |);
@@ -481,6 +482,7 @@ Module slice.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::copy_nonoverlapping",
+                                      [],
                                       [ T ]
                                     |),
                                     [
@@ -701,7 +703,7 @@ Module slice.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                            M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                             [
                               (* MutToConstPointer *) M.pointer_coercion (M.read (| src |));
                               M.read (| out |);
@@ -856,7 +858,7 @@ Module slice.
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                         [
                           (* MutToConstPointer *)
                           M.pointer_coercion

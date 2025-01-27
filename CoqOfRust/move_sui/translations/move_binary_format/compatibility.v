@@ -850,6 +850,7 @@ Module compatibility.
                                                                       M.call_closure (|
                                                                         M.get_function (|
                                                                           "move_binary_format::compatibility::struct_abilities_compatible",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -886,6 +887,7 @@ Module compatibility.
                                                                         M.call_closure (|
                                                                           M.get_function (|
                                                                             "move_binary_format::compatibility::struct_type_parameters_compatible",
+                                                                            [],
                                                                             []
                                                                           |),
                                                                           [
@@ -1521,6 +1523,7 @@ Module compatibility.
                                                                       M.call_closure (|
                                                                         M.get_function (|
                                                                           "move_binary_format::compatibility::fun_type_parameters_compatible",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -2320,6 +2323,7 @@ Module compatibility.
                                   M.call_closure (|
                                     M.get_function (|
                                       "move_binary_format::compatibility::type_parameter_constraints_compatible",
+                                      [],
                                       []
                                     |),
                                     [
@@ -2500,6 +2504,7 @@ Module compatibility.
                                     M.call_closure (|
                                       M.get_function (|
                                         "move_binary_format::compatibility::type_parameter_phantom_decl_compatible",
+                                        [],
                                         []
                                       |),
                                       [
@@ -2512,6 +2517,7 @@ Module compatibility.
                                       (M.call_closure (|
                                         M.get_function (|
                                           "move_binary_format::compatibility::type_parameter_constraints_compatible",
+                                          [],
                                           []
                                         |),
                                         [
@@ -2845,6 +2851,7 @@ Module compatibility.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::compatibility::InclusionCheck" ]
                   |),
                   [ M.read (| self |) ]
@@ -2855,6 +2862,7 @@ Module compatibility.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::compatibility::InclusionCheck" ]
                   |),
                   [ M.read (| other |) ]
@@ -2894,6 +2902,7 @@ Module compatibility.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::compatibility::InclusionCheck" ]
                   |),
                   [ M.read (| self |) ]
@@ -2904,6 +2913,7 @@ Module compatibility.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::compatibility::InclusionCheck" ]
                   |),
                   [ M.read (| other |) ]
@@ -2986,6 +2996,7 @@ Module compatibility.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::compatibility::InclusionCheck" ]
                   |),
                   [ M.read (| self |) ]
@@ -2996,6 +3007,7 @@ Module compatibility.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_binary_format::compatibility::InclusionCheck" ]
                   |),
                   [ M.read (| other |) ]

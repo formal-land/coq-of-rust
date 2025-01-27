@@ -13,7 +13,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -33,7 +36,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -53,7 +59,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -73,7 +82,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -93,7 +105,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -111,7 +126,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -129,7 +147,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -147,7 +168,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -165,7 +189,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -183,7 +210,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -201,7 +231,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -219,7 +252,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -237,7 +273,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -255,7 +294,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -273,7 +315,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -291,7 +336,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -309,7 +357,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -327,7 +378,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -345,7 +399,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -363,7 +420,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -381,7 +441,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -399,7 +462,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -417,7 +483,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -435,7 +504,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -453,7 +525,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -471,7 +546,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -491,7 +569,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -509,7 +590,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -527,7 +611,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -545,7 +632,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -565,7 +655,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -583,7 +676,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -603,7 +699,10 @@ Module intrinsics.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (| M.get_function (| "core::panicking::panic_explicit", [] |), [] |)))
+            (M.call_closure (|
+              M.get_function (| "core::panicking::panic_explicit", [], [] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

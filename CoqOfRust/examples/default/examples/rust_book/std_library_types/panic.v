@@ -34,6 +34,7 @@ Definition division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                     M.call_closure (|
                       M.get_function (|
                         "std::panicking::begin_panic",
+                        [],
                         [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                       |),
                       [ M.read (| Value.String "division by zero" |) ]
@@ -86,7 +87,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "panic::division", [] |),
+              M.get_function (| "panic::division", [], [] |),
               [ Value.Integer IntegerKind.I32 3; Value.Integer IntegerKind.I32 0 ]
             |)
           |) in
@@ -94,7 +95,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),

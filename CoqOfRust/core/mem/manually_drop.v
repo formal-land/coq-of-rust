@@ -400,7 +400,7 @@ Module mem.
           ltac:(M.monadic
             (let slot := M.alloc (| slot |) in
             M.call_closure (|
-              M.get_function (| "core::ptr::read", [ T ] |),
+              M.get_function (| "core::ptr::read", [], [ T ] |),
               [
                 M.SubPointer.get_struct_record_field (|
                   M.read (| slot |),
@@ -430,7 +430,7 @@ Module mem.
           ltac:(M.monadic
             (let slot := M.alloc (| slot |) in
             M.call_closure (|
-              M.get_function (| "core::ptr::drop_in_place", [ T ] |),
+              M.get_function (| "core::ptr::drop_in_place", [], [ T ] |),
               [
                 M.SubPointer.get_struct_record_field (|
                   M.read (| slot |),

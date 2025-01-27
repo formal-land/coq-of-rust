@@ -153,6 +153,7 @@ Module state.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::state::VMState" ]
                   |),
                   [ M.read (| self |) ]
@@ -163,6 +164,7 @@ Module state.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "move_core_types::state::VMState" ]
                   |),
                   [ M.read (| other |) ]

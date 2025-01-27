@@ -270,6 +270,7 @@ Module instructions.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_interpreter::interpreter::shared_memory::num_words",
+                                [],
                                 []
                               |),
                               [
@@ -749,6 +750,7 @@ Module instructions.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_interpreter::interpreter::shared_memory::num_words",
+                                [],
                                 []
                               |),
                               [
@@ -1185,6 +1187,7 @@ Module instructions.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_interpreter::interpreter::shared_memory::num_words",
+                                [],
                                 []
                               |),
                               [
@@ -1832,6 +1835,7 @@ Module instructions.
                               M.call_closure (|
                                 M.get_function (|
                                   "revm_interpreter::gas::calc::copy_cost_verylow",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| len |) ]
@@ -2254,6 +2258,7 @@ Module instructions.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_interpreter::interpreter::shared_memory::num_words",
+                                [],
                                 []
                               |),
                               [
@@ -2265,7 +2270,11 @@ Module instructions.
                                   |),
                                   [
                                     M.call_closure (|
-                                      M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
+                                      M.get_function (|
+                                        "core::cmp::max",
+                                        [],
+                                        [ Ty.path "usize" ]
+                                      |),
                                       [ M.read (| dst |); M.read (| src |) ]
                                     |);
                                     M.read (| len |)

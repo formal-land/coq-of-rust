@@ -46,7 +46,7 @@ Module char.
           ltac:(M.monadic
             (let iter := M.alloc (| iter |) in
             M.call_closure (|
-              M.get_function (| "core::char::decode::decode_utf16", [ I ] |),
+              M.get_function (| "core::char::decode::decode_utf16", [], [ I ] |),
               [ M.read (| iter |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -66,7 +66,7 @@ Module char.
           ltac:(M.monadic
             (let i := M.alloc (| i |) in
             M.call_closure (|
-              M.get_function (| "core::char::convert::from_u32", [] |),
+              M.get_function (| "core::char::convert::from_u32", [], [] |),
               [ M.read (| i |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -86,7 +86,7 @@ Module char.
           ltac:(M.monadic
             (let i := M.alloc (| i |) in
             M.call_closure (|
-              M.get_function (| "core::char::convert::from_u32_unchecked", [] |),
+              M.get_function (| "core::char::convert::from_u32_unchecked", [], [] |),
               [ M.read (| i |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -107,7 +107,7 @@ Module char.
             (let num := M.alloc (| num |) in
             let radix := M.alloc (| radix |) in
             M.call_closure (|
-              M.get_function (| "core::char::convert::from_digit", [] |),
+              M.get_function (| "core::char::convert::from_digit", [], [] |),
               [ M.read (| num |); M.read (| radix |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -218,7 +218,11 @@ Module char.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.call_closure (|
-                                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                                            M.get_function (|
+                                              "core::panicking::panic_fmt",
+                                              [],
+                                              []
+                                            |),
                                             [
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -538,7 +542,7 @@ Module char.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::unicode::printable::is_printable", [] |),
+                            M.get_function (| "core::unicode::printable::is_printable", [], [] |),
                             [ M.read (| self |) ]
                           |)
                         |) in
@@ -792,7 +796,7 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::char::methods::len_utf8", [] |),
+              M.get_function (| "core::char::methods::len_utf8", [], [] |),
               [ M.rust_cast (M.read (| self |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -811,7 +815,7 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::char::methods::len_utf16", [] |),
+              M.get_function (| "core::char::methods::len_utf16", [], [] |),
               [ M.rust_cast (M.read (| self |)) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -832,10 +836,10 @@ Module char.
             (let self := M.alloc (| self |) in
             let dst := M.alloc (| dst |) in
             M.call_closure (|
-              M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [] |),
+              M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [], [] |),
               [
                 M.call_closure (|
-                  M.get_function (| "core::char::methods::encode_utf8_raw", [] |),
+                  M.get_function (| "core::char::methods::encode_utf8_raw", [], [] |),
                   [ M.rust_cast (M.read (| self |)); M.read (| dst |) ]
                 |)
               ]
@@ -857,7 +861,7 @@ Module char.
             (let self := M.alloc (| self |) in
             let dst := M.alloc (| dst |) in
             M.call_closure (|
-              M.get_function (| "core::char::methods::encode_utf16_raw", [] |),
+              M.get_function (| "core::char::methods::encode_utf16_raw", [], [] |),
               [ M.rust_cast (M.read (| self |)); M.read (| dst |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -909,6 +913,7 @@ Module char.
                             (M.call_closure (|
                               M.get_function (|
                                 "core::unicode::unicode_data::alphabetic::lookup",
+                                [],
                                 []
                               |),
                               [ M.read (| c |) ]
@@ -952,6 +957,7 @@ Module char.
                             (M.call_closure (|
                               M.get_function (|
                                 "core::unicode::unicode_data::lowercase::lookup",
+                                [],
                                 []
                               |),
                               [ M.read (| c |) ]
@@ -995,6 +1001,7 @@ Module char.
                             (M.call_closure (|
                               M.get_function (|
                                 "core::unicode::unicode_data::uppercase::lookup",
+                                [],
                                 []
                               |),
                               [ M.read (| c |) ]
@@ -1060,6 +1067,7 @@ Module char.
                             (M.call_closure (|
                               M.get_function (|
                                 "core::unicode::unicode_data::white_space::lookup",
+                                [],
                                 []
                               |),
                               [ M.read (| c |) ]
@@ -1113,7 +1121,7 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::unicode::unicode_data::cc::lookup", [] |),
+              M.get_function (| "core::unicode::unicode_data::cc::lookup", [], [] |),
               [ M.read (| self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1132,7 +1140,7 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::unicode::unicode_data::grapheme_extend::lookup", [] |),
+              M.get_function (| "core::unicode::unicode_data::grapheme_extend::lookup", [], [] |),
               [ M.read (| self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1167,7 +1175,7 @@ Module char.
                           BinOp.gt (| M.read (| c |), Value.UnicodeChar 127 |),
                           ltac:(M.monadic
                             (M.call_closure (|
-                              M.get_function (| "core::unicode::unicode_data::n::lookup", [] |),
+                              M.get_function (| "core::unicode::unicode_data::n::lookup", [], [] |),
                               [ M.read (| c |) ]
                             |)))
                         |)
@@ -1197,7 +1205,11 @@ Module char.
                   M.get_associated_function (| Ty.path "core::char::CaseMappingIter", "new", [] |),
                   [
                     M.call_closure (|
-                      M.get_function (| "core::unicode::unicode_data::conversions::to_lower", [] |),
+                      M.get_function (|
+                        "core::unicode::unicode_data::conversions::to_lower",
+                        [],
+                        []
+                      |),
                       [ M.read (| self |) ]
                     |)
                   ]
@@ -1226,7 +1238,11 @@ Module char.
                   M.get_associated_function (| Ty.path "core::char::CaseMappingIter", "new", [] |),
                   [
                     M.call_closure (|
-                      M.get_function (| "core::unicode::unicode_data::conversions::to_upper", [] |),
+                      M.get_function (|
+                        "core::unicode::unicode_data::conversions::to_upper",
+                        [],
+                        []
+                      |),
                       [ M.read (| self |) ]
                     |)
                   ]
@@ -2095,7 +2111,7 @@ Module char.
             let~ len :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::char::methods::len_utf8", [] |),
+                  M.get_function (| "core::char::methods::len_utf8", [], [] |),
                   [ M.read (| code |) ]
                 |)
               |) in
@@ -2286,6 +2302,7 @@ Module char.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::const_eval_select",
+                            [],
                             [
                               Ty.tuple [ Ty.path "u32"; Ty.path "usize"; Ty.path "usize" ];
                               Ty.function
@@ -2313,10 +2330,12 @@ Module char.
                               ];
                             M.get_function (|
                               "core::char::methods::encode_utf8_raw.panic_at_const",
+                              [],
                               []
                             |);
                             M.get_function (|
                               "core::char::methods::encode_utf8_raw.panic_at_rt",
+                              [],
                               []
                             |)
                           ]
@@ -2326,7 +2345,7 @@ Module char.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::slice::raw::from_raw_parts_mut", [ Ty.path "u8" ] |),
+                M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ Ty.path "u8" ] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
@@ -2363,7 +2382,7 @@ Module char.
             let _dst_len := M.alloc (| _dst_len |) in
             M.never_to_any (|
               M.call_closure (|
-                M.get_function (| "core::panicking::panic_fmt", [] |),
+                M.get_function (| "core::panicking::panic_fmt", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -2404,7 +2423,7 @@ Module char.
             let dst_len := M.alloc (| dst_len |) in
             M.never_to_any (|
               M.call_closure (|
-                M.get_function (| "core::panicking::panic_fmt", [] |),
+                M.get_function (| "core::panicking::panic_fmt", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
@@ -2561,7 +2580,7 @@ Module char.
             let~ len :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::char::methods::len_utf16", [] |),
+                  M.get_function (| "core::char::methods::len_utf16", [], [] |),
                   [ M.read (| code |) ]
                 |)
               |) in
@@ -2633,6 +2652,7 @@ Module char.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::const_eval_select",
+                            [],
                             [
                               Ty.tuple [ Ty.path "u32"; Ty.path "usize"; Ty.path "usize" ];
                               Ty.function
@@ -2660,10 +2680,12 @@ Module char.
                               ];
                             M.get_function (|
                               "core::char::methods::encode_utf16_raw.panic_at_const",
+                              [],
                               []
                             |);
                             M.get_function (|
                               "core::char::methods::encode_utf16_raw.panic_at_rt",
+                              [],
                               []
                             |)
                           ]
@@ -2673,7 +2695,7 @@ Module char.
               |) in
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::slice::raw::from_raw_parts_mut", [ Ty.path "u16" ] |),
+                M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ Ty.path "u16" ] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
@@ -2710,7 +2732,7 @@ Module char.
             let _dst_len := M.alloc (| _dst_len |) in
             M.never_to_any (|
               M.call_closure (|
-                M.get_function (| "core::panicking::panic_fmt", [] |),
+                M.get_function (| "core::panicking::panic_fmt", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
@@ -2751,7 +2773,7 @@ Module char.
             let dst_len := M.alloc (| dst_len |) in
             M.never_to_any (|
               M.call_closure (|
-                M.get_function (| "core::panicking::panic_fmt", [] |),
+                M.get_function (| "core::panicking::panic_fmt", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|

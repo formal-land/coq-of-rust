@@ -453,6 +453,7 @@ Module slice.
                       M.call_closure (|
                         M.get_function (|
                           "core::mem::size_of_val",
+                          [],
                           [ Ty.apply (Ty.path "slice") [] [ A ] ]
                         |),
                         [ M.read (| self |) ]
@@ -461,7 +462,7 @@ Module slice.
                   M.alloc (|
                     BinOp.eq (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::compare_bytes", [] |),
+                        M.get_function (| "core::intrinsics::compare_bytes", [], [] |),
                         [
                           M.rust_cast
                             (M.call_closure (|
@@ -544,7 +545,7 @@ Module slice.
                   let~ l :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                        M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -1063,7 +1064,7 @@ Module slice.
                   let~ l :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
+                        M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -1494,7 +1495,7 @@ Module slice.
                 M.alloc (|
                   M.rust_cast
                     (M.call_closure (|
-                      M.get_function (| "core::intrinsics::compare_bytes", [] |),
+                      M.get_function (| "core::intrinsics::compare_bytes", [], [] |),
                       [ M.read (| left |); M.read (| right |); M.read (| len |) ]
                     |))
                 |) in
@@ -1636,7 +1637,7 @@ Module slice.
               [
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::slice::memchr::memchr", [] |),
+                    M.get_function (| "core::slice::memchr::memchr", [], [] |),
                     [ M.read (| M.read (| self |) |); M.read (| x |) ]
                   |)
                 |)
@@ -1678,7 +1679,7 @@ Module slice.
               let~ bytes :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
+                    M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
                     [
                       M.rust_cast
                         (M.call_closure (|
@@ -1710,7 +1711,7 @@ Module slice.
                   [
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::slice::memchr::memchr", [] |),
+                        M.get_function (| "core::slice::memchr::memchr", [], [] |),
                         [ M.read (| byte |); M.read (| bytes |) ]
                       |)
                     |)

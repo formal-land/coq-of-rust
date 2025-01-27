@@ -653,6 +653,7 @@ Module unicode.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::unicode::printable::check",
+                                              [],
                                               []
                                             |),
                                             [
@@ -699,6 +700,7 @@ Module unicode.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::unicode::printable::check",
+                                                      [],
                                                       []
                                                     |),
                                                     [

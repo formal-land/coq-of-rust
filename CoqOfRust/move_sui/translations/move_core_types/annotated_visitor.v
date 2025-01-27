@@ -1390,6 +1390,7 @@ Module annotated_visitor.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_core_types::annotated_visitor::visit_value",
+                                            [],
                                             [ V ]
                                           |),
                                           [
@@ -1746,6 +1747,7 @@ Module annotated_visitor.
                                     M.call_closure (|
                                       M.get_function (|
                                         "move_core_types::annotated_visitor::visit_value",
+                                        [],
                                         [ V ]
                                       |),
                                       [
@@ -2136,6 +2138,7 @@ Module annotated_visitor.
                                 M.call_closure (|
                                   M.get_function (|
                                     "move_core_types::annotated_visitor::read_exact",
+                                    [ Value.Integer IntegerKind.Usize 1 ],
                                     []
                                   |),
                                   [ M.read (| bytes |) ]
@@ -2308,6 +2311,7 @@ Module annotated_visitor.
                                           M.call_closure (|
                                             M.get_function (|
                                               "move_core_types::annotated_visitor::read_exact",
+                                              [ Value.Integer IntegerKind.Usize 1 ],
                                               []
                                             |),
                                             [ M.read (| bytes |) ]
@@ -2419,6 +2423,7 @@ Module annotated_visitor.
                                           M.call_closure (|
                                             M.get_function (|
                                               "move_core_types::annotated_visitor::read_exact",
+                                              [ Value.Integer IntegerKind.Usize 2 ],
                                               []
                                             |),
                                             [ M.read (| bytes |) ]
@@ -2530,6 +2535,7 @@ Module annotated_visitor.
                                           M.call_closure (|
                                             M.get_function (|
                                               "move_core_types::annotated_visitor::read_exact",
+                                              [ Value.Integer IntegerKind.Usize 4 ],
                                               []
                                             |),
                                             [ M.read (| bytes |) ]
@@ -2641,6 +2647,7 @@ Module annotated_visitor.
                                           M.call_closure (|
                                             M.get_function (|
                                               "move_core_types::annotated_visitor::read_exact",
+                                              [ Value.Integer IntegerKind.Usize 8 ],
                                               []
                                             |),
                                             [ M.read (| bytes |) ]
@@ -2752,6 +2759,7 @@ Module annotated_visitor.
                                           M.call_closure (|
                                             M.get_function (|
                                               "move_core_types::annotated_visitor::read_exact",
+                                              [ Value.Integer IntegerKind.Usize 16 ],
                                               []
                                             |),
                                             [ M.read (| bytes |) ]
@@ -2866,6 +2874,7 @@ Module annotated_visitor.
                                         M.call_closure (|
                                           M.get_function (|
                                             "move_core_types::annotated_visitor::read_exact",
+                                            [ Value.Integer IntegerKind.Usize 32 ],
                                             []
                                           |),
                                           [ M.read (| bytes |) ]
@@ -2980,6 +2989,7 @@ Module annotated_visitor.
                                           M.call_closure (|
                                             M.get_function (|
                                               "move_core_types::annotated_visitor::read_exact",
+                                              [ Value.Integer IntegerKind.Usize 32 ],
                                               []
                                             |),
                                             [ M.read (| bytes |) ]
@@ -3095,6 +3105,7 @@ Module annotated_visitor.
                                           M.call_closure (|
                                             M.get_function (|
                                               "move_core_types::annotated_visitor::read_exact",
+                                              [ Value.Integer IntegerKind.Usize 32 ],
                                               []
                                             |),
                                             [ M.read (| bytes |) ]
@@ -3207,6 +3218,7 @@ Module annotated_visitor.
                                       M.call_closure (|
                                         M.get_function (|
                                           "leb128::read::unsigned",
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
@@ -3535,6 +3547,7 @@ Module annotated_visitor.
                         M.call_closure (|
                           M.get_function (|
                             "move_core_types::annotated_visitor::visit_struct",
+                            [],
                             [ V ]
                           |),
                           [ M.read (| bytes |); M.read (| l |); M.read (| visitor |) ]

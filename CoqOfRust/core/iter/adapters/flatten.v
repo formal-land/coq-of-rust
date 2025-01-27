@@ -3278,6 +3278,7 @@ Module iter.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::iter::adapters::flatten::and_then_or_clear",
+                                            [],
                                             [
                                               U;
                                               Ty.associated;
@@ -3351,6 +3352,7 @@ Module iter.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::iter::adapters::flatten::and_then_or_clear",
+                                              [],
                                               [
                                                 U;
                                                 Ty.associated;
@@ -4594,6 +4596,7 @@ Module iter.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::iter::adapters::flatten::and_then_or_clear",
+                                            [],
                                             [
                                               U;
                                               Ty.associated;
@@ -4686,6 +4689,7 @@ Module iter.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::iter::adapters::flatten::and_then_or_clear",
+                                              [],
                                               [
                                                 U;
                                                 Ty.associated;
@@ -6206,6 +6210,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::flatten::try_flatten_one",
+                      [],
                       [ Ty.associated; Acc; R; Fold ]
                     |),
                     [ M.read (| fold |) ]
@@ -6251,6 +6256,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::flatten::flatten_one",
+                      [],
                       [ Ty.associated; Acc; Fold ]
                     |),
                     [ M.read (| fold |) ]
@@ -6401,6 +6407,7 @@ Module iter.
                                   M.read (| n |);
                                   M.get_function (|
                                     "core::iter::adapters::flatten::advance_by_one",
+                                    [],
                                     [ Ty.associated ]
                                   |)
                                 ]
@@ -6488,6 +6495,7 @@ Module iter.
                       |);
                       M.get_function (|
                         "core::iter::adapters::flatten::into_item",
+                        [],
                         [ Ty.associated ]
                       |)
                     ]
@@ -6548,6 +6556,7 @@ Module iter.
                       |);
                       M.get_function (|
                         "core::iter::adapters::flatten::into_item",
+                        [],
                         [ Ty.associated ]
                       |)
                     ]
@@ -6749,6 +6758,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::flatten::try_flatten_one",
+                      [],
                       [ Ty.associated; Acc; R; Fold ]
                     |),
                     [ M.read (| fold |) ]
@@ -6794,6 +6804,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::flatten::flatten_one",
+                      [],
                       [ Ty.associated; Acc; Fold ]
                     |),
                     [ M.read (| fold |) ]
@@ -6944,6 +6955,7 @@ Module iter.
                                   M.read (| n |);
                                   M.get_function (|
                                     "core::iter::adapters::flatten::advance_by_one",
+                                    [],
                                     [ Ty.associated ]
                                   |)
                                 ]

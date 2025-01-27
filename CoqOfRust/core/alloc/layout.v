@@ -14,8 +14,8 @@ Module alloc.
         ltac:(M.monadic
           (Value.Tuple
             [
-              M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |);
-              M.call_closure (| M.get_function (| "core::mem::align_of", [ T ] |), [] |)
+              M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |);
+              M.call_closure (| M.get_function (| "core::mem::align_of", [], [ T ] |), [] |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -343,6 +343,7 @@ Module alloc.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::transmute",
+                                      [],
                                       [ Ty.path "usize"; Ty.path "core::ptr::alignment::Alignment" ]
                                     |),
                                     [ M.read (| align |) ]
@@ -478,7 +479,7 @@ Module alloc.
           ltac:(M.monadic
             (let align := M.alloc (| align |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
+              M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "usize" ] |),
               [
                 BinOp.Wrap.add (|
                   M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)),
@@ -609,7 +610,7 @@ Module alloc.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                M.get_function (| "core::intrinsics::ub_checks", [], [] |),
                                 []
                               |)
                             |)) in
@@ -639,6 +640,7 @@ Module alloc.
                       M.call_closure (|
                         M.get_function (|
                           "core::intrinsics::transmute",
+                          [],
                           [ Ty.path "usize"; Ty.path "core::ptr::alignment::Alignment" ]
                         |),
                         [ M.read (| align |) ]
@@ -722,7 +724,7 @@ Module alloc.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::alloc::layout::size_align", [ T ] |),
+                    M.get_function (| "core::alloc::layout::size_align", [], [ T ] |),
                     []
                   |)
                 |),
@@ -769,11 +771,11 @@ Module alloc.
                   Value.Tuple
                     [
                       M.call_closure (|
-                        M.get_function (| "core::mem::size_of_val", [ T ] |),
+                        M.get_function (| "core::mem::size_of_val", [], [ T ] |),
                         [ M.read (| t |) ]
                       |);
                       M.call_closure (|
-                        M.get_function (| "core::mem::align_of_val", [ T ] |),
+                        M.get_function (| "core::mem::align_of_val", [], [ T ] |),
                         [ M.read (| t |) ]
                       |)
                     ]
@@ -822,11 +824,11 @@ Module alloc.
                   Value.Tuple
                     [
                       M.call_closure (|
-                        M.get_function (| "core::mem::size_of_val_raw", [ T ] |),
+                        M.get_function (| "core::mem::size_of_val_raw", [], [ T ] |),
                         [ M.read (| t |) ]
                       |);
                       M.call_closure (|
-                        M.get_function (| "core::mem::align_of_val_raw", [ T ] |),
+                        M.get_function (| "core::mem::align_of_val_raw", [], [ T ] |),
                         [ M.read (| t |) ]
                       |)
                     ]
@@ -876,7 +878,7 @@ Module alloc.
               |),
               [
                 M.call_closure (|
-                  M.get_function (| "core::ptr::without_provenance_mut", [ Ty.path "u8" ] |),
+                  M.get_function (| "core::ptr::without_provenance_mut", [], [ Ty.path "u8" ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -1036,6 +1038,7 @@ Module alloc.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::unchecked_sub",
+                            [],
                             [ Ty.path "usize" ]
                           |),
                           [
@@ -1100,7 +1103,7 @@ Module alloc.
               let~ align_m1 :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "usize" ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -1118,7 +1121,11 @@ Module alloc.
                 M.alloc (|
                   BinOp.bit_and
                     (M.call_closure (|
-                      M.get_function (| "core::intrinsics::unchecked_add", [ Ty.path "usize" ] |),
+                      M.get_function (|
+                        "core::intrinsics::unchecked_add",
+                        [],
+                        [ Ty.path "usize" ]
+                      |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -1366,7 +1373,7 @@ Module alloc.
               let~ new_size :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::unchecked_add", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::intrinsics::unchecked_add", [], [ Ty.path "usize" ] |),
                     [
                       M.read (| offset |);
                       M.read (|
@@ -1521,7 +1528,7 @@ Module alloc.
               let~ new_size :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::unchecked_add", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::intrinsics::unchecked_add", [], [ Ty.path "usize" ] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|

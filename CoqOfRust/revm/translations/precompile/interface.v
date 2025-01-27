@@ -521,6 +521,7 @@ Module interface.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "revm_precompile::interface::PrecompileErrors" ]
                   |),
                   [ M.read (| self |) ]
@@ -531,6 +532,7 @@ Module interface.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "revm_precompile::interface::PrecompileErrors" ]
                   |),
                   [ M.read (| other |) ]
@@ -621,7 +623,7 @@ Module interface.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
-                                  M.get_function (| "core::intrinsics::unreachable", [] |),
+                                  M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                   []
                                 |)
                               |)
@@ -697,6 +699,7 @@ Module interface.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "revm_precompile::interface::PrecompileErrors" ]
                   |),
                   [ M.read (| self |) ]
@@ -1487,6 +1490,7 @@ Module interface.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "revm_precompile::interface::PrecompileError" ]
                   |),
                   [ M.read (| self |) ]
@@ -1497,6 +1501,7 @@ Module interface.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "revm_precompile::interface::PrecompileError" ]
                   |),
                   [ M.read (| other |) ]
@@ -1607,6 +1612,7 @@ Module interface.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "revm_precompile::interface::PrecompileError" ]
                   |),
                   [ M.read (| self |) ]

@@ -1430,14 +1430,14 @@ Module gas.
                 let~ cost :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "revm_interpreter::gas::calc::memory_gas", [] |),
+                      M.get_function (| "revm_interpreter::gas::calc::memory_gas", [], [] |),
                       [ M.read (| new_num |) ]
                     |)
                   |) in
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::mem::swap", [ Ty.path "u64" ] |),
+                      M.get_function (| "core::mem::swap", [], [ Ty.path "u64" ] |),
                       [
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),

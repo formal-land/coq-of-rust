@@ -29,6 +29,7 @@ Module main.
         (M.call_closure (|
           M.get_function (|
             "std::panicking::begin_panic",
+            [],
             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
           |),
           [ M.read (| Value.String "This call never returns." |) ]

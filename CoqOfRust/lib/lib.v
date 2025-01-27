@@ -205,8 +205,11 @@ Module BinOp.
     Definition mul (v1 v2 : Value.t) : M :=
       make_arithmetic Z.mul v1 v2.
 
-    Parameter div : Value.t -> Value.t -> M.
-    Parameter rem : Value.t -> Value.t -> M.
+    Definition div (v1 v2 : Value.t) : M :=
+      make_arithmetic Z.div v1 v2.
+
+    Definition rem (v1 v2 : Value.t) : M :=
+      make_arithmetic Z.modulo v1 v2.
 
     Parameter shl : Value.t -> Value.t -> M.
     Parameter shr : Value.t -> Value.t -> M.

@@ -34,6 +34,7 @@ Module cyclic_dependencies.
             M.call_closure (|
               M.get_function (|
                 "move_bytecode_verifier::cyclic_dependencies::verify_module_impl",
+                [],
                 [ D ]
               |),
               [ M.read (| module |); M.read (| imm_deps |) ]
@@ -262,6 +263,7 @@ Module cyclic_dependencies.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "move_bytecode_verifier::cyclic_dependencies::verify_module_impl.detect_cycles",
+                                                                [],
                                                                 []
                                                               |),
                                                               [ self_id; dep; visited; imm_deps ]
@@ -704,6 +706,7 @@ Module cyclic_dependencies.
                                                                       M.call_closure (|
                                                                         M.get_function (|
                                                                           "move_bytecode_verifier::cyclic_dependencies::verify_module_impl.detect_cycles",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [

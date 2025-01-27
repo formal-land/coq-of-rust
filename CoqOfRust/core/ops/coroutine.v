@@ -138,6 +138,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
                     |),
                     [ M.read (| self |) ]
@@ -148,6 +149,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
                     |),
                     [ M.read (| other |) ]
@@ -230,7 +232,7 @@ Module ops.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unreachable", [] |),
+                                    M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                     []
                                   |)
                                 |)
@@ -276,6 +278,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
                     |),
                     [ M.read (| self |) ]
@@ -286,6 +289,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
                     |),
                     [ M.read (| other |) ]
@@ -448,6 +452,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
                     |),
                     [ M.read (| self |) ]
@@ -458,6 +463,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
                     |),
                     [ M.read (| other |) ]
@@ -534,7 +540,7 @@ Module ops.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unreachable", [] |),
+                                    M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                     []
                                   |)
                                 |)
@@ -649,6 +655,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
                     |),
                     [ M.read (| self |) ]

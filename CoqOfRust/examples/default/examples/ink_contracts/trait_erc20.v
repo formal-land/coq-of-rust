@@ -258,6 +258,7 @@ Module Impl_core_cmp_PartialEq_for_trait_erc20_Error.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "trait_erc20::Error" ]
                 |),
                 [ M.read (| self |) ]
@@ -268,6 +269,7 @@ Module Impl_core_cmp_PartialEq_for_trait_erc20_Error.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "trait_erc20::Error" ]
                 |),
                 [ M.read (| other |) ]

@@ -127,7 +127,10 @@ Module future.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (| M.get_function (| "core::future::pending::pending", [ T ] |), [] |)))
+            M.call_closure (|
+              M.get_function (| "core::future::pending::pending", [], [ T ] |),
+              []
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

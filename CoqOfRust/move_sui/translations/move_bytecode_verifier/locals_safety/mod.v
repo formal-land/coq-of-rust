@@ -1011,7 +1011,7 @@ Module locals_safety.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String
@@ -2029,6 +2029,7 @@ Module locals_safety.
           M.call_closure (|
             M.get_function (|
               "move_bytecode_verifier::locals_safety::execute_inner",
+              [],
               [ impl_Meter__plus___Sized ]
             |),
             [ M.read (| state |); M.read (| bytecode |); M.read (| index |); M.read (| meter |) ]

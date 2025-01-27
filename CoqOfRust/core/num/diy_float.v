@@ -566,7 +566,7 @@ Module num.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String "assertion failed: f >= (1 << 63)"
@@ -640,7 +640,7 @@ Module num.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [ M.read (| Value.String "assertion failed: edelta >= 0" |) ]
                             |)
                           |)
@@ -714,6 +714,7 @@ Module num.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::panicking::assert_failed",
+                                            [],
                                             [ Ty.path "u64"; Ty.path "u64" ]
                                           |),
                                           [

@@ -1056,6 +1056,7 @@ Module instructions.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_interpreter::instructions::control::jump_inner",
+                                [],
                                 [ WIRE ]
                               |),
                               [ M.read (| interpreter |); M.read (| target |) ]
@@ -1236,6 +1237,7 @@ Module instructions.
                                     M.call_closure (|
                                       M.get_function (|
                                         "revm_interpreter::instructions::control::jump_inner",
+                                        [],
                                         [ WIRE ]
                                       |),
                                       [ M.read (| interpreter |); M.read (| target |) ]
@@ -3274,6 +3276,7 @@ Module instructions.
                                       M.call_closure (|
                                         M.get_function (|
                                           "revm_interpreter::interpreter::shared_memory::num_words",
+                                          [],
                                           []
                                         |),
                                         [
@@ -3538,6 +3541,7 @@ Module instructions.
                 M.call_closure (|
                   M.get_function (|
                     "revm_interpreter::instructions::control::return_inner",
+                    [],
                     [ WIRE ]
                   |),
                   [
@@ -3652,6 +3656,7 @@ Module instructions.
                     M.call_closure (|
                       M.get_function (|
                         "revm_interpreter::instructions::control::return_inner",
+                        [],
                         [ WIRE ]
                       |),
                       [

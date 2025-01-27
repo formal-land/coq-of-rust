@@ -285,12 +285,17 @@ Module f32.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::transmute", [ Ty.path "u32"; Ty.path "f32" ] |),
+            M.get_function (|
+              "core::intrinsics::transmute",
+              [],
+              [ Ty.path "u32"; Ty.path "f32" ]
+            |),
             [
               BinOp.bit_and
                 (M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::transmute",
+                    [],
                     [ Ty.path "f32"; Ty.path "u32" ]
                   |),
                   [ M.read (| self |) ]
@@ -562,6 +567,7 @@ Module f32.
               (M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::transmute",
+                  [],
                   [ Ty.path "f32"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |) ]
@@ -932,7 +938,7 @@ Module f32.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::maxnumf32", [] |),
+            M.get_function (| "core::intrinsics::maxnumf32", [], [] |),
             [ M.read (| self |); M.read (| other |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -952,7 +958,7 @@ Module f32.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::minnumf32", [] |),
+            M.get_function (| "core::intrinsics::minnumf32", [], [] |),
             [ M.read (| self |); M.read (| other |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1312,7 +1318,11 @@ Module f32.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::transmute", [ Ty.path "f32"; Ty.path "u32" ] |),
+            M.get_function (|
+              "core::intrinsics::transmute",
+              [],
+              [ Ty.path "f32"; Ty.path "u32" ]
+            |),
             [ M.read (| self |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1333,7 +1343,11 @@ Module f32.
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.call_closure (|
-            M.get_function (| "core::intrinsics::transmute", [ Ty.path "u32"; Ty.path "f32" ] |),
+            M.get_function (|
+              "core::intrinsics::transmute",
+              [],
+              [ Ty.path "u32"; Ty.path "f32" ]
+            |),
             [ M.read (| v |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1617,7 +1631,7 @@ Module f32.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|

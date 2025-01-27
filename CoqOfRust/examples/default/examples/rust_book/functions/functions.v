@@ -80,7 +80,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                   M.use
                     (M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "functions::is_divisible_by", [] |),
+                        M.get_function (| "functions::is_divisible_by", [], [] |),
                         [ M.read (| n |); Value.Integer IntegerKind.U32 15 ]
                       |)
                     |)) in
@@ -89,7 +89,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "std::io::stdio::_print", [] |),
+                        M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
@@ -116,7 +116,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                           M.use
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "functions::is_divisible_by", [] |),
+                                M.get_function (| "functions::is_divisible_by", [], [] |),
                                 [ M.read (| n |); Value.Integer IntegerKind.U32 3 ]
                               |)
                             |)) in
@@ -126,7 +126,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                           let~ _ :=
                             M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "std::io::stdio::_print", [] |),
+                                M.get_function (| "std::io::stdio::_print", [], [] |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -157,7 +157,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                   M.use
                                     (M.alloc (|
                                       M.call_closure (|
-                                        M.get_function (| "functions::is_divisible_by", [] |),
+                                        M.get_function (| "functions::is_divisible_by", [], [] |),
                                         [ M.read (| n |); Value.Integer IntegerKind.U32 5 ]
                                       |)
                                     |)) in
@@ -170,7 +170,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                   let~ _ :=
                                     M.alloc (|
                                       M.call_closure (|
-                                        M.get_function (| "std::io::stdio::_print", [] |),
+                                        M.get_function (| "std::io::stdio::_print", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -196,7 +196,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                   let~ _ :=
                                     M.alloc (|
                                       M.call_closure (|
-                                        M.get_function (| "std::io::stdio::_print", [] |),
+                                        M.get_function (| "std::io::stdio::_print", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -321,7 +321,7 @@ Definition fizzbuzz_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                                 let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
-                                      M.get_function (| "functions::fizzbuzz", [] |),
+                                      M.get_function (| "functions::fizzbuzz", [], [] |),
                                       [ M.read (| n |) ]
                                     |)
                                   |) in
@@ -352,7 +352,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "functions::fizzbuzz_to", [] |),
+              M.get_function (| "functions::fizzbuzz_to", [], [] |),
               [ Value.Integer IntegerKind.U32 100 ]
             |)
           |) in

@@ -132,7 +132,7 @@ Module net.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::str::converts::from_utf8_unchecked", [] |),
+                  M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
                   [ M.read (| s |) ]
                 |)
               |)

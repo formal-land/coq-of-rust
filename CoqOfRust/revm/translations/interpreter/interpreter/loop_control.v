@@ -174,6 +174,7 @@ Module interpreter.
             M.call_closure (|
               M.get_function (|
                 "core::mem::take",
+                [],
                 [ Ty.path "revm_interpreter::interpreter_action::InterpreterAction" ]
               |),
               [

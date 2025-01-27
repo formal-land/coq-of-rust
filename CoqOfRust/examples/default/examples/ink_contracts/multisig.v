@@ -1080,7 +1080,7 @@ Definition ensure_requirement_is_valid (ε : list Value.t) (τ : list Ty.t) (α 
                   M.alloc (|
                     M.never_to_any (|
                       M.call_closure (|
-                        M.get_function (| "core::panicking::panic", [] |),
+                        M.get_function (| "core::panicking::panic", [], [] |),
                         [
                           M.read (|
                             Value.String
@@ -1211,7 +1211,7 @@ Module Impl_multisig_Multisig.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "multisig::ensure_requirement_is_valid", [] |),
+                M.get_function (| "multisig::ensure_requirement_is_valid", [], [] |),
                 [
                   M.rust_cast
                     (M.call_closure (|
@@ -1428,7 +1428,7 @@ Module Impl_multisig_Multisig.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic", [] |),
+                          M.get_function (| "core::panicking::panic", [], [] |),
                           [
                             M.read (|
                               Value.String
@@ -1549,7 +1549,7 @@ Module Impl_multisig_Multisig.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic", [] |),
+                          M.get_function (| "core::panicking::panic", [], [] |),
                           [
                             M.read (|
                               Value.String "assertion failed: self.is_owner.contains(owner)"
@@ -1702,6 +1702,7 @@ Module Impl_multisig_Multisig.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::panicking::assert_failed",
+                                        [],
                                         [
                                           Ty.path "multisig::AccountId";
                                           Ty.path "multisig::AccountId"
@@ -1779,7 +1780,7 @@ Module Impl_multisig_Multisig.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic", [] |),
+                          M.get_function (| "core::panicking::panic", [], [] |),
                           [
                             M.read (|
                               Value.String "assertion failed: !self.is_owner.contains(owner)"
@@ -1838,7 +1839,7 @@ Module Impl_multisig_Multisig.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "multisig::ensure_requirement_is_valid", [] |),
+                M.get_function (| "multisig::ensure_requirement_is_valid", [], [] |),
                 [
                   BinOp.Wrap.add (|
                     M.rust_cast
@@ -2380,7 +2381,7 @@ Module Impl_multisig_Multisig.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "multisig::ensure_requirement_is_valid", [] |),
+                M.get_function (| "multisig::ensure_requirement_is_valid", [], [] |),
                 [ M.read (| len |); M.read (| requirement |) ]
               |)
             |) in
@@ -2695,7 +2696,7 @@ Module Impl_multisig_Multisig.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "multisig::ensure_requirement_is_valid", [] |),
+                M.get_function (| "multisig::ensure_requirement_is_valid", [], [] |),
                 [
                   M.rust_cast
                     (M.call_closure (|
@@ -4043,7 +4044,7 @@ Module Impl_multisig_Multisig.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic", [] |),
+                          M.get_function (| "core::panicking::panic", [], [] |),
                           [
                             M.read (|
                               Value.String
@@ -4060,7 +4061,7 @@ Module Impl_multisig_Multisig.
             M.alloc (|
               M.never_to_any (|
                 M.call_closure (|
-                  M.get_function (| "core::panicking::panic", [] |),
+                  M.get_function (| "core::panicking::panic", [], [] |),
                   [ M.read (| Value.String "not yet implemented" |) ]
                 |)
               |)

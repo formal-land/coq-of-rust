@@ -186,7 +186,7 @@ Module iter.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic_fmt", [] |),
+                                M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -1748,6 +1748,7 @@ Module iter.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::array::from_fn",
+                                      [ N ],
                                       [
                                         Ty.associated;
                                         Ty.function [ Ty.tuple [ Ty.path "usize" ] ] Ty.associated

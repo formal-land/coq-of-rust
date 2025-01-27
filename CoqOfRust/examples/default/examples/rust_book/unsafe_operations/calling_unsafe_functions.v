@@ -92,7 +92,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ my_slice :=
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u32" ] |),
+              M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u32" ] |),
               [ M.read (| pointer |); M.read (| length |) ]
             |)
           |) in
@@ -166,6 +166,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::panicking::assert_failed",
+                                      [],
                                       [
                                         Ty.apply
                                           (Ty.path "&")

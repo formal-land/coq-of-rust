@@ -406,6 +406,7 @@ Module table.
                                 M.call_closure (|
                                   M.get_function (|
                                     "revm_interpreter::table::make_custom_instruction_table",
+                                    [],
                                     [ WIRE; H; F; CI ]
                                   |),
                                   [ M.read (| M.read (| table |) |); M.read (| f |) ]
@@ -537,7 +538,7 @@ Module table.
           let opcode := M.alloc (| opcode |) in
           let instruction := M.alloc (| instruction |) in
           M.call_closure (|
-            M.get_function (| "core::mem::replace", [ CI ] |),
+            M.get_function (| "core::mem::replace", [], [ CI ] |),
             [
               M.call_closure (|
                 M.get_associated_function (|
@@ -614,6 +615,7 @@ Module table.
         M.call_closure (|
           M.get_function (|
             "core::array::from_fn",
+            [ Value.Integer IntegerKind.Usize 256 ],
             [ CI; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] CI ]
           |),
           [

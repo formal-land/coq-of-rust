@@ -500,6 +500,7 @@ Module num.
                     M.call_closure (|
                       M.get_function (|
                         "core::intrinsics::discriminant_value",
+                        [],
                         [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ]
                       |),
                       [ M.read (| self |) ]
@@ -510,6 +511,7 @@ Module num.
                     M.call_closure (|
                       M.get_function (|
                         "core::intrinsics::discriminant_value",
+                        [],
                         [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ]
                       |),
                       [ M.read (| other |) ]

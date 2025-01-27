@@ -17,7 +17,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -44,7 +44,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -65,7 +65,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               [
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::cmp::min", [ Ty.path "i32" ] |),
+                                    M.get_function (| "core::cmp::min", [], [ Ty.path "i32" ] |),
                                     [
                                       BinOp.Wrap.add (|
                                         Value.Integer IntegerKind.I32 1,
@@ -89,7 +89,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
+                M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
@@ -110,11 +110,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               [
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::cmp::min", [ Ty.path "i32" ] |),
+                                    M.get_function (| "core::cmp::min", [], [ Ty.path "i32" ] |),
                                     [
                                       Value.Integer IntegerKind.I32 5;
                                       M.call_closure (|
-                                        M.get_function (| "core::cmp::min", [ Ty.path "i32" ] |),
+                                        M.get_function (|
+                                          "core::cmp::min",
+                                          [],
+                                          [ Ty.path "i32" ]
+                                        |),
                                         [
                                           BinOp.Wrap.mul (|
                                             Value.Integer IntegerKind.I32 2,

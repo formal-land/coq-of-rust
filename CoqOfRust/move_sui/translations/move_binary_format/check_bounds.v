@@ -125,6 +125,7 @@ Module check_bounds.
                                     M.call_closure (|
                                       M.get_function (|
                                         "move_binary_format::errors::verification_error",
+                                        [],
                                         []
                                       |),
                                       [
@@ -3714,6 +3715,7 @@ Module check_bounds.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
+                              [],
                               [
                                 Ty.path "move_core_types::account_address::AccountAddress";
                                 Ty.path "move_binary_format::file_format::AddressIdentifierIndex"
@@ -3806,6 +3808,7 @@ Module check_bounds.
                   M.call_closure (|
                     M.get_function (|
                       "move_binary_format::check_bounds::check_bounds_impl",
+                      [],
                       [
                         Ty.path "move_core_types::identifier::Identifier";
                         Ty.path "move_binary_format::file_format::IdentifierIndex"
@@ -3859,6 +3862,7 @@ Module check_bounds.
           M.call_closure (|
             M.get_function (|
               "move_binary_format::check_bounds::check_bounds_impl",
+              [],
               [
                 Ty.path "move_binary_format::file_format::ModuleHandle";
                 Ty.path "move_binary_format::file_format::ModuleHandleIndex"
@@ -3938,6 +3942,7 @@ Module check_bounds.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
+                              [],
                               [
                                 Ty.path "move_binary_format::file_format::ModuleHandle";
                                 Ty.path "move_binary_format::file_format::ModuleHandleIndex"
@@ -4030,6 +4035,7 @@ Module check_bounds.
                   M.call_closure (|
                     M.get_function (|
                       "move_binary_format::check_bounds::check_bounds_impl",
+                      [],
                       [
                         Ty.path "move_core_types::identifier::Identifier";
                         Ty.path "move_binary_format::file_format::IdentifierIndex"
@@ -4126,6 +4132,7 @@ Module check_bounds.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
+                              [],
                               [
                                 Ty.path "move_binary_format::file_format::ModuleHandle";
                                 Ty.path "move_binary_format::file_format::ModuleHandleIndex"
@@ -4232,6 +4239,7 @@ Module check_bounds.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
+                              [],
                               [
                                 Ty.path "move_core_types::identifier::Identifier";
                                 Ty.path "move_binary_format::file_format::IdentifierIndex"
@@ -4338,6 +4346,7 @@ Module check_bounds.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
+                              [],
                               [
                                 Ty.path "move_binary_format::file_format::Signature";
                                 Ty.path "move_binary_format::file_format::SignatureIndex"
@@ -4444,6 +4453,7 @@ Module check_bounds.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
+                              [],
                               [
                                 Ty.path "move_binary_format::file_format::Signature";
                                 Ty.path "move_binary_format::file_format::SignatureIndex"
@@ -5100,6 +5110,7 @@ Module check_bounds.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
+                              [],
                               [
                                 Ty.path "move_binary_format::file_format::StructDefinition";
                                 Ty.path "move_binary_format::file_format::StructDefinitionIndex"
@@ -5340,6 +5351,7 @@ Module check_bounds.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "move_binary_format::errors::bounds_error",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -5422,6 +5434,7 @@ Module check_bounds.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
+                              [],
                               [
                                 Ty.path "move_binary_format::file_format::StructDefinition";
                                 Ty.path "move_binary_format::file_format::StructDefinitionIndex"
@@ -5514,6 +5527,7 @@ Module check_bounds.
                   M.call_closure (|
                     M.get_function (|
                       "move_binary_format::check_bounds::check_bounds_impl",
+                      [],
                       [
                         Ty.path "move_binary_format::file_format::Signature";
                         Ty.path "move_binary_format::file_format::SignatureIndex"
@@ -5600,6 +5614,7 @@ Module check_bounds.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
+                              [],
                               [
                                 Ty.path "move_binary_format::file_format::FunctionHandle";
                                 Ty.path "move_binary_format::file_format::FunctionHandleIndex"
@@ -5692,6 +5707,7 @@ Module check_bounds.
                   M.call_closure (|
                     M.get_function (|
                       "move_binary_format::check_bounds::check_bounds_impl",
+                      [],
                       [
                         Ty.path "move_binary_format::file_format::Signature";
                         Ty.path "move_binary_format::file_format::SignatureIndex"
@@ -5775,6 +5791,7 @@ Module check_bounds.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
+                              [],
                               [
                                 Ty.path "move_binary_format::file_format::FieldHandle";
                                 Ty.path "move_binary_format::file_format::FieldHandleIndex"
@@ -5867,6 +5884,7 @@ Module check_bounds.
                   M.call_closure (|
                     M.get_function (|
                       "move_binary_format::check_bounds::check_bounds_impl",
+                      [],
                       [
                         Ty.path "move_binary_format::file_format::Signature";
                         Ty.path "move_binary_format::file_format::SignatureIndex"
@@ -6183,6 +6201,7 @@ Module check_bounds.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
+                              [],
                               [
                                 Ty.path "move_binary_format::file_format::StructHandle";
                                 Ty.path "move_binary_format::file_format::StructHandleIndex"
@@ -6508,6 +6527,7 @@ Module check_bounds.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "move_binary_format::check_bounds::check_bounds_impl",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_core_types::identifier::Identifier";
@@ -6913,6 +6933,7 @@ Module check_bounds.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
+                              [],
                               [
                                 Ty.path "move_binary_format::file_format::FunctionHandle";
                                 Ty.path "move_binary_format::file_format::FunctionHandleIndex"
@@ -7102,6 +7123,7 @@ Module check_bounds.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "move_binary_format::check_bounds::check_bounds_impl",
+                                                        [],
                                                         [
                                                           Ty.path
                                                             "move_binary_format::file_format::StructDefinition";
@@ -7307,6 +7329,7 @@ Module check_bounds.
                                       M.call_closure (|
                                         M.get_function (|
                                           "move_binary_format::errors::verification_error",
+                                          [],
                                           []
                                         |),
                                         [
@@ -7438,6 +7461,7 @@ Module check_bounds.
                                       M.call_closure (|
                                         M.get_function (|
                                           "move_binary_format::errors::verification_error",
+                                          [],
                                           []
                                         |),
                                         [
@@ -7764,6 +7788,7 @@ Module check_bounds.
                           M.call_closure (|
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
+                              [],
                               [
                                 Ty.path "move_binary_format::file_format::Signature";
                                 Ty.path "move_binary_format::file_format::SignatureIndex"
@@ -7998,6 +8023,7 @@ Module check_bounds.
                                       M.call_closure (|
                                         M.get_function (|
                                           "move_binary_format::errors::verification_error",
+                                          [],
                                           []
                                         |),
                                         [
@@ -12118,6 +12144,7 @@ Module check_bounds.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "move_binary_format::check_bounds::check_bounds_impl",
+                                                                [],
                                                                 [
                                                                   Ty.path
                                                                     "move_binary_format::file_format::StructHandle";
@@ -12337,6 +12364,7 @@ Module check_bounds.
                                                                                   M.call_closure (|
                                                                                     M.get_function (|
                                                                                       "core::hint::must_use",
+                                                                                      [],
                                                                                       [
                                                                                         Ty.path
                                                                                           "alloc::string::String"
@@ -12349,6 +12377,7 @@ Module check_bounds.
                                                                                             M.call_closure (|
                                                                                               M.get_function (|
                                                                                                 "alloc::fmt::format",
+                                                                                                [],
                                                                                                 []
                                                                                               |),
                                                                                               [
@@ -12497,6 +12526,7 @@ Module check_bounds.
                                                                     M.call_closure (|
                                                                       M.get_function (|
                                                                         "move_binary_format::check_bounds::check_bounds_impl",
+                                                                        [],
                                                                         [
                                                                           Ty.path
                                                                             "move_binary_format::file_format::StructHandle";
@@ -12749,6 +12779,7 @@ Module check_bounds.
                                                                                           M.call_closure (|
                                                                                             M.get_function (|
                                                                                               "core::hint::must_use",
+                                                                                              [],
                                                                                               [
                                                                                                 Ty.path
                                                                                                   "alloc::string::String"
@@ -12762,6 +12793,7 @@ Module check_bounds.
                                                                                                     M.call_closure (|
                                                                                                       M.get_function (|
                                                                                                         "alloc::fmt::format",
+                                                                                                        [],
                                                                                                         []
                                                                                                       |),
                                                                                                       [
@@ -13071,6 +13103,7 @@ Module check_bounds.
                                                                       M.call_closure (|
                                                                         M.get_function (|
                                                                           "move_binary_format::errors::bounds_error",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -13483,7 +13516,7 @@ Module check_bounds.
                         "core::result::Result::Err"
                         [
                           M.call_closure (|
-                            M.get_function (| "move_binary_format::errors::bounds_error", [] |),
+                            M.get_function (| "move_binary_format::errors::bounds_error", [], [] |),
                             [
                               Value.StructTuple
                                 "move_core_types::vm_status::StatusCode::INDEX_OUT_OF_BOUNDS"
@@ -13605,6 +13638,7 @@ Module check_bounds.
                         M.call_closure (|
                           M.get_function (|
                             "core::hint::must_use",
+                            [],
                             [ Ty.path "alloc::string::String" ]
                           |),
                           [
@@ -13612,7 +13646,7 @@ Module check_bounds.
                               let~ res :=
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "alloc::fmt::format", [] |),
+                                    M.get_function (| "alloc::fmt::format", [], [] |),
                                     [
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -13689,7 +13723,11 @@ Module check_bounds.
                     let current_function_index := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "move_binary_format::errors::offset_out_of_bounds", [] |),
+                        M.get_function (|
+                          "move_binary_format::errors::offset_out_of_bounds",
+                          [],
+                          []
+                        |),
                         [
                           M.read (| status |);
                           M.read (| kind |);
@@ -13769,7 +13807,7 @@ Module check_bounds.
                       "core::result::Result::Err"
                       [
                         M.call_closure (|
-                          M.get_function (| "move_binary_format::errors::bounds_error", [] |),
+                          M.get_function (| "move_binary_format::errors::bounds_error", [], [] |),
                           [
                             Value.StructTuple
                               "move_core_types::vm_status::StatusCode::INDEX_OUT_OF_BOUNDS"

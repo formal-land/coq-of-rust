@@ -14,7 +14,7 @@ Module intrinsics.
       ltac:(M.monadic
         (let to_drop := M.alloc (| to_drop |) in
         M.call_closure (|
-          M.get_function (| "core::ptr::drop_in_place", [ T ] |),
+          M.get_function (| "core::ptr::drop_in_place", [], [ T ] |),
           [ M.read (| to_drop |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -617,7 +617,7 @@ Module intrinsics.
                   M.alloc (|
                     M.never_to_any (|
                       M.call_closure (|
-                        M.get_function (| "core::intrinsics::unreachable", [] |),
+                        M.get_function (| "core::intrinsics::unreachable", [], [] |),
                         []
                       |)
                     |)
@@ -1370,7 +1370,7 @@ Module intrinsics.
         let _called_at_rt := M.alloc (| _called_at_rt |) in
         M.never_to_any (|
           M.call_closure (|
-            M.get_function (| "core::panicking::panic", [] |),
+            M.get_function (| "core::panicking::panic", [], [] |),
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
@@ -1414,7 +1414,7 @@ Module intrinsics.
           let~ _ :=
             M.alloc (|
               M.call_closure (|
-                M.get_function (| "core::ptr::swap_nonoverlapping", [ T ] |),
+                M.get_function (| "core::ptr::swap_nonoverlapping", [], [ T ] |),
                 [ M.read (| x |); M.read (| y |); Value.Integer IntegerKind.Usize 1 ]
               |)
             |) in
@@ -1451,7 +1451,7 @@ Module intrinsics.
       ltac:(M.monadic
         (let _size := M.alloc (| _size |) in
         let _align := M.alloc (| _align |) in
-        M.call_closure (| M.get_function (| "core::ptr::null_mut", [ Ty.path "u8" ] |), [] |)))
+        M.call_closure (| M.get_function (| "core::ptr::null_mut", [], [ Ty.path "u8" ] |), [] |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -1488,7 +1488,7 @@ Module intrinsics.
         (let _ptr := M.alloc (| _ptr |) in
         M.never_to_any (|
           M.call_closure (|
-            M.get_function (| "core::panicking::panic", [] |),
+            M.get_function (| "core::panicking::panic", [], [] |),
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
@@ -1509,7 +1509,7 @@ Module intrinsics.
         (let _ptr := M.alloc (| _ptr |) in
         M.never_to_any (|
           M.call_closure (|
-            M.get_function (| "core::panicking::panic", [] |),
+            M.get_function (| "core::panicking::panic", [], [] |),
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
@@ -1529,7 +1529,7 @@ Module intrinsics.
       ltac:(M.monadic
         (M.never_to_any (|
           M.call_closure (|
-            M.get_function (| "core::panicking::panic", [] |),
+            M.get_function (| "core::panicking::panic", [], [] |),
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
@@ -1549,7 +1549,7 @@ Module intrinsics.
       ltac:(M.monadic
         (M.never_to_any (|
           M.call_closure (|
-            M.get_function (| "core::panicking::panic", [] |),
+            M.get_function (| "core::panicking::panic", [], [] |),
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
@@ -1569,7 +1569,7 @@ Module intrinsics.
       ltac:(M.monadic
         (M.never_to_any (|
           M.call_closure (|
-            M.get_function (| "core::panicking::panic", [] |),
+            M.get_function (| "core::panicking::panic", [], [] |),
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
@@ -1589,7 +1589,7 @@ Module intrinsics.
       ltac:(M.monadic
         (M.never_to_any (|
           M.call_closure (|
-            M.get_function (| "core::panicking::panic", [] |),
+            M.get_function (| "core::panicking::panic", [], [] |),
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
@@ -1610,7 +1610,7 @@ Module intrinsics.
         (let _ptr := M.alloc (| _ptr |) in
         M.never_to_any (|
           M.call_closure (|
-            M.get_function (| "core::panicking::panic", [] |),
+            M.get_function (| "core::panicking::panic", [], [] |),
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
@@ -1631,7 +1631,7 @@ Module intrinsics.
         (let _ptr := M.alloc (| _ptr |) in
         M.never_to_any (|
           M.call_closure (|
-            M.get_function (| "core::panicking::panic", [] |),
+            M.get_function (| "core::panicking::panic", [], [] |),
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
@@ -1652,7 +1652,7 @@ Module intrinsics.
       ltac:(M.monadic
         (M.never_to_any (|
           M.call_closure (|
-            M.get_function (| "core::panicking::panic", [] |),
+            M.get_function (| "core::panicking::panic", [], [] |),
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
@@ -1672,7 +1672,7 @@ Module intrinsics.
       ltac:(M.monadic
         (M.never_to_any (|
           M.call_closure (|
-            M.get_function (| "core::panicking::panic", [] |),
+            M.get_function (| "core::panicking::panic", [], [] |),
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
@@ -1696,7 +1696,7 @@ Module intrinsics.
         let _meta := M.alloc (| _meta |) in
         M.never_to_any (|
           M.call_closure (|
-            M.get_function (| "core::panicking::panic", [] |),
+            M.get_function (| "core::panicking::panic", [], [] |),
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
@@ -1753,7 +1753,7 @@ Module intrinsics.
         (let _ptr := M.alloc (| _ptr |) in
         M.never_to_any (|
           M.call_closure (|
-            M.get_function (| "core::panicking::panic", [] |),
+            M.get_function (| "core::panicking::panic", [], [] |),
             [ M.read (| Value.String "internal error: entered unreachable code" |) ]
           |)
         |)))
@@ -1809,7 +1809,7 @@ Module intrinsics.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                            M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                             []
                           |)
                         |)) in
@@ -1819,17 +1819,18 @@ Module intrinsics.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::copy_nonoverlapping.precondition_check",
+                            [],
                             []
                           |),
                           [
                             M.rust_cast (M.read (| src |));
                             M.rust_cast (M.read (| dst |));
                             M.call_closure (|
-                              M.get_function (| "core::intrinsics::size_of", [ T ] |),
+                              M.get_function (| "core::intrinsics::size_of", [], [ T ] |),
                               []
                             |);
                             M.call_closure (|
-                              M.get_function (| "core::mem::align_of", [ T ] |),
+                              M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
                             |);
                             M.read (| count |)
@@ -1844,6 +1845,7 @@ Module intrinsics.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::copy_nonoverlapping::copy_nonoverlapping",
+                [],
                 [ T ]
               |),
               [ M.read (| src |); M.read (| dst |); M.read (| count |) ]
@@ -1906,7 +1908,7 @@ Module intrinsics.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                            M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                             []
                           |)
                         |)) in
@@ -1914,12 +1916,12 @@ Module intrinsics.
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::intrinsics::copy.precondition_check", [] |),
+                          M.get_function (| "core::intrinsics::copy.precondition_check", [], [] |),
                           [
                             M.rust_cast (M.read (| src |));
                             M.rust_cast (M.read (| dst |));
                             M.call_closure (|
-                              M.get_function (| "core::mem::align_of", [ T ] |),
+                              M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
                             |)
                           ]
@@ -1931,7 +1933,7 @@ Module intrinsics.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "core::intrinsics::copy::copy", [ T ] |),
+              M.get_function (| "core::intrinsics::copy::copy", [], [ T ] |),
               [ M.read (| src |); M.read (| dst |); M.read (| count |) ]
             |)
           |)
@@ -1987,7 +1989,7 @@ Module intrinsics.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                            M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                             []
                           |)
                         |)) in
@@ -1997,12 +1999,13 @@ Module intrinsics.
                         M.call_closure (|
                           M.get_function (|
                             "core::intrinsics::write_bytes.precondition_check",
+                            [],
                             []
                           |),
                           [
                             M.rust_cast (M.read (| dst |));
                             M.call_closure (|
-                              M.get_function (| "core::mem::align_of", [ T ] |),
+                              M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
                             |)
                           ]
@@ -2014,7 +2017,7 @@ Module intrinsics.
             |) in
           M.alloc (|
             M.call_closure (|
-              M.get_function (| "core::intrinsics::write_bytes::write_bytes", [ T ] |),
+              M.get_function (| "core::intrinsics::write_bytes::write_bytes", [], [ T ] |),
               [ M.read (| dst |); M.read (| val |); M.read (| count |) ]
             |)
           |)

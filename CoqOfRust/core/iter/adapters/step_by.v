@@ -180,7 +180,7 @@ Module iter.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [ M.read (| Value.String "assertion failed: step != 0" |) ]
                               |)
                             |)
@@ -245,7 +245,7 @@ Module iter.
                 |),
                 [
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::unchecked_add", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::intrinsics::unchecked_add", [], [ Ty.path "usize" ] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -1237,7 +1237,11 @@ Module iter.
                                           M.use
                                             (M.alloc (|
                                               M.call_closure (|
-                                                M.get_function (| "core::intrinsics::likely", [] |),
+                                                M.get_function (|
+                                                  "core::intrinsics::likely",
+                                                  [],
+                                                  []
+                                                |),
                                                 [
                                                   M.call_closure (|
                                                     M.get_associated_function (|
@@ -1612,6 +1616,7 @@ Module iter.
                             M.call_closure (|
                               M.get_function (|
                                 "core::iter::sources::from_fn::from_fn",
+                                [],
                                 [ Ty.associated; Ty.associated ]
                               |),
                               [
@@ -1778,6 +1783,7 @@ Module iter.
                           M.call_closure (|
                             M.get_function (|
                               "core::iter::sources::from_fn::from_fn",
+                              [],
                               [ Ty.associated; Ty.associated ]
                             |),
                             [
@@ -2129,6 +2135,7 @@ Module iter.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::iter::sources::from_fn::from_fn",
+                                        [],
                                         [ Ty.associated; Ty.associated ]
                                       |),
                                       [
@@ -2261,6 +2268,7 @@ Module iter.
                               M.call_closure (|
                                 M.get_function (|
                                   "core::iter::sources::from_fn::from_fn",
+                                  [],
                                   [ Ty.associated; Ty.associated ]
                                 |),
                                 [

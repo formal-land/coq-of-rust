@@ -209,6 +209,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ] ]
                     |),
                     [ M.read (| self |) ]
@@ -219,6 +220,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ] ]
                     |),
                     [ M.read (| other |) ]
@@ -301,7 +303,7 @@ Module ops.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unreachable", [] |),
+                                    M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                     []
                                   |)
                                 |)
@@ -385,6 +387,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ] ]
                     |),
                     [ M.read (| self |) ]

@@ -31,7 +31,7 @@ Module clone.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::ptr::write", [ T ] |),
+                    M.get_function (| "core::ptr::write", [], [ T ] |),
                     [
                       M.read (| dst |);
                       M.call_closure (|
@@ -158,6 +158,7 @@ Module clone.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::panicking::assert_failed",
+                                                      [],
                                                       [ Ty.path "usize"; Ty.path "usize" ]
                                                     |),
                                                     [
@@ -303,6 +304,7 @@ Module clone.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::forget",
+                      [],
                       [ Ty.apply (Ty.path "core::clone::uninit::InitializingSlice") [] [ T ] ]
                     |),
                     [ M.read (| initializing |) ]
@@ -349,7 +351,7 @@ Module clone.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                    M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                     [ M.read (| src |); M.read (| dst |); Value.Integer IntegerKind.Usize 1 ]
                   |)
                 |) in
@@ -460,6 +462,7 @@ Module clone.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::panicking::assert_failed",
+                                                      [],
                                                       [ Ty.path "usize"; Ty.path "usize" ]
                                                     |),
                                                     [
@@ -506,7 +509,7 @@ Module clone.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
+                    M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -689,7 +692,7 @@ Module clone.
               let~ initialized_slice :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
+                    M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
@@ -722,6 +725,7 @@ Module clone.
                   M.call_closure (|
                     M.get_function (|
                       "core::ptr::drop_in_place",
+                      [],
                       [ Ty.apply (Ty.path "slice") [] [ T ] ]
                     |),
                     [ M.read (| initialized_slice |) ]

@@ -436,7 +436,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [ M.read (| Value.String "assertion failed: !buf.is_empty()" |) ]
                           |)
                         |)
@@ -469,7 +469,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [ M.read (| Value.String "assertion failed: buf[0] > b'0'" |) ]
                           |)
                         |)
@@ -512,7 +512,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [ M.read (| Value.String "assertion failed: parts.len() >= 4" |) ]
                           |)
                         |)
@@ -1343,7 +1343,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [ M.read (| Value.String "assertion failed: !buf.is_empty()" |) ]
                           |)
                         |)
@@ -1376,7 +1376,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [ M.read (| Value.String "assertion failed: buf[0] > b'0'" |) ]
                           |)
                         |)
@@ -1419,7 +1419,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [ M.read (| Value.String "assertion failed: parts.len() >= 6" |) ]
                           |)
                         |)
@@ -1916,6 +1916,7 @@ Module num.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::num::flt2dec::Sign" ]
                     |),
                     [ M.read (| self |) ]
@@ -1926,6 +1927,7 @@ Module num.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::num::flt2dec::Sign" ]
                     |),
                     [ M.read (| other |) ]
@@ -2201,7 +2203,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [ M.read (| Value.String "assertion failed: parts.len() >= 4" |) ]
                           |)
                         |)
@@ -2246,7 +2248,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [
                               M.read (|
                                 Value.String "assertion failed: buf.len() >= MAX_SIG_DIGITS"
@@ -2261,7 +2263,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::num::flt2dec::decoder::decode", [ T ] |),
+                  M.get_function (| "core::num::flt2dec::decoder::decode", [], [ T ] |),
                   [ M.read (| v |) ]
                 |)
               |),
@@ -2275,7 +2277,7 @@ Module num.
                     let~ sign :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::num::flt2dec::determine_sign", [] |),
+                          M.get_function (| "core::num::flt2dec::determine_sign", [], [] |),
                           [ M.read (| sign |); full_decoded; M.read (| negative |) ]
                         |)
                       |) in
@@ -2694,6 +2696,7 @@ Module num.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::num::flt2dec::digits_to_dec_str",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -2818,7 +2821,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [ M.read (| Value.String "assertion failed: parts.len() >= 6" |) ]
                           |)
                         |)
@@ -2863,7 +2866,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [
                               M.read (|
                                 Value.String "assertion failed: buf.len() >= MAX_SIG_DIGITS"
@@ -2895,7 +2898,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [
                               M.read (|
                                 Value.String "assertion failed: dec_bounds.0 <= dec_bounds.1"
@@ -2910,7 +2913,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::num::flt2dec::decoder::decode", [ T ] |),
+                  M.get_function (| "core::num::flt2dec::decoder::decode", [], [ T ] |),
                   [ M.read (| v |) ]
                 |)
               |),
@@ -2924,7 +2927,7 @@ Module num.
                     let~ sign :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::num::flt2dec::determine_sign", [] |),
+                          M.get_function (| "core::num::flt2dec::determine_sign", [], [] |),
                           [ M.read (| sign |); full_decoded; M.read (| negative |) ]
                         |)
                       |) in
@@ -3350,6 +3353,7 @@ Module num.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::num::flt2dec::digits_to_dec_str",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -3366,6 +3370,7 @@ Module num.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::num::flt2dec::digits_to_exp_str",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -3551,7 +3556,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [ M.read (| Value.String "assertion failed: parts.len() >= 6" |) ]
                           |)
                         |)
@@ -3576,7 +3581,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [ M.read (| Value.String "assertion failed: ndigits > 0" |) ]
                           |)
                         |)
@@ -3587,7 +3592,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::num::flt2dec::decoder::decode", [ T ] |),
+                  M.get_function (| "core::num::flt2dec::decoder::decode", [], [ T ] |),
                   [ M.read (| v |) ]
                 |)
               |),
@@ -3601,7 +3606,7 @@ Module num.
                     let~ sign :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::num::flt2dec::determine_sign", [] |),
+                          M.get_function (| "core::num::flt2dec::determine_sign", [], [] |),
                           [ M.read (| sign |); full_decoded; M.read (| negative |) ]
                         |)
                       |) in
@@ -4046,6 +4051,7 @@ Module num.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::num::flt2dec::estimate_max_buf_len",
+                                    [],
                                     []
                                   |),
                                   [
@@ -4122,7 +4128,7 @@ Module num.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.call_closure (|
-                                            M.get_function (| "core::panicking::panic", [] |),
+                                            M.get_function (| "core::panicking::panic", [], [] |),
                                             [
                                               M.read (|
                                                 Value.String
@@ -4247,6 +4253,7 @@ Module num.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::num::flt2dec::digits_to_exp_str",
+                                                [],
                                                 []
                                               |),
                                               [
@@ -4403,7 +4410,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [ M.read (| Value.String "assertion failed: parts.len() >= 4" |) ]
                           |)
                         |)
@@ -4414,7 +4421,7 @@ Module num.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::num::flt2dec::decoder::decode", [ T ] |),
+                  M.get_function (| "core::num::flt2dec::decoder::decode", [], [ T ] |),
                   [ M.read (| v |) ]
                 |)
               |),
@@ -4428,7 +4435,7 @@ Module num.
                     let~ sign :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::num::flt2dec::determine_sign", [] |),
+                          M.get_function (| "core::num::flt2dec::determine_sign", [], [] |),
                           [ M.read (| sign |); full_decoded; M.read (| negative |) ]
                         |)
                       |) in
@@ -4798,6 +4805,7 @@ Module num.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::num::flt2dec::estimate_max_buf_len",
+                                    [],
                                     []
                                   |),
                                   [
@@ -4851,7 +4859,7 @@ Module num.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.call_closure (|
-                                            M.get_function (| "core::panicking::panic", [] |),
+                                            M.get_function (| "core::panicking::panic", [], [] |),
                                             [
                                               M.read (|
                                                 Value.String "assertion failed: buf.len() >= maxlen"
@@ -5080,6 +5088,7 @@ Module num.
                                                                                 M.call_closure (|
                                                                                   M.get_function (|
                                                                                     "core::panicking::assert_failed",
+                                                                                    [],
                                                                                     [
                                                                                       Ty.path
                                                                                         "usize";
@@ -5348,6 +5357,7 @@ Module num.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::num::flt2dec::digits_to_dec_str",
+                                                        [],
                                                         []
                                                       |),
                                                       [

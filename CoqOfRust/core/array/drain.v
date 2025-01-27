@@ -109,6 +109,7 @@ Module array.
             M.call_closure (|
               M.get_function (|
                 "core::ptr::drop_in_place",
+                [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ]
               |),
               [

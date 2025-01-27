@@ -180,6 +180,7 @@ Module num.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::num::dec2flt::common::is_8digits",
+                                              [],
                                               []
                                             |),
                                             [ M.read (| num |) ]
@@ -214,6 +215,7 @@ Module num.
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::num::dec2flt::parse::parse_8digits",
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| num |) ]
@@ -883,7 +885,7 @@ Module num.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.call_closure (|
-                                            M.get_function (| "core::panicking::panic", [] |),
+                                            M.get_function (| "core::panicking::panic", [], [] |),
                                             [
                                               M.read (|
                                                 Value.String "assertion failed: !s.is_empty()"
@@ -904,7 +906,7 @@ Module num.
                   let~ tmp :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "core::num::dec2flt::parse::try_parse_digits", [] |),
+                        M.get_function (| "core::num::dec2flt::parse::try_parse_digits", [], [] |),
                         [ M.read (| s |); M.read (| mantissa |) ]
                       |)
                     |) in
@@ -970,6 +972,7 @@ Module num.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::num::dec2flt::parse::try_parse_digits",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| s |); M.read (| mantissa |) ]
@@ -1116,6 +1119,7 @@ Module num.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::num::dec2flt::parse::parse_scientific",
+                                                      [],
                                                       []
                                                     |),
                                                     [ s ]
@@ -1388,6 +1392,7 @@ Module num.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::num::dec2flt::parse::try_parse_19digits",
+                                    [],
                                     []
                                   |),
                                   [ s; mantissa ]
@@ -1465,6 +1470,7 @@ Module num.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::num::dec2flt::parse::try_parse_19digits",
+                                                    [],
                                                     []
                                                   |),
                                                   [ s; mantissa ]
@@ -1553,6 +1559,7 @@ Module num.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::num::dec2flt::parse::parse_partial_number",
+                                    [],
                                     []
                                   |),
                                   [ M.read (| s |) ]

@@ -445,6 +445,7 @@ Module Impl_core_cmp_PartialEq_for_erc721_Error.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "erc721::Error" ]
                 |),
                 [ M.read (| self |) ]
@@ -455,6 +456,7 @@ Module Impl_core_cmp_PartialEq_for_erc721_Error.
               M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
+                  [],
                   [ Ty.path "erc721::Error" ]
                 |),
                 [ M.read (| other |) ]

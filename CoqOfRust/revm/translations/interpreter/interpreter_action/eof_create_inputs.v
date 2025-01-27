@@ -274,6 +274,7 @@ Module interpreter_action.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [
                         Ty.path
                           "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
@@ -287,6 +288,7 @@ Module interpreter_action.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [
                         Ty.path
                           "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
@@ -458,7 +460,7 @@ Module interpreter_action.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
-                                    M.get_function (| "core::intrinsics::unreachable", [] |),
+                                    M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                     []
                                   |)
                                 |)

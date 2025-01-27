@@ -102,7 +102,7 @@ Module num.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String "assertion failed: borrow < other"
@@ -247,7 +247,7 @@ Module num.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String "assertion failed: borrow < other"
@@ -392,7 +392,7 @@ Module num.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String "assertion failed: borrow < other"
@@ -898,7 +898,7 @@ Module num.
               let~ sz :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::cmp::max", [], [ Ty.path "usize" ] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -940,6 +940,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::iter::adapters::zip::zip",
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "&mut")
@@ -1369,7 +1370,7 @@ Module num.
               let~ sz :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::cmp::max", [], [ Ty.path "usize" ] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -1411,6 +1412,7 @@ Module num.
                           M.call_closure (|
                             M.get_function (|
                               "core::iter::adapters::zip::zip",
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "&mut")
@@ -1582,7 +1584,7 @@ Module num.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [ M.read (| Value.String "assertion failed: noborrow" |) ]
                             |)
                           |)
@@ -1885,7 +1887,7 @@ Module num.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [ M.read (| Value.String "assertion failed: digits < 40" |) ]
                             |)
                           |)
@@ -2009,7 +2011,7 @@ Module num.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String
@@ -2089,7 +2091,7 @@ Module num.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String
@@ -2621,7 +2623,7 @@ Module num.
                       M.get_associated_function (| Ty.path "usize", "trailing_zeros", [] |),
                       [
                         M.call_closure (|
-                          M.get_function (| "core::mem::size_of", [ Ty.path "u32" ] |),
+                          M.get_function (| "core::mem::size_of", [], [ Ty.path "u32" ] |),
                           []
                         |)
                       ]
@@ -2982,7 +2984,7 @@ Module num.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [ M.read (| Value.String "assertion failed: other > 0" |) ]
                             |)
                           |)
@@ -3229,7 +3231,7 @@ Module num.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [ M.read (| Value.String "assertion failed: !d.is_zero()" |) ]
                             |)
                           |)
@@ -3820,7 +3822,7 @@ Module num.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String
@@ -3956,7 +3958,7 @@ Module num.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String
@@ -4125,7 +4127,7 @@ Module num.
               let~ sz :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
+                    M.get_function (| "core::cmp::max", [], [ Ty.path "usize" ] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -5327,7 +5329,7 @@ Module num.
                 let~ sz :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
+                      M.get_function (| "core::cmp::max", [], [ Ty.path "usize" ] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5369,6 +5371,7 @@ Module num.
                             M.call_closure (|
                               M.get_function (|
                                 "core::iter::adapters::zip::zip",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
@@ -5802,7 +5805,7 @@ Module num.
                 let~ sz :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
+                      M.get_function (| "core::cmp::max", [], [ Ty.path "usize" ] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -5844,6 +5847,7 @@ Module num.
                             M.call_closure (|
                               M.get_function (|
                                 "core::iter::adapters::zip::zip",
+                                [],
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
@@ -6019,7 +6023,7 @@ Module num.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [ M.read (| Value.String "assertion failed: noborrow" |) ]
                               |)
                             |)
@@ -6325,7 +6329,7 @@ Module num.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [ M.read (| Value.String "assertion failed: digits < 3" |) ]
                               |)
                             |)
@@ -6454,7 +6458,7 @@ Module num.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String
@@ -6534,7 +6538,7 @@ Module num.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String
@@ -7078,7 +7082,7 @@ Module num.
                         M.get_associated_function (| Ty.path "usize", "trailing_zeros", [] |),
                         [
                           M.call_closure (|
-                            M.get_function (| "core::mem::size_of", [ Ty.path "u8" ] |),
+                            M.get_function (| "core::mem::size_of", [], [ Ty.path "u8" ] |),
                             []
                           |)
                         ]
@@ -7439,7 +7443,7 @@ Module num.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [ M.read (| Value.String "assertion failed: other > 0" |) ]
                               |)
                             |)
@@ -7689,7 +7693,7 @@ Module num.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
-                                M.get_function (| "core::panicking::panic", [] |),
+                                M.get_function (| "core::panicking::panic", [], [] |),
                                 [ M.read (| Value.String "assertion failed: !d.is_zero()" |) ]
                               |)
                             |)
@@ -8305,7 +8309,7 @@ Module num.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String
@@ -8446,7 +8450,7 @@ Module num.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String
@@ -8615,7 +8619,7 @@ Module num.
                 let~ sz :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
+                      M.get_function (| "core::cmp::max", [], [ Ty.path "usize" ] |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|

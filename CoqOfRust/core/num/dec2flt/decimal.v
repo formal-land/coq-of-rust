@@ -323,7 +323,7 @@ Module num.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String
@@ -935,6 +935,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift",
+                            [],
                             []
                           |),
                           [ M.read (| self |); M.read (| shift |) ]
@@ -2352,6 +2353,7 @@ Module num.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "core::num::dec2flt::common::is_8digits",
+                                                            [],
                                                             []
                                                           |),
                                                           [ M.read (| v |) ]

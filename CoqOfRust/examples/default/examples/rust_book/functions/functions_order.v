@@ -205,7 +205,10 @@ Module inner_mod.
         (M.read (|
           let~ _ :=
             M.alloc (|
-              M.call_closure (| M.get_function (| "functions_order::inner_mod::tar", [] |), [] |)
+              M.call_closure (|
+                M.get_function (| "functions_order::inner_mod::tar", [], [] |),
+                []
+              |)
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -237,7 +240,7 @@ Module inner_mod.
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "functions_order::inner_mod::nested_mod::tack", [] |),
+                  M.get_function (| "functions_order::inner_mod::nested_mod::tack", [], [] |),
                   []
                 |)
               |) in
@@ -273,10 +276,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
-          M.alloc (| M.call_closure (| M.get_function (| "functions_order::foo", [] |), [] |) |) in
+          M.alloc (|
+            M.call_closure (| M.get_function (| "functions_order::foo", [], [] |), [] |)
+          |) in
         let~ _ :=
           M.alloc (|
-            M.call_closure (| M.get_function (| "functions_order::inner_mod::bar", [] |), [] |)
+            M.call_closure (| M.get_function (| "functions_order::inner_mod::bar", [], [] |), [] |)
           |) in
         let~ _ :=
           M.alloc (|

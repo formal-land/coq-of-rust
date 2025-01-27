@@ -193,7 +193,7 @@ Module num.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic_fmt", [] |),
+                                      M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -226,7 +226,7 @@ Module num.
             M.alloc (|
               M.rust_cast
                 (M.call_closure (|
-                  M.get_function (| "core::num::int_sqrt::u8", [] |),
+                  M.get_function (| "core::num::int_sqrt::u8", [], [] |),
                   [ M.rust_cast (M.read (| n |)) ]
                 |))
             |)
@@ -280,7 +280,7 @@ Module num.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic_fmt", [] |),
+                                      M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -313,7 +313,7 @@ Module num.
             M.alloc (|
               M.rust_cast
                 (M.call_closure (|
-                  M.get_function (| "core::num::int_sqrt::u16", [] |),
+                  M.get_function (| "core::num::int_sqrt::u16", [], [] |),
                   [ M.rust_cast (M.read (| n |)) ]
                 |))
             |)
@@ -367,7 +367,7 @@ Module num.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic_fmt", [] |),
+                                      M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -400,7 +400,7 @@ Module num.
             M.alloc (|
               M.rust_cast
                 (M.call_closure (|
-                  M.get_function (| "core::num::int_sqrt::u32", [] |),
+                  M.get_function (| "core::num::int_sqrt::u32", [], [] |),
                   [ M.rust_cast (M.read (| n |)) ]
                 |))
             |)
@@ -454,7 +454,7 @@ Module num.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic_fmt", [] |),
+                                      M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -487,7 +487,7 @@ Module num.
             M.alloc (|
               M.rust_cast
                 (M.call_closure (|
-                  M.get_function (| "core::num::int_sqrt::u64", [] |),
+                  M.get_function (| "core::num::int_sqrt::u64", [], [] |),
                   [ M.rust_cast (M.read (| n |)) ]
                 |))
             |)
@@ -541,7 +541,7 @@ Module num.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
-                                      M.get_function (| "core::panicking::panic_fmt", [] |),
+                                      M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -574,7 +574,7 @@ Module num.
             M.alloc (|
               M.rust_cast
                 (M.call_closure (|
-                  M.get_function (| "core::num::int_sqrt::u128", [] |),
+                  M.get_function (| "core::num::int_sqrt::u128", [], [] |),
                   [ M.rust_cast (M.read (| n |)) ]
                 |))
             |)
@@ -630,7 +630,7 @@ Module num.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -683,7 +683,7 @@ Module num.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            M.get_function (| "core::hint::assert_unchecked", [], [] |),
                             [ BinOp.ne (| M.read (| s |), Value.Integer IntegerKind.U8 0 |) ]
                           |)
                         |) in
@@ -733,7 +733,11 @@ Module num.
                                         M.alloc (|
                                           M.never_to_any (|
                                             M.call_closure (|
-                                              M.get_function (| "core::panicking::panic_fmt", [] |),
+                                              M.get_function (|
+                                                "core::panicking::panic_fmt",
+                                                [],
+                                                []
+                                              |),
                                               [
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -964,7 +968,7 @@ Module num.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -1017,7 +1021,7 @@ Module num.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            M.get_function (| "core::hint::assert_unchecked", [], [] |),
                             [ BinOp.ne (| M.read (| s |), Value.Integer IntegerKind.U8 0 |) ]
                           |)
                         |) in
@@ -1070,6 +1074,7 @@ Module num.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::panicking::panic_fmt",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1249,7 +1254,7 @@ Module num.
                               let~ _ :=
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::hint::assert_unchecked", [] |),
+                                    M.get_function (| "core::hint::assert_unchecked", [], [] |),
                                     [ BinOp.ne (| M.read (| s |), Value.Integer IntegerKind.U16 0 |)
                                     ]
                                   |)
@@ -1302,6 +1307,7 @@ Module num.
                                                     M.call_closure (|
                                                       M.get_function (|
                                                         "core::panicking::panic_fmt",
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -1606,7 +1612,7 @@ Module num.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -1659,7 +1665,7 @@ Module num.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            M.get_function (| "core::hint::assert_unchecked", [], [] |),
                             [ BinOp.ne (| M.read (| s |), Value.Integer IntegerKind.U8 0 |) ]
                           |)
                         |) in
@@ -1712,6 +1718,7 @@ Module num.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::panicking::panic_fmt",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -1891,7 +1898,7 @@ Module num.
                               let~ _ :=
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::hint::assert_unchecked", [] |),
+                                    M.get_function (| "core::hint::assert_unchecked", [], [] |),
                                     [ BinOp.ne (| M.read (| s |), Value.Integer IntegerKind.U16 0 |)
                                     ]
                                   |)
@@ -1945,6 +1952,7 @@ Module num.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::panicking::panic_fmt",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -2141,7 +2149,11 @@ Module num.
                                       let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
-                                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                                            M.get_function (|
+                                              "core::hint::assert_unchecked",
+                                              [],
+                                              []
+                                            |),
                                             [
                                               BinOp.ne (|
                                                 M.read (| s |),
@@ -2198,6 +2210,7 @@ Module num.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "core::panicking::panic_fmt",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -2566,7 +2579,7 @@ Module num.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
+                                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -2619,7 +2632,7 @@ Module num.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            M.get_function (| "core::hint::assert_unchecked", [], [] |),
                             [ BinOp.ne (| M.read (| s |), Value.Integer IntegerKind.U8 0 |) ]
                           |)
                         |) in
@@ -2672,6 +2685,7 @@ Module num.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::panicking::panic_fmt",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -2855,7 +2869,7 @@ Module num.
                               let~ _ :=
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (| "core::hint::assert_unchecked", [] |),
+                                    M.get_function (| "core::hint::assert_unchecked", [], [] |),
                                     [ BinOp.ne (| M.read (| s |), Value.Integer IntegerKind.U16 0 |)
                                     ]
                                   |)
@@ -2909,6 +2923,7 @@ Module num.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::panicking::panic_fmt",
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -3105,7 +3120,11 @@ Module num.
                                       let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
-                                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                                            M.get_function (|
+                                              "core::hint::assert_unchecked",
+                                              [],
+                                              []
+                                            |),
                                             [
                                               BinOp.ne (|
                                                 M.read (| s |),
@@ -3163,6 +3182,7 @@ Module num.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::panicking::panic_fmt",
+                                                                  [],
                                                                   []
                                                                 |),
                                                                 [
@@ -3366,6 +3386,7 @@ Module num.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::hint::assert_unchecked",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -3429,6 +3450,7 @@ Module num.
                                                                     M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::panicking::panic_fmt",
+                                                                        [],
                                                                         []
                                                                       |),
                                                                       [
@@ -3885,7 +3907,7 @@ Module num.
                     M.alloc (|
                       M.rust_cast
                         (M.call_closure (|
-                          M.get_function (| "core::num::int_sqrt::u8", [] |),
+                          M.get_function (| "core::num::int_sqrt::u8", [], [] |),
                           [ M.rust_cast (M.read (| n |)) ]
                         |))
                     |)));
@@ -3911,7 +3933,7 @@ Module num.
                     let~ s :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::num::int_sqrt::u16_stages", [] |),
+                          M.get_function (| "core::num::int_sqrt::u16_stages", [], [] |),
                           [ M.read (| n |) ]
                         |)
                       |) in
@@ -4007,7 +4029,7 @@ Module num.
                     M.alloc (|
                       M.rust_cast
                         (M.call_closure (|
-                          M.get_function (| "core::num::int_sqrt::u16", [] |),
+                          M.get_function (| "core::num::int_sqrt::u16", [], [] |),
                           [ M.rust_cast (M.read (| n |)) ]
                         |))
                     |)));
@@ -4033,7 +4055,7 @@ Module num.
                     let~ s :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::num::int_sqrt::u32_stages", [] |),
+                          M.get_function (| "core::num::int_sqrt::u32_stages", [], [] |),
                           [ M.read (| n |) ]
                         |)
                       |) in
@@ -4129,7 +4151,7 @@ Module num.
                     M.alloc (|
                       M.rust_cast
                         (M.call_closure (|
-                          M.get_function (| "core::num::int_sqrt::u32", [] |),
+                          M.get_function (| "core::num::int_sqrt::u32", [], [] |),
                           [ M.rust_cast (M.read (| n |)) ]
                         |))
                     |)));
@@ -4155,7 +4177,7 @@ Module num.
                     let~ s :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::num::int_sqrt::u64_stages", [] |),
+                          M.get_function (| "core::num::int_sqrt::u64_stages", [], [] |),
                           [ M.read (| n |) ]
                         |)
                       |) in
@@ -4251,7 +4273,7 @@ Module num.
                     M.alloc (|
                       M.rust_cast
                         (M.call_closure (|
-                          M.get_function (| "core::num::int_sqrt::u64", [] |),
+                          M.get_function (| "core::num::int_sqrt::u64", [], [] |),
                           [ M.rust_cast (M.read (| n |)) ]
                         |))
                     |)));
@@ -4277,7 +4299,7 @@ Module num.
                     let~ s :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (| "core::num::int_sqrt::u128_stages", [] |),
+                          M.get_function (| "core::num::int_sqrt::u128_stages", [], [] |),
                           [ M.read (| n |) ]
                         |)
                       |) in
@@ -4318,7 +4340,7 @@ Module num.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
-            M.get_function (| "core::panicking::panic_fmt", [] |),
+            M.get_function (| "core::panicking::panic_fmt", [], [] |),
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),

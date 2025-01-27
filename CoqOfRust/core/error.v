@@ -479,6 +479,7 @@ Module error.
         M.call_closure (|
           M.get_function (|
             "core::error::request_by_type_tag",
+            [],
             [ Ty.apply (Ty.path "core::error::tags::Value") [] [ T ]; impl_Error__plus___Sized ]
           |),
           [ M.read (| err |) ]
@@ -504,6 +505,7 @@ Module error.
         M.call_closure (|
           M.get_function (|
             "core::error::request_by_type_tag",
+            [],
             [
               Ty.apply
                 (Ty.path "core::error::tags::Ref")

@@ -203,6 +203,7 @@ Module instructions.
                               M.call_closure (|
                                 M.get_function (|
                                   "revm_interpreter::gas::calc::keccak256_cost",
+                                  [],
                                   []
                                 |),
                                 [ M.read (| len |) ]
@@ -505,6 +506,7 @@ Module instructions.
                                         M.call_closure (|
                                           M.get_function (|
                                             "revm_interpreter::interpreter::shared_memory::num_words",
+                                            [],
                                             []
                                           |),
                                           [
@@ -631,6 +633,7 @@ Module instructions.
                                       M.call_closure (|
                                         M.get_function (|
                                           "alloy_primitives::utils::keccak256",
+                                          [],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
@@ -1554,6 +1557,7 @@ Module instructions.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_interpreter::instructions::system::memory_resize",
+                                [],
                                 [ WIRE ]
                               |),
                               [
@@ -2126,6 +2130,7 @@ Module instructions.
                                                           M.call_closure (|
                                                             M.get_function (|
                                                               "core::panicking::panic",
+                                                              [],
                                                               []
                                                             |),
                                                             [
@@ -2150,6 +2155,7 @@ Module instructions.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::intrinsics::copy_nonoverlapping",
+                                          [],
                                           [ Ty.path "u8" ]
                                         |),
                                         [
@@ -2824,6 +2830,7 @@ Module instructions.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_interpreter::instructions::system::memory_resize",
+                                [],
                                 [ WIRE ]
                               |),
                               [
@@ -3817,6 +3824,7 @@ Module instructions.
                             M.call_closure (|
                               M.get_function (|
                                 "revm_interpreter::instructions::system::memory_resize",
+                                [],
                                 [ WIRE ]
                               |),
                               [
@@ -4655,7 +4663,11 @@ Module instructions.
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
-                        M.get_function (| "revm_interpreter::gas::calc::copy_cost_verylow", [] |),
+                        M.get_function (|
+                          "revm_interpreter::gas::calc::copy_cost_verylow",
+                          [],
+                          []
+                        |),
                         [ M.read (| len |) ]
                       |)
                     |),
@@ -4939,6 +4951,7 @@ Module instructions.
                     M.call_closure (|
                       M.get_function (|
                         "revm_interpreter::interpreter::shared_memory::num_words",
+                        [],
                         []
                       |),
                       [

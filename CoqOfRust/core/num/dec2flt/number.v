@@ -501,6 +501,7 @@ Module num.
                         M.call_closure (|
                           M.get_function (|
                             "core::num::dec2flt::fpu::fpu_precision::set_precision",
+                            [],
                             [ F ]
                           |),
                           []

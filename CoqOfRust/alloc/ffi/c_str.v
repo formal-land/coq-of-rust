@@ -640,6 +640,7 @@ Module ffi.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "alloc::ffi::c_str::FromBytesWithNulErrorKind" ]
                     |),
                     [ M.read (| self |) ]
@@ -650,6 +651,7 @@ Module ffi.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "alloc::ffi::c_str::FromBytesWithNulErrorKind" ]
                     |),
                     [ M.read (| other |) ]
@@ -1475,6 +1477,7 @@ Module ffi.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::slice::memchr::memchr",
+                                                    [],
                                                     []
                                                   |),
                                                   [
@@ -1510,7 +1513,7 @@ Module ffi.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String
@@ -1638,7 +1641,7 @@ Module ffi.
                 M.alloc (|
                   BinOp.Wrap.add (|
                     M.call_closure (|
-                      M.get_function (| "alloc::ffi::c_str::from_raw::strlen", [] |),
+                      M.get_function (| "alloc::ffi::c_str::from_raw::strlen", [], [] |),
                       [ (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |)) ]
                     |),
                     Value.Integer IntegerKind.Usize 1
@@ -1647,7 +1650,11 @@ Module ffi.
               let~ slice :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::slice::raw::from_raw_parts_mut", [ Ty.path "i8" ] |),
+                    M.get_function (|
+                      "core::slice::raw::from_raw_parts_mut",
+                      [],
+                      [ Ty.path "i8" ]
+                    |),
                     [ M.read (| ptr |); M.read (| len |) ]
                   |)
                 |) in
@@ -1829,6 +1836,7 @@ Module ffi.
                   M.call_closure (|
                     M.get_function (|
                       "alloc::slice::hack::into_vec",
+                      [],
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                     |),
                     [
@@ -1934,6 +1942,7 @@ Module ffi.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::panicking::assert_failed",
+                                                      [],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -1987,6 +1996,7 @@ Module ffi.
             M.call_closure (|
               M.get_function (|
                 "alloc::slice::hack::into_vec",
+                [],
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
               |),
               [
@@ -2196,6 +2206,7 @@ Module ffi.
                 M.call_closure (|
                   M.get_function (|
                     "core::ptr::read",
+                    [],
                     [
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
@@ -2283,6 +2294,7 @@ Module ffi.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::slice::memchr::memchr",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -2331,7 +2343,7 @@ Module ffi.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
+                                        M.get_function (| "core::panicking::panic", [], [] |),
                                         [
                                           M.read (|
                                             Value.String
@@ -2430,7 +2442,7 @@ Module ffi.
               let~ nul_pos :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::slice::memchr::memchr", [] |),
+                    M.get_function (| "core::slice::memchr::memchr", [], [] |),
                     [
                       Value.Integer IntegerKind.U8 0;
                       M.call_closure (|
@@ -4304,12 +4316,14 @@ Module ffi.
                   M.call_closure (|
                     M.get_function (|
                       "alloc::slice::hack::into_vec",
+                      [],
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                     |),
                     [
                       M.call_closure (|
                         M.get_function (|
                           "core::mem::take",
+                          [],
                           [
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")

@@ -82,11 +82,12 @@ Module vec.
                   M.call_closure (|
                     M.get_function (|
                       "core::ptr::drop_in_place",
+                      [],
                       [ Ty.apply (Ty.path "slice") [] [ T ] ]
                     |),
                     [
                       M.call_closure (|
-                        M.get_function (| "core::slice::raw::from_raw_parts_mut", [ T ] |),
+                        M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
                         [
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
@@ -201,11 +202,12 @@ Module vec.
                     M.call_closure (|
                       M.get_function (|
                         "core::ptr::drop_in_place",
+                        [],
                         [ Ty.apply (Ty.path "slice") [] [ Dest ] ]
                       |),
                       [
                         M.call_closure (|
-                          M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ Dest ] |),
+                          M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ Dest ] |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|

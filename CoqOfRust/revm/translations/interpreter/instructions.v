@@ -21,6 +21,7 @@ Module instructions.
               M.call_closure (|
                 M.get_function (|
                   "revm_interpreter::instructions::instruction_table",
+                  [],
                   [ WIRE; H ]
                 |),
                 []
@@ -244,6 +245,7 @@ Module instructions.
                       M.pointer_coercion
                         (M.get_function (|
                           "revm_interpreter::instructions::control::unknown",
+                          [],
                           [ WIRE; H ]
                         |))
                     |))
@@ -261,7 +263,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::control::stop", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::control::stop",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -275,6 +281,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::arithmetic::add",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -288,7 +295,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::control::stop", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::control::stop",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -302,6 +313,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::arithmetic::add",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -317,6 +329,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::arithmetic::mul",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -332,6 +345,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::arithmetic::sub",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -347,6 +361,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::arithmetic::div",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -362,6 +377,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::arithmetic::sdiv",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -377,6 +393,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::arithmetic::rem",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -392,6 +409,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::arithmetic::smod",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -407,6 +425,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::arithmetic::addmod",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -422,6 +441,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::arithmetic::mulmod",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -437,6 +457,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::arithmetic::exp",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -453,6 +474,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::arithmetic::signextend",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -466,7 +488,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::bitwise::lt", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::bitwise::lt",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -478,7 +504,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::bitwise::gt", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::bitwise::gt",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -490,7 +520,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::bitwise::slt", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::bitwise::slt",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -502,7 +536,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::bitwise::sgt", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::bitwise::sgt",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -514,7 +552,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::bitwise::eq", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::bitwise::eq",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -528,6 +570,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::bitwise::iszero",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -543,6 +586,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::bitwise::bitand",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -556,7 +600,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::bitwise::bitor", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::bitwise::bitor",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -570,6 +618,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::bitwise::bitxor",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -583,7 +632,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::bitwise::not", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::bitwise::not",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -595,7 +648,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::bitwise::byte", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::bitwise::byte",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -607,7 +664,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::bitwise::shl", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::bitwise::shl",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -619,7 +680,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::bitwise::shr", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::bitwise::shr",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -631,7 +696,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::bitwise::sar", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::bitwise::sar",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -645,6 +714,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::system::keccak256",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -660,6 +730,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::system::address",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -673,7 +744,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::host::balance", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::host::balance",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -687,6 +762,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::tx_info::origin",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -700,7 +776,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::system::caller", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::system::caller",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -714,6 +794,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::system::callvalue",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -730,6 +811,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::system::calldataload",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -746,6 +828,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::system::calldatasize",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -762,6 +845,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::system::calldatacopy",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -777,6 +861,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::system::codesize",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -792,6 +877,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::system::codecopy",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -807,6 +893,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::tx_info::gasprice",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -823,6 +910,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::host::extcodesize",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -839,6 +927,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::host::extcodecopy",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -855,6 +944,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::system::returndatasize",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -871,6 +961,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::system::returndatacopy",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -887,6 +978,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::host::extcodehash",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -902,6 +994,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::host::blockhash",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -917,6 +1010,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::block_info::coinbase",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -932,6 +1026,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::block_info::timestamp",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -947,6 +1042,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::block_info::block_number",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -963,6 +1059,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::block_info::difficulty",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -978,6 +1075,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::block_info::gaslimit",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -993,6 +1091,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::block_info::chainid",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -1009,6 +1108,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::host::selfbalance",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -1024,6 +1124,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::block_info::basefee",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -1039,6 +1140,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::tx_info::blob_hash",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -1055,6 +1157,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::block_info::blob_basefee",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -1068,7 +1171,7 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::pop", [ WIRE; H ] |))
+                (M.get_function (| "revm_interpreter::instructions::stack::pop", [], [ WIRE; H ] |))
             |) in
           let~ _ :=
             M.write (|
@@ -1080,7 +1183,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::memory::mload", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::memory::mload",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1092,7 +1199,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::memory::mstore", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::memory::mstore",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1106,6 +1217,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::memory::mstore8",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -1119,7 +1231,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::host::sload", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::host::sload",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1131,7 +1247,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::host::sstore", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::host::sstore",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1143,7 +1263,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::control::jump", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::control::jump",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1155,7 +1279,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::control::jumpi", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::control::jumpi",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1167,7 +1295,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::control::pc", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::control::pc",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1179,7 +1311,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::memory::msize", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::memory::msize",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1191,7 +1327,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::system::gas", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::system::gas",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1205,6 +1345,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::control::jumpdest_or_nop",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -1218,7 +1359,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::host::tload", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::host::tload",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1230,7 +1375,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::host::tstore", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::host::tstore",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1242,7 +1391,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::memory::mcopy", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::memory::mcopy",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1254,7 +1407,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push0", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push0",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1266,7 +1423,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1278,7 +1439,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 2 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1290,7 +1455,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 3 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1302,7 +1471,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 4 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1314,7 +1487,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 5 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1326,7 +1503,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 6 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1338,7 +1519,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 7 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1350,7 +1535,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 8 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1362,7 +1551,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 9 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1374,7 +1567,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 10 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1386,7 +1583,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 11 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1398,7 +1599,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 12 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1410,7 +1615,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 13 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1422,7 +1631,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 14 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1434,7 +1647,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 15 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1446,7 +1663,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 16 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1458,7 +1679,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 17 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1470,7 +1695,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 18 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1482,7 +1711,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 19 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1494,7 +1727,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 20 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1506,7 +1743,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 21 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1518,7 +1759,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 22 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1530,7 +1775,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 23 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1542,7 +1791,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 24 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1554,7 +1807,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 25 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1566,7 +1823,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 26 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1578,7 +1839,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 27 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1590,7 +1855,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 28 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1602,7 +1871,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 29 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1614,7 +1887,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 30 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1626,7 +1903,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 31 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1638,7 +1919,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::push", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::push",
+                  [ Value.Integer IntegerKind.Usize 32 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1650,7 +1935,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::dup", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::dup",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1662,7 +1951,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::dup", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::dup",
+                  [ Value.Integer IntegerKind.Usize 2 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1674,7 +1967,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::dup", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::dup",
+                  [ Value.Integer IntegerKind.Usize 3 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1686,7 +1983,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::dup", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::dup",
+                  [ Value.Integer IntegerKind.Usize 4 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1698,7 +1999,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::dup", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::dup",
+                  [ Value.Integer IntegerKind.Usize 5 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1710,7 +2015,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::dup", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::dup",
+                  [ Value.Integer IntegerKind.Usize 6 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1722,7 +2031,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::dup", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::dup",
+                  [ Value.Integer IntegerKind.Usize 7 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1734,7 +2047,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::dup", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::dup",
+                  [ Value.Integer IntegerKind.Usize 8 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1746,7 +2063,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::dup", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::dup",
+                  [ Value.Integer IntegerKind.Usize 9 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1758,7 +2079,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::dup", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::dup",
+                  [ Value.Integer IntegerKind.Usize 10 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1770,7 +2095,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::dup", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::dup",
+                  [ Value.Integer IntegerKind.Usize 11 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1782,7 +2111,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::dup", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::dup",
+                  [ Value.Integer IntegerKind.Usize 12 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1794,7 +2127,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::dup", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::dup",
+                  [ Value.Integer IntegerKind.Usize 13 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1806,7 +2143,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::dup", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::dup",
+                  [ Value.Integer IntegerKind.Usize 14 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1818,7 +2159,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::dup", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::dup",
+                  [ Value.Integer IntegerKind.Usize 15 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1830,7 +2175,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::dup", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::dup",
+                  [ Value.Integer IntegerKind.Usize 16 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1842,7 +2191,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::swap", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::swap",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1854,7 +2207,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::swap", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::swap",
+                  [ Value.Integer IntegerKind.Usize 2 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1866,7 +2223,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::swap", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::swap",
+                  [ Value.Integer IntegerKind.Usize 3 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1878,7 +2239,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::swap", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::swap",
+                  [ Value.Integer IntegerKind.Usize 4 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1890,7 +2255,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::swap", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::swap",
+                  [ Value.Integer IntegerKind.Usize 5 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1902,7 +2271,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::swap", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::swap",
+                  [ Value.Integer IntegerKind.Usize 6 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1914,7 +2287,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::swap", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::swap",
+                  [ Value.Integer IntegerKind.Usize 7 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1926,7 +2303,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::swap", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::swap",
+                  [ Value.Integer IntegerKind.Usize 8 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1938,7 +2319,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::swap", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::swap",
+                  [ Value.Integer IntegerKind.Usize 9 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1950,7 +2335,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::swap", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::swap",
+                  [ Value.Integer IntegerKind.Usize 10 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1962,7 +2351,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::swap", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::swap",
+                  [ Value.Integer IntegerKind.Usize 11 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1974,7 +2367,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::swap", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::swap",
+                  [ Value.Integer IntegerKind.Usize 12 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1986,7 +2383,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::swap", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::swap",
+                  [ Value.Integer IntegerKind.Usize 13 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -1998,7 +2399,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::swap", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::swap",
+                  [ Value.Integer IntegerKind.Usize 14 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -2010,7 +2415,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::swap", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::swap",
+                  [ Value.Integer IntegerKind.Usize 15 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -2022,7 +2431,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::swap", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::swap",
+                  [ Value.Integer IntegerKind.Usize 16 ],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -2034,7 +2447,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::host::log", [ H; WIRE ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::host::log",
+                  [ Value.Integer IntegerKind.Usize 0 ],
+                  [ H; WIRE ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -2046,7 +2463,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::host::log", [ H; WIRE ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::host::log",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  [ H; WIRE ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -2058,7 +2479,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::host::log", [ H; WIRE ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::host::log",
+                  [ Value.Integer IntegerKind.Usize 2 ],
+                  [ H; WIRE ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -2070,7 +2495,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::host::log", [ H; WIRE ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::host::log",
+                  [ Value.Integer IntegerKind.Usize 3 ],
+                  [ H; WIRE ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -2082,7 +2511,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::host::log", [ H; WIRE ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::host::log",
+                  [ Value.Integer IntegerKind.Usize 4 ],
+                  [ H; WIRE ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -2096,6 +2529,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::data::data_load",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -2111,6 +2545,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::data::data_loadn",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -2126,6 +2561,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::data::data_size",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -2141,6 +2577,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::data::data_copy",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -2154,7 +2591,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::control::rjump", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::control::rjump",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -2168,6 +2609,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::control::rjumpi",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -2183,6 +2625,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::control::rjumpv",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -2196,7 +2639,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::control::callf", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::control::callf",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -2208,7 +2655,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::control::retf", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::control::retf",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -2220,7 +2671,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::control::jumpf", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::control::jumpf",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -2232,7 +2687,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::dupn", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::dupn",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -2244,7 +2703,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::stack::swapn", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::stack::swapn",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -2258,6 +2721,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::stack::exchange",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -2273,6 +2737,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::contract::eofcreate",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -2289,6 +2754,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::contract::return_contract",
+                  [],
                   [ H; WIRE ]
                 |))
             |) in
@@ -2304,6 +2770,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::contract::create",
+                  [ Value.Bool false ],
                   [ WIRE; H ]
                 |))
             |) in
@@ -2317,7 +2784,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::contract::call", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::contract::call",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -2331,6 +2802,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::contract::call_code",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -2344,7 +2816,11 @@ Module instructions.
               |),
               (* ReifyFnPointer *)
               M.pointer_coercion
-                (M.get_function (| "revm_interpreter::instructions::control::ret", [ WIRE; H ] |))
+                (M.get_function (|
+                  "revm_interpreter::instructions::control::ret",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ :=
             M.write (|
@@ -2359,6 +2835,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::contract::delegate_call",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -2374,6 +2851,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::contract::create",
+                  [ Value.Bool true ],
                   [ WIRE; H ]
                 |))
             |) in
@@ -2390,6 +2868,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::system::returndataload",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -2405,6 +2884,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::contract::extcall",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -2421,6 +2901,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::contract::extdelegatecall",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -2437,6 +2918,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::contract::static_call",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -2453,6 +2935,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::contract::extstaticcall",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -2468,6 +2951,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::control::revert",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -2483,6 +2967,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::control::invalid",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in
@@ -2499,6 +2984,7 @@ Module instructions.
               M.pointer_coercion
                 (M.get_function (|
                   "revm_interpreter::instructions::host::selfdestruct",
+                  [],
                   [ WIRE; H ]
                 |))
             |) in

@@ -737,6 +737,7 @@ Module collections.
                           M.call_closure (|
                             M.get_function (|
                               "alloc::collections::btree::mem::replace",
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::Handle")
@@ -1140,6 +1141,7 @@ Module collections.
                           M.call_closure (|
                             M.get_function (|
                               "alloc::collections::btree::mem::replace",
+                              [],
                               [
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::Handle")
@@ -1811,6 +1813,7 @@ Module collections.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::ptr::read",
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::collections::btree::node::Handle")
@@ -1946,6 +1949,7 @@ Module collections.
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::ptr::read",
+                                            [],
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::collections::btree::node::Handle")
@@ -2718,6 +2722,7 @@ Module collections.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::ptr::read",
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path
@@ -2794,7 +2799,7 @@ Module collections.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::hint::unreachable_unchecked", [] |),
+                              M.get_function (| "core::hint::unreachable_unchecked", [], [] |),
                               []
                             |)
                           |)
@@ -2896,6 +2901,7 @@ Module collections.
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::ptr::read",
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path
@@ -2972,7 +2978,7 @@ Module collections.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::hint::unreachable_unchecked", [] |),
+                              M.get_function (| "core::hint::unreachable_unchecked", [], [] |),
                               []
                             |)
                           |)
@@ -3650,7 +3656,7 @@ Module collections.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String "assertion failed: self.front.is_some()"
@@ -3828,7 +3834,7 @@ Module collections.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
+                                          M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
                                               Value.String "assertion failed: self.back.is_some()"
@@ -4155,6 +4161,7 @@ Module collections.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::ptr::read",
+                                        [],
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::collections::btree::node::NodeRef")
@@ -4474,6 +4481,7 @@ Module collections.
                                                   M.call_closure (|
                                                     M.get_function (|
                                                       "core::panicking::panic_fmt",
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -5314,6 +5322,7 @@ Module collections.
               M.call_closure (|
                 M.get_function (|
                   "alloc::collections::btree::navigate::full_range",
+                  [],
                   [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V ]
                 |),
                 [ M.read (| self |); M.read (| self |) ]
@@ -6055,6 +6064,7 @@ Module collections.
                     M.call_closure (|
                       M.get_function (|
                         "core::ptr::read",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::NodeRef")
@@ -6074,6 +6084,7 @@ Module collections.
                   M.call_closure (|
                     M.get_function (|
                       "alloc::collections::btree::navigate::full_range",
+                      [],
                       [ Ty.path "alloc::collections::btree::node::marker::ValMut"; K; V ]
                     |),
                     [ M.read (| self |); M.read (| self2 |) ]
@@ -6125,6 +6136,7 @@ Module collections.
                     M.call_closure (|
                       M.get_function (|
                         "core::ptr::read",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::NodeRef")
@@ -6144,6 +6156,7 @@ Module collections.
                   M.call_closure (|
                     M.get_function (|
                       "alloc::collections::btree::navigate::full_range",
+                      [],
                       [ Ty.path "alloc::collections::btree::node::marker::Dying"; K; V ]
                     |),
                     [ M.read (| self |); M.read (| self2 |) ]
@@ -7041,6 +7054,7 @@ Module collections.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::ptr::read",
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -7364,6 +7378,7 @@ Module collections.
                                                               M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::ptr::read",
+                                                                  [],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
@@ -7735,6 +7750,7 @@ Module collections.
               M.call_closure (|
                 M.get_function (|
                   "alloc::collections::btree::mem::replace",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::collections::btree::node::Handle")
@@ -7959,6 +7975,7 @@ Module collections.
               M.call_closure (|
                 M.get_function (|
                   "alloc::collections::btree::mem::replace",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::collections::btree::node::Handle")
@@ -8199,6 +8216,7 @@ Module collections.
               M.call_closure (|
                 M.get_function (|
                   "alloc::collections::btree::mem::replace",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::collections::btree::node::Handle")
@@ -8477,6 +8495,7 @@ Module collections.
               M.call_closure (|
                 M.get_function (|
                   "alloc::collections::btree::mem::replace",
+                  [],
                   [
                     Ty.apply
                       (Ty.path "alloc::collections::btree::node::Handle")
@@ -8779,6 +8798,7 @@ Module collections.
                     M.call_closure (|
                       M.get_function (|
                         "alloc::collections::btree::mem::replace",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::Handle")
@@ -9022,6 +9042,7 @@ Module collections.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::ptr::read",
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path
@@ -9119,6 +9140,7 @@ Module collections.
                     M.call_closure (|
                       M.get_function (|
                         "alloc::collections::btree::mem::replace",
+                        [],
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::Handle")
@@ -9362,6 +9384,7 @@ Module collections.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "core::ptr::read",
+                                                          [],
                                                           [
                                                             Ty.apply
                                                               (Ty.path

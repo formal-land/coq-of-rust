@@ -739,6 +739,7 @@ Module ascii.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                     |),
                     [ M.read (| self |) ]
@@ -749,6 +750,7 @@ Module ascii.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                     |),
                     [ M.read (| other |) ]
@@ -783,6 +785,7 @@ Module ascii.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                     |),
                     [ M.read (| self |) ]
@@ -793,6 +796,7 @@ Module ascii.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                     |),
                     [ M.read (| other |) ]
@@ -832,6 +836,7 @@ Module ascii.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                     |),
                     [ M.read (| self |) ]
@@ -842,6 +847,7 @@ Module ascii.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                     |),
                     [ M.read (| other |) ]
@@ -887,6 +893,7 @@ Module ascii.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
+                      [],
                       [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                     |),
                     [ M.read (| self |) ]
@@ -979,6 +986,7 @@ Module ascii.
             M.call_closure (|
               M.get_function (|
                 "core::intrinsics::transmute",
+                [],
                 [ Ty.path "u8"; Ty.path "core::ascii::ascii_char::AsciiChar" ]
               |),
               [ M.read (| b |) ]
@@ -1074,7 +1082,7 @@ Module ascii.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
-                                M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                                M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                                 []
                               |)
                             |)) in
@@ -1171,6 +1179,7 @@ Module ascii.
                 M.call_closure (|
                   M.get_function (|
                     "core::slice::raw::from_ref",
+                    [],
                     [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                   |),
                   [ M.read (| self |) ]

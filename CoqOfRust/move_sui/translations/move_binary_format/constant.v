@@ -238,6 +238,7 @@ Module constant.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "move_binary_format::constant::sig_to_ty",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -614,6 +615,7 @@ Module constant.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "move_binary_format::constant::ty_to_sig",
+                                                  [],
                                                   []
                                                 |),
                                                 [
@@ -780,6 +782,7 @@ Module constant.
                                   M.call_closure (|
                                     M.get_function (|
                                       "move_binary_format::constant::ty_to_sig",
+                                      [],
                                       []
                                     |),
                                     [ M.read (| ty |) ]
@@ -963,7 +966,11 @@ Module constant.
                           |),
                           [
                             M.call_closure (|
-                              M.get_function (| "move_binary_format::constant::sig_to_ty", [] |),
+                              M.get_function (|
+                                "move_binary_format::constant::sig_to_ty",
+                                [],
+                                []
+                              |),
                               [
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),

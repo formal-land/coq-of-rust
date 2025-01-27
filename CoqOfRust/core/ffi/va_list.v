@@ -188,7 +188,7 @@ Module ffi.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::ffi::va_list::va_arg", [ T ] |),
+              M.get_function (| "core::ffi::va_list::va_arg", [], [ T ] |),
               [ M.read (| self |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -260,7 +260,7 @@ Module ffi.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::ffi::va_list::va_end", [] |),
+                      M.get_function (| "core::ffi::va_list::va_end", [], [] |),
                       [ ap ]
                     |)
                   |) in
@@ -526,7 +526,7 @@ Module ffi.
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::ffi::va_list::va_copy", [] |),
+                    M.get_function (| "core::ffi::va_list::va_copy", [], [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|

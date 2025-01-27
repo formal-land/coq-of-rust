@@ -1,6 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 Require Import core.cmp.
+Require Import core.intrinsics.
 Require core.ops.links.function.
 
 Import Run.
@@ -30,7 +31,6 @@ Module Ordering.
 End Ordering.
 
 (*
-(*
     pub fn max_by<T, F: FnOnce(&T, &T) -> Ordering>(v1: T, v2: T, compare: F) -> T {
         match compare(&v1, &v2) {
             Ordering::Less | Ordering::Equal => v2,
@@ -42,14 +42,12 @@ Definition run_max_by {T F : Set} `{Link T} `{Link F}
     (Run_FnOnce_for_F :
       function.FnOnce.Run
         F
-        (Ref.t T * Ref.t T)
+        (Ref.t Pointer.Kind.Ref T * Ref.t Pointer.Kind.Ref T)
         (Output := Ordering.t)
-        F_ty
-        (Ty.tuple [ Ty.apply (Ty.path "&") [ T_ty ]; Ty.apply (Ty.path "&") [ T_ty ] ])
     )
     (v1 v2 : T) (compare : F) :
   {{
-    cmp.max_by [T_ty; F_ty] [ φ v1; φ v2; φ compare ] ⇓
+    cmp.max_by [] [ Φ T; Φ F ] [ φ v1; φ v2; φ compare ] ⇓
     fun (v : T) => inl (φ v)
   }}.
 Proof.
@@ -63,19 +61,19 @@ Proof.
     apply (run_call_once value (ref, ref0)).
   }
   intros ordering.
-  eapply Run.CallPrimitiveStateAllocImmediate with (A := Ordering.t). {
-    reflexivity.
-  }
+  unshelve eapply Run.CallPrimitiveStateAllocImmediate with (A := Ordering.t);
+    try exact Pointer.Kind.Ref;
+    try reflexivity.
   destruct ordering eqn:?;
     cbn;
     repeat (eapply Run.CallPrimitiveStateReadImmediate; [reflexivity|]; cbn).
-  { eapply Run.CallClosure with (output_to_value' := fun (v : Ref.t T) => inl (φ v)). {
+  { eapply Run.CallClosure with (output_to_value' := fun (v : Ref.t Pointer.Kind.Ref T) => inl (φ v)). {
       run_symbolic.
     }
     intros.
     run_symbolic.
   }
-  { eapply Run.CallClosure with (output_to_value' := fun (v : Ref.t T) => inl (φ v)). {
+  { eapply Run.CallClosure with (output_to_value' := fun (v : Ref.t Pointer.Kind.Ref T) => inl (φ v)). {
       run_symbolic.
     }
     intros.
@@ -99,59 +97,59 @@ Defined.
     }
 *)
 Module Ord.
-  Definition Run_cmp (Self : Set) (Self_ty : Ty.t) `{ToValue Self} : Set :=
+  Definition Run_cmp (Self : Set) `{Link Self} : Set :=
     {cmp @
-      IsTraitMethod.t "core::cmp::Ord" Self_ty [] "cmp" cmp *
-      forall (self other : Ref.t Self),
+      IsTraitMethod.t "core::cmp::Ord" (Φ Self) [] "cmp" cmp *
+      forall (self other : Ref.t Pointer.Kind.Ref Self),
         {{
-          cmp [] [ φ self; φ other ] ⇓
+          cmp [] [] [ φ self; φ other ] ⇓
           fun (v : Ordering.t) => inl (φ v)
         }}
     }.
 
-  Definition Run_max (Self : Set) (Self_ty : Ty.t) `{ToValue Self} : Set :=
+  Definition Run_max (Self : Set) `{Link Self} : Set :=
     {max @
-      IsTraitMethod.t "core::cmp::Ord" Self_ty [] "max" max *
+      IsTraitMethod.t "core::cmp::Ord" (Φ Self) [] "max" max *
       forall (self other : Self),
         {{
-          max [] [ φ self; φ other ] ⇓
+          max [] [] [ φ self; φ other ] ⇓
           fun (v : Self) => inl (φ v)
         }}
     }.
 
-  Definition Run_min (Self : Set) (Self_ty : Ty.t) `{ToValue Self} : Set :=
+  Definition Run_min (Self : Set) `{Link Self} : Set :=
     {min @
-      IsTraitMethod.t "core::cmp::Ord" Self_ty [] "min" min *
+      IsTraitMethod.t "core::cmp::Ord" (Φ Self) [] "min" min *
       forall (self other : Self),
         {{
-          min [] [ φ self; φ other ] ⇓
+          min [] [] [ φ self; φ other ] ⇓
           fun (v : Self) => inl (φ v)
         }}
     }.
 
-  Definition Run_clamp (Self : Set) (Self_ty : Ty.t) `{ToValue Self} : Set :=
+  Definition Run_clamp (Self : Set) `{Link Self} : Set :=
     {clamp @
-      IsTraitMethod.t "core::cmp::Ord" Self_ty [] "clamp" clamp *
+      IsTraitMethod.t "core::cmp::Ord" (Φ Self) [] "clamp" clamp *
       forall (self min max : Self),
         {{
-          clamp [] [ φ self; φ min; φ max ] ⇓
+          clamp [] [] [ φ self; φ min; φ max ] ⇓
           fun (v : Self) => inl (φ v)
         }}
     }.
 
-  Record Run (Self : Set) (Self_ty : Ty.t) `{ToValue Self} : Set := {
-    cmp : Run_cmp Self Self_ty;
-    max : Run_max Self Self_ty;
-    min : Run_min Self Self_ty;
-    clamp : Run_clamp Self Self_ty;
+  Record Run (Self : Set) `{Link Self} : Set := {
+    cmp : Run_cmp Self;
+    max : Run_max Self;
+    min : Run_min Self;
+    clamp : Run_clamp Self;
   }.
 End Ord.
 
+(*
 Module Impl_Ord_for_u64.
-  Definition Self : Set := Z.
-  Definition Self_ty : Ty.t := Ty.path "u64".
+  Definition Self : Set := U64.t.
 
-  Definition Run_cmp : Ord.Run_cmp Self Self_ty.
+  Definition Run_cmp : Ord.Run_cmp Self.
   Proof.
     eexists; split.
     { eapply IsTraitMethod.Explicit.
@@ -159,8 +157,18 @@ Module Impl_Ord_for_u64.
       { reflexivity. }
     }
     { intros.
-      run_symbolic.
-      cbn.
+      repeat unshelve run_symbolic_state_alloc_immediate;
+        try exact Pointer.Kind.Ref.
+      eapply Run.CallPrimitiveGetFunction. {
+        apply intrinsics.Function_three_way_compare.
+      }
+      unshelve eapply Run.CallPrimitiveStateReadImmediate; try reflexivity; cbn.
+      eapply Run.CallPrimitiveStateRead; try reflexivity; intros.
+      eapply Run.CallPrimitiveStateReadImmediate; try reflexivity; cbn.
+      eapply Run.CallPrimitiveStateRead; try reflexivity; intros.
+      eapply Run.CallClosure. {
+
+      }
       eapply Run.CallPrimitiveStateAlloc with (A := bool); [reflexivity|]; intros.
       run_symbolic; cbn.
       match goal with

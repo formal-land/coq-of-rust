@@ -3022,6 +3022,7 @@ Module limits.
                                                                                           (M.call_closure (|
                                                                                             M.get_function (|
                                                                                               "move_binary_format::errors::verification_error",
+                                                                                              [],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -3205,6 +3206,7 @@ Module limits.
                                                                                           M.call_closure (|
                                                                                             M.get_function (|
                                                                                               "core::hint::must_use",
+                                                                                              [],
                                                                                               [
                                                                                                 Ty.path
                                                                                                   "alloc::string::String"
@@ -3218,6 +3220,7 @@ Module limits.
                                                                                                     M.call_closure (|
                                                                                                       M.get_function (|
                                                                                                         "alloc::fmt::format",
+                                                                                                        [],
                                                                                                         []
                                                                                                       |),
                                                                                                       [
@@ -3297,6 +3300,7 @@ Module limits.
                                                                       M.call_closure (|
                                                                         M.get_function (|
                                                                           "move_binary_format::errors::verification_error",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [
@@ -3554,6 +3558,7 @@ Module limits.
                                                                       M.call_closure (|
                                                                         M.get_function (|
                                                                           "move_binary_format::errors::verification_error",
+                                                                          [],
                                                                           []
                                                                         |),
                                                                         [

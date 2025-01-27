@@ -871,6 +871,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::filter::filter_try_fold",
+                      [],
                       [ Ty.associated; Acc; R; P; Fold ]
                     |),
                     [
@@ -923,6 +924,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::filter::filter_fold",
+                      [],
                       [ Ty.associated; Acc; P; Fold ]
                     |),
                     [
@@ -1044,6 +1046,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::filter::filter_try_fold",
+                      [],
                       [ Ty.associated; Acc; R; P; Fold ]
                     |),
                     [
@@ -1096,6 +1099,7 @@ Module iter.
                   M.call_closure (|
                     M.get_function (|
                       "core::iter::adapters::filter::filter_fold",
+                      [],
                       [ Ty.associated; Acc; P; Fold ]
                     |),
                     [

@@ -188,6 +188,7 @@ Module vec.
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "core::intrinsics::copy",
+                                                    [],
                                                     [ T ]
                                                   |),
                                                   [

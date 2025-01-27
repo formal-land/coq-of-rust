@@ -11,13 +11,13 @@ Module bls12_381.
               "revm_precompile::PrecompileWithAddress"
               [
                 M.call_closure (|
-                  M.get_function (| "revm_precompile::u64_to_address", [] |),
+                  M.get_function (| "revm_precompile::u64_to_address", [], [] |),
                   [ M.read (| M.get_constant (| "revm_precompile::bls12_381::g1_msm::ADDRESS" |) |)
                   ]
                 |);
                 (* ReifyFnPointer *)
                 M.pointer_coercion
-                  (M.get_function (| "revm_precompile::bls12_381::g1_msm::g1_msm", [] |))
+                  (M.get_function (| "revm_precompile::bls12_381::g1_msm::g1_msm", [], [] |))
               ]
           |))).
     
@@ -169,6 +169,7 @@ Module bls12_381.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "core::hint::must_use",
+                                                  [],
                                                   [ Ty.path "alloc::string::String" ]
                                                 |),
                                                 [
@@ -178,6 +179,7 @@ Module bls12_381.
                                                         M.call_closure (|
                                                           M.get_function (|
                                                             "alloc::fmt::format",
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -259,7 +261,11 @@ Module bls12_381.
                 let~ required_gas :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "revm_precompile::bls12_381::msm::msm_required_gas", [] |),
+                      M.get_function (|
+                        "revm_precompile::bls12_381::msm::msm_required_gas",
+                        [],
+                        []
+                      |),
                       [
                         M.read (| k |);
                         M.read (|
@@ -593,6 +599,7 @@ Module bls12_381.
                                                       M.call_closure (|
                                                         M.get_function (|
                                                           "revm_precompile::bls12_381::g1::extract_g1_input",
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| slice |); Value.Bool true ]
@@ -678,6 +685,7 @@ Module bls12_381.
                                               M.call_closure (|
                                                 M.get_function (|
                                                   "blst::blst_p1_from_affine",
+                                                  [],
                                                   []
                                                 |),
                                                 [ p0; M.read (| p0_aff |) ]
@@ -736,6 +744,7 @@ Module bls12_381.
                                                             M.call_closure (|
                                                               M.get_function (|
                                                                 "revm_precompile::bls12_381::utils::extract_scalar_input",
+                                                                [],
                                                                 []
                                                               |),
                                                               [
@@ -1029,14 +1038,18 @@ Module bls12_381.
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "blst::blst_p1_to_affine", [] |),
+                      M.get_function (| "blst::blst_p1_to_affine", [], [] |),
                       [ multiexp_aff; multiexp ]
                     |)
                   |) in
                 let~ out :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "revm_precompile::bls12_381::g1::encode_g1_point", [] |),
+                      M.get_function (|
+                        "revm_precompile::bls12_381::g1::encode_g1_point",
+                        [],
+                        []
+                      |),
                       [ multiexp_aff ]
                     |)
                   |) in

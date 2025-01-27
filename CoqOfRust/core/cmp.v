@@ -137,6 +137,7 @@ Module cmp.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "core::cmp::Ordering" ]
                   |),
                   [ M.read (| self |) ]
@@ -147,6 +148,7 @@ Module cmp.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "core::cmp::Ordering" ]
                   |),
                   [ M.read (| other |) ]
@@ -207,6 +209,7 @@ Module cmp.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "core::cmp::Ordering" ]
                   |),
                   [ M.read (| self |) ]
@@ -217,6 +220,7 @@ Module cmp.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "core::cmp::Ordering" ]
                   |),
                   [ M.read (| other |) ]
@@ -262,6 +266,7 @@ Module cmp.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "core::cmp::Ordering" ]
                   |),
                   [ M.read (| self |) ]
@@ -272,6 +277,7 @@ Module cmp.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "core::cmp::Ordering" ]
                   |),
                   [ M.read (| other |) ]
@@ -360,6 +366,7 @@ Module cmp.
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
+                    [],
                     [ Ty.path "core::cmp::Ordering" ]
                   |),
                   [ M.read (| self |) ]
@@ -1098,6 +1105,7 @@ Module cmp.
           M.call_closure (|
             M.get_function (|
               "core::cmp::max_by",
+              [],
               [
                 Self;
                 Ty.function
@@ -1124,6 +1132,7 @@ Module cmp.
           M.call_closure (|
             M.get_function (|
               "core::cmp::min_by",
+              [],
               [
                 Self;
                 Ty.function
@@ -1175,7 +1184,7 @@ Module cmp.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic", [] |),
+                            M.get_function (| "core::panicking::panic", [], [] |),
                             [ M.read (| Value.String "assertion failed: min <= max" |) ]
                           |)
                         |)
@@ -1543,6 +1552,7 @@ Module cmp.
         M.call_closure (|
           M.get_function (|
             "core::cmp::min_by",
+            [],
             [
               T;
               Ty.function
@@ -1712,6 +1722,7 @@ Module cmp.
         M.call_closure (|
           M.get_function (|
             "core::cmp::max_by",
+            [],
             [
               T;
               Ty.function
@@ -1903,6 +1914,7 @@ Module cmp.
         M.call_closure (|
           M.get_function (|
             "core::cmp::minmax_by",
+            [],
             [
               T;
               Ty.function
@@ -3449,7 +3461,7 @@ Module cmp.
                       (M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::hint::unreachable_unchecked", [] |),
+                            M.get_function (| "core::hint::unreachable_unchecked", [], [] |),
                             []
                           |)
                         |)
@@ -3520,7 +3532,7 @@ Module cmp.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
-                              M.get_function (| "core::panicking::panic", [] |),
+                              M.get_function (| "core::panicking::panic", [], [] |),
                               [ M.read (| Value.String "assertion failed: min <= max" |) ]
                             |)
                           |)
@@ -3576,7 +3588,11 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "char" ] |),
+                  M.get_function (|
+                    "core::intrinsics::three_way_compare",
+                    [],
+                    [ Ty.path "char" ]
+                  |),
                   [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
@@ -3657,7 +3673,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "char" ] |),
+              M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "char" ] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3689,7 +3705,11 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "usize" ] |),
+                  M.get_function (|
+                    "core::intrinsics::three_way_compare",
+                    [],
+                    [ Ty.path "usize" ]
+                  |),
                   [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
@@ -3770,7 +3790,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "usize" ] |),
+              M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "usize" ] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3802,7 +3822,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "u8" ] |),
+                  M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u8" ] |),
                   [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
@@ -3883,7 +3903,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "u8" ] |),
+              M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u8" ] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3915,7 +3935,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "u16" ] |),
+                  M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u16" ] |),
                   [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
@@ -3996,7 +4016,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "u16" ] |),
+              M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u16" ] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4028,7 +4048,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "u32" ] |),
+                  M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u32" ] |),
                   [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
@@ -4109,7 +4129,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "u32" ] |),
+              M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u32" ] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4141,7 +4161,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "u64" ] |),
+                  M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u64" ] |),
                   [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
@@ -4222,7 +4242,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "u64" ] |),
+              M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u64" ] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4254,7 +4274,11 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "u128" ] |),
+                  M.get_function (|
+                    "core::intrinsics::three_way_compare",
+                    [],
+                    [ Ty.path "u128" ]
+                  |),
                   [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
@@ -4335,7 +4359,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "u128" ] |),
+              M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u128" ] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4367,7 +4391,11 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "isize" ] |),
+                  M.get_function (|
+                    "core::intrinsics::three_way_compare",
+                    [],
+                    [ Ty.path "isize" ]
+                  |),
                   [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
@@ -4448,7 +4476,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "isize" ] |),
+              M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "isize" ] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4480,7 +4508,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "i8" ] |),
+                  M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i8" ] |),
                   [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
@@ -4561,7 +4589,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "i8" ] |),
+              M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i8" ] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4593,7 +4621,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "i16" ] |),
+                  M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i16" ] |),
                   [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
@@ -4674,7 +4702,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "i16" ] |),
+              M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i16" ] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4706,7 +4734,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "i32" ] |),
+                  M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i32" ] |),
                   [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
@@ -4787,7 +4815,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "i32" ] |),
+              M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i32" ] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4819,7 +4847,7 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "i64" ] |),
+                  M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i64" ] |),
                   [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
@@ -4900,7 +4928,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "i64" ] |),
+              M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i64" ] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4932,7 +4960,11 @@ Module cmp.
               "core::option::Option::Some"
               [
                 M.call_closure (|
-                  M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "i128" ] |),
+                  M.get_function (|
+                    "core::intrinsics::three_way_compare",
+                    [],
+                    [ Ty.path "i128" ]
+                  |),
                   [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
                 |)
               ]))
@@ -5013,7 +5045,7 @@ Module cmp.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::three_way_compare", [ Ty.path "i128" ] |),
+              M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i128" ] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
