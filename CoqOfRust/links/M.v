@@ -559,10 +559,12 @@ Module LowM.
   | Pure (value : Output)
   | CallPrimitive {A : Set} (primitive : Primitive.t A) (k : A -> t Output)
   | Let {A : Set} (e : t A) (k : A -> t Output)
+  | Call {A : Set} (e : t A) (k : A -> t Output)
   | Loop {A : Set} (body : t A) (k : A -> t Output).
   Arguments Pure {_}.
   Arguments CallPrimitive {_ _}.
   Arguments Let {_ _}.
+  Arguments Call {_ _}.
   Arguments Loop {_ _}.
 End LowM.
 
@@ -634,7 +636,7 @@ Proof.
     exact (evaluate _ _ _ run).
   }
   { (* CallClosure *)
-    eapply LowM.Let. {
+    eapply LowM.Call. {
       exact (evaluate _ _ _ run).
     }
     intros output'; eapply evaluate.
@@ -677,30 +679,6 @@ Ltac run_symbolic_state_alloc :=
     intros
   ).
 
-Ltac run_symbolic_state_read :=
-  cbn;
-  eapply Run.CallPrimitiveStateRead; [reflexivity |];
-  intros.
-
-Ltac run_symbolic_state_write :=
-  cbn;
-  eapply Run.CallPrimitiveStateWrite; [reflexivity | reflexivity |];
-  intros.
-
-Ltac run_symbolic_one_step :=
-  match goal with
-  | |- {{ _ ⇓ _ }} =>
-    (eapply Run.Pure; try reflexivity) ||
-    run_symbolic_state_alloc ||
-    run_symbolic_state_read ||
-    run_symbolic_state_write
-  end.
-
-(** We should use this tactic instead of the ones above, as this one calls all the others. *)
-Ltac run_symbolic :=
-  (* Ideally, we should have the information about which kind of pointer to use. TODO: add it! *)
-  unshelve (repeat run_symbolic_one_step); try exact Pointer.Kind.Ref.
-
 Ltac run_symbolic_state_alloc_immediate :=
   (
     (* We hope the allocated value to be in a form that is already the image of a [φ] conversion. *)
@@ -713,14 +691,56 @@ Ltac run_symbolic_state_alloc_immediate :=
         _
       }} =>
         eapply Run.CallPrimitiveStateAllocImmediate with (A := B);
-        [try reflexivity |];
-        intros
+        try reflexivity
     end
   ) || (
     (* An important case is the allocation of the unit value *)
-    eapply Run.CallPrimitiveStateAlloc with (value := tt); [reflexivity |];
-    intros
+    eapply Run.CallPrimitiveStateAllocImmediate with (value := tt);
+    try reflexivity
   ).
+
+Ltac run_symbolic_state_read :=
+  cbn;
+  eapply Run.CallPrimitiveStateRead; [reflexivity |];
+  intros.
+
+Ltac run_symbolic_state_read_immediate :=
+  cbn;
+  eapply Run.CallPrimitiveStateReadImmediate; [reflexivity |].
+
+Ltac run_symbolic_state_write :=
+  cbn;
+  eapply Run.CallPrimitiveStateWrite; [reflexivity | reflexivity |];
+  intros.
+
+Ltac run_symbolic_one_step :=
+  match goal with
+  | |- {{ _ ⇓ _ }} =>
+    (eapply Run.Pure; try reflexivity) ||
+    run_symbolic_state_alloc ||
+    run_symbolic_state_read_immediate ||
+    run_symbolic_state_read ||
+    run_symbolic_state_write
+  end.
+
+Ltac run_symbolic_one_step_immediate :=
+  match goal with
+  | |- {{ _ ⇓ _ }} =>
+    (eapply Run.Pure; try reflexivity) ||
+    run_symbolic_state_alloc_immediate ||
+    run_symbolic_state_read_immediate ||
+    run_symbolic_state_read ||
+    run_symbolic_state_write
+  end.
+
+(** We should use this tactic instead of the ones above, as this one calls all the others. *)
+Ltac run_symbolic :=
+  (* Ideally, we should have the information about which kind of pointer to use. TODO: add it! *)
+  unshelve (repeat run_symbolic_one_step_immediate); try exact Pointer.Kind.Ref.
+
+Ltac run_symbolic_mutable :=
+  (* Ideally, we should have the information about which kind of pointer to use. TODO: add it! *)
+  unshelve (repeat run_symbolic_one_step); try exact Pointer.Kind.Ref.
 
 (** For the specific case of sub-pointers, we still do it by hand by providing the corresponding
     validity statement for the index that we access. *)

@@ -58,7 +58,7 @@ Proof.
   }
   run_symbolic.
   eapply Run.CallClosure. {
-    apply (run_call_once value (ref, ref0)).
+    apply (run_call_once compare (Ref.Immediate _ v1, Ref.Immediate _ v2)).
   }
   intros ordering.
   unshelve eapply Run.CallPrimitiveStateAllocImmediate with (A := Ordering.t);

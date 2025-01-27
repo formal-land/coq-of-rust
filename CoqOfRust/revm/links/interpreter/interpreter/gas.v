@@ -293,6 +293,7 @@ Module Impl_revm_interpreter_gas_Gas.
               limit,
               remaining: limit,
               refunded: 0,
+              memory: MemoryGas::new(),
           }
       }
   *)
@@ -322,6 +323,7 @@ Module Impl_revm_interpreter_gas_Gas.
               limit,
               remaining: 0,
               refunded: 0,
+              memory: MemoryGas::new(),
           }
       }
   *)
